@@ -1,0 +1,40 @@
+.page{
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background-image: url(../../assets/images/bg.jpg);
+  background-size: 100% 100%;
+  overflow: hidden;
+  .cover{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(189, 201, 236, 0.5);
+  }
+  .form{
+    position: inherit;
+    z-index: 1;
+    height: 350px;
+    width: 400px;
+    background-color: rgba(245, 245, 245,.5);
+    border-radius: 15px;
+    margin: 200px auto;
+    padding: 50px;
+    Input{
+      height: 35px;
+    }
+    .ant-input-affix-wrapper{
+      border-radius: 17px;
+    }
+    .ant-form-item-control-input-content{
+      display: flex;
+      justify-content:space-between;
+      flex-wrap: wrap;
+    }
+    Button{
+      width: 100%;
+    }
+  }
+}
