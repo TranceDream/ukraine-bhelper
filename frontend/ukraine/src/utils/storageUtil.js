@@ -1,3 +1,9 @@
+/*
+ * @Author: Linhao Yu
+ * @Date: 2022-03-29 14:28:53
+ * @Last Modified by: Linhao Yu
+ * @Last Modified time: 2022-03-29 14:30:37
+ */
 import store from 'store'
 const USER_KEY = 'username'
 export default {
@@ -14,5 +20,5 @@ export default {
   //删除user
   RemoveUser() {
     store.remove(USER_KEY)
-  },
+  }
 }

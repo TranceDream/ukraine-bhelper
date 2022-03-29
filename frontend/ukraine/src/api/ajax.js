@@ -1,3 +1,9 @@
+/*
+ * @Author: Linhao Yu
+ * @Date: 2022-03-29 14:26:30
+ * @Last Modified by:   Linhao Yu
+ * @Last Modified time: 2022-03-29 14:26:30
+ */
 // 发送异步ajax请求的函数
 // 封装axios库
 // 优化：1. 统一处理请求异常--在外层包裹promise对象，
@@ -10,16 +16,16 @@ export default function ajax(url, data = {}, type = 'GET') {
     let promise
     if (type === 'GET') {
       promise = axios.get(url, {
-        params: data,
+        params: data
       })
     } else {
       // post
       promise = axios.post(url, data)
     }
     promise
-      .then((response) => {
+      .then(response => {
         resolve(response.data) //异步得到的不是response,而是response.data
       })
-      .catch((error) => message.error('请求出错了：' + error.message))
+      .catch(error => message.error('请求出错了：' + error.message))
   })
 }

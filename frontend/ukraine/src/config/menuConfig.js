@@ -1,10 +1,16 @@
+/*
+ * @Author: Linhao Yu
+ * @Date: 2022-03-29 14:27:26
+ * @Last Modified by: Linhao Yu
+ * @Last Modified time: 2022-03-29 14:30:11
+ */
 import {
-  HomeOutlined,
-  UserSwitchOutlined,
-  SolutionOutlined,
-  NotificationOutlined,
+  AppstoreOutlined,
   FileSearchOutlined,
-  AppstoreOutlined
+  HomeOutlined,
+  NotificationOutlined,
+  SolutionOutlined,
+  UserSwitchOutlined
 } from '@ant-design/icons'
 const menuList = [
   {
