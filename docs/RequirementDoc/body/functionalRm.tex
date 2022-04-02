@@ -55,6 +55,7 @@
                 目标：
 
                 难民能够在浏览房主发布的房源信息概要和基本信息，选择匹配的房源。
+也可以根据自己输入的地点来匹配地点附近的房源。
 
                 具体要求：
 
@@ -431,6 +432,7 @@
         \hline
     \end{tabular}
 \end{table}
+
 \section{房主用例图}
 
 房主的用例图如图~\ref{fig:ownerUseCase}~所示。
@@ -1160,3 +1162,11 @@
         \hline
     \end{tabular}
 \end{table}
+
+\newpage
+\section{其他功能性需求}
+
+\begin{enumerate}
+    \item 房主发布房源需要身份认证，对于合适的国际身份认证平台还在寻找，在本项目中我们会暂时使用来登录阿里的身份认证来代替。
+    \item 考虑是给世界的难民使用，所以需要由语言切换系统，本系统会采用谷歌翻译API来实现。
+\end{enumerate}
