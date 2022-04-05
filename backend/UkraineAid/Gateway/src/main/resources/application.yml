@@ -1,0 +1,16 @@
+server:
+  port: 9001
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user_auth
+          uri: http://localhost:8001
+          predicates:
+            - Path=/user/**
+
+        - id: house_post
+          uri: http://localhost:8002
+          predicates:
+            - Path=/post/**
