@@ -15,7 +15,12 @@ spring:
         max-active: 20
         max-wait: -1
     password: syhxsqqaxfdyhh
-
+#    nacos
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      discovery:
+        service: UserService
 
 mybatis-plus:
   mapper-locations: classpath:DaoXML/*.xml
