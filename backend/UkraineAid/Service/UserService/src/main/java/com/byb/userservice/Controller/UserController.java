@@ -14,10 +14,14 @@ import com.byb.userservice.Vo.UserForm;
 import jdk.nashorn.internal.parser.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -180,7 +184,7 @@ public class UserController {
     }
 
     @PostMapping("/htmlEmail")
-    public String ttt(@RequestBody UserForm userForm){
+    public String ttt(@RequestBody UserForm userForm) {
 //        emailService.sendHtml(userForm.getIdentifier());
         return "ttt";
     }

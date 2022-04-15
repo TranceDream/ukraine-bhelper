@@ -1,0 +1,39 @@
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background: #00000040 url("https://cdn.jsdelivr.net/gh/TranceDream/ImgHost@master/img/clouds-ge5f534b8c_1920.72vkxi2mees0.webp");
+  background-size: cover;
+  background-blend-mode: darken;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  h1 {
+    font-size: 2.4em;
+    user-select: none;
+    color: white;
+    text-shadow: 0 0 5px black;
+  }
+  .buttonGroup {
+    display: flex;
+    flex-direction: row;
+    gap: 80px;
+
+    button {
+      background: dodgerblue;
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px gray;
+      font-size: larger;
+      cursor: pointer;
+      transition: background ease-in-out .2s;
+
+      &:hover {
+        background: deepskyblue;
+      }
+    }
+  }
+}

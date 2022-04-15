@@ -30,3 +30,8 @@ spring:
 #
 #mybatis-plus:
 #  mapper-locations: classpath:DaoXML/*.xml
+# nacos
+    nacos:
+      server-addr: localhost:8848
+      discovery:
+        service: Gateway

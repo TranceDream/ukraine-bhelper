@@ -33,7 +33,17 @@
             <artifactId>hutool-all</artifactId>
             <version>5.8.0.M2</version>
         </dependency>
+        <!--                nacos 配置管理-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
     </dependencies>
+
 
     <build>
         <plugins>

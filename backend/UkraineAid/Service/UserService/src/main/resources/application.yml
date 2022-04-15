@@ -26,6 +26,12 @@ spring:
 
 
 
+#    nacos
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      discovery:
+        service: UserService
 
 mybatis-plus:
   mapper-locations: classpath:DaoXML/*.xml
