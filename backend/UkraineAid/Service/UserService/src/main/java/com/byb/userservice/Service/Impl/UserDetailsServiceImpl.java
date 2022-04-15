@@ -54,7 +54,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return securityUser;
     }
 
-    public static SecurityUser getCurrentUser(){
-        return (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
 }

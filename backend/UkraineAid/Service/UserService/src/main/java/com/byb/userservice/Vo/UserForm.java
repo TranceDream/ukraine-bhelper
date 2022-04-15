@@ -13,4 +13,5 @@ public class UserForm {
     private String identifier;
     private String credential;
     private int identityType;
+    private String uuid;
 }

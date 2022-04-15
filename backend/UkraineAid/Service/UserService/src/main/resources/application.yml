@@ -15,6 +15,16 @@ spring:
         max-active: 20
         max-wait: -1
     password: syhxsqqaxfdyhh
+  mail:
+    host: smtp.qq.com
+    password: riunoiabplazhfgf
+    default-encoding: UTF-8
+    port: 587
+    username: 1533152445@qq.com
+    
+
+
+
 
 
 mybatis-plus:
