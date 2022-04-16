@@ -17,6 +17,9 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Component
 public class JWTAuthFilter implements GlobalFilter , Ordered {
 
@@ -33,6 +36,7 @@ public class JWTAuthFilter implements GlobalFilter , Ordered {
         }
         HttpHeaders headers = new HttpHeaders();
         headers.add(ConstantConfig.TOKEN_HEADER, token);
+        headers.add(ConstantConfig.REQUEST_HEADER, url);
         HttpEntity<String> formEntity = new HttpEntity<String>(null, headers);
         RestTemplate restTemplate = new RestTemplate();
         String isAuth =  restTemplate.postForObject(ConstantConfig.TOKEN_CHECK_URL, formEntity, String.class);
@@ -50,8 +54,13 @@ public class JWTAuthFilter implements GlobalFilter , Ordered {
 
     private Mono<Void> unauthorized(ServerWebExchange serverWebExchange) {
         serverWebExchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", HttpStatus.UNAUTHORIZED.value());
+        map.put("msg", "YOU DON'T HAVE THIS AUTHORITY!");
+        map.put("data", HttpStatus.UNAUTHORIZED.getReasonPhrase());
+        String resp = JSONObject.toJSONString(map);
         DataBuffer buffer = serverWebExchange.getResponse()
-                .bufferFactory().wrap(HttpStatus.UNAUTHORIZED.getReasonPhrase().getBytes());
+                .bufferFactory().wrap(resp.getBytes());
         return serverWebExchange.getResponse().writeWith(Flux.just(buffer));
     }
 }

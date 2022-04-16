@@ -1,0 +1,25 @@
+.header {
+  box-sizing: border-box;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  padding: 0 32px;
+  position: fixed;
+
+  .list {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+
+    li {
+
+      &:not(:first-child) {
+        margin-left: 16px;
+      }
+    }
+  }
+}

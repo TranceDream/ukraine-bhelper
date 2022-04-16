@@ -1,26 +1,24 @@
-import { Button, Layout, Typography } from 'antd'
+import { Col, Layout, Row } from 'antd'
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import GenericHeader from '../../components/Header'
+import { HomePageCover } from '../../components/HomePageCover'
 import styles from './Home.module.scss'
 const { Header, Footer, Content } = Layout
-
 export default function Home() {
-    const navigate = useNavigate()
-    const toAdmin = () => {
-        navigate('/admin', { replace: false })
-    }
     return (
         <Layout className={styles.layout}>
             <Header>
-                <Typography.Title level={2}>
-                    LOGO
-                    <Button type='primary' onClick={toAdmin}>
-                        Admin
-                    </Button>
-                </Typography.Title>
-                1111
+                <GenericHeader />
             </Header>
-            <Content className={styles.content}>Content</Content>
+            <Content className={styles.contentWrapper}>
+                <Row className={styles.content}>
+                    <Col className={styles.cover}>
+                        <HomePageCover />
+                    </Col>
+                    <Col>item 2</Col>
+                    <Col>item 3</Col>
+                </Row>
+            </Content>
             <Footer>Footer</Footer>
         </Layout>
     )

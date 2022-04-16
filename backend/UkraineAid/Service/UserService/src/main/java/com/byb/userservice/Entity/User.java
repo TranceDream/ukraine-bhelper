@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 public class User implements Serializable {
 
-    @TableId(value = "USER_ID", type = IdType.INPUT)
+    @TableId(value = "USER_ID", type = IdType.AUTO)
     private Long userId;
 
     @TableField("CREATE_TIME")

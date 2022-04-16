@@ -11,5 +11,6 @@ import java.util.Map;
 public interface UserDao extends BaseMapper<User> {
 
 //    UserVo selectOneVo(Map<String,Object> params);
+    int addUser(Map<String, Object> params);
 
 }

@@ -24,7 +24,7 @@ import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+
 
 public class AuthFilter extends BasicAuthenticationFilter {
 

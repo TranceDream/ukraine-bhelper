@@ -66,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //不进行认证的路径，可以直接访问
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/user/login1");
+        web.ignoring().antMatchers("/user/addUserByEmail","/user/activeEmail","/user/htmlEmail");
     }
 
 
