@@ -1,0 +1,62 @@
+\chapter{详细设计}
+前几章设计了系统的框架、层次、业务对象等方面，本章将对系统进行详尽的设计，包括数据库的设计，主要流程的设计等。
+\section{数据库设计}
+本系统使用的是MySQL数据库，由于系统框架为微服务框架，所以本章将分模块为设计各自模块的数据库表。同时，为了提高查询速度，便于开发，
+所有的数据表均不会设置外键，也没有触发器，全靠后端上层逻辑保证数据的完整性。后期为提高查询速度会设计索引和视图。
+\subsection{UserService用户模块}
+用户模块的数据表主要设计用户基本信息、角色信息、权限信息等，一方面是为用户登录认证授权服务，另一方面是为管理员进行用户管理服务。
+\subsubsection{User表}
+\begin{enumerate}
+    \item 表结构
+    \begin{table}[htbp]
+        \centering
+        \scalebox{0.6}{
+        \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        字段名          & 字段类型         & 字段描述   & 初始值              & 约束                        \\ \hline
+        USER\_ID     & Long         & 用户唯一约束 &                  & PK,AUTO\_INCREMENT        \\ \hline
+        CREATE\_TIME & Date         & 创建时间   & CURRENTTIMESTAMP & NULL DEFAULT CURRENTSTAMP \\ \hline
+        COUNTRY      & VARCHAR(100) & 国家     &                  &                           \\ \hline
+        CITY         & VARCHAR(200) & 城市     &                  &                           \\ \hline
+        \end{tabular}
+        }
+        \end{table}
+    \item 建表语句\\
+        CREATE TABLE(\\
+            USER\_ID INT(64) PRIMARY KEY AUTO\_INCREMENT,\\
+            CREATE\_TIME TIMESTAMP NULL DEFAULT CURRENTTIMESTAMP,\\
+            COUNTRY VARCHAR(100),\\
+            CITY VARCHAR(200)\\
+        )
+    \end{enumerate}
+
+\subsubsection{用户认证表}
+本系统支持第三方登录，所以每个用户对应多个登陆凭证和密码，比如邮箱、手机号等。本表记录的就是用户和对应的登陆方式，包括用户ID、登陆账号、登陆密码、登陆方式等。
+\begin{enumerate}
+    \item 表结构
+    \begin{table}[htbp]
+        \centering
+        \scalebox{0.6}{
+        \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        \hline
+        字段名            & 字段类型         & 字段描述   & 初始值              & 约束                        \\ \hline
+        AUTH\_ID       & Long         & 用户唯一约束 &                  & PK,AUTO\_INCREMENT        \\ \hline
+        CREATE\_TIME   & Date         & 创建时间   & CURRENTTIMESTAMP & NULL DEFAULT CURRENTSTAMP \\ \hline
+        USER\_ID       & Long         & 关联用户标识 &                  & NOT NULL                  \\ \hline
+        IDENTITY\_TYPE & int          & 登录类别标识 &                  & NOT NULL                  \\ \hline
+        IDENTIFIER     & VARCHAR(50)  & 身份唯一标识 &                  & NOT NULL                  \\ \hline
+        CREDENTIAL     & VARCHAR(100) & 登陆验证   &                  & NOT NULL                  \\ \hline
+        \end{tabular}
+        }
+        \end{table}
+    \item 建表语句\\
+        CREATE TABLE(\\
+            AUTH\_ID INT(64) PRIMARY KEY AUTO\_INCREMENT,\\
+            USER\_ID INT(64) PRIMARY KEY AUTO\_INCREMENT,\\
+            CREATE\_TIME TIMESTAMP NULL DEFAULT CURRENTTIMESTAMP,\\
+            IDENTITY\_TYPE INT NOT NULL,\\
+            IDENTIFIER VARCHAR(50) NOT NULL,\\
+            CREDENTIAL VARCHAR(100) NOT NULL\\
+        )
+    \end{enumerate}
