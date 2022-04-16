@@ -1,0 +1,35 @@
+/*
+ * @Author: Linhao Yu 
+ * @Date: 2022-04-16 22:28:38 
+ * @Last Modified by: Linhao Yu
+ * @Last Modified time: 2022-04-16 23:22:08
+ */
+.sider {    
+    position: relative;
+    margin-right: 10px;
+    box-shadow: 0px 2px 10px 2px rgba(0, 0, 0, 0.1);
+    .logo {
+        margin-bottom: 10px;
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        img {
+        height: 50px;
+        margin-right: 5px;
+        box-shadow: 0px 2px 10px 2px rgba(0, 0, 0, 0.1);
+        }
+        .title {
+        white-space: nowrap;
+        width: 100px;
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 50px;
+        }
+    }
+    .cbtn{
+        margin:0;
+        position:absolute;
+        bottom: 10px;
+        left: 15px;
+    }
+}
