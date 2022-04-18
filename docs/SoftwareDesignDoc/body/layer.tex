@@ -27,7 +27,7 @@
         \item ReportService模块，负责举报信息，包括发起举报，审核举报等。
         \item NewsService模块，负责管理新闻信息，包括编辑新闻，获取新闻列表等。
         \item AuditService模块，负责管理审核信息，包括举报审核、新闻审核等。
-        \item MessageService模块，负责处理系统的消息和通知，用于管理员给用户群发通知等。
+        \item SystemService模块，负责处理系统的消息和系统业务对象，用于管理员给用户群发通知，业务对象管理等。
     \end{itemize}
     \item GateWay网管模块，负责分发路由，将请求转发到对应的微服务上，同时也负责初步校验JWT，检验用户身份。
     \item NacosCore微服务注册中心模块，负责管理系统中的各项微服务，包括服务注册、服务发现、流量监控等。
@@ -60,7 +60,7 @@ Security模块的总体包图如图~\ref{fig:Security}~所示。
 \end{figure}
 
 \subsection{Service微服务业务模块}
-Service模块包含6个子模块，为UserService模块、HouseService模块、NewsService模块、ReportService模块、AuditService模块、MessageService模块。
+Service模块包含6个子模块，为UserService模块、HouseService模块、NewsService模块、ReportService模块、AuditService模块、SystemService模块。
 
 \subsubsection{UserService}
 UserService模块主要包含6个包，主要是MVC模式下的几个包，包括Controller、Service、Impl、Dao、Entity、Vo。前5个包的功能在前文均有描述，而Vo包的主要
@@ -110,12 +110,12 @@ HouseService模块和上文一样，也包含6个包。总体包图如图所示�
     \vspace{\baselineskip} % 表示图与正文空一行
 \end{figure}
 
-\subsubsection{MessageService}
-包含6个包，总体包图如图~\ref{fig:AuditReport}~所示。
+\subsubsection{SystemService}
+总体包图如图~\ref{fig:SystemService}~所示。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{ch3/MessageService.jpg}
-    \caption{MessageService模块包图}\label{fig:MessageService}
+    \includegraphics[width=\textwidth]{ch3/SystemService.jpg}
+    \caption{SystemService模块包图}\label{fig:SystemService}
     \vspace{\baselineskip} % 表示图与正文空一行
 \end{figure}
 
