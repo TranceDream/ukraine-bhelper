@@ -21,6 +21,10 @@ spring:
     default-encoding: UTF-8
     port: 587
     username: 1533152445@qq.com
+
+  userService:
+    normalUserRoleName: NORMAL_USER
+    activeFilePath: E:\\ukraine-bhelper\\backend\\UkraineAid\\Service\\UserService\\src\\main\\resources\\static\\Active.html
     
 
 
