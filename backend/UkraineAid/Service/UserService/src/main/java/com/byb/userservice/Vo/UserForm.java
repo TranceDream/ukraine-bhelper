@@ -14,4 +14,17 @@ public class UserForm {
     private String credential;
     private int identityType;
     private String uuid;
+
+    private int roleId;
+    private String roleName;
+
+    private int permissionId;
+    private String permissionUrl;
+
+    private String lockedMark;
+
+    private String orderText;
+
+    private int pageSize;
+    private int pageNo;
 }

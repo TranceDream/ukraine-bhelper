@@ -2,6 +2,164 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.byb.userservice.Dao.UserDao">
+    <resultMap id="UserVo" type="com.byb.userservice.Vo.UserVo">
+        <id property="userId" column="USER_ID"/>
+        <result property="country" column="COUNTRY"/>
+        <result property="city" column="CITY"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="roleId" column="ROLE_ID"/>
+        <result property="roleName" column="ROLE_NAME"/>
+        <result property="permissionId" column="PERMISSION_ID"/>
+        <result property="permissionUrl" column="URL"/>
+    </resultMap>
 
+    <resultMap id="UserRoleVo" type="com.byb.userservice.Vo.UserRoleVo">
+        <id property="id" column="ID"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="roleId" column="ROLE_ID"/>
+        <result property="roleName" column="ROLE_NAME"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="lockedMark" column="LOCKED_MARK"/>
+        <result property="deleteMark" column="DELETE_MARK"/>
+    </resultMap>
+
+    <resultMap id="UserDetail" type="com.byb.userservice.Vo.UserVo">
+        <id property="userId" column="USER_ID"/>
+        <result property="country" column="COUNTRY"/>
+        <result property="city" column="CITY"/>
+        <result property="identityType" column="IDENTITY_TYPE"/>
+        <result property="identifier" column="IDENTIFIER"/>
+        <result property="credential" column="CREDENTIAL"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <collection property="roleList" column="USER_ID" ofType="com.byb.userservice.Vo.UserRoleVo" select="selectRoleList"/>
+    </resultMap>
+
+    <select id="selectRoleList" resultMap="UserRoleVo" parameterType="java.lang.Long">
+        select dr.ROLE_NAME,
+               dr.ROLE_ID,
+               dr.CREATE_TIME,
+               dur.USER_ID,
+               dur.CREATE_TIME,
+               dur.LOCKED_MARK,
+               dur.ID
+               from DICT_USER_ROLE dur left join DICT_ROLE dr on dur.ROLE_ID = dr.ROLE_ID
+               WHERE dur.USER_ID = #{userId} AND dur.DELETE_MARK = 'NO' AND dr.DELETE_MARK = 'NO'
+    </select>
+
+    <select id="countUserList" resultType="java.lang.Integer">
+        select count(1) from
+        USER ur left join DICT_USER_ROLE dur on ur.USER_ID = dur.USER_ID
+        left join DICT_ROLE dr on dur.ROLE_ID = dr.ROLE_ID
+        <where>
+            <if test="userId!=null and userId!=''">
+                ur.USER_ID = #{userId}
+            </if>
+
+            <if test="city!=null and city!=''">
+                AND ur.CITY = #{city}
+            </if>
+
+            <if test="country!=null and country!=''">
+                AND ur.COUNTRY = #{country}
+            </if>
+
+            <choose>
+                <when test="roleId!=null and roleId!=''">
+                    AND dur.ROLE_ID = #{roleId}
+                </when>
+
+                <otherwise>
+                    AND dur.ROLE_ID = #{defaultRole}
+                </otherwise>
+            </choose>
+
+            <choose>
+                <when test="lockedMark !=null and lockedMark!=''">
+                    AND dur.LOCKED_MARK = #{lockedMark}
+                </when>
+
+                <otherwise>
+                    AND dur.LOCKED_MARK = 'NO'
+                </otherwise>
+            </choose>
+
+            AND dur.DELETE_MARK = 'NO' AND dr.DELETE_MARK = 'NO'
+
+        </where>
+    </select>
+
+    <select id="selectUserList" resultMap="UserVo">
+        select * from
+        (
+        select
+         ur.USER_ID,
+         ur.COUNTRY,
+         ur.CITY,
+         ur.CREATE_TIME,
+         dur.ROLE_ID,
+         dr.ROLE_NAME,
+         dur.LOCKED_MARK
+        from
+        USER ur left join DICT_USER_ROLE dur on ur.USER_ID = dur.USER_ID
+        left join DICT_ROLE dr on dur.ROLE_ID = dr.ROLE_ID
+        <where>
+        <if test="userId!=null and userId!=''">
+            ur.USER_ID = #{userId}
+        </if>
+
+        <if test="city!=null and city!=''">
+            AND ur.CITY = #{city}
+        </if>
+
+        <if test="country!=null and country!=''">
+            AND ur.COUNTRY = #{country}
+        </if>
+
+        <choose>
+            <when test="roleId!=null and roleId!=''">
+                AND dur.ROLE_ID = #{roleId}
+            </when>
+
+            <otherwise>
+                AND dur.ROLE_ID = #{defaultRole}
+            </otherwise>
+        </choose>
+
+        <choose>
+            <when test="lockedMark !=null and lockedMark!=''">
+                AND dur.LOCKED_MARK = #{lockedMark}
+            </when>
+
+            <otherwise>
+                AND dur.LOCKED_MARK = 'NO'
+            </otherwise>
+        </choose>
+
+        AND dur.DELETE_MARK = 'NO' AND dr.DELETE_MARK = 'NO'
+
+        <choose>
+            <when test="orderText != null and orderText != ''">
+                order by ${orderText}
+            </when>
+
+            <otherwise>
+                order by ur.USER_ID desc
+            </otherwise>
+        </choose>
+        </where>
+        ) m  limit #{start}, #{size}
+    </select>
+
+    <select id="selectUserDetail" resultMap="UserDetail" >
+        select
+            USER_ID,
+            COUNTRY,
+            CITY,
+            CREATE_TIME
+        from USER
+        <where>
+            USER_ID = #{userId}
+        </where>
+    </select>
 
 </mapper>
