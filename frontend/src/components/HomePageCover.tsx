@@ -1,18 +1,26 @@
-// @flow
+/**
+ * HomePageCover
+ * @file 主页封面组件，显示Slogan和导航按钮
+ * @author TranceDream
+ */
 import * as React from 'react'
 import styles from './HomePageCover.module.scss'
-import { Button, Typography } from 'antd'
+import { NavLink } from 'react-router-dom'
 
-type Props = {}
-export const HomePageCover = (props: Props) => {
+/**
+ * 主页封面组件，显示Slogan和导航按钮
+ * @author TranceDream
+ * @constructor
+ */
+export const HomePageCover = () => {
     return (
         <div className={styles.container}>
-            <Typography.Title level={1}>
-                Housing for Ukrainian Refugees
-            </Typography.Title>
+            <h1>Housing for Ukrainian Refugees</h1>
             <div className={styles.buttonGroup}>
-                <Button>寻求援助</Button>
-                <Button>查看新闻</Button>
+                <NavLink to={'/station'}>
+                    <button>寻求援助</button>
+                </NavLink>
+                <button>查看新闻</button>
             </div>
         </div>
     )

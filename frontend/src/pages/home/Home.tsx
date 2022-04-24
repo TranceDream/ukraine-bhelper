@@ -1,25 +1,43 @@
-import { Col, Layout, Row } from 'antd'
-import React from 'react'
-import GenericHeader from '../../components/Header'
+/**
+ * Home
+ * @file 前端主页
+ * @author TranceDream
+ */
+
+import React, { useEffect, useState } from 'react'
+import Header from '../../components/Header'
 import { HomePageCover } from '../../components/HomePageCover'
 import styles from './Home.module.scss'
-const { Header, Footer, Content } = Layout
+
+/**
+ * 前端主页
+ * @constructor
+ * @author TranceDream
+ */
 export default function Home() {
+    const [hideNav, setHideNav] = useState(true)
+    useEffect(() => {
+        window.addEventListener(
+            'scroll',
+            () => {
+                setHideNav(window.scrollY + 80 <= window.innerHeight)
+            },
+            { passive: true }
+        )
+    }, [])
+
     return (
-        <Layout className={styles.layout}>
-            <Header>
-                <GenericHeader />
-            </Header>
-            <Content className={styles.contentWrapper}>
-                <Row className={styles.content}>
-                    <Col className={styles.cover}>
-                        <HomePageCover />
-                    </Col>
-                    <Col>item 2</Col>
-                    <Col>item 3</Col>
-                </Row>
-            </Content>
-            <Footer>Footer</Footer>
-        </Layout>
+        <div className={styles.container}>
+            <header>
+                <Header hideNav={hideNav} />
+            </header>
+            <main>
+                <HomePageCover />
+                <section />
+            </main>
+            <footer>
+                <div>footer</div>
+            </footer>
+        </div>
     )
 }
