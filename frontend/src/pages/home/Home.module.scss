@@ -1,21 +1,12 @@
-
-.layout {
+.container {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  .contentWrapper {
-    width: 100%;
-    .content {
-      width: 100%;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
 
-      .cover {
-        width: 100%;
-      }
+  main {
+    display: flex;
+    flex-direction: column;
+
+    section {
+      min-height: 100vh;
     }
   }
 }

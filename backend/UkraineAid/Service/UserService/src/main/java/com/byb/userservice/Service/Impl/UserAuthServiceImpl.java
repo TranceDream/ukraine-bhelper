@@ -2,6 +2,7 @@ package com.byb.userservice.Service.Impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.byb.BaseUtil.Utils.UUIDUtils;
+import com.byb.security.Security.DefaultPasswordEncoder;
 import com.byb.userservice.Dao.UserAuthDao;
 import com.byb.userservice.Entity.UserAuth;
 import com.byb.userservice.Service.UserAuthService;
@@ -22,6 +23,9 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthDao, UserAuth> impl
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private DefaultPasswordEncoder defaultPasswordEncoder;
+
     @Override
     public String createAccount(UserForm userForm) {
         try {
@@ -29,6 +33,8 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthDao, UserAuth> impl
             BeanUtils.copyProperties(userForm, userAuth);
             int identityType = baseMapper.selectIdentityType("EMAIL");
             userAuth.setIdentityType(identityType);
+            String encode = defaultPasswordEncoder.encode(userForm.getCredential());
+            userAuth.setCredential(encode);
             this.save(userAuth);
         }catch (Exception e){
             e.printStackTrace();

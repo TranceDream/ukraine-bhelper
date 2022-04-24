@@ -22,6 +22,8 @@
         <where>
             ur.USER_ID = #{userId}
             and ur.DELETE_MARK = 'NO'
+            and ur.LOCKED_MARK = 'NO'
+            and rp.LOCKED_MARK = 'NO'
             and rp.DELETE_MARK = 'NO'
             and p.DELETE_MARK = 'NO'
         </where>

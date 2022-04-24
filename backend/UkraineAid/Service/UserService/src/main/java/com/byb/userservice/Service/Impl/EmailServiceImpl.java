@@ -30,6 +30,9 @@ public class EmailServiceImpl implements EmailService {
     @Value("${spring.mail.username}")
     private String from;
 
+    @Value("${spring.userService.activeFilePath}")
+    private String activeFilePath;
+
     @Resource
     private MailSender sender;
 
@@ -63,7 +66,7 @@ public class EmailServiceImpl implements EmailService {
             String userinfo = JSONObject.toJSONString(userForm);
             String token = tokenManager.createToken(userinfo);
             params.put("token", token);
-            File file = new File("E:\\ukraine-bhelper\\backend\\UkraineAid\\Service\\UserService\\src\\main\\resources\\static\\Active.html");
+            File file = new File(activeFilePath);
             String htmlStr = FileReader.create(file).readString();
             Set<String> stringSet = params.keySet();
             Iterator<String> iterator = stringSet.iterator();

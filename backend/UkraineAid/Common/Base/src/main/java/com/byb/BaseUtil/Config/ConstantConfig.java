@@ -1,5 +1,10 @@
 package com.byb.BaseUtil.Config;
 
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+
+@Component
 public class ConstantConfig {
     public final static String TOKEN_HEADER = "token";
 
@@ -10,4 +15,5 @@ public class ConstantConfig {
     public final static String TOKEN_CHECK_PATH = "/user/checkToken";
 
     public final static String REQUEST_HEADER = "url";
+
 }

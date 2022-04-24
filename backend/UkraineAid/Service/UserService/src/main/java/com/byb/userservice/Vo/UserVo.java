@@ -3,6 +3,7 @@ package com.byb.userservice.Vo;
 import lombok.Data;
 
 import java.sql.Date;
+import java.util.List;
 
 @Data
 public class UserVo {
@@ -13,4 +14,13 @@ public class UserVo {
     private String identityType;
     private String identifier;
     private String credential;
+
+    private int roleId;
+    private String roleName;
+
+    private int permissionId;
+    private String permissionUrl;
+
+    private List<UserRoleVo> roleList;
+    private List<String> permissionList;
 }

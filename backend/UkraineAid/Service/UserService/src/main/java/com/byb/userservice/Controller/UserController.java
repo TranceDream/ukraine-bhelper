@@ -6,11 +6,13 @@ import com.byb.BaseUtil.Utils.Result;
 import com.byb.BaseUtil.Utils.UUIDUtils;
 import com.byb.security.Entity.SecurityUser;
 import com.byb.security.Security.TokenManager;
+import com.byb.userservice.Client.SysClient;
 import com.byb.userservice.Service.EmailService;
 import com.byb.userservice.Service.Impl.UserDetailsServiceImpl;
 import com.byb.userservice.Service.UserAuthService;
 import com.byb.userservice.Service.UserService;
 import com.byb.userservice.Vo.UserForm;
+import com.byb.userservice.Vo.UserVo;
 import jdk.nashorn.internal.parser.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -47,11 +49,17 @@ public class UserController {
     @Autowired
     private TokenManager tokenManager;
 
+    @Autowired
+    private SysClient sysClient;
+
     @PostMapping("/test")
     public Result<Map<String, Object>> test(){
         Map<String, Object> map = new HashMap<>();
-        map.put("user", "user");
-        return new Result<>(map, Result.SUCCESS);
+        Map<String, Object> sysFormMap = new HashMap<>();
+        sysFormMap.put("objtypeId", 10000l);
+        sysFormMap.put("message", "dyhtest");
+        Result result = sysClient.addLog(sysFormMap);
+        return result;
     }
 
     @PostMapping("/checkToken")
@@ -175,6 +183,39 @@ public class UserController {
             return new Result<>(map, Result.SUCCESS, "认证成功");
         }
         return null;
+    }
+
+    @GetMapping("/getUserList")
+    public Result<Map<String, Object>> getUserList(@RequestBody UserForm userForm){
+        Integer pageSize = userForm.getPageSize();
+        Integer pageNo = userForm.getPageNo();
+        if(pageNo==null||pageNo==0){
+            userForm.setPageNo(1);
+        }
+        if(pageSize==null||pageSize==0){
+            userForm.setPageSize(10);
+        }
+        Map<String, Object> dataMap = new HashMap<>();
+        try {
+            dataMap = userService.selectUserList(userForm);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new Result<>(dataMap, Result.SUCCESS);
+    }
+
+    @GetMapping("/getUserDetail")
+    public Result<Map<String, Object>> getUserDetail(@RequestBody UserForm userForm, HttpServletResponse response){
+        if(userForm.getUserId()==null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
+        }
+        Map<String, Object> dataMap = new HashMap<>();
+        try {
+            dataMap = userService.getUserDetail(userForm);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new Result<>(dataMap, Result.SUCCESS);
     }
 
     @PostMapping("/emailtest")
