@@ -2,20 +2,24 @@
  * @Author: Linhao Yu 
  * @Date: 2022-04-15 00:10:21 
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-04-16 22:16:17
+ * @Last Modified time: 2022-04-24 17:58:18
  */
-// div{
-//     height: 100%;
-// // }
-// .containter{
-//     height: 100%;
-//     
-// }
+
 .layout{
     height: 100%;
-    // .header{
-    //     display: flex;
-    //     align-items: center;
-    // }
+    .sublayout{
+        .content{
+            background-color:aliceblue;
+        }
+        
+    }
+    .footer{
+        text-align: center;
+        padding: 10px 50px;
+    }
+    
 }
+
+
+
   

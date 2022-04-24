@@ -2,17 +2,17 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-15 00:10:15
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-04-16 22:30:03
+ * @Last Modified time: 2022-04-24 17:58:50
  */
 import { Button, Layout, Menu, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import styles from './Admin.module.scss'
 import MySider from './conponents/AdminSider/MySider'
 import menuList from './menuConfig'
 const { SubMenu } = Menu
 const { Title } = Typography
-const { Header, Sider, Content } = Layout
+const { Header, Sider, Content,Footer } = Layout
 export default function Admin() {
     const navigate = useNavigate()
     const [collapsed, setCollpased] = useState(false)
@@ -66,20 +66,25 @@ export default function Admin() {
         setNodes(getMenuNode(menuList, true))
     })
     return (
-        <Layout className={styles.layout}>
-            <Header className={styles.header}>
-                <Typography.Title level={2}>
-                    LOGO
-                    <Button type='primary' onClick={toHome}>
-                        返回
-                    </Button>
-                </Typography.Title>
-            </Header>
-            <Layout>
-                <MySider />
-                <Content>Content</Content>
+            <Layout className={styles.layout}>
+                <Header className={styles.header}>
+                    <Typography.Title level={2}>
+                        LOGO
+                        <Button type='primary' onClick={toHome}>
+                            返回
+                        </Button>
+                    </Typography.Title>
+                </Header>
+                <Layout className={styles.sublayout}>
+                    <MySider />
+                    <Content className={styles.content}>
+                        <Outlet />
+                        {/* <AdminHome/> */}
+                        {/* content */}
+                    </Content>
+                </Layout>
+                <Footer className={styles.footer}>Footer</Footer>
             </Layout>
-            {/* <Footer>Footer</Footer> */}
-        </Layout>
+            
     )
 }

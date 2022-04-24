@@ -14,27 +14,27 @@ import {
 const menuList = [
     {
         title: '首页',
-        key: '/home',
+        key: '/admin/home',
         icon: <HomeOutlined />,
     },
     {
         title: '用户管理',
-        key: '/user-control',
+        key: '/admin/user-control',
         icon: <UserSwitchOutlined />,
     },
     {
         title: '角色管理',
-        key: '/role-control',
+        key: '/admin/role-control',
         icon: <SolutionOutlined />,
     },
     {
         title: '菜单管理',
-        key: '/menu-control',
+        key: '/admin/menu-control',
         icon: <SolutionOutlined />,
     },
     {
         title: '通知公告',
-        key: '/announce',
+        key: '/admin/announce',
         icon: <NotificationOutlined />,
     },
 
@@ -45,15 +45,15 @@ const menuList = [
         children: [
             {
                 title: '在线用户',
-                key: '/online-user',
+                key: '/admin/online-user',
             },
             {
                 title: '数据监控',
-                key: '/data-monitor',
+                key: '/admin/data-monitor',
             },
             {
                 title: '服务监控',
-                key: '/service-monitor',
+                key: '/admin/service-monitor',
             },
         ],
     },

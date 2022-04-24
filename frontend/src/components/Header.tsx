@@ -8,7 +8,7 @@ type Props = {}
 const Header = (props: Props) => {
     const navigate = useNavigate()
     const toAdmin = () => {
-        navigate('/admin', { replace: false })
+        navigate('/admin/home', { replace: false })
     }
     return (
         <header className={styles.header}>
