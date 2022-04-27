@@ -2,7 +2,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-15 00:10:15
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-04-24 17:58:50
+ * @Last Modified time: 2022-04-27 17:07:05
  */
 import { Layout, Menu, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
@@ -63,7 +63,7 @@ export default function Admin() {
 
     useEffect(() => {
         setNodes(getMenuNode(menuList, true))
-    })
+    }, [])
     return (
         <Layout className={styles.layout}>
             <Header adminhideNav={true} />

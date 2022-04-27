@@ -15,7 +15,7 @@ import MenuControl from '../pages/admin/pages/MenuControl'
 import OnlineUser from '../pages/admin/pages/OnlineUser'
 import RoleControl from '../pages/admin/pages/RoleControl'
 import ServiceMonitor from '../pages/admin/pages/ServiceMonitor'
-import UserControl from '../pages/admin/pages/UserControl/UserControl'
+import UserControl from '../pages/admin/pages/UserControl'
 import Home from '../pages/home/Home'
 import { StationList } from '../pages/station/StationList'
 

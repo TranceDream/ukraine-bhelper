@@ -2,13 +2,14 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-16 22:28:43
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-04-16 23:19:33
+ * @Last Modified time: 2022-04-27 18:58:03
  */
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import { Button, Layout, Menu } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import menuList from '../../menuConfig'
+import PubSub from '../../Utils/pubsub'
 import styles from './MySider.module.scss'
 const { Sider } = Layout
 const { SubMenu } = Menu
@@ -58,6 +59,9 @@ export default function MySider() {
         setNodes(getMenuNode(menuList, true))
     }, [])
 
+    useEffect(() => {
+        PubSub.publish('navCollpased', collapsed)
+    }, [collapsed])
     return (
         <Sider
             className={styles.sider}
