@@ -12,6 +12,8 @@ import { Button, Tooltip } from 'antd'
 import React, { useEffect, useState } from 'react'
 import PubSub from '../../Utils/pubsub'
 import styles from './index.module.scss'
+import './ant-pro-card.scss'
+
 const valueEnum = {
     0: 'close',
     1: 'running',
@@ -138,27 +140,9 @@ const columns: ProColumns<TableListItem>[] = [
 export default function UserControl() {
     const [searchCollapsed, setsearchCollapsed] = useState(false)
     const [navCollpased, setnavCollpased] = useState(false)
-    const [tableheight, setTableheight] = useState(window.innerHeight - 522)
+    const [tableheight, setTableheight] = useState(window.innerHeight)
     const onCollapse = () => {
         setsearchCollapsed(!searchCollapsed)
-    }
-    const resettableheight = () => {
-        if (!navCollpased && searchCollapsed) {
-            // console.log('nav open, search close')
-            setTableheight(window.innerHeight - 410)
-        }
-        if (!navCollpased && !searchCollapsed) {
-            // console.log('nav open, search open')
-            setTableheight(window.innerHeight - 522)
-        }
-        if (navCollpased && searchCollapsed) {
-            // console.log('nav close, search close')
-            setTableheight(window.innerHeight - 410)
-        }
-        if (navCollpased && !searchCollapsed) {
-            // console.log('nav close, search open')
-            setTableheight(window.innerHeight - 466)
-        }
     }
     useEffect(() => {
         window.addEventListener(
@@ -188,7 +172,6 @@ export default function UserControl() {
     // updatemount
     useEffect(() => {
         console.log(11111111)
-        resettableheight()
     }, [searchCollapsed, navCollpased])
     return (
         <ProTable<TableListItem>
@@ -209,9 +192,6 @@ export default function UserControl() {
                 // optionRender: false,
                 collapsed: searchCollapsed,
                 onCollapse: onCollapse,
-            }}
-            scroll={{
-                y: tableheight,
             }}
             dateFormatter='string'
             headerTitle='所有用户'
