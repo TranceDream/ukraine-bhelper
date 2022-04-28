@@ -30,7 +30,7 @@ public class Syslog {
     private Long objId;
 
     @TableField("OPERATOR")
-    private int operator;
+    private Long operator;
 
     @TableField("MESSAGE")
     private String message;

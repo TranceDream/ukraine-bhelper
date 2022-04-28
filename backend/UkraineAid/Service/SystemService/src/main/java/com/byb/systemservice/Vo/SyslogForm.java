@@ -16,7 +16,7 @@ public class SyslogForm {
 
     private Long objId;
 
-    private int operator;
+    private Long operator;
 
     private String message;
 

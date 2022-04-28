@@ -21,6 +21,8 @@ public class UserForm {
     private int permissionId;
     private String permissionUrl;
 
+    private String userRoleId;
+
     private String lockedMark;
 
     private String orderText;

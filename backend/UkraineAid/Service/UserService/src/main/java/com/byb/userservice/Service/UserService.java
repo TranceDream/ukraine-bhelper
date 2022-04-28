@@ -17,4 +17,6 @@ public interface UserService extends IService<User> {
     Map<String, Object> selectUserList(UserForm userForm);
 
     Map<String, Object> getUserDetail(UserForm userForm);
+
+    Map<String, Object> manageRole(UserForm userForm);
 }

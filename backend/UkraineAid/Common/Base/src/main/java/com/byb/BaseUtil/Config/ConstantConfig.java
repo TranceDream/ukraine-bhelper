@@ -16,4 +16,6 @@ public class ConstantConfig {
 
     public final static String REQUEST_HEADER = "url";
 
+    public final static String LOGIN_USER_HEADER = "loginId";
+
 }

@@ -7,6 +7,7 @@ import com.byb.userservice.Dao.RoleDao;
 import com.byb.userservice.Dao.UserAuthDao;
 import com.byb.userservice.Dao.UserDao;
 import com.byb.userservice.Dao.UserRoleDao;
+import com.byb.userservice.Entity.RolePermission;
 import com.byb.userservice.Entity.UserRole;
 import com.byb.userservice.Entity.User;
 import com.byb.userservice.Service.UserService;
@@ -15,6 +16,7 @@ import com.byb.userservice.Vo.UserVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -38,6 +40,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Autowired
     private RoleDao roleDao;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Value("${spring.userService.normalUserRoleName}")
     private String NormalUserRoleName;
@@ -103,6 +108,46 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         UserVo userVo = baseMapper.selectUserDetail(userForm.getUserId());
         Map<String, Object> result = new HashMap<>();
         result.put("data", userVo);
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> manageRole(UserForm userForm) {
+
+        Long id = Long.valueOf(userForm.getUserRoleId());
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("userRoleId", id);
+        params.put("lockMark", userForm.getLockedMark());
+
+        Map<String, Object> result = new HashMap<>();
+        int update = userRoleDao.updateLockedMark(params);
+        if(update!=1){
+            result.put("flag", false);
+            result.put("msg", "操作失败");
+            return result;
+        }
+        UserRole userRole = userRoleDao.selectById(id);
+        params.put("userId", userRole.getUserId());
+        params.put("roleId", userRole.getRoleId());
+        List<String> permissions = userRoleDao.selectUrlByRoleId(params);
+        List<String> originPermissions = (List<String>) redisTemplate.opsForValue().get(userForm.getUserId());
+        try {
+            if(userForm.getLockedMark().equals("NO")){
+                originPermissions.addAll(permissions);
+                redisTemplate.opsForValue().set(userForm.getUserId(), originPermissions);
+            }else {
+                originPermissions.removeAll(permissions);
+                redisTemplate.opsForValue().set(userForm.getUserId(), originPermissions);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            result.put("flag", false);
+            result.put("msg", "缓存失败");
+            return result;
+        }
+        result.put("flag", true);
+        result.put("msg", "操作成功");
         return result;
     }
 }

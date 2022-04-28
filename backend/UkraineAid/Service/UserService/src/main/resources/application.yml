@@ -25,7 +25,9 @@ spring:
   userService:
     normalUserRoleName: NORMAL_USER
     activeFilePath: E:\\ukraine-bhelper\\backend\\UkraineAid\\Service\\UserService\\src\\main\\resources\\static\\Active.html
-    
+    userObjectId: 10000
+    roleObjtypeId: 10001
+    userRoleObjectId: 10002
 
 
 
