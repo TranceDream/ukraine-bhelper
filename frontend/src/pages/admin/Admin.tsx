@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Header from '../../components/Header'
 import styles from './Admin.module.scss'
-import MySider from './conponents/AdminSider/MySider'
+import MySider from './components/AdminSider/MySider'
 import menuList from './menuConfig'
 
 const { SubMenu } = Menu
