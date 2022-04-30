@@ -43,7 +43,7 @@
                dur.LOCKED_MARK,
                dur.ID
                from DICT_USER_ROLE dur left join DICT_ROLE dr on dur.ROLE_ID = dr.ROLE_ID
-               WHERE dur.USER_ID = #{userId} AND dur.DELETE_MARK = 'NO' AND dr.DELETE_MARK = 'NO'
+               WHERE dur.USER_ID = #{userId} AND dur.DELETE_MARK = 'NO' AND dr.DELETE_MARK = 'NO' AND dur.LOCKED_MARK = 'NO'
     </select>
 
     <select id="countUserList" resultType="java.lang.Integer">

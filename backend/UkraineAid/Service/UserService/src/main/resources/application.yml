@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://82.157.113.175:3306/UkraineAssistance
+    url: jdbc:mysql://121.37.70.144:3306/UA
     username: root
-    password: ho/uI;oz-13?
+    password: Zjt@123456
   redis:
     host: 127.0.0.1
     port: 6379
@@ -25,9 +25,14 @@ spring:
   userService:
     normalUserRoleName: NORMAL_USER
     activeFilePath: E:\\ukraine-bhelper\\backend\\UkraineAid\\Service\\UserService\\src\\main\\resources\\static\\Active.html
-    userObjectId: 10000
+    userObjtypeId: 10000
     roleObjtypeId: 10001
-    userRoleObjectId: 10002
+    permissionObjtypeId: 10002
+    userRoleObjtypeId: 10003
+    rolePermissionObjtypeId: 10004
+
+    addOperation: 10000
+    updateOperation: 10001
 
 
 

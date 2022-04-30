@@ -6,13 +6,17 @@ import java.sql.Date;
 import java.util.List;
 
 @Data
-public class RoleForm {
+public class PermissionForm {
 
-    private Integer roleId;
+    private int permissionId;
 
     private Date createTime;
 
-    private String roleName;
+    private String permissionName;
+
+    private String url;
+
+    private List<Integer> roles;
 
     private String deleteMark;
 
@@ -20,11 +24,5 @@ public class RoleForm {
 
     private Integer pageNo;
 
-    private Integer rolePermissionId;
-
-    private List<Integer> permissions;
-
-    private String lockedMark;
-
-
+    private String orderText;
 }

@@ -62,4 +62,55 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
         return result;
     }
 
+    @Override
+    public Map<String, Object> managePermission(RoleForm roleForm){
+        Long id = Long.valueOf(roleForm.getRolePermissionId().toString());
+
+        Map<String, Object> result = new HashMap<>();
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("lockedMark", roleForm.getLockedMark());
+
+        int update = rolePermissionDao.updateLockedMark(params);
+        if(update<=0){
+            result.put("flag", false);
+            result.put("msg", "操作失败");
+            return result;
+        }
+
+        result.put("flag", true);
+        result.put("msg", "操作成功");
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> addRole(RoleForm roleForm) {
+        Map<String, Object> result = new HashMap<>();
+        Role role = new Role();
+        BeanUtils.copyProperties(roleForm, role);
+        baseMapper.insert(role);
+        int roleId = role.getRoleId();
+        try {
+            List<RolePermission> list = new ArrayList<>();
+            if (roleForm.getPermissions() != null && !roleForm.getPermissions().isEmpty()) {
+                for (Integer permissionId : roleForm.getPermissions()) {
+                    RolePermission rolePermission = new RolePermission();
+                    rolePermission.setRoleId(roleId);
+                    rolePermission.setPermissionId(permissionId);
+                    list.add(rolePermission);
+                }
+                Integer insertTotal = baseMapper.addList(list);
+                if (insertTotal == null && insertTotal != roleForm.getPermissions().size()) {
+                    result.put("flag", false);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        result.put("flag", true);
+        result.put("roleId", roleId);
+        return result;
+    }
+
 }

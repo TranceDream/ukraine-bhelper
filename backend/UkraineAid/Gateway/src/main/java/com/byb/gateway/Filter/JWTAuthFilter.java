@@ -11,6 +11,7 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ServerWebExchange;
@@ -41,8 +42,16 @@ public class JWTAuthFilter implements GlobalFilter , Ordered {
         RestTemplate restTemplate = new RestTemplate();
         String isAuth =  restTemplate.postForObject(ConstantConfig.TOKEN_CHECK_URL, formEntity, String.class);
         JSONObject jsonObject = JSONObject.parseObject(isAuth);
-        if((int)jsonObject.get("code") == 200)
+        if((int)jsonObject.get("code") == 200) {
+            String userId = (String) jsonObject.get("data");
+            ServerHttpRequest req = exchange.getRequest();
+            HttpHeaders httpHeaders = req.getHeaders();
+            ServerHttpRequest.Builder requestBuilder = req.mutate();
+            requestBuilder.header(ConstantConfig.LOGIN_USER_HEADER, userId);
+            ServerHttpRequest request = requestBuilder.build();
+            exchange.mutate().request(request).build();
             return chain.filter(exchange);
+        }
         else
             return unauthorized(exchange);
     }

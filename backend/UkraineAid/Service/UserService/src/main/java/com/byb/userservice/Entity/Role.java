@@ -10,12 +10,12 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 import java.sql.Date;
 
-@TableName("UkraineAssistance.DICT_ROLE")
+@TableName("UA.DICT_ROLE")
 @Accessors(chain = true)
 @Data
 public class Role implements Serializable {
     @TableId(value = "ROLE_ID", type = IdType.AUTO)
-    private int roleId;
+    private Integer roleId;
 
     @TableField("CREATE_TIME")
     private Date createTime;

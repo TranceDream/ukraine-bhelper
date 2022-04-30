@@ -14,4 +14,8 @@ public interface RoleService extends IService<Role> {
 
      Map<String, Object> getRoleDetail(RoleForm roleForm);
 
+     Map<String, Object> managePermission(RoleForm roleForm);
+
+     Map<String, Object> addRole(RoleForm roleForm);
+
 }

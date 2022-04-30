@@ -131,14 +131,14 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         params.put("userId", userRole.getUserId());
         params.put("roleId", userRole.getRoleId());
         List<String> permissions = userRoleDao.selectUrlByRoleId(params);
-        List<String> originPermissions = (List<String>) redisTemplate.opsForValue().get(userForm.getUserId());
+        List<String> originPermissions = (List<String>) redisTemplate.opsForValue().get(String.valueOf(userForm.getUserId()));
         try {
             if(userForm.getLockedMark().equals("NO")){
                 originPermissions.addAll(permissions);
-                redisTemplate.opsForValue().set(userForm.getUserId(), originPermissions);
+                redisTemplate.opsForValue().set(String.valueOf(userForm.getUserId()), originPermissions);
             }else {
                 originPermissions.removeAll(permissions);
-                redisTemplate.opsForValue().set(userForm.getUserId(), originPermissions);
+                redisTemplate.opsForValue().set(String.valueOf(userForm.getUserId()), originPermissions);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -150,4 +150,26 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         result.put("msg", "操作成功");
         return result;
     }
+
+    @Override
+    public Map<String, Object> userEmpowerment(UserForm userForm){
+        Map<String, Object> result = new HashMap<>();
+        UserRole userRole = new UserRole();
+        BeanUtils.copyProperties(userForm, userRole);
+        UserRole checkEntity = userRoleDao.selectOne(new QueryWrapper<UserRole>().lambda().eq(UserRole::getRoleId, userForm.getRoleId()).eq(UserRole::getUserId, userForm.getUserId()));
+        if(checkEntity!=null){
+            result.put("flag", false);
+            return result;
+        }
+        int total = userRoleDao.insert(userRole);
+        if(total != 1){
+            result.put("flag", false);
+            return result;
+        }
+        result.put("flag", true);
+        result.put("userRoleId", userRole.getRoleId());
+        return result;
+    }
+
+
 }

@@ -10,6 +10,9 @@ import com.byb.systemservice.Vo.SyslogForm;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,13 +26,15 @@ public class SyslogServiceImpl extends ServiceImpl<SyslogDao, Syslog> implements
 
     @Override
     public Long addLog(SyslogForm syslogForm) {
-        Map<Integer, String> objtypeMap = (Map<Integer, String>) redisTemplate.opsForValue().get("objtype");
-        String objtype = objtypeMap.get(syslogForm.getObjtypeId());
+            Map<String, String> objtypeMap = (Map<String, String>) redisTemplate.opsForValue().get("objtype");
+        String index = String.valueOf(syslogForm.getObjtypeId());
+        String objtype = objtypeMap.get(index);
         if(objtype == null){
             return -1l;
         }
-        Map<Integer, String> sysOperationMap = (Map<Integer, String>) redisTemplate.opsForValue().get("sysOperation");
-        String sysOperation = sysOperationMap.get(syslogForm.getOperator());
+        Map<String, String> sysOperationMap = (Map<String, String>) redisTemplate.opsForValue().get("sysOperation");
+        index = String.valueOf(syslogForm.getOperation());
+        String sysOperation = sysOperationMap.get(index);
         if(sysOperation == null){
             return -1l;
         }

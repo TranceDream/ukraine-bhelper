@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 import java.sql.Date;
 
-@TableName("UkraineAssistance.USER_AUTH")
+@TableName("UA.USER_AUTH")
 @Accessors(chain = true)
 @Data
 public class UserAuth implements Serializable {
