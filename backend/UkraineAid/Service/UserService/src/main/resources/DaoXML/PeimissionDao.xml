@@ -37,11 +37,11 @@
             </if>
 
             <if test="permissionName != null and permissionName != ''">
-                AND PERMISSION_NAME = #{permissionName}
+                AND PERMISSION_NAME LIKE "%" #{permissionName} "%"
             </if>
 
             <if test="url != null and url != ''">
-                AND URL = #{url}
+                AND URL LIKE "%" #{url} "%"
             </if>
 
             <choose>
@@ -64,11 +64,11 @@
             </if>
 
             <if test="permissionName != null and permissionName != ''">
-                AND PERMISSION_NAME = #{permissionName}
+                AND PERMISSION_NAME LIKE "%" #{permissionName} "%"
             </if>
 
             <if test="url != null and url != ''">
-                AND URL = #{url}
+                AND URL LIKE "%" #{url} "%"
             </if>
 
             <choose>

@@ -19,7 +19,7 @@
             </if>
 
             <if test="roleName!=null and roleName!=''">
-                AND ROLE_NAME = #{roleName}
+                AND ROLE_NAME LIKE "%" #{roleName} "%"
             </if>
 
             <choose>
@@ -55,7 +55,7 @@
             </if>
 
             <if test="roleName!=null and roleName!=''">
-                AND ROLE_NAME = #{roleName}
+                AND ROLE_NAME LIKE "%" #{roleName} "%"
             </if>
 
             <choose>
