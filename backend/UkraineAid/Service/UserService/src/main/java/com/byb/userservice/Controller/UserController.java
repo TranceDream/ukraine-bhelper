@@ -6,6 +6,7 @@ import com.byb.BaseUtil.Utils.ResponseUtil;
 import com.byb.BaseUtil.Utils.Result;
 import com.byb.BaseUtil.Utils.UUIDUtils;
 import com.byb.openfeign.Client.SysClient;
+import com.byb.openfeign.Form.FormGeneration;
 import com.byb.security.Security.TokenManager;
 import com.byb.userservice.Entity.User;
 import com.byb.userservice.Service.*;
@@ -257,7 +258,7 @@ public class UserController {
                 ResponseUtil.out(response, new Result(null, Result.FAIL, String.valueOf(operResult.get("msg"))));
             }
 
-            Map<String, Object> sysForm = this.generateSysForm(userRoleObjtypeId, Long.valueOf(userForm.getUserRoleId()), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), message, updateOperation);
+            Map<String, Object> sysForm = FormGeneration.generateSysForm(userRoleObjtypeId, Long.valueOf(userForm.getUserRoleId()), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), message, updateOperation);
 
         /*
         TODO: 写日志操作后期需要换成异步执行，使用消息队列
@@ -285,7 +286,7 @@ public class UserController {
         try {
             Long objId = Long.valueOf (dataMap.get("userRoleId").toString());
 
-            Map<String, Object> sysForm = this.generateSysForm(userRoleObjtypeId, objId, Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "用户赋权", addOperation);
+            Map<String, Object> sysForm = FormGeneration.generateSysForm(userRoleObjtypeId, objId, Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "用户赋权", addOperation);
 
          /*
         TODO: 写日志操作后期需要换成异步执行，使用消息队列
@@ -336,7 +337,7 @@ public class UserController {
             ResponseUtil.out(response, new Result(null, Result.FAIL, "操作失败"));
         }
 
-        Map<String, Object> sysForm = this.generateSysForm(roleObjtypeId, Long.valueOf((Integer)dataMap.get("roleId")), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "新增角色", addOperation);
+        Map<String, Object> sysForm = FormGeneration.generateSysForm(roleObjtypeId, Long.valueOf((Integer)dataMap.get("roleId")), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "新增角色", addOperation);
 
          /*
         TODO: 写日志操作后期需要换成异步执行，使用消息队列
@@ -366,7 +367,7 @@ public class UserController {
             ResponseUtil.out(response, new Result(null, Result.FAIL, String.valueOf(operResult.get("msg"))));
         }
 
-        Map<String, Object> sysForm = this.generateSysForm(rolePermissionObjtypeId, Long.valueOf(roleForm.getRolePermissionId()), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), message, updateOperation);
+        Map<String, Object> sysForm = FormGeneration.generateSysForm(rolePermissionObjtypeId, Long.valueOf(roleForm.getRolePermissionId()), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), message, updateOperation);
 
         /*
         TODO: 写日志操作后期需要换成异步执行，使用消息队列
@@ -406,7 +407,7 @@ public class UserController {
             ResponseUtil.out(response, new Result(null, Result.FAIL, "操作失败"));
         }
         Long objId = Long.valueOf((Integer)dataMap.get("permissionId"));
-        Map<String, Object> sysForm = this.generateSysForm(permissionObjtypeId, objId, Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "增加权限", addOperation);
+        Map<String, Object> sysForm = FormGeneration.generateSysForm(permissionObjtypeId, objId, Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "增加权限", addOperation);
 
         /*
         TODO: 写日志操作后期需要换成异步执行，使用消息队列
@@ -428,14 +429,14 @@ public class UserController {
         return "ttt";
     }
 
-    private Map<String, Object> generateSysForm(int objtypeId, Long objId, Long operator, String message, int operation){
-        Map<String, Object> sysForm = new HashMap<>();
-        sysForm.put("objtypeId", objtypeId);
-        sysForm.put("message", message);
-        sysForm.put("objId", objId);
-        sysForm.put("operator", operator);
-        sysForm.put("operation", operation);
-        return sysForm;
-    }
+//    private Map<String, Object> generateSysForm(int objtypeId, Long objId, Long operator, String message, int operation){
+//        Map<String, Object> sysForm = new HashMap<>();
+//        sysForm.put("objtypeId", objtypeId);
+//        sysForm.put("message", message);
+//        sysForm.put("objId", objId);
+//        sysForm.put("operator", operator);
+//        sysForm.put("operation", operation);
+//        return sysForm;
+//    }
 
 }

@@ -1,4 +1,4 @@
-package com.byb.systemservice.Entity;
+package com.byb.auditservice.Entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -9,21 +9,21 @@ import lombok.experimental.Accessors;
 
 import java.sql.Date;
 
-@TableName("UA.DICT_SCOPE")
+@TableName("UA.DICT_AUDIT_OPER")
 @Accessors(chain = true)
 @Data
-public class Scope {
+public class AuditOper {
 
-    @TableId(value = "SCOPE_ID", type = IdType.AUTO)
-    private int scopeId;
+    @TableId(value = "OPER_ID", type = IdType.AUTO)
+    private int operId;
 
     @TableField("CREATE_TIME")
     private Date createTime;
 
+    @TableField("OPER")
+    private String oper;
+
     @TableField("DELETE_MARK")
     private String deleteMark;
-
-    @TableField("SCOPE")
-    private String scope;
 
 }

@@ -1,4 +1,4 @@
-package com.byb.userservice.Entity;
+package com.byb.auditservice.Entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -7,26 +7,23 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
 import java.sql.Date;
 
-@TableName("UA.DICT_PERMISSION")
+@TableName("UA.DICT_STATUS")
 @Accessors(chain = true)
 @Data
-public class Permission implements Serializable {
+public class Status {
 
-    @TableId(value = "PERMISSION_ID", type = IdType.AUTO)
-    private int permissionId;
+    @TableId(value = "STATUS_ID", type = IdType.AUTO)
+    private int statusId;
 
     @TableField("CREATE_TIME")
     private Date createTime;
 
-    @TableField("PERMISSION_NAME")
-    private String permissionName;
-
-    @TableField("URL")
-    private String url;
+    @TableField("STATUS")
+    private String status;
 
     @TableField("DELETE_MARK")
     private String deleteMark;
+
 }

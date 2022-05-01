@@ -30,7 +30,7 @@ public class Message {
     private String content;
 
     @TableField("SPECIFIC_USERS")
-    private String specificUsers;
+    private Long specificUsers;
 
     @TableField("TITLE")
     private String title;
