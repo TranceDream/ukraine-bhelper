@@ -1,5 +1,6 @@
 package com.byb.reportservice.Service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.byb.reportservice.Dao.ReportDao;
 import com.byb.reportservice.Entity.Report;
@@ -7,6 +8,7 @@ import com.byb.reportservice.Service.ReportService;
 import com.byb.reportservice.Vo.ReportForm;
 import com.byb.reportservice.Vo.ReportVo;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,9 @@ import java.util.Map;
 
 @Service
 public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements ReportService {
+
+    @Autowired
+    private ReportDao reportDao;
 
     @Override
     public Map<String, Object> addReport(ReportForm reportForm) {
@@ -84,6 +89,19 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
         result.put("pageSize", reportForm.getPageSize());
 
         return result;
+    }
+
+    @Override
+    public Boolean doAudit(ReportForm reportForm) {
+        List<Report> list = new ArrayList<>();
+        list = baseMapper.selectList(new QueryWrapper<Report>().lambda().eq(Report::getObjtypeId, reportForm.getObjtypeId()).eq(Report::getDefense, reportForm.getDefense()).eq(Report::getDeleteMark, "NO"));
+        try {
+            Integer update = reportDao.updateIsHandle(list);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 }

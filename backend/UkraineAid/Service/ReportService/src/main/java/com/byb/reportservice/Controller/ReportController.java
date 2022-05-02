@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -103,7 +104,13 @@ public class ReportController {
             ResponseUtil.out(response, new Result(null, Result.FAIL, "审核信息不全"));
         }
 
-        return null;
+        Boolean flag = reportService.doAudit(reportForm);
+
+        if(flag){
+            return new Result<>(null, Result.SUCCESS, "操作成功");
+        }else{
+            return new Result<>(null, Result.FAIL, "操作失败");
+        }
     }
 
 }

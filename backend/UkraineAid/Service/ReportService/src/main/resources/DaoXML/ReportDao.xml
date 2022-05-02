@@ -37,4 +37,13 @@
                     </where>
                          ) m limit #{start}, #{size}
     </select>
+
+    <update id="updateHandleMark" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update REPORT t
+            set
+            t.HANDLE_MARK = #{item.handleMark}
+            where t.OBJTYPE_ID = #{item.objtypeId} and t.OBJ_ID = #{item.objId} and t.DELETE_MARK = 'NO'
+        </foreach>
+    </update>
 </mapper>
