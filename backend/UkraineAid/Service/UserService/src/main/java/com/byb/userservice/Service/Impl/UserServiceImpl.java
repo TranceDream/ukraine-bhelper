@@ -84,6 +84,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         params.put("orderText", userForm.getOrderText());
         params.put("country", userForm.getCountry());
         params.put("city", userForm.getCity());
+        params.put("name", userForm.getName());
         params.put("defaultRole", NormalUserRoleId);
 
         Map<String, Object> result = new HashMap<>();

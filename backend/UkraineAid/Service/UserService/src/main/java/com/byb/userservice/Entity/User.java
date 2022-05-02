@@ -27,4 +27,10 @@ public class User implements Serializable {
 
     @TableField("CITY")
     private String city;
+
+    @TableField("NAME")
+    private String name;
+
+    @TableField("IDENTITY_NO")
+    private String identityNo;
 }

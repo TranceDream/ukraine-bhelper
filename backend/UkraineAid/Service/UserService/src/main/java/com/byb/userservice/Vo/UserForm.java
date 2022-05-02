@@ -13,7 +13,10 @@ public class UserForm {
     private String identifier;
     private String credential;
     private int identityType;
+    private String name;
+    private String identityNo;
     private String uuid;
+
 
     private Integer roleId;
     private String roleName;
