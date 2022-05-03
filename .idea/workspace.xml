@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7cd63bd0-36f2-4d1f-9e7f-93c55b808703" name="Changes" comment="fix:面向部署做适应性变动">
+    <list default="true" id="7cd63bd0-36f2-4d1f-9e7f-93c55b808703" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ukraine-bhelper" beforeDir="false" afterPath="$PROJECT_DIR$/ukraine-bhelper" afterDir="false" />
     </list>
@@ -159,7 +160,9 @@
       <workItem from="1651484366060" duration="17182000" />
       <workItem from="1651545421134" duration="2041000" />
       <workItem from="1651547530713" duration="648000" />
-      <workItem from="1651548239142" duration="3314000" />
+      <workItem from="1651548239142" duration="4626000" />
+      <workItem from="1651553073103" duration="909000" />
+      <workItem from="1651573301829" duration="2756000" />
     </task>
     <task id="LOCAL-00001" summary="fix:面向部署做适应性变动">
       <created>1651506862106</created>
@@ -182,7 +185,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651550913991</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="fix(面向部署的更改)">
+      <created>1651552006016</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1651552006016</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -210,6 +220,17 @@
                   <entry key="Show.Git.Branches" value="true" />
                 </map>
               </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="mu-rong-mu-se/master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
             </State>
           </value>
         </entry>
@@ -222,6 +243,8 @@
       <path value="$PROJECT_DIR$/ukraine-bhelper" />
     </ignored-roots>
     <MESSAGE value="fix:面向部署做适应性变动" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix:面向部署做适应性变动" />
+    <MESSAGE value="fix(面向部署的更改)" />
+    <MESSAGE value="fix(面向部署)" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix(面向部署)" />
   </component>
 </project>
