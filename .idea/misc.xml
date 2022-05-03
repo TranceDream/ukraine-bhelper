@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/backend/UkraineAid/Common/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/UkraineAid/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/UkraineAid/Gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/UkraineAid/Service/HouseService/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/UkraineAid/Service/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/UkraineAid/Service/SystemService/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/UkraineAid/Common/Base/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/UkraineAid/Service/AuditService/pom.xml" />
+        <option value="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/pom.xml" />
+        <option value="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Service/pom.xml" />
+        <option value="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Service/SystemService/pom.xml" />
+        <option value="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Service/ReportService/pom.xml" />
+        <option value="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Service/HouseService/pom.xml" />
+        <option value="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Service/AuditService/pom.xml" />
+        <option value="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Gateway/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="openjdk-17" project-jdk-type="JavaSDK" />
+</project>

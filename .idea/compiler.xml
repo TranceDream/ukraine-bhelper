@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="OpenFeign" />
+        <module name="ReportService" />
+        <module name="SystemService" />
+        <module name="HouseService" />
+        <module name="UserService" />
+        <module name="Gateway" />
+        <module name="Security" />
+        <module name="AuditService" />
+        <module name="Base" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="AuditService" target="1.8" />
+      <module name="Base" target="1.8" />
+      <module name="Common" target="1.8" />
+      <module name="Gateway" target="1.8" />
+      <module name="HouseService" target="1.8" />
+      <module name="OpenFeign" target="8" />
+      <module name="ReportService" target="1.8" />
+      <module name="Security" target="1.8" />
+      <module name="Service" target="1.8" />
+      <module name="SystemService" target="1.8" />
+      <module name="UkraineAid" target="1.8" />
+      <module name="UserService" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="AuditService" options="-parameters" />
+      <module name="Base" options="-parameters" />
+      <module name="Gateway" options="-parameters" />
+      <module name="HouseService" options="-parameters" />
+      <module name="OpenFeign" options="-parameters" />
+      <module name="ReportService" options="-parameters" />
+      <module name="Security" options="-parameters" />
+      <module name="Service" options="-parameters" />
+      <module name="SystemService" options="-parameters" />
+      <module name="UkraineAid" options="" />
+      <module name="UserService" options="-parameters" />
+    </option>
+  </component>
+</project>

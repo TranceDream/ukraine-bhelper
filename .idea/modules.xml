@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Service/AuditService/AuditService.iml" filepath="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Service/AuditService/AuditService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Common/Base/Base.iml" filepath="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Common/Base/Base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Common/Common.iml" filepath="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Common/Common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Gateway/Gateway.iml" filepath="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Gateway/Gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Service/HouseService/HouseService.iml" filepath="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Service/HouseService/HouseService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/OpenFeign/OpenFeign.iml" filepath="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/OpenFeign/OpenFeign.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Service/ReportService/ReportService.iml" filepath="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Service/ReportService/ReportService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Common/Security/Security.iml" filepath="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Common/Security/Security.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Service/Service.iml" filepath="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Service/Service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Service/SystemService/SystemService.iml" filepath="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Service/SystemService/SystemService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/UkraineAid.iml" filepath="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/UkraineAid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Service/UserService/UserService.iml" filepath="$PROJECT_DIR$/ukraine-bhelper/backend/UkraineAid/Service/UserService/UserService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ukraine-bhelper.iml" filepath="$PROJECT_DIR$/.idea/ukraine-bhelper.iml" />
+    </modules>
+  </component>
+</project>
