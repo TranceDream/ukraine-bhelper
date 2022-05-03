@@ -15,3 +15,9 @@ spring:
         max-active: 20
         max-wait: -1
     password: syhxsqqaxfdyhh
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /

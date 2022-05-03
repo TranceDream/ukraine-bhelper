@@ -18,4 +18,6 @@ public class ConstantConfig {
 
     public final static String LOGIN_USER_HEADER = "loginId";
 
+    public final static String SYSL0G_QUEUE = "syslogQueue";
+
 }

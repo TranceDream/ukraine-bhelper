@@ -132,20 +132,22 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         params.put("userId", userRole.getUserId());
         params.put("roleId", userRole.getRoleId());
         List<String> permissions = userRoleDao.selectUrlByRoleId(params);
-        List<String> originPermissions = (List<String>) redisTemplate.opsForValue().get(String.valueOf(userForm.getUserId()));
-        try {
-            if(userForm.getLockedMark().equals("NO")){
-                originPermissions.addAll(permissions);
-                redisTemplate.opsForValue().set(String.valueOf(userForm.getUserId()), originPermissions);
-            }else {
-                originPermissions.removeAll(permissions);
-                redisTemplate.opsForValue().set(String.valueOf(userForm.getUserId()), originPermissions);
+        List<String> originPermissions = (List<String>) redisTemplate.opsForValue().get(String.valueOf(userRole.getUserId()));
+        if(originPermissions != null) {
+            try {
+                if (userForm.getLockedMark().equals("NO")) {
+                    originPermissions.addAll(permissions);
+                    redisTemplate.opsForValue().set(String.valueOf(userForm.getUserId()), originPermissions);
+                } else {
+                    originPermissions.removeAll(permissions);
+                    redisTemplate.opsForValue().set(String.valueOf(userForm.getUserId()), originPermissions);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.put("flag", false);
+                result.put("msg", "缓存失败");
+                return result;
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            result.put("flag", false);
-            result.put("msg", "缓存失败");
-            return result;
         }
         result.put("flag", true);
         result.put("msg", "操作成功");

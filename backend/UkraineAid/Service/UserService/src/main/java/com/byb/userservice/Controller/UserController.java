@@ -15,6 +15,8 @@ import com.byb.userservice.Vo.RoleForm;
 import com.byb.userservice.Vo.UserForm;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -59,6 +61,9 @@ public class UserController {
     @Autowired
     private PermissionService permissionService;
 
+    @Autowired
+    private AmqpTemplate amqpTemplate;
+
     @Value("${spring.userService.permissionObjtypeId}")
     private int permissionObjtypeId;
 
@@ -82,8 +87,9 @@ public class UserController {
 
     @PostMapping("/test")
     public Result<Map<String, Object>> test(@RequestBody UserForm userForm){
-        Long l = userForm.getUserId();
-        System.out.println(l);
+        String queue = "app";
+        String message = "userservice-rabbitmq";
+        amqpTemplate.convertAndSend(queue, message);
         return null;
     }
 
@@ -259,10 +265,8 @@ public class UserController {
 
             Map<String, Object> sysForm = FormGeneration.generateSysForm(userRoleObjtypeId, Long.valueOf(userForm.getUserRoleId()), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), message, updateOperation);
 
-        /*
-        TODO: 写日志操作后期需要换成异步执行，使用消息队列
-         */
-            Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
+//            Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
+            this.sendMessage(ConstantConfig.SYSL0G_QUEUE, sysForm);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -287,10 +291,8 @@ public class UserController {
 
             Map<String, Object> sysForm = FormGeneration.generateSysForm(userRoleObjtypeId, objId, Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "用户赋权", addOperation);
 
-         /*
-        TODO: 写日志操作后期需要换成异步执行，使用消息队列
-         */
-            Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
+//            Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
+            this.sendMessage(ConstantConfig.SYSL0G_QUEUE, sysForm);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -338,10 +340,8 @@ public class UserController {
 
         Map<String, Object> sysForm = FormGeneration.generateSysForm(roleObjtypeId, Long.valueOf((Integer)dataMap.get("roleId")), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "新增角色", addOperation);
 
-         /*
-        TODO: 写日志操作后期需要换成异步执行，使用消息队列
-         */
-        Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
+//        Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
+        this.sendMessage(ConstantConfig.SYSL0G_QUEUE, sysForm);
 
         return new Result<>("操作成功", Result.SUCCESS);
     }
@@ -368,10 +368,8 @@ public class UserController {
 
         Map<String, Object> sysForm = FormGeneration.generateSysForm(rolePermissionObjtypeId, Long.valueOf(roleForm.getRolePermissionId()), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), message, updateOperation);
 
-        /*
-        TODO: 写日志操作后期需要换成异步执行，使用消息队列
-         */
-        Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
+//        Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
+        this.sendMessage(ConstantConfig.SYSL0G_QUEUE, sysForm);
 
         return new Result(Result.SUCCESS, "操作成功");
     }
@@ -408,11 +406,8 @@ public class UserController {
         Long objId = Long.valueOf((Integer)dataMap.get("permissionId"));
         Map<String, Object> sysForm = FormGeneration.generateSysForm(permissionObjtypeId, objId, Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "增加权限", addOperation);
 
-        /*
-        TODO: 写日志操作后期需要换成异步执行，使用消息队列
-         */
-        Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
-
+//        Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
+        this.sendMessage(ConstantConfig.SYSL0G_QUEUE, sysForm);
         return new Result(Result.SUCCESS, "操作成功");
     }
 
@@ -428,14 +423,9 @@ public class UserController {
         return "ttt";
     }
 
-//    private Map<String, Object> generateSysForm(int objtypeId, Long objId, Long operator, String message, int operation){
-//        Map<String, Object> sysForm = new HashMap<>();
-//        sysForm.put("objtypeId", objtypeId);
-//        sysForm.put("message", message);
-//        sysForm.put("objId", objId);
-//        sysForm.put("operator", operator);
-//        sysForm.put("operation", operation);
-//        return sysForm;
-//    }
+    private void sendMessage(String queue, Object object){
+        String msg = JSONObject.toJSONString(object);
+        amqpTemplate.convertAndSend(queue, msg);
+    }
 
 }

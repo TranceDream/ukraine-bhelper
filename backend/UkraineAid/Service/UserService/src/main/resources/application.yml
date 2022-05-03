@@ -22,6 +22,13 @@ spring:
     port: 587
     username: 1533152445@qq.com
 
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+
   userService:
     normalUserRoleName: NORMAL_USER
     activeFilePath: E:\\ukraine-bhelper\\backend\\UkraineAid\\Service\\UserService\\src\\main\\resources\\static\\Active.html
