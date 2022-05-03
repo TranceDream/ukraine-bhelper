@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /*
  * @Author: Linhao Yu
  * @Date: 2022-04-24 17:17:45
@@ -8,7 +10,7 @@ import {
     DownOutlined,
     EditOutlined,
     ExclamationCircleOutlined,
-    QuestionCircleOutlined
+    QuestionCircleOutlined,
 } from '@ant-design/icons'
 import type { ActionType, ProColumns } from '@ant-design/pro-table'
 import ProTable from '@ant-design/pro-table'
@@ -21,7 +23,7 @@ import {
     Modal,
     Space,
     Switch,
-    Tooltip
+    Tooltip,
 } from 'antd'
 import React, { useRef, useState } from 'react'
 import { reqGetAllUser } from '../../api'
@@ -40,7 +42,7 @@ export type TableListItem = {
     city: string
     createTime: number
 }
-const tableListDataSource: TableListItem[] = []
+// const tableListDataSource: TableListItem[] = []
 
 // !删除用户
 
@@ -60,22 +62,24 @@ export default function UserControl() {
     const [selectUserName, setselectUserName] = useState('')
     const [selectUserId, setselectUserId] = useState(0)
     const [record, setRecord] = useState({}) // 记录操作行的数据
+    const [tableListDataSource, settableListDataSource] = useState<
+        TableListItem[]
+    >([]) // 记录操作行的数据
     const ref = useRef<ActionType>()
 
-
     const getdata = (data: any) => {
-        tableListDataSource.length = 0
-        console.log('tableListDataSource', tableListDataSource)
+        let temp: TableListItem[]
+        temp = []
         data.forEach((item: any) => {
             let newitem: TableListItem
             newitem = { ...item }
-            newitem.key = item.userId
+            newitem.key = Date.now()
             newitem.name = '等待实名'
-            console.log(newitem)
             item.createAt = new Date(item.createAt).getTime()
-            tableListDataSource.push(newitem)
+            temp.push(newitem)
         })
-        // ref.current.reload()
+
+        settableListDataSource(temp)
     }
 
     const onCollapse = () => {
@@ -83,7 +87,7 @@ export default function UserControl() {
     }
     const onChange = (record: any) => {
         setRecord(record)
-        let text = record.status == 'on' ? '封禁' : '解封'
+        let text = record.status === 'on' ? '封禁' : '解封'
         setModalText('确定' + text + '该用户吗？')
         setMutevisible(true)
     }
@@ -93,7 +97,7 @@ export default function UserControl() {
         message.warning(
             '还没实现呢~ReactDOM.render is no longer supported in React 18.'
         )
-        record.status = record.status == 'on' ? 'off' : 'on'
+        record.status = record.status === 'on' ? 'off' : 'on'
         setMutevisible(false)
     }
 
@@ -107,9 +111,6 @@ export default function UserControl() {
         setvisiable(true)
         setModalText('确定要删除该用户吗？')
         //! params 用于更新的时候传参
-        // console.log('user', user)
-        // console.log('record', record)
-        // console.log('index', index)
         // console.log('params', params)
     }
 
@@ -148,7 +149,6 @@ export default function UserControl() {
 
     // 重置密码
     const showChangePwd = (record: any) => {
-        console.log('1111111111', record)
         setselectUserId(record.userId)
         setselectUserName(record.name)
         setchangePwdVisible(true)
@@ -228,7 +228,7 @@ export default function UserControl() {
             // },
             render: (text, record, index) => (
                 <Switch
-                    checked={record.status == 'on' ? true : false}
+                    checked={record.status === 'on' ? true : false}
                     onChange={() => onChange(record)}
                 />
             ),
@@ -303,9 +303,11 @@ export default function UserControl() {
                         ...sorter,
                     })
                     if (msg.code === 200) {
-                        console.log(msg.data.data)
-                        getdata(msg.data.data)
-                        console.log('执行完：', tableListDataSource)
+                        if (msg.data.data) {
+                            getdata(msg.data.data)
+                        } else {
+                            settableListDataSource([])
+                        }
                         return {
                             data: tableListDataSource,
                             // success 请返回 true，
@@ -327,7 +329,10 @@ export default function UserControl() {
                         }
                     }
                 }}
-                rowKey='key'
+                dataSource={tableListDataSource}
+                rowKey={(record) => {
+                    return record.userId + Date.now().toString() //在这里加上一个时间戳就可以了
+                }}
                 pagination={{
                     showQuickJumper: true,
                 }}
