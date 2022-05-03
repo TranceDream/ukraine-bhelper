@@ -26,6 +26,13 @@
             <artifactId>Base</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+
         <!--                nacos 配置管理-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

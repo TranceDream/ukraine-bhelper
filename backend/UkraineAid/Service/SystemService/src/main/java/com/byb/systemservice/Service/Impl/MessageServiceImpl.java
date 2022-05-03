@@ -5,9 +5,10 @@ import com.byb.systemservice.Dao.MessageDao;
 import com.byb.systemservice.Entity.Message;
 import com.byb.systemservice.Service.MessageService;
 import com.byb.systemservice.Vo.MessageForm;
-import org.apache.tomcat.util.descriptor.web.MessageDestination;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -15,6 +16,19 @@ public class MessageServiceImpl extends ServiceImpl<MessageDao, Message> impleme
 
     @Override
     public Map<String, Object> launchMessage(MessageForm messageForm) {
-        return null;
+        Message message = new Message();
+        Map<String, Object> result = new HashMap<>();
+        try {
+            BeanUtils.copyProperties(messageForm, message);
+            baseMapper.insert(message);
+            Long messageId = message.getMessageId();
+            result.put("flag", true);
+            result.put("messageId", messageId);
+            return result;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        result.put("flag", false);
+        return result;
     }
 }

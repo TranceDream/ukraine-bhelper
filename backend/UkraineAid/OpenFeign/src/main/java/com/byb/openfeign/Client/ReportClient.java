@@ -12,12 +12,12 @@ import java.util.Map;
 public interface ReportClient {
 
     @GetMapping("/report/getReportList")
-    public Result<Map<String, Object>> getReportList(@RequestBody Map<String, Object> reportForm);
+    Result<Map<String, Object>> getReportList(@RequestBody Map<String, Object> reportForm);
 
     @PostMapping("/report/addReport")
-    public Result<Map<String, Object>> addReport(@RequestBody Map<String, Object> reportForm);
+    Result<Map<String, Object>> addReport(@RequestBody Map<String, Object> reportForm);
 
     @PostMapping("/report/doAudit")
-    public Result<Map<String, Object>> doAudit(@RequestBody Map<String, Object> reportForm);
+    Result<Map<String, Object>> doAudit(@RequestBody Map<String, Object> reportForm);
 
 }

@@ -21,4 +21,6 @@ public interface UserService extends IService<User> {
     Map<String, Object> manageRole(UserForm userForm);
 
     Map<String, Object> userEmpowerment(UserForm userForm);
+
+    Map<String, Object> getEmail(List<Long> userIds);
 }

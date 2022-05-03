@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -410,6 +411,17 @@ public class UserController {
 //        Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
         this.sendMessage(ConstantConfig.SYSL0G_QUEUE, sysForm);
         return new Result(Result.SUCCESS, "操作成功");
+    }
+
+    @PostMapping("/getEmail")
+    public Result<List<String>> getEmail(@RequestBody List<Long> userIds){
+        if(userIds == null || userIds.isEmpty()){
+            return null;
+        }
+
+        Map<String, Object> dataMap = userService.getEmail(userIds);
+        List<String> emails = (List<String>) dataMap.get("emails");
+        return new Result<>(emails, Result.SUCCESS);
     }
 
     @PostMapping("/emailtest")

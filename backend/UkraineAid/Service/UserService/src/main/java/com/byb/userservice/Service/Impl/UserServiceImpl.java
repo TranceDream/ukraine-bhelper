@@ -174,5 +174,19 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         return result;
     }
 
+    @Override
+    public Map<String, Object> getEmail(List<Long> userIds) {
+        String sql = "(";
+        for(int i = 0; i<userIds.size()-1; i++){
+            Long id = userIds.get(i);
+            sql = sql + id.toString() + ",";
+        }
+        Long id = userIds.get(userIds.size()-1);
+        sql = sql + id + ")";
+
+        List<String> emails = userAuthDao.selectEmails(sql);
+        return null;
+    }
+
 
 }

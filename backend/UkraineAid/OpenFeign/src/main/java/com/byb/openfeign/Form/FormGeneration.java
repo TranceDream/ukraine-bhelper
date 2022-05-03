@@ -3,6 +3,7 @@ package com.byb.openfeign.Form;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FormGeneration {
@@ -38,6 +39,16 @@ public class FormGeneration {
         auditForm.put("pageNo", pageNo);
         auditForm.put("pageSize", pageSize);
         return auditForm;
+    }
+
+    public static Map<String, Object> generateMessageForm(String content, Integer scope, String[] emails, List<Long> specificUsers, String title){
+        Map<String, Object> messageForm = new HashMap<>();
+        messageForm.put("content", content);
+        messageForm.put("scope", scope);
+        messageForm.put("emails", emails);
+        messageForm.put("specificUsers", specificUsers);
+        messageForm.put("title", title);
+        return messageForm;
     }
 
 }
