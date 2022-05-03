@@ -8,6 +8,8 @@ import com.byb.systemservice.Entity.SysOperation;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -29,6 +31,8 @@ public class Dict {
 
     @PostConstruct
     private void loadDB(){
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<Object>(Object.class));
         List<Objtype> objtypeList = objtypeDao.selectList(new QueryWrapper<Objtype>().lambda().eq(Objtype::getDeleteMark, "NO"));
         List<SysOperation> sysOperationList = sysOperationDao.selectList(new QueryWrapper<SysOperation>().lambda().eq(SysOperation::getDeleteMark, "NO"));
         Map<Integer, String> objtypeMap = new HashMap<>();

@@ -28,4 +28,65 @@
             and p.DELETE_MARK = 'NO'
         </where>
     </select>
+
+    <select id="countPermissionList" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select COUNT(1) from DICT_PERMISSION
+        <where>
+            <if test="permissionId != null and permissionId != ''">
+                PERMISSION_ID = #{permissionId}
+            </if>
+
+            <if test="permissionName != null and permissionName != ''">
+                AND PERMISSION_NAME LIKE "%" #{permissionName} "%"
+            </if>
+
+            <if test="url != null and url != ''">
+                AND URL LIKE "%" #{url} "%"
+            </if>
+
+            <choose>
+                <when test="deleteMark != null and deleteMark != ''">
+                    AND DELETE_MARK = #{deleteMark}
+                </when>
+                <otherwise>
+                    AND DELETE_MARK = 'NO'
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <select id="selectPermissionList" resultMap="permissionMap" parameterType="java.util.Map">
+        select * from(
+        select * from DICT_PERMISSION
+        <where>
+            <if test="permissionId != null and permissionId != ''">
+                PERMISSION_ID = #{permissionId}
+            </if>
+
+            <if test="permissionName != null and permissionName != ''">
+                AND PERMISSION_NAME LIKE "%" #{permissionName} "%"
+            </if>
+
+            <if test="url != null and url != ''">
+                AND URL LIKE "%" #{url} "%"
+            </if>
+
+            <choose>
+                <when test="deleteMark != null and deleteMark != ''">
+                    AND DELETE_MARK = #{deleteMark}
+                </when>
+                <otherwise>
+                    AND DELETE_MARK = 'NO'
+                </otherwise>
+            </choose>
+
+            <choose>
+                <when test="orderText != null and orderText != ''">
+                    ORDER BY ${orderText}
+                </when>
+                <otherwise></otherwise>
+            </choose>
+            ORDER BY CREATE_TIME desc
+        </where> ) m limit #{start}, #{size}
+    </select>
 </mapper>

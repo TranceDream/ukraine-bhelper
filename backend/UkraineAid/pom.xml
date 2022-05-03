@@ -3,7 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <modules>
-        <module>Common</module>
+        <module>Common/Base</module>
+        <module>Common/Security</module>
+        <module>OpenFeign</module>
+        <module>Gateway</module>
+        <module>Service/UserService</module>
+        <module>Service/SystemService</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -75,13 +80,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+
 
 </project>

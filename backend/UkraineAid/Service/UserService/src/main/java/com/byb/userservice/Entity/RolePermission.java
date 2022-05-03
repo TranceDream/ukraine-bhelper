@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 import java.sql.Date;
 
-@TableName("UkraineAssistance.DICT_ROLE_PERMISSION")
+@TableName("UA.DICT_ROLE_PERMISSION")
 @Accessors(chain = true)
 @Data
 public class RolePermission implements Serializable {

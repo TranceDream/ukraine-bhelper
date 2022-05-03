@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 import java.sql.Date;
 
-@TableName("UkraineAssistance.DICT_USER_ROLE")
+@TableName("UA.DICT_USER_ROLE")
 @Accessors(chain = true)
 @Data
 public class UserRole implements Serializable {

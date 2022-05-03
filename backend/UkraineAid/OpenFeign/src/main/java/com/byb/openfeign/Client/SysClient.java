@@ -1,9 +1,7 @@
-package com.byb.userservice.Client;
+package com.byb.openfeign.Client;
 
-import com.alibaba.fastjson.JSONObject;
 import com.byb.BaseUtil.Utils.Result;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Map;

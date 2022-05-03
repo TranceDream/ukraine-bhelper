@@ -9,13 +9,13 @@ import lombok.experimental.Accessors;
 
 import java.sql.Date;
 
-@TableName("UkraineAssistance.MESSAGE")
+@TableName("UA.MESSAGE")
 @Accessors(chain = true)
 @Data
 public class Message {
 
     @TableId(value = "MESSAGE_ID", type = IdType.AUTO)
-    private int messageId;
+    private Long messageId;
 
     @TableField("CREATE_TIME")
     private Date createTime;
@@ -30,7 +30,7 @@ public class Message {
     private String content;
 
     @TableField("SPECIFIC_USERS")
-    private String specificUsers;
+    private Long specificUsers;
 
     @TableField("TITLE")
     private String title;

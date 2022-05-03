@@ -19,6 +19,8 @@
         CREATE\_TIME & Date         & 创建时间   & CURRENTTIMESTAMP & NULL DEFAULT CURRENTSTAMP \\ \hline
         COUNTRY      & VARCHAR(100) & 国家     &                  &                           \\ \hline
         CITY         & VARCHAR(200) & 城市     &                  &                           \\ \hline
+        NAME         & VARHCAR(100) & 姓名     &                  &                             \\ \hline
+        IDENTITY\_NO  & VARCHAR(30)  & 身份证   &                  &                             \\ \hline
         \end{tabular}
         }
         \end{table}
@@ -27,7 +29,9 @@
             USER\_ID INT(64) PRIMARY KEY AUTO\_INCREMENT,\\
             CREATE\_TIME TIMESTAMP NULL DEFAULT CURRENTTIMESTAMP,\\
             COUNTRY VARCHAR(100),\\
-            CITY VARCHAR(200)\\
+            CITY VARCHAR(200),\\
+            NAME VARCHAR(100),\\
+            IDENTITY\_NO VARCHAR(30) \\
         )
     \end{enumerate}
 
@@ -480,6 +484,34 @@
         )
     \end{enumerate}
 
+
+    \subsubsection{DICT\_STATUS审核状态表}
+    此表标识所有业务对象的审核状态，包括待审核、驳回、通过等。
+    \begin{enumerate}
+        \item 表结构
+        \begin{table}[htbp]
+            \centering
+            \scalebox{0.8}{
+            \begin{tabular}{|l|l|l|l|l|}
+            \hline
+            \hline
+            字段名            & 字段类型         & 字段描述   & 初始值              & 约束                        \\ \hline
+            STATUS\_ID    & int         & 唯一约束 &                  & PK,AUTO\_INCREMENT        \\ \hline
+            CREATE\_TIME  & Date         & 创建时间 & CURRENTTIMESTAMP & NULL DEFAULT CURRENTSTAMP \\ \hline
+            STATUS    & VARCHAR(30)         & 状态 &                  & NOT NULL                  \\ \hline
+            DELETE\_MARK  & VARCHAR(3)   & 删除标识 & NO               & NULL DEFAULT 'NO'         \\ \hline
+            \end{tabular}
+            }
+            \end{table}
+        \item 建表语句\\
+            CREATE TABLE(\\
+                STATUS\_ID INT(64) PRIMARY KEY AUTO\_INCREMENT,\\
+                CREATE\_TIME TIMESTAMP NULL DEFAULT CURRENTTIMESTAMP,\\
+                DELETE\_MARK VARCHAR(3) NULL DEFAULT 'NO',\\
+                STATUS VARCHAR(30) NOT NULL\\
+            )
+        \end{enumerate}
+
 \subsubsection{总体ER图}
 本模块的总体ER图如图~\ref{fig:AUDIT-ER}所示
 \begin{figure}[htbp]
@@ -511,6 +543,7 @@ News是新闻模块，涉及到的数据表有新闻基本信息表，新闻内�
         LINK          & VARCHAR(500) & 引用链接    &        &       \\ \hline
         UPDATE\_TIME  & Date         & 修改日期    & CURRENTTIMESTAMP & NULL DEFAULT CURRENTTIMESTAMP \\ \hline
         READ\_NUM     & int          & 阅读量      & 0      & NULL DEFAULT 0 \\ \hline
+        STATUS        & int          & 状态        & 1      & NULL DEFAULT 1  \\ \hline
         \end{tabular}
         }
         \end{table}
@@ -524,7 +557,8 @@ News是新闻模块，涉及到的数据表有新闻基本信息表，新闻内�
             AUTHORS VARCHAR(200) NOT NULL,\\
             LINK VARCHAR(200) ,\\
             UPDATE\_TIME TIMESTAMP NULL DEFAULT CURRENTTIMESTAMP,\\
-            READ\_NUM INT NULL DEFAULT 0\\
+            READ\_NUM INT NULL DEFAULT 0,\\
+            STATUS INT NULL DEFAULT 1\\
         )
     \end{enumerate}
 

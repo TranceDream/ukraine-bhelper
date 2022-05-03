@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 
 import java.sql.Date;
 
-@TableName("UkraineAssistance.SYSLOG")
+@TableName("UA.SYSLOG")
 @Accessors(chain = true)
 @Data
 public class Syslog {
@@ -31,6 +31,9 @@ public class Syslog {
 
     @TableField("OPERATOR")
     private Long operator;
+
+    @TableField("OPERATION")
+    private int operation;
 
     @TableField("MESSAGE")
     private String message;

@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
-@TableName("UkraineAssistance.USER")
+@TableName("UA.USER")
 @Accessors(chain = true)
 @Data
 public class User implements Serializable {
@@ -27,4 +27,10 @@ public class User implements Serializable {
 
     @TableField("CITY")
     private String city;
+
+    @TableField("NAME")
+    private String name;
+
+    @TableField("IDENTITY_NO")
+    private String identityNo;
 }

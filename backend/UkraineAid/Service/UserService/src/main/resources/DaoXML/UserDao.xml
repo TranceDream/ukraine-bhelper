@@ -9,6 +9,8 @@
         <result property="createTime" column="CREATE_TIME"/>
         <result property="roleId" column="ROLE_ID"/>
         <result property="roleName" column="ROLE_NAME"/>
+        <result property="name" column="NAME"/>
+        <result property="identityNo" column="IDENTITY_NO"/>
         <result property="permissionId" column="PERMISSION_ID"/>
         <result property="permissionUrl" column="URL"/>
     </resultMap>
@@ -31,6 +33,8 @@
         <result property="identifier" column="IDENTIFIER"/>
         <result property="credential" column="CREDENTIAL"/>
         <result property="createTime" column="CREATE_TIME"/>
+        <result property="name" column="NAME"/>
+        <result property="identityNo" column="IDENTITY_NO"/>
         <collection property="roleList" column="USER_ID" ofType="com.byb.userservice.Vo.UserRoleVo" select="selectRoleList"/>
     </resultMap>
 
@@ -53,6 +57,10 @@
         <where>
             <if test="userId!=null and userId!=''">
                 ur.USER_ID = #{userId}
+            </if>
+
+            <if test="name!=null and name!=''">
+                AND ur.NAME = #{name}
             </if>
 
             <if test="city!=null and city!=''">
@@ -107,6 +115,10 @@
             ur.USER_ID = #{userId}
         </if>
 
+            <if test="name!=null and name!=''">
+                AND ur.NAME = #{name}
+            </if>
+
         <if test="city!=null and city!=''">
             AND ur.CITY = #{city}
         </if>
@@ -155,7 +167,9 @@
             USER_ID,
             COUNTRY,
             CITY,
-            CREATE_TIME
+            CREATE_TIME,
+            NAME,
+            IDENTITY_NO
         from USER
         <where>
             USER_ID = #{userId}

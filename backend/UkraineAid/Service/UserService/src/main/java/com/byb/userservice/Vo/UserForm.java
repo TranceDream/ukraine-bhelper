@@ -13,15 +13,18 @@ public class UserForm {
     private String identifier;
     private String credential;
     private int identityType;
+    private String name;
+    private String identityNo;
     private String uuid;
 
-    private int roleId;
+
+    private Integer roleId;
     private String roleName;
 
     private int permissionId;
     private String permissionUrl;
 
-    private String userRoleId;
+    private Long userRoleId;
 
     private String lockedMark;
 

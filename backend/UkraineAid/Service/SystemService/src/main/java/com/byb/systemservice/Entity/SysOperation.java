@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 
 import java.sql.Date;
 
-@TableName("UkraineAssistance.DICT_SYS_OPERATION")
+@TableName("UA.DICT_SYS_OPERATION")
 @Accessors(chain = true)
 @Data
 public class SysOperation {

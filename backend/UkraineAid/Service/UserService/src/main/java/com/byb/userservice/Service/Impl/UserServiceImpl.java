@@ -84,6 +84,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         params.put("orderText", userForm.getOrderText());
         params.put("country", userForm.getCountry());
         params.put("city", userForm.getCity());
+        params.put("name", userForm.getName());
         params.put("defaultRole", NormalUserRoleId);
 
         Map<String, Object> result = new HashMap<>();
@@ -131,23 +132,61 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         params.put("userId", userRole.getUserId());
         params.put("roleId", userRole.getRoleId());
         List<String> permissions = userRoleDao.selectUrlByRoleId(params);
-        List<String> originPermissions = (List<String>) redisTemplate.opsForValue().get(userForm.getUserId());
-        try {
-            if(userForm.getLockedMark().equals("NO")){
-                originPermissions.addAll(permissions);
-                redisTemplate.opsForValue().set(userForm.getUserId(), originPermissions);
-            }else {
-                originPermissions.removeAll(permissions);
-                redisTemplate.opsForValue().set(userForm.getUserId(), originPermissions);
+        List<String> originPermissions = (List<String>) redisTemplate.opsForValue().get(String.valueOf(userRole.getUserId()));
+        if(originPermissions != null) {
+            try {
+                if (userForm.getLockedMark().equals("NO")) {
+                    originPermissions.addAll(permissions);
+                    redisTemplate.opsForValue().set(String.valueOf(userForm.getUserId()), originPermissions);
+                } else {
+                    originPermissions.removeAll(permissions);
+                    redisTemplate.opsForValue().set(String.valueOf(userForm.getUserId()), originPermissions);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.put("flag", false);
+                result.put("msg", "缓存失败");
+                return result;
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            result.put("flag", false);
-            result.put("msg", "缓存失败");
-            return result;
         }
         result.put("flag", true);
         result.put("msg", "操作成功");
         return result;
     }
+
+    @Override
+    public Map<String, Object> userEmpowerment(UserForm userForm){
+        Map<String, Object> result = new HashMap<>();
+        UserRole userRole = new UserRole();
+        BeanUtils.copyProperties(userForm, userRole);
+        UserRole checkEntity = userRoleDao.selectOne(new QueryWrapper<UserRole>().lambda().eq(UserRole::getRoleId, userForm.getRoleId()).eq(UserRole::getUserId, userForm.getUserId()));
+        if(checkEntity!=null){
+            result.put("flag", false);
+            return result;
+        }
+        int total = userRoleDao.insert(userRole);
+        if(total != 1){
+            result.put("flag", false);
+            return result;
+        }
+        result.put("flag", true);
+        result.put("userRoleId", userRole.getRoleId());
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> getEmail(List<Long> userIds) {
+        String sql = "(";
+        for(int i = 0; i<userIds.size()-1; i++){
+            Long id = userIds.get(i);
+            sql = sql + id.toString() + ",";
+        }
+        Long id = userIds.get(userIds.size()-1);
+        sql = sql + id + ")";
+
+        List<String> emails = userAuthDao.selectEmails(sql);
+        return null;
+    }
+
+
 }

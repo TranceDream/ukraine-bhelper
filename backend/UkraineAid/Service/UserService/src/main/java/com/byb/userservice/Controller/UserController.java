@@ -5,18 +5,18 @@ import com.byb.BaseUtil.Config.ConstantConfig;
 import com.byb.BaseUtil.Utils.ResponseUtil;
 import com.byb.BaseUtil.Utils.Result;
 import com.byb.BaseUtil.Utils.UUIDUtils;
+import com.byb.openfeign.Client.SysClient;
+import com.byb.openfeign.Form.FormGeneration;
 import com.byb.security.Security.TokenManager;
-import com.byb.userservice.Client.SysClient;
 import com.byb.userservice.Entity.User;
-import com.byb.userservice.Service.EmailService;
-import com.byb.userservice.Service.Impl.UserDetailsServiceImpl;
-import com.byb.userservice.Service.RoleService;
-import com.byb.userservice.Service.UserAuthService;
-import com.byb.userservice.Service.UserService;
+import com.byb.userservice.Service.*;
+import com.byb.userservice.Vo.PermissionForm;
 import com.byb.userservice.Vo.RoleForm;
 import com.byb.userservice.Vo.UserForm;
-import com.byb.userservice.Vo.UserVo;
-import jdk.nashorn.internal.parser.Token;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,15 +25,15 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -59,27 +59,45 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
-    @Value("${spring.userService.roleObjectId}")
-    private int roleObjectId;
+    @Autowired
+    private PermissionService permissionService;
 
-    @Value("${spring.userService.userObjectId}")
-    private int userObjectId;
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
-    @Value("${spring.userService.userRoleObjectId}")
-    private int userRoleObjectId;
+    @Value("${spring.userService.permissionObjtypeId}")
+    private int permissionObjtypeId;
+
+    @Value("${spring.userService.roleObjtypeId}")
+    private int roleObjtypeId;
+
+    @Value("${spring.userService.userObjtypeId}")
+    private int userObjtypeId;
+
+    @Value("${spring.userService.userRoleObjtypeId}")
+    private int userRoleObjtypeId;
+
+    @Value("${spring.userService.rolePermissionObjtypeId}")
+    private int rolePermissionObjtypeId;
+
+    @Value("${spring.userService.addOperation}")
+    private int addOperation;
+
+    @Value("${spring.userService.updateOperation}")
+    private int updateOperation;
 
     @PostMapping("/test")
     public Result<Map<String, Object>> test(@RequestBody UserForm userForm){
-        Long l = userForm.getUserId();
-        System.out.println(l);
+        String queue = "app";
+        String message = "userservice-rabbitmq";
+        amqpTemplate.convertAndSend(queue, message);
         return null;
     }
 
     @PostMapping("/checkToken")
-    public void checkToken(HttpServletResponse response){
-        Map<String, Object> map = new HashMap<>();
-        map.put("result", "authentication success");
-        ResponseUtil.out(response, new Result(map, Result.SUCCESS));
+    public void checkToken(HttpServletResponse response, HttpServletRequest request){
+        String userId = tokenManager.getUserInfoFromToken(request.getHeader(ConstantConfig.TOKEN_HEADER));
+        ResponseUtil.out(response, new Result(userId, Result.SUCCESS));
     }
 
     @PostMapping("/addUserByEmail")
@@ -105,7 +123,7 @@ public class UserController {
         String digit = ".*[0-9]+.*";
         Matcher m = Pattern.compile(letter).matcher(credential);
         if(!m.matches()){
-            ResponseUtil.out(response, new Result(null, Result.FAIL, "密码需要包含字母"));
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "密码需要包含大小写字母"));
         }
 
         m =  Pattern.compile(digit).matcher(credential);
@@ -138,25 +156,6 @@ public class UserController {
         map.put("邮箱", userForm.getIdentifier());
         return new Result<>(map, Result.SUCCESS, "请前往邮箱激活账户");
     }
-
-//    @PostMapping("/toActiveEmail")
-//    public Result<Map<String, Object>> toActiveEmail(@RequestBody UserForm userForm, HttpServletResponse response, HttpServletRequest request){
-//        String uid = request.getHeader("userId");
-//        if(uid == null){
-//            ResponseUtil.out(response, new Result(null, Result.FAIL, "请求失败，请稍后重试"));
-//        }
-//        Long userId = Long.valueOf(uid);
-//        String uuid = UUIDUtils.createUUID();
-//        redisTemplate.opsForValue().set(userId,uuid,1800, TimeUnit.SECONDS);
-//        Boolean isSend = emailService.sendEmail(userForm.getIdentifier(), uuid);
-//        if(!isSend){
-//            redisTemplate.opsForHash().delete(userId);
-//            ResponseUtil.out(response, new Result(null, Result.FAIL, "邮件发送失败，请稍后重试"));
-//        }
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("邮箱", userForm.getIdentifier());
-//        return new Result<>(map, Result.SUCCESS, "请前往邮箱激活账户");
-//    }
 
     @GetMapping("/activeEmail")
     public Result<Map<String, Object>> activeEmail(@RequestParam("token") String token,  HttpServletResponse response, HttpServletRequest request){
@@ -198,8 +197,9 @@ public class UserController {
         return null;
     }
 
-    @GetMapping("/getUserList")
+    @PostMapping("/getUserList")
     public Result<Map<String, Object>> getUserList(@RequestBody UserForm userForm){
+        System.out.println("迪克进来了user");
         Integer pageSize = userForm.getPageSize();
         Integer pageNo = userForm.getPageNo();
         if(pageNo==null||pageNo==0){
@@ -217,7 +217,7 @@ public class UserController {
         return new Result<>(dataMap, Result.SUCCESS);
     }
 
-    @GetMapping("/getUserDetail")
+    @PostMapping("/getUserDetail")
     public Result<Map<String, Object>> getUserDetail(@RequestBody UserForm userForm, HttpServletResponse response){
         if(userForm.getUserId()==null){
             ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
@@ -249,31 +249,60 @@ public class UserController {
         if(userForm.getUserRoleId() == null){
             ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
         }
-        String message = "";
-        if(userForm.getLockedMark().equals("NO")){
-            message = "恢复用户权限";
-        }
-        else if(userForm.getLockedMark().equals("YES")){
-            message = "剥夺用户权限";
-        }
-        else{
-            ResponseUtil.out(response, new Result(null, Result.FAIL, "指令错误"));
-        }
-        Map<String, Object> operResult = userService.manageRole(userForm);
-        if(!(Boolean) operResult.get("flag")){
-            ResponseUtil.out(response, new Result(null, Result.FAIL, String.valueOf(operResult.get("msg"))));
-        }
+        try {
 
-        Map<String, Object> sysForm = this.generateSysForm(userRoleObjectId, Long.valueOf(userForm.getUserRoleId()), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), message);
-        /*
-        TODO: 写日志操作后期需要换成异步执行，使用消息队列
-         */
-        Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
+
+            String message = "";
+            if (userForm.getLockedMark() != null && userForm.getLockedMark().equals("NO")) {
+                message = "恢复用户权限";
+            } else if (userForm.getLockedMark() != null && userForm.getLockedMark().equals("YES")) {
+                message = "剥夺用户权限";
+            } else {
+                ResponseUtil.out(response, new Result(null, Result.FAIL, "指令错误"));
+            }
+            Map<String, Object> operResult = userService.manageRole(userForm);
+            if (!(Boolean) operResult.get("flag")) {
+                ResponseUtil.out(response, new Result(null, Result.FAIL, String.valueOf(operResult.get("msg"))));
+            }
+
+            Map<String, Object> sysForm = FormGeneration.generateSysForm(userRoleObjtypeId, Long.valueOf(userForm.getUserRoleId()), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), message, updateOperation);
+
+//            Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
+            this.sendMessage(ConstantConfig.SYSL0G_QUEUE, sysForm);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         return new Result(Result.SUCCESS, "操作成功");
     }
 
-    @GetMapping("/getRoleList")
+    @PostMapping("/userEmpowerment")
+    public Result<String> userEmpowerment(@RequestBody UserForm userForm, HttpServletRequest request, HttpServletResponse response){
+        if(userForm.getRoleId() == null || userForm.getUserId() == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
+        }
+
+        Map<String, Object> dataMap = userService.userEmpowerment(userForm);
+        boolean flag = (Boolean) dataMap.get("flag");
+
+        if(!flag){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "操作失败"));
+        }
+        try {
+            Long objId = Long.valueOf (dataMap.get("userRoleId").toString());
+
+            Map<String, Object> sysForm = FormGeneration.generateSysForm(userRoleObjtypeId, objId, Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "用户赋权", addOperation);
+
+//            Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
+            this.sendMessage(ConstantConfig.SYSL0G_QUEUE, sysForm);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return new Result<>("操作成功", Result.SUCCESS);
+    }
+
+    @PostMapping("/getRoleList")
     public Result<Map<String, Object>> getRoleList(@RequestBody RoleForm roleForm){
         if(roleForm.getPageNo()==null){
             roleForm.setPageNo(1);
@@ -285,7 +314,7 @@ public class UserController {
         return new Result<>(dataMap, Result.SUCCESS);
     }
 
-    @GetMapping("/getRoleDetail")
+    @PostMapping("/getRoleDetail")
     public Result<Map<String, Object>> getRoleDetail(@RequestBody RoleForm roleForm, HttpServletResponse response){
         if( Integer.valueOf(roleForm.getRoleId()) == null){
             ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
@@ -299,7 +328,101 @@ public class UserController {
         return new Result<>(dataMap, Result.SUCCESS);
     }
 
+    @PostMapping("/addRole")
+    public Result<String> addRole(@RequestBody RoleForm roleForm, HttpServletResponse response, HttpServletRequest request){
+        if(roleForm.getRoleName() == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "NAME IS EMPTY"));
+        }
 
+        Map<String, Object> dataMap =  roleService.addRole(roleForm);
+
+        if(!(Boolean) dataMap.get("flag")){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "操作失败"));
+        }
+
+        Map<String, Object> sysForm = FormGeneration.generateSysForm(roleObjtypeId, Long.valueOf((Integer)dataMap.get("roleId")), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "新增角色", addOperation);
+
+//        Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
+        this.sendMessage(ConstantConfig.SYSL0G_QUEUE, sysForm);
+
+        return new Result<>("操作成功", Result.SUCCESS);
+    }
+
+    @PostMapping("/managePermission")
+    public Result<Map<String, Object>> managePermission(@RequestBody RoleForm roleForm, HttpServletResponse response, HttpServletRequest request){
+        if(roleForm.getRolePermissionId() == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
+        }
+        String message = "";
+        if(roleForm.getLockedMark()!=null && roleForm.getLockedMark().equals("NO")){
+            message = "恢复角色权限";
+        }
+        else if(roleForm.getLockedMark().equals("YES")){
+            message = "剥夺角色权限";
+        }
+        else{
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "指令错误"));
+        }
+        Map<String, Object> operResult = roleService.managePermission(roleForm);
+        if(!(Boolean) operResult.get("flag")){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, String.valueOf(operResult.get("msg"))));
+        }
+
+        Map<String, Object> sysForm = FormGeneration.generateSysForm(rolePermissionObjtypeId, Long.valueOf(roleForm.getRolePermissionId()), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), message, updateOperation);
+
+//        Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
+        this.sendMessage(ConstantConfig.SYSL0G_QUEUE, sysForm);
+
+        return new Result(Result.SUCCESS, "操作成功");
+    }
+
+    @PostMapping("/getPermissionList")
+    public Result<Map<String, Object>> getPermissionList(@RequestBody PermissionForm permissionForm){
+
+        if(permissionForm.getPageNo()==null){
+            permissionForm.setPageNo(1);
+        }
+
+        if(permissionForm.getPageSize()==null){
+            permissionForm.setPageSize(10);
+        }
+
+        Map<String, Object> dataMap = permissionService.getPermissionList(permissionForm);
+        return new Result<>(dataMap, Result.SUCCESS);
+    }
+
+    @PostMapping("/addPermission")
+    public Result<Map<String, Object>> addPermission(@RequestBody PermissionForm permissionForm, HttpServletResponse response, HttpServletRequest request){
+        if(permissionForm.getUrl() == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "URL IS EMPTY"));
+        }
+        if(permissionForm.getPermissionName() == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "NAME IS EMPTY"));
+        }
+
+        Map<String, Object> dataMap = permissionService.addPermission(permissionForm);
+        Boolean flag = (Boolean) dataMap.get("flag");
+        if(!flag){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "操作失败"));
+        }
+        Long objId = Long.valueOf((Integer)dataMap.get("permissionId"));
+        Map<String, Object> sysForm = FormGeneration.generateSysForm(permissionObjtypeId, objId, Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "增加权限", addOperation);
+
+//        Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
+        this.sendMessage(ConstantConfig.SYSL0G_QUEUE, sysForm);
+        return new Result(Result.SUCCESS, "操作成功");
+    }
+
+    @PostMapping("/getEmail")
+    public Result<List<String>> getEmail(@RequestBody List<Long> userIds){
+        if(userIds == null || userIds.isEmpty()){
+            return null;
+        }
+
+        Map<String, Object> dataMap = userService.getEmail(userIds);
+        List<String> emails = (List<String>) dataMap.get("emails");
+        return new Result<>(emails, Result.SUCCESS);
+    }
 
     @PostMapping("/emailtest")
     public String emailtest(){
@@ -313,13 +436,9 @@ public class UserController {
         return "ttt";
     }
 
-    private Map<String, Object> generateSysForm(int objtypeId, Long objId, Long operator, String message){
-        Map<String, Object> sysForm = new HashMap<>();
-        sysForm.put("objtypeId", objtypeId);
-        sysForm.put("message", message);
-        sysForm.put("objId", objId);
-        sysForm.put("operator", operator);
-        return sysForm;
+    private void sendMessage(String queue, Object object){
+        String msg = JSONObject.toJSONString(object);
+        amqpTemplate.convertAndSend(queue, msg);
     }
 
 }

@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 
 import java.sql.Date;
 
-@TableName("UkraineAssistance.DICT_OBJTYPE")
+@TableName("UA.DICT_OBJTYPE")
 @Accessors(chain = true)
 @Data
 public class Objtype {

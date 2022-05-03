@@ -18,6 +18,8 @@ public class SyslogForm {
 
     private Long operator;
 
+    private int operation;
+
     private String message;
 
     private String objtype;

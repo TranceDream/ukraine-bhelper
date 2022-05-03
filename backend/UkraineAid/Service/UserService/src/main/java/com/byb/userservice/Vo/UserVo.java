@@ -14,6 +14,8 @@ public class UserVo {
     private String identityType;
     private String identifier;
     private String credential;
+    private String name;
+    private String identityNo;
 
     private int roleId;
     private String roleName;

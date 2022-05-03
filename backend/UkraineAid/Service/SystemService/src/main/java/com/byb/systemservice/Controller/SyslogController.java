@@ -4,6 +4,7 @@ import com.byb.BaseUtil.Utils.ResponseUtil;
 import com.byb.BaseUtil.Utils.Result;
 import com.byb.systemservice.Service.SyslogService;
 import com.byb.systemservice.Vo.SyslogForm;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
