@@ -26,7 +26,9 @@ public class JWTAuthFilter implements GlobalFilter , Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        System.out.println("迪克进来了gateway");
         String token = exchange.getRequest().getHeaders().getFirst(ConstantConfig.TOKEN_HEADER);
+        System.out.println(token);
         String url = exchange.getRequest().getURI().getPath();
         if(url.equals(ConstantConfig.LOGIN_PATH)){
             System.out.println("login");

@@ -196,8 +196,9 @@ public class UserController {
         return null;
     }
 
-    @GetMapping("/getUserList")
+    @PostMapping("/getUserList")
     public Result<Map<String, Object>> getUserList(@RequestBody UserForm userForm){
+        System.out.println("迪克进来了user");
         Integer pageSize = userForm.getPageSize();
         Integer pageNo = userForm.getPageNo();
         if(pageNo==null||pageNo==0){
@@ -215,7 +216,7 @@ public class UserController {
         return new Result<>(dataMap, Result.SUCCESS);
     }
 
-    @GetMapping("/getUserDetail")
+    @PostMapping("/getUserDetail")
     public Result<Map<String, Object>> getUserDetail(@RequestBody UserForm userForm, HttpServletResponse response){
         if(userForm.getUserId()==null){
             ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
@@ -300,7 +301,7 @@ public class UserController {
         return new Result<>("操作成功", Result.SUCCESS);
     }
 
-    @GetMapping("/getRoleList")
+    @PostMapping("/getRoleList")
     public Result<Map<String, Object>> getRoleList(@RequestBody RoleForm roleForm){
         if(roleForm.getPageNo()==null){
             roleForm.setPageNo(1);
@@ -312,7 +313,7 @@ public class UserController {
         return new Result<>(dataMap, Result.SUCCESS);
     }
 
-    @GetMapping("/getRoleDetail")
+    @PostMapping("/getRoleDetail")
     public Result<Map<String, Object>> getRoleDetail(@RequestBody RoleForm roleForm, HttpServletResponse response){
         if( Integer.valueOf(roleForm.getRoleId()) == null){
             ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
@@ -374,7 +375,7 @@ public class UserController {
         return new Result(Result.SUCCESS, "操作成功");
     }
 
-    @GetMapping("/getPermissionList")
+    @PostMapping("/getPermissionList")
     public Result<Map<String, Object>> getPermissionList(@RequestBody PermissionForm permissionForm){
 
         if(permissionForm.getPageNo()==null){
