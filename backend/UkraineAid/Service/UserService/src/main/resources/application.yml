@@ -14,7 +14,7 @@ spring:
       pool:
         max-active: 20
         max-wait: -1
-    password: syhxsqqaxfdyhh
+#    password: syhxsqqaxfdyhh
   mail:
     host: smtp.qq.com
     password: riunoiabplazhfgf
