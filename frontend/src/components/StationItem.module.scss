@@ -1,0 +1,52 @@
+.container {
+  box-shadow: 0 0 10px gray;
+  display: flex;
+
+  img {
+    height: 320px;
+    width: 36%;
+    object-fit: cover;
+  }
+
+  .inner {
+    padding: 30px 5%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: 72%;
+    overflow: hidden;
+
+    * {
+      margin: 5px 0;
+    }
+
+    .title {
+      font-size: xx-large;
+    }
+
+    .desc {
+      font-size: large;
+      flex: 1;
+    }
+
+    .address {
+      font-size: large;
+      color: gray;
+    }
+
+    .tags {
+      display: flex;
+      overflow-x: auto;
+
+      div {
+        white-space: nowrap;
+        border: 1px solid gray;
+        padding: 2px 4px;
+
+        &:not(&:first-child) {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}

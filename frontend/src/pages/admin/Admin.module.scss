@@ -1,0 +1,35 @@
+/*
+ * @Author: Linhao Yu 
+ * @Date: 2022-04-15 00:10:21 
+ * @Last Modified by: Linhao Yu
+ * @Last Modified time: 2022-04-24 17:58:18
+ */
+.ant-layout-content{
+    padding:0px;
+}
+.layout{
+    height: 100%;
+    .sublayout{
+        margin-top: 80px;
+        // margin-bottom: ;
+        .content{
+            // overflow: scroll;
+            // position: fixed;
+            // background-color:aliceblue;
+        }
+    }
+    
+    .footer{
+        // position:fixed;
+        // bottom: 0px;
+        // width: 100%;
+        // z-index: 99;
+        text-align: center;
+        padding: 10px 50px;
+    }
+    
+}
+
+
+
+  

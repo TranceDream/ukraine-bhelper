@@ -1,0 +1,56 @@
+\chapter{接口说明}
+本章将对系统中的应用的接口，包括interface，abstract class进行详细说明，主要在于说明他们的public方法，以及方法中参数的意义和返回值的意义。
+
+\section{Security模块}
+为了便于扩展不同的认证授权方案，Security模块定义了许多认证授权操作的接口，以及相关过滤器的抽象类，包括登录过滤器、授权过滤器、用户加载接口等。
+\subsection{UsernamePasswordAuthenticationFilter}
+此抽象类为登录时调用的过滤器类。类中共定义了3个主要方法，作用分别为用户认证、认证成功和认证失败。
+\begin{itemize}
+    \item attemptAuthentication方法，返回类型为Authentication(用户认证类)，参数有2个，类型分别为HttpServletRequest、HttpServletResponse。方法用途为将request中的用户信息进行校验。
+    \item successfulAuthentication方法，返回类型为void，参数有4个，类型分别为HttpServletRequest、HttpServletResponse、Authentication、FilterChain(过滤链)。方法用途为用户认证成功后进行相关操作，包括加载权限等，然后将用户认证信息通过过滤链传递给下个过滤器。
+    \item unsuccessfulAuthentication方法，返回类型为void，参数有3个，类型分别为HttpServletRequest、HttpServletResponse、Authentication。方法用途为用户认证失败后进行相关操作，包括返回失败信息等。
+\end{itemize}
+
+\subsection{BasicAuthenticationFilter}
+此抽象类为授权时调用的过滤器类，类中需要说明的方法主要有1个，作用是获取用户权限，然后交给鉴权过滤器去鉴权。
+\begin{itemize}
+    \item doFilterInternal方法，返回类型为void，参数有3个，类型分别为HttpServletRequest、HttpServletResponse、FilterChain。方法用途为将request中的用户进行权限加载，然后把权限信息交给鉴权过滤器去鉴权。
+\end{itemize}
+
+\subsection{AccessDeniedHandler}
+此接口定义了用户权限不够时所调用方法。主要的方法有1个，作用是设置用户权限不足的信息，然后将其返回给用户。
+\begin{itemize}
+    \item handle方法，返回类型为void，参数有3个，类型分别为HttpServletRequest、HttpServletResponse、AccessDeniedException(权限异常类)。方法用途为在HttpServletResponse中设置用户权限不足的信息并返回给用户。
+\end{itemize}
+
+\subsection{AuthenticationEntryPoint}
+此接口定义了用户认证失败时所调用方法。主要的方法有1个，作用是设置用户认证失败的信息，然后将其返回给用户。
+\begin{itemize}
+    \item commence方法，返回类型为void，参数有3个，类型分别为HttpServletRequest、HttpServletResponse、AuthenticationException(认证异常类)。方法用途为在HttpServletResponse中设置用户认证失败的信息并返回给用户。
+\end{itemize}
+
+\subsection{PasswordEncoder}
+此接口定义了用户密码加密和匹配的策略，主要有2个方法，作用分别是用户密码的加密算法和用户密码的匹配算法。
+\begin{itemize}
+    \item encode方法，返回类型为String，参数有1个，类型为CharSequence(用户传来的原始密码)，作用在于对用户输入的密码进行加密计算，至于加密密码可以自定义，比如md5加密等。
+    \item matches方法，返回类型为Boolean，参数有2个，类型都是CharSequence，分别表示用户输入的密码和数据库查询的密码，然后通过自定义的匹配算法进行匹配。
+\end{itemize}
+
+\subsection{UserDetailsService}
+此接口定义了用户详细信息的加载方法，主要是1个方法，作用为从数据库加载用户的基本信息、角色信息和权限信息，并进行用户登录初始化工作。
+\begin{itemize}
+    \item loadUserByUsername方法，返回类型为UserDetail，参数有1个，类型分别为String，表示登录用户的用户名。方法用途为根据传入的用户名从数据库加载用户基本信息、角色信息和权限信息，并进行初始化工作，比如权限信息存入Redis缓存等。
+\end{itemize}
+
+\section{GateWay模块}
+因为GateWay网关是需要处理客户端发来的一切请求，我们需要自定义一些过滤器。为了可扩展性，需要一个全局的过滤器类，实现过滤器的扩展。
+\subsection{GlobalFilter}
+此接口定义了过滤器实际过滤采用的方法，主要方法有1个，作用是接收并预处理客户端发来的一切请求。
+\begin{itemize}
+    \item filter方法，返回类型为Mono<void>，参数有2个，类型分别为ServerWebExchange(客户端请求)、GatewayFilterChain(网关过滤器链)。方法用途为将客户端请求进行预处理，如果符合要求则放行，否则返回错误信息。
+\end{itemize}
+
+\section{Service模块}
+Service是业务模块，用的是MVC的框架，其中将每个具体的业务方法都进行了interface+impl的组合，即每个业务方法都被抽象成了一个接口，这样的话
+我们需要进行扩展就只需要新建impl即可，增加了系统的可扩展性。
+

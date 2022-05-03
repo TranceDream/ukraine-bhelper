@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="jquery-3.6.0.js"> </script>
+</head>
+
+<body>
+
+<form action="" id="loginForm" class="fh5co-form animate-box" onsubmit="return false" method="post"
+      data-animate-effect="fadeInLeft">
+    <h2>Sign In</h2>
+    <div class="form-group">
+        <label for="identifier" class="sr-only">Username</label>
+        <input type="text" class="form-control" id="identifier" name="identifier" placeholder="Username"
+               autocomplete="off">
+    </div>
+    <div class="form-group">
+        <label for="credential" class="sr-only">Password</label>
+        <input type="password" class="form-control" id="credential" name="credential" placeholder="Password"
+               autocomplete="off">
+    </div>
+    <div class="form-group">
+        <label for="remember"><input type="checkbox" id="remember"> Remember Me</label>
+    </div>
+    <div class="form-group">
+        <p>Not registered? <a href="sign-up2.html">Sign Up</a> | <a href="forgot2.html">Forgot Password?</a>
+        </p>
+    </div>
+    <div class="form-group">
+        <input id="dyh" onclick="login()" type="button"  value="Sign In" class="btn btn-primary">
+    </div>
+</form>
+<script type="text/javascript" defer>
+    function login() {
+        var username = document.getElementById("identifier").value;
+        var password = document.getElementById("credential").value;
+        console.log(username)
+        fetch("http://localhost:8001/user/login", {
+            mode: 'no-cors',
+            method: 'post',
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify({
+                "identifier": username,
+                "credential": password,
+                "identityType": 10000
+            })
+        }).then(res => {
+            console.log(res)
+        })
+    }
+</script>
+</body>
+</html>
