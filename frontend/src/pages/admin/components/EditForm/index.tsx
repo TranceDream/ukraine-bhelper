@@ -1,3 +1,9 @@
+/*
+ * @Author: Linhao Yu
+ * @Date: 2022-05-03 15:36:23
+ * @Last Modified by:   Linhao Yu
+ * @Last Modified time: 2022-05-03 15:36:23
+ */
 import { Button, Form, Input } from 'antd'
 import styles from './index.module.scss'
 const onFinish = (values: any) => {
@@ -80,11 +86,7 @@ export default function index() {
                 ]}>
                 <Input />
             </Form.Item>
-
-            <Form.Item name='DatePicker' label='创建日期' {...config}>
-                {/* <DatePicker /> */}
-            </Form.Item>
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Form.Item wrapperCol={{ offset: 8, span: 12 }}>
                 <Button type='primary' htmlType='submit'>
                     Submit
                 </Button>
