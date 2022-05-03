@@ -160,7 +160,7 @@
       <workItem from="1651547530713" duration="648000" />
       <workItem from="1651548239142" duration="4626000" />
       <workItem from="1651553073103" duration="909000" />
-      <workItem from="1651573301829" duration="3570000" />
+      <workItem from="1651573301829" duration="3893000" />
     </task>
     <task id="LOCAL-00001" summary="fix:面向部署做适应性变动">
       <created>1651506862106</created>
@@ -211,7 +211,21 @@
       <option name="project" value="LOCAL" />
       <updated>1651579249974</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="合并冲突">
+      <created>1651579363448</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1651579363448</updated>
+    </task>
+    <task id="LOCAL-00009" summary="合并冲突">
+      <created>1651579567657</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1651579567657</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -244,7 +258,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="mu-rong-mu-se/master" />
+                        <option value="master" />
                       </list>
                     </value>
                   </entry>
