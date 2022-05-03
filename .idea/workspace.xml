@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7cd63bd0-36f2-4d1f-9e7f-93c55b808703" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="7cd63bd0-36f2-4d1f-9e7f-93c55b808703" name="Changes" comment="合并冲突">
       <change beforePath="$PROJECT_DIR$/ukraine-bhelper" beforeDir="false" afterPath="$PROJECT_DIR$/ukraine-bhelper" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -162,7 +160,7 @@
       <workItem from="1651547530713" duration="648000" />
       <workItem from="1651548239142" duration="4626000" />
       <workItem from="1651553073103" duration="909000" />
-      <workItem from="1651573301829" duration="2756000" />
+      <workItem from="1651573301829" duration="3222000" />
     </task>
     <task id="LOCAL-00001" summary="fix:面向部署做适应性变动">
       <created>1651506862106</created>
@@ -192,7 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651552006016</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="合并冲突">
+      <created>1651578971531</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1651578971531</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -245,6 +250,7 @@
     <MESSAGE value="fix:面向部署做适应性变动" />
     <MESSAGE value="fix(面向部署的更改)" />
     <MESSAGE value="fix(面向部署)" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix(面向部署)" />
+    <MESSAGE value="合并冲突" />
+    <option name="LAST_COMMIT_MESSAGE" value="合并冲突" />
   </component>
 </project>
