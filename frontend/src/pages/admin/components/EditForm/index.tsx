@@ -10,6 +10,12 @@ const onFinish = (values: any) => {
     console.log('Success:', values)
 }
 
+interface Props {
+    userName: string
+    userId: number
+    country: string
+    city: string
+}
 const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo)
 }
@@ -22,7 +28,7 @@ const config = {
         },
     ],
 }
-export default function index() {
+export default function index(props: Props) {
     return (
         <Form
             className={styles.form}
@@ -36,42 +42,27 @@ export default function index() {
             <Form.Item
                 label='用户ID'
                 name='userid'
+                initialValue={props.userId}
                 rules={[
                     { required: true, message: 'Please input your username!' },
                 ]}>
-                <Input />
+                <Input disabled={true} />
             </Form.Item>
 
             <Form.Item
                 label='用户名'
                 name='username'
+                initialValue={props.userName}
                 rules={[
                     { required: true, message: 'Please input your username!' },
                 ]}>
-                <Input />
-            </Form.Item>
-
-            <Form.Item
-                label='昵称'
-                name='nicknam'
-                rules={[
-                    { required: true, message: 'Please input your username!' },
-                ]}>
-                <Input />
-            </Form.Item>
-
-            <Form.Item
-                label='角色'
-                name='role'
-                rules={[
-                    { required: true, message: 'Please input your username!' },
-                ]}>
-                <Input />
+                <Input disabled={true} />
             </Form.Item>
 
             <Form.Item
                 label='国家'
                 name='country'
+                initialValue={props.country}
                 rules={[
                     { required: true, message: 'Please input your username!' },
                 ]}>
@@ -81,6 +72,7 @@ export default function index() {
             <Form.Item
                 label='城市'
                 name='city'
+                initialValue={props.city}
                 rules={[
                     { required: true, message: 'Please input your username!' },
                 ]}>

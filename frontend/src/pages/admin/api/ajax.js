@@ -28,7 +28,7 @@ export default function ajax(url, data = {}, type = 'GET') {
             promise = axios.post(url, data, {
                 headers: {
                     'Content-Type': 'application/json',
-                    token: 'eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQAAiUdpdSKAiUrQzNTQzMDCyMzo1oABSwxPiAAAAA.Hegl1Md3UvjZO6oKqV9S0-8RHMB-AZ4UJLTXPq3dBpzsdJlRwD34KzvhPzX5e1qeASbf1PN_r9VVqHWVJbpgNg',
+                    token: 'eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQAAiUdpdSKAiUrQzNTQzMLS0MT01oAn2pysSAAAAA.d9shsx0AeyL2v9-HWPENfZhryPZz71MDz7QnAREZ7mm-mj4T_dTNi3HUOKFBDwxKdkQwXoGAqFNyN0xZMnXEog',
                     'Access-Control-Allow-Origin': '*',
                 },
             })

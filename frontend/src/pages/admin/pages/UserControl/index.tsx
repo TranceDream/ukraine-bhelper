@@ -15,16 +15,7 @@ import {
 import type { ActionType, ProColumns } from '@ant-design/pro-table'
 import ProTable from '@ant-design/pro-table'
 import '@ant-design/pro-table/dist/table.css'
-import {
-    Button,
-    Dropdown,
-    Menu,
-    message,
-    Modal,
-    Space,
-    Switch,
-    Tooltip,
-} from 'antd'
+import { Button, Dropdown, Menu, message, Modal, Space, Tooltip } from 'antd'
 import React, { useRef, useState } from 'react'
 import { reqGetAllUser } from '../../api'
 import ChangePwd from '../../components/ChangePwd'
@@ -34,13 +25,14 @@ import styles from './index.module.scss'
 
 export type TableListItem = {
     key: number
-    userId: string
+    userId: number
     name: string
     roleName: string
     status: string
     country: string
     city: string
     createTime: number
+    orderText: string
 }
 // const tableListDataSource: TableListItem[] = []
 
@@ -61,6 +53,8 @@ export default function UserControl() {
     const [modalText, setModalText] = useState('初始文字')
     const [selectUserName, setselectUserName] = useState('')
     const [selectUserId, setselectUserId] = useState(0)
+    const [selectCountry, setselectCountry] = useState('')
+    const [selectCity, setselectCity] = useState('')
     const [record, setRecord] = useState({}) // 记录操作行的数据
     const [tableListDataSource, settableListDataSource] = useState<
         TableListItem[]
@@ -130,6 +124,10 @@ export default function UserControl() {
     // 编辑用户
     const EditUser = (text: any, record: any, index: any) => {
         setEditVisiable(true)
+        setselectCity(record.city)
+        setselectCountry(record.country)
+        setselectUserId(record.userId)
+        setselectUserName(record.name)
         //! params 用于更新的时候传参
         // console.log('params', params)
     }
@@ -213,26 +211,26 @@ export default function UserControl() {
                 Editor: 'Editor',
             },
         },
-        {
-            title: '状态',
-            width: 100,
-            dataIndex: 'status',
-            search: false,
-            filters: true,
-            onFilter: true,
-            // hideInTable: true,
-            align: 'center',
-            // valueEnum: {
-            //     on: { text: '正常', status: 'Success' },
-            //     off: { text: '封禁', status: 'Error' },
-            // },
-            render: (text, record, index) => (
-                <Switch
-                    checked={record.status === 'on' ? true : false}
-                    onChange={() => onChange(record)}
-                />
-            ),
-        },
+        // {
+        //     title: '状态',
+        //     width: 100,
+        //     dataIndex: 'status',
+        //     search: false,
+        //     filters: true,
+        //     onFilter: true,
+        //     // hideInTable: true,
+        //     align: 'center',
+        //     // valueEnum: {
+        //     //     on: { text: '正常', status: 'Success' },
+        //     //     off: { text: '封禁', status: 'Error' },
+        //     // },
+        //     render: (text, record, index) => (
+        //         <Switch
+        //             checked={record.status === 'on' ? true : false}
+        //             onChange={() => onChange(record)}
+        //         />
+        //     ),
+        // },
         {
             title: '国家',
             width: 80,
@@ -247,11 +245,24 @@ export default function UserControl() {
         },
         {
             title: '创建时间',
+            align: 'center',
             width: 140,
             key: 'since',
             dataIndex: 'createTime',
             valueType: 'date',
-            sorter: (a, b) => a.createTime - b.createTime,
+        },
+        {
+            title: '排序方式',
+            width: 140,
+            key: 'orderText',
+            dataIndex: 'orderText',
+            hideInTable: true,
+            valueEnum: {
+                'ur.USER_ID asc': '按用户ID升序',
+                'ur.USER_ID des': '按用户ID降序',
+                'ur.CREATE_TIME asc': '按创建时间升序',
+                'ur.CREATE_TIME desc': '按创建时间降序',
+            },
         },
         {
             title: '操作',
@@ -416,7 +427,12 @@ export default function UserControl() {
                 confirmLoading={confirmLoading}
                 onCancel={handleEditCancel}
                 footer={null}>
-                <EditForm />
+                <EditForm
+                    userName={selectUserName}
+                    userId={selectUserId}
+                    country={selectCountry}
+                    city={selectCity}
+                />
             </Modal>
 
             {/* 重置密码 */}
