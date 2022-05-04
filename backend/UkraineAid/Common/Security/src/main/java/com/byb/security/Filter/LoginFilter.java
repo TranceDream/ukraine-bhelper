@@ -22,6 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -68,9 +71,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         SecurityContextHolder.getContext().setAuthentication(authResult);
         //把用户名称和用户权限列表放到redis
-        redisTemplate.opsForValue().set(user.getUserId().toString(),user.getPermissions());
-        //返回token
-        ResponseUtil.out(response, new Result(token, Result.SUCCESS));
+        redisTemplate.opsForValue().set(user.getUserId().toString(),user.getPermissions(),72000, TimeUnit.SECONDS);
+        //返回token和菜单栏
+        Map<String, Object> result = new HashMap<>();
+        result.put("token", token);
+        result.put("menus", user.getMenus());
+        ResponseUtil.out(response, new Result(result, Result.SUCCESS));
     }
 
     //3 认证失败调用的方法

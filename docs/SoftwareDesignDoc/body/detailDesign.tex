@@ -160,7 +160,8 @@
         \hline
         \hline
         字段名            & 字段类型         & 字段描述   & 初始值              & 约束                        \\ \hline
-        ROLE\_ID     & Long         & 角色唯一约束 &                  & PK,AUTO\_INCREMENT        \\ \hline
+        ID           & INT         & 唯一标识    &                  & PK,AUTO\_INCREMENT        \\ \hline
+        ROLE\_ID     & Long         & 角色唯一约束 &                  & NOT NULL        \\ \hline
         PERMISSION\_ID     & Long         & 权限唯一约束 &                &NOT NULL \\ \hline
         CREATE\_TIME & Date         & 创建时间   & CURRENTTIMESTAMP & NULL DEFAULT CURRENTSTAMP \\ \hline
         LOCK\_MARK   & VARCHAR(3)   & 冻结标识   & NO               & NULL DEFAULT 'NO'         \\ \hline
@@ -178,8 +179,66 @@
         )
     \end{enumerate}
 
+\subsubsection{DICT\_MENU栏目表}
+本表记录了该系统中当前登录用户可以操作的模块，用于前端动态获取并加载。
+\begin{enumerate}
+    \item 表结构
+    \begin{table}[htbp]
+        \centering
+        \scalebox{0.8}{
+        \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        \hline
+        字段名            & 字段类型         & 字段描述   & 初始值              & 约束                        \\ \hline
+        MENU\_ID     & INT                & 唯一约束 &                  & PK,AUTO\_INCREMENT        \\ \hline
+        MENU     & VARCHAR(100)       & 栏目名 &                &NOT NULL \\ \hline
+        CREATE\_TIME & Date         & 创建时间   & CURRENTTIMESTAMP & NULL DEFAULT CURRENTSTAMP \\ \hline
+        URL   & VARCHAR(200)   & 路径   & NO               & NOT NULL         \\ \hline
+        DELETE\_MARK & VARCHAR(3)   & 删除标识   & NO               & NULL DEFAULT 'NO'         \\ \hline
+        \end{tabular}
+        }
+        \end{table}
+    \item 建表语句\\
+        CREATE TABLE(\\
+            MENU\_ID INT(64) PRIMARY KEY AUTO\_INCREMENT,\\
+            MENU VARCHAR(100) NOT NULL, \\
+            CREATE\_TIME TIMESTAMP NULL DEFAULT CURRENTTIMESTAMP,\\
+            URL VARCHAR(200) NOT NULL \\            
+            DELETE\_MARK VARCHAR(3) NULL DEFAULT 'NO'\\
+        )
+    \end{enumerate}
+
+\subsubsection{DICT\_ROLE\_MENU角色栏目表}
+此表记录了角色和栏目的对应关系，不同角色可以获取不同栏目。
+\begin{enumerate}
+    \item 表结构
+    \begin{table}[htbp]
+        \centering
+        \scalebox{0.8}{
+        \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        \hline
+        字段名            & 字段类型         & 字段描述   & 初始值              & 约束                        \\ \hline
+        ID           & INT         & 唯一标识    &                  & PK,AUTO\_INCREMENT        \\ \hline
+        ROLE\_ID     & INT         & 角色唯一约束 &                  & NOT NULL        \\ \hline
+        MENU\_ID     & INT         & 栏目唯一约束 &                & NOT NULL \\ \hline
+        CREATE\_TIME & Date         & 创建时间   & CURRENTTIMESTAMP & NULL DEFAULT CURRENTSTAMP \\ \hline
+        DELETE\_MARK & VARCHAR(3)   & 删除标识   & NO               & NULL DEFAULT 'NO'         \\ \hline
+        \end{tabular}
+        }
+        \end{table}
+    \item 建表语句\\
+        CREATE TABLE(\\
+            ROLE\_ID INT(64) PRIMARY KEY AUTO\_INCREMENT,\\
+            PERMISSION\_ID INT(64) NOT NULL, \\
+            CREATE\_TIME TIMESTAMP NULL DEFAULT CURRENTTIMESTAMP,\\
+            LOCK\_MARK VARCHAR(3) NULL DEFAULT 'NO', \\            
+            DELETE\_MARK VARCHAR(3) NULL DEFAULT 'NO'\\
+        )
+    \end{enumerate}
+
 \subsubsection{表格关系}
-该模块共涉及了6张表，下图~\ref{fig:USER-ER}~为6张表的关系。
+该模块共涉及了8张表，下图~\ref{fig:USER-ER}~为6张表的关系。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{ch7/USER-ER.jpg}

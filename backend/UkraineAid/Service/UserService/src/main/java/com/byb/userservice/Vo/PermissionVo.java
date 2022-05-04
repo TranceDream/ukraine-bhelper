@@ -18,6 +18,8 @@ public class PermissionVo {
 
     private List<Integer> roles;
 
+    private int parentId;
+
     private String deleteMark;
 
 }

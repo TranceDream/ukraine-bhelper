@@ -14,9 +14,6 @@ public class EmailServiceImpl implements EmailService {
     @Value("${spring.mail.username}")
     private String from;
 
-    @Value("${spring.userService.activeFilePath}")
-    private String activeFilePath;
-
     @Resource
     private MailSender sender;
 

@@ -13,4 +13,9 @@ public class RabbitMQConfig {
         return new Queue(ConstantConfig.SYSL0G_QUEUE);
     }
 
+    @Bean
+    public Queue Message(){
+        return new Queue(ConstantConfig.MESSAGE_QUEUE);
+    }
+
 }

@@ -2,8 +2,9 @@ package com.byb.userservice.Service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.byb.userservice.Entity.User;
+import com.byb.userservice.Vo.MenuVo;
+import com.byb.userservice.Vo.ModuleVo;
 import com.byb.userservice.Vo.UserForm;
-import com.byb.userservice.Vo.UserVo;
 
 import java.util.List;
 import java.util.Map;
@@ -25,4 +26,8 @@ public interface UserService extends IService<User> {
     Map<String, Object> getEmail(List<Long> userIds);
 
     Boolean identify(UserForm userForm);
+
+    List<ModuleVo> getModuleList(Long userId);
+
+    List<MenuVo> getMenuList(Long userId);
 }

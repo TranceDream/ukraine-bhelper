@@ -10,13 +10,13 @@ import com.byb.openfeign.Form.FormGeneration;
 import com.byb.security.Security.TokenManager;
 import com.byb.userservice.Entity.User;
 import com.byb.userservice.Service.*;
+import com.byb.userservice.Vo.ModuleVo;
 import com.byb.userservice.Vo.PermissionForm;
 import com.byb.userservice.Vo.RoleForm;
 import com.byb.userservice.Vo.UserForm;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -458,6 +458,23 @@ public class UserController {
         }
         return new Result<>(null, Result.FAIL, "实名认证失败");
     }
+
+    @PostMapping("/getModuleList")
+    public Result<List<ModuleVo>> getMenuList(HttpServletRequest request){
+
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        List<ModuleVo> list = userService.getModuleList(userId);
+
+        return new Result<>(list, Result.SUCCESS);
+    }
+
+//    @PostMapping("/logout")
+//    public void logout(HttpServletRequest request, HttpServletResponse response){
+//
+//        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+//        redisTemplate.opsForValue().getAndDelete(userId);
+//        ResponseUtil.out(response, new Result(null, Result.SUCCESS, "登出成功"));
+//    }
 
     private void sendMessage(String queue, Object object){
         String msg = JSONObject.toJSONString(object);

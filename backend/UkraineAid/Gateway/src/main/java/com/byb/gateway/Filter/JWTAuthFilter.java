@@ -26,7 +26,6 @@ public class JWTAuthFilter implements GlobalFilter , Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        System.out.println("迪克进来了gateway");
         String token = exchange.getRequest().getHeaders().getFirst(ConstantConfig.TOKEN_HEADER);
         System.out.println(token);
         String url = exchange.getRequest().getURI().getPath();
@@ -35,7 +34,7 @@ public class JWTAuthFilter implements GlobalFilter , Ordered {
             return chain.filter(exchange);
         }
         if(token == null){
-            return unauthorized(exchange);
+            return unauthorized(exchange, "token is null");
         }
         HttpHeaders headers = new HttpHeaders();
         headers.add(ConstantConfig.TOKEN_HEADER, token);
@@ -55,7 +54,7 @@ public class JWTAuthFilter implements GlobalFilter , Ordered {
             return chain.filter(exchange);
         }
         else
-            return unauthorized(exchange);
+            return unauthorized(exchange, String.valueOf(jsonObject.get("msg")));
     }
 
     @Override
@@ -63,11 +62,11 @@ public class JWTAuthFilter implements GlobalFilter , Ordered {
         return 0;
     }
 
-    private Mono<Void> unauthorized(ServerWebExchange serverWebExchange) {
+    private Mono<Void> unauthorized(ServerWebExchange serverWebExchange, String msg) {
         serverWebExchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
         Map<String, Object> map = new HashMap<>();
         map.put("code", HttpStatus.UNAUTHORIZED.value());
-        map.put("msg", "YOU DON'T HAVE THIS AUTHORITY!");
+        map.put("msg", msg);
         map.put("data", HttpStatus.UNAUTHORIZED.getReasonPhrase());
         String resp = JSONObject.toJSONString(map);
         DataBuffer buffer = serverWebExchange.getResponse()

@@ -29,6 +29,7 @@
         \item AuditService模块，负责管理审核信息，包括举报审核、新闻审核等。
         \item SystemService模块，负责处理系统的消息和系统业务对象，用于管理员给用户群发通知，业务对象管理等。
     \end{itemize}
+    \item OpenFeign服务调用模块，负责各个微服务之间进行参数封装和方法调用。
     \item GateWay网管模块，负责分发路由，将请求转发到对应的微服务上，同时也负责初步校验JWT，检验用户身份。
     \item NacosCore微服务注册中心模块，负责管理系统中的各项微服务，包括服务注册、服务发现、流量监控等。
 \end{itemize}
@@ -58,6 +59,9 @@ Security模块的总体包图如图~\ref{fig:Security}~所示。
     \caption{Security模块包图}\label{fig:Security}
     \vspace{\baselineskip} % 表示图与正文空一行
 \end{figure}
+
+\subsection{OpenFeign服务调用模块}
+OpenFeign服务调用模块主要包含2个包，为FormGeneration和Client。其中FormGeneration负责封装不同模块的参数，Client负责声明各个模块暴露的接口。
 
 \subsection{Service微服务业务模块}
 Service模块包含6个子模块，为UserService模块、HouseService模块、NewsService模块、ReportService模块、AuditService模块、SystemService模块。

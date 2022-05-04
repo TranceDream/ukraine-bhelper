@@ -18,6 +18,8 @@ public class PermissionForm {
 
     private List<Integer> roles;
 
+    private int parentId;
+
     private String deleteMark;
 
     private Integer pageSize;

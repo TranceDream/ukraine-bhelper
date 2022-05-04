@@ -18,6 +18,7 @@ public class SecurityUser implements UserDetails {
     private String city;
     private String identifier;
     private String credential;
+    private List<SecurityMenu> menus;
     private List<String> permissions;
     private List<Integer> ROLES;
 

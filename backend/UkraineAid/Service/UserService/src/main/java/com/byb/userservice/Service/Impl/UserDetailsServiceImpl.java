@@ -1,11 +1,14 @@
 package com.byb.userservice.Service.Impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.byb.security.Entity.SecurityMenu;
 import com.byb.security.Entity.SecurityUser;
 import com.byb.userservice.Dao.PermissionDao;
 import com.byb.userservice.Dao.UserAuthDao;
 import com.byb.userservice.Dao.UserDao;
 import com.byb.userservice.Entity.User;
 import com.byb.userservice.Service.UserService;
+import com.byb.userservice.Vo.MenuVo;
 import com.byb.userservice.Vo.UserVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +20,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -48,7 +49,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         SecurityUser securityUser = new SecurityUser();
         BeanUtils.copyProperties(user, securityUser);
-
+        List<MenuVo> menuVos = userDao.selectMenuList(user.getUserId());
+        Set<String> securityMenus = new HashSet<>();
+        for(MenuVo menuVo : menuVos){
+            SecurityMenu securityMenu = new SecurityMenu();
+            BeanUtils.copyProperties(menuVo, securityMenu);
+            securityMenus.add(JSONObject.toJSONString(securityMenu));
+        }
+        List<SecurityMenu> list = new ArrayList<>();
+        for(String str : securityMenus){
+            SecurityMenu securityMenu = new SecurityMenu();
+            securityMenu = JSONObject.parseObject(str, SecurityMenu.class);
+            list.add(securityMenu);
+        }
+        securityUser.setMenus(list);
         List<String> permissionList = permissionDao.selectByUser(securityUser.getUsername());
         securityUser.setPermissions(permissionList);
         return securityUser;

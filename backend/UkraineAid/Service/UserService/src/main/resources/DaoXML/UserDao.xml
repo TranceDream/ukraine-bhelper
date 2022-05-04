@@ -40,6 +40,49 @@
         <collection property="roleList" column="USER_ID" ofType="com.byb.userservice.Vo.UserRoleVo" select="selectRoleList"/>
     </resultMap>
 
+    <resultMap id="moduleVo" type="com.byb.userservice.Vo.ModuleVo">
+        <id property="moduleId" column="PERMISSION_ID"/>
+        <result property="moduleName" column="PERMISSION_NAME"/>
+        <result property="url" column="URL"/>
+        <collection property="childs" column="PERMISSION_ID" ofType="com.byb.userservice.Vo.ModuleVo" select="selectChildmodule"/>
+    </resultMap>
+
+    <resultMap id="Childmodule" type="com.byb.userservice.Vo.ModuleVo">
+        <id property="moduleId" column="PERMISSION_ID"/>
+        <result property="moduleName" column="PERMISSION_NAME"/>
+        <result property="url" column="URL"/>
+    </resultMap>
+
+    <resultMap id="menuVo" type="com.byb.userservice.Vo.MenuVo">
+        <id property="menuId" column="MENU_ID"/>
+        <result property="menuName" column="MENU"/>
+        <result property="url" column="URL"/>
+        <result property="createTime" column="CREATE_TIME"/>
+    </resultMap>
+
+    <select id="selectMenuList" resultMap="menuVo" parameterType="java.lang.Long">
+        select dm.* from DICT_USER_ROLE dur left join DICT_ROLE_MENU drm on dur.ROLE_ID = drm.ROLE_ID
+        left join DICT_MENU dm on drm.MENU_ID = dm.MENU_ID
+        <where>
+            dur.USER_ID = #{userId} and dur.DELETE_MARK = 'NO' and dur.LOCKED_MARK = 'NO'
+        </where>
+    </select>
+
+    <select id="selectChildmodule" resultMap="Childmodule" parameterType="java.lang.Integer">
+        select PERMISSION_ID, PERMISSION_NAME, URL FROM DICT_PERMISSION
+        where PARENT_ID = #{moduleId} and DELETE_MARK = 'NO'
+    </select>
+
+    <select id="selectModuleList" resultMap="moduleVo" parameterType="java.lang.Long">
+        select dp.PERMISSION_ID, dp.PERMISSION_NAME, dp.URL from DICT_USER_ROLE dur left join DICT_ROLE_PERMISSION drp on dur.ROLE_ID = drp.ROLE_ID
+        left join DICT_PERMISSION dp on drp.PERMISSION_ID = dp.PERMISSION_ID
+        <where>
+            dur.USER_ID = #{userId} and dur.DELETE_MARK = 'NO' and dur.LOCKED_MARK = 'NO'
+            and drp.DELETE_MARK = 'NO' and drp.LOCKED_MARK = 'NO'
+            and dp.PARENT_ID = 1 and dp.DELETE_MARK = 'NO'
+        </where>
+    </select>
+
     <select id="selectRoleList" resultMap="UserRoleVo" parameterType="java.lang.Long">
         select dr.ROLE_NAME,
                dr.ROLE_ID,
