@@ -43,6 +43,7 @@ export default function index(props: Props) {
                 label='用户ID'
                 name='userid'
                 initialValue={props.userId}
+                preserve={false}
                 rules={[
                     { required: true, message: 'Please input your username!' },
                 ]}>
@@ -53,6 +54,7 @@ export default function index(props: Props) {
                 label='用户名'
                 name='username'
                 initialValue={props.userName}
+                preserve={false}
                 rules={[
                     { required: true, message: 'Please input your username!' },
                 ]}>
@@ -63,6 +65,7 @@ export default function index(props: Props) {
                 label='国家'
                 name='country'
                 initialValue={props.country}
+                preserve={false}
                 rules={[
                     { required: true, message: 'Please input your username!' },
                 ]}>
@@ -73,6 +76,7 @@ export default function index(props: Props) {
                 label='城市'
                 name='city'
                 initialValue={props.city}
+                preserve={false}
                 rules={[
                     { required: true, message: 'Please input your username!' },
                 ]}>

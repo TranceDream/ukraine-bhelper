@@ -123,6 +123,7 @@ export default function UserControl() {
 
     // 编辑用户
     const EditUser = (text: any, record: any, index: any) => {
+        console.log('编辑用户', record)
         setEditVisiable(true)
         setselectCity(record.city)
         setselectCountry(record.country)
@@ -143,6 +144,10 @@ export default function UserControl() {
     //取消编辑用户
     const handleEditCancel = () => {
         setEditVisiable(false)
+        setselectCity('')
+        setselectCountry('')
+        setselectUserId(0)
+        setselectUserName('')
     }
 
     // 重置密码
@@ -410,6 +415,7 @@ export default function UserControl() {
 
             {/* 编辑用户信息 */}
             <Modal
+                destroyOnClose={true}
                 title={
                     <>
                         <EditOutlined
@@ -437,6 +443,7 @@ export default function UserControl() {
 
             {/* 重置密码 */}
             <Modal
+                destroyOnClose={true}
                 title={
                     <>
                         <EditOutlined
@@ -446,7 +453,7 @@ export default function UserControl() {
                                 marginRight: 10,
                             }}
                         />
-                        编辑用户信息
+                        重置密码
                     </>
                 }
                 visible={ChangePwdVisible}
