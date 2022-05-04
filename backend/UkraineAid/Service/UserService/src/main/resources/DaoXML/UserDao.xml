@@ -13,6 +13,7 @@
         <result property="identityNo" column="IDENTITY_NO"/>
         <result property="permissionId" column="PERMISSION_ID"/>
         <result property="permissionUrl" column="URL"/>
+        <result property="ifverified" column="IFVERIFIED"/>
     </resultMap>
 
     <resultMap id="UserRoleVo" type="com.byb.userservice.Vo.UserRoleVo">
@@ -35,6 +36,7 @@
         <result property="createTime" column="CREATE_TIME"/>
         <result property="name" column="NAME"/>
         <result property="identityNo" column="IDENTITY_NO"/>
+        <result property="ifverified" column="IFVERIFIED"/>
         <collection property="roleList" column="USER_ID" ofType="com.byb.userservice.Vo.UserRoleVo" select="selectRoleList"/>
     </resultMap>
 

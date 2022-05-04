@@ -23,4 +23,6 @@ public interface UserService extends IService<User> {
     Map<String, Object> userEmpowerment(UserForm userForm);
 
     Map<String, Object> getEmail(List<Long> userIds);
+
+    Boolean identify(UserForm userForm);
 }

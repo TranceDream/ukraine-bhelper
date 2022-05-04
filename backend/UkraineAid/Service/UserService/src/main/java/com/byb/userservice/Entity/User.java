@@ -33,4 +33,7 @@ public class User implements Serializable {
 
     @TableField("IDENTITY_NO")
     private String identityNo;
+
+    @TableField("IFVERIFIED")
+    private String ifverified;
 }

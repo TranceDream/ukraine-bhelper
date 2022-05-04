@@ -436,6 +436,29 @@ public class UserController {
         return "ttt";
     }
 
+    @PostMapping("/identify")
+    public Result<Map<String, Object>> identify(@RequestBody UserForm userForm){
+
+        Map<String, Object> result = new HashMap<>();
+        if(userForm.getName() == null){
+            return new Result<>(null, Result.FAIL, "姓名为空");
+        }
+
+        if(userForm.getIdentityNo() == null){
+            return new Result<>(null, Result.FAIL, "身份证为空");
+        }
+
+        if(userForm.getUserId() == null){
+            return new Result<>(null, Result.FAIL, "用户Id为空");
+        }
+
+        Boolean flag = userService.identify(userForm);
+        if(!flag){
+            return new Result<>(null, Result.SUCCESS, "实名认证成功");
+        }
+        return new Result<>(null, Result.FAIL, "实名认证失败");
+    }
+
     private void sendMessage(String queue, Object object){
         String msg = JSONObject.toJSONString(object);
         amqpTemplate.convertAndSend(queue, msg);

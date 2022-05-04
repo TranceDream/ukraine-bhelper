@@ -188,5 +188,25 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         return null;
     }
 
+    @Override
+    public Boolean identify(UserForm userForm) {
+        String identityNo = userForm.getIdentityNo();
+        String name = userForm.getName();
+        if(identityNo.length()!=17 && identityNo.length()!=15){
+            return false;
+        }
+        try {
+            User user = baseMapper.selectById(userForm.getUserId());
+            user.setName(name);
+            user.setIdentityNo(identityNo);
+            user.setIfverified("YES");
+            this.save(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
 
 }

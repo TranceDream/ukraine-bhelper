@@ -6,11 +6,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Map;
 
 @FeignClient(name = "userservice")
 public interface UserClient {
 
     @PostMapping("/user/getEmail")
     Result<List<String>> getEmail(@RequestBody List<Long> userIds);
+
+    @PostMapping("/user/identify")
+    Result<Map<String, Object>> identify(@RequestBody Map<String, Object> userForm);
 
 }
