@@ -48,7 +48,50 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
             result.put("msg","提交失败");
         }
 
+        return result;
+    }
 
+    @Override
+    public Map<String, Object> updateHouseInfo(HouseinfoVo houseinfoVo) {
+        Map<String, Object> result = new HashMap<>();
+        try{
+            HouseInfo houseinfo = new HouseInfo();
+            BeanUtils.copyProperties(houseinfoVo,houseinfo);
+
+//            System.out.println(houseinfo);
+            baseMapper.updateById(houseinfo);
+
+            result.put("data",houseinfo.getHouseId());
+            result.put("msg","修改成功");
+            System.out.println("duiduidui");
+
+        }catch(Exception e){
+            e.printStackTrace();
+            result.put("msg","修改失败");
+        }
+
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> deleteHouseInfo(int house) {
+        Map<String, Object> result = new HashMap<>();
+        try{
+            HouseInfo houseinfo = new HouseInfo();
+            houseinfo.setHouseId(house);
+            houseinfo.setDeleteMark("YES");
+
+//            System.out.println(houseinfo);
+            baseMapper.updateById(houseinfo);
+
+            result.put("data",houseinfo.getHouseId());
+            result.put("msg","删除成功");
+            System.out.println("duiduidui");
+
+        }catch(Exception e){
+            e.printStackTrace();
+            result.put("msg","删除失败");
+        }
         return result;
     }
 

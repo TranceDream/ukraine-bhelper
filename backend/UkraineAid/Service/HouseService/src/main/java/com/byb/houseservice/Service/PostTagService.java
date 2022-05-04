@@ -14,4 +14,5 @@ import java.util.Map;
 @Repository
 public interface PostTagService {
     Map<String,Object> addPostTag(List<TagVo> list);
+    Map<String,Object> deleteTag(int tagid);
 }

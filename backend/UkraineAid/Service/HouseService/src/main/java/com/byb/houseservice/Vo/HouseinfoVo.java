@@ -13,9 +13,13 @@ public class HouseinfoVo {
 
     private int userid;
 
+    private int houseId;
+
     private String country;
 
     private String province;
+
+    private String deleteMark;
 
     private String city;
 

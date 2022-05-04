@@ -43,4 +43,44 @@ public class PostContactServiceImpl extends ServiceImpl<ContactMapper, Contact>
         return result;
     }
 
+    @Override
+    public Map<String, Object> updateContact(ContactVo contactVo) {
+        Map<String, Object> result = new HashMap<>();
+        try{
+            Contact contact = new Contact();
+            BeanUtils.copyProperties(contactVo,contact);
+            baseMapper.updateById(contact);
+
+            result.put("msg","修改成功");
+            System.out.println("duiduidui");
+
+        }catch(Exception e){
+            e.printStackTrace();
+            result.put("msg","修改失败");
+        }
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> deleteContact(int contactId) {
+        Map<String, Object> result = new HashMap<>();
+        try{
+            Contact contact = new Contact();
+            contact.setContactId(contactId);
+            contact.setDeleteMask("YES");
+
+//            System.out.println(houseinfo);
+            baseMapper.updateById(contact);
+
+            result.put("data",contact.getContactId());
+            result.put("msg","删除成功");
+//            System.out.println("duiduidui");
+
+        }catch(Exception e){
+            e.printStackTrace();
+            result.put("msg","删除失败");
+        }
+        return result;
+    }
+
 }

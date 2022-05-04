@@ -17,5 +17,7 @@ import java.util.Map;
 public interface PostContactService extends IService<Contact> {
 
     Map<String,Object> addPostContact(List<ContactVo> list);
+    Map<String,Object> updateContact(ContactVo contactVo);
+    Map<String,Object> deleteContact(int contactId);
 
 }

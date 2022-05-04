@@ -15,9 +15,13 @@ import java.sql.Date;
 @Data
 public class ContactVo {
 
+    private int contactId;
+
     private int houseId;
 
     private String content;
+
+    private String deleteMask;
 
     private int typeId;
 }

@@ -56,6 +56,27 @@ public class PostController {
 
     }
 
+    @PostMapping("/updateinfo")
+    public Result<Map<String ,Object>> updateHouse(@RequestBody HouseinfoVo houseinfoVo ,
+                                                 HttpServletResponse response, HttpServletRequest request){
+
+        System.out.println(houseinfoVo);
+        Map<String,Object> dateMap = postHouseService.updateHouseInfo(houseinfoVo);
+
+        return new Result<>(dateMap, Result.SUCCESS);
+
+    }
+    @PostMapping("/deleteinfo")
+    public Result<Map<String ,Object>> deleteHouse(@RequestBody Map<String, Integer> ma,
+                                                   HttpServletResponse response, HttpServletRequest request){
+
+        int houseid = ma.get("houseId");
+        Map<String,Object> dateMap = postHouseService.deleteHouseInfo(houseid);
+
+        return new Result<>(dateMap, Result.SUCCESS);
+
+    }
+
 
 
 
@@ -74,6 +95,26 @@ public class PostController {
 
     }
 
+    @PostMapping("/updatecontact")
+    public Result<Map<String , Object>> updateconnect(@RequestBody ContactVo contactVo,
+                                                    HttpServletResponse response, HttpServletRequest request){
+
+        Map<String,Object> dateMap = postContactService.updateContact(contactVo);
+        return new Result<>(dateMap, Result.SUCCESS);
+
+    }
+
+    @PostMapping("/deletecontact")
+    public Result<Map<String , Object>> deleteconnect(@RequestBody Map<String, Integer> ma,
+                                                    HttpServletResponse response, HttpServletRequest request){
+        int contactId = ma.get("contactId");
+
+        Map<String ,Object> dateMap = postContactService.deleteContact(contactId);
+
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+
+
     @PostMapping("/posttag")
     public Result<Map<String , Object>> posttag(@RequestBody Map<String , List<TagVo> > ma,
                                                     HttpServletResponse response, HttpServletRequest request){
@@ -82,7 +123,16 @@ public class PostController {
         Map<String,Object> dateMap = postTagService.addPostTag(list);
 
         return new Result<>(dateMap, Result.SUCCESS);
+    }
 
+    @PostMapping("/deletetag")
+    public Result<Map<String , Object>> deletetag(@RequestBody Map<String, Integer> ma,
+                                                      HttpServletResponse response, HttpServletRequest request){
+        int contactId = ma.get("contactId");
+
+        Map<String ,Object> dateMap = postContactService.deleteContact(contactId);
+
+        return new Result<>(dateMap, Result.SUCCESS);
     }
 
 

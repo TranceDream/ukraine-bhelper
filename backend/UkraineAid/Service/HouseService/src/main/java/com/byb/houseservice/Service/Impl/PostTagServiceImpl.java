@@ -43,4 +43,26 @@ public class PostTagServiceImpl extends ServiceImpl<TagMapper, Tag>
 
         return result;
     }
+
+    @Override
+    public Map<String, Object> deleteTag(int tagid) {
+        Map<String, Object> result = new HashMap<>();
+        try{
+            Tag tag = new Tag();
+            tag.setTagId(tagid);
+            tag.setDeleteMask("YES");
+
+//            System.out.println(houseinfo);
+            baseMapper.updateById(tag);
+
+            result.put("data",tag.getTagId());
+            result.put("msg","删除成功");
+//            System.out.println("duiduidui");
+
+        }catch(Exception e){
+            e.printStackTrace();
+            result.put("msg","删除失败");
+        }
+        return result;
+    }
 }
