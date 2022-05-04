@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest()
                 .access("@authCheckService.checkPermission(request, authentication)")
-                .and().logout().logoutUrl("/admin/acl/index/logout")//退出路径
+                .and().logout().logoutUrl("/user/logout")//退出路径
                 .addLogoutHandler(new LogoutManager(tokenManager,redisTemplate)).and()
                 .addFilter(new LoginFilter(authenticationManager(), tokenManager, redisTemplate))
                 .addFilter(new AuthFilter(authenticationManager(), tokenManager, redisTemplate)).httpBasic()
@@ -66,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //不进行认证的路径，可以直接访问
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/user/addUserByEmail","/user/activeEmail","/user/htmlEmail");
+        web.ignoring().antMatchers("/user/addUserByEmail","/user/activeEmail","/user/htmlEmail","/user/checkToken","/user/getModuleList");
     }
 
 

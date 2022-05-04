@@ -10,13 +10,13 @@ import com.byb.openfeign.Form.FormGeneration;
 import com.byb.security.Security.TokenManager;
 import com.byb.userservice.Entity.User;
 import com.byb.userservice.Service.*;
+import com.byb.userservice.Vo.ModuleVo;
 import com.byb.userservice.Vo.PermissionForm;
 import com.byb.userservice.Vo.RoleForm;
 import com.byb.userservice.Vo.UserForm;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -412,6 +413,17 @@ public class UserController {
         return new Result(Result.SUCCESS, "操作成功");
     }
 
+    @PostMapping("/getEmail")
+    public Result<List<String>> getEmail(@RequestBody List<Long> userIds){
+        if(userIds == null || userIds.isEmpty()){
+            return null;
+        }
+
+        Map<String, Object> dataMap = userService.getEmail(userIds);
+        List<String> emails = (List<String>) dataMap.get("emails");
+        return new Result<>(emails, Result.SUCCESS);
+    }
+
     @PostMapping("/emailtest")
     public String emailtest(){
         emailService.sendEmail("1.com.com.com.com", "ddd");
@@ -423,6 +435,46 @@ public class UserController {
 //        emailService.sendHtml(userForm.getIdentifier());
         return "ttt";
     }
+
+    @PostMapping("/identify")
+    public Result<Map<String, Object>> identify(@RequestBody UserForm userForm){
+
+        Map<String, Object> result = new HashMap<>();
+        if(userForm.getName() == null){
+            return new Result<>(null, Result.FAIL, "姓名为空");
+        }
+
+        if(userForm.getIdentityNo() == null){
+            return new Result<>(null, Result.FAIL, "身份证为空");
+        }
+
+        if(userForm.getUserId() == null){
+            return new Result<>(null, Result.FAIL, "用户Id为空");
+        }
+
+        Boolean flag = userService.identify(userForm);
+        if(!flag){
+            return new Result<>(null, Result.SUCCESS, "实名认证成功");
+        }
+        return new Result<>(null, Result.FAIL, "实名认证失败");
+    }
+
+    @PostMapping("/getModuleList")
+    public Result<List<ModuleVo>> getMenuList(HttpServletRequest request){
+
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        List<ModuleVo> list = userService.getModuleList(userId);
+
+        return new Result<>(list, Result.SUCCESS);
+    }
+
+//    @PostMapping("/logout")
+//    public void logout(HttpServletRequest request, HttpServletResponse response){
+//
+//        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+//        redisTemplate.opsForValue().getAndDelete(userId);
+//        ResponseUtil.out(response, new Result(null, Result.SUCCESS, "登出成功"));
+//    }
 
     private void sendMessage(String queue, Object object){
         String msg = JSONObject.toJSONString(object);

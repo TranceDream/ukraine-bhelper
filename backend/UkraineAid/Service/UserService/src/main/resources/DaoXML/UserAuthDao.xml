@@ -20,4 +20,12 @@
             ua.IDENTITY_TYPE = #{type} and ua.IDENTIFIER = #{identifier}
         </where>
     </select>
+
+    <select id="selectEmails" parameterType="java.lang.String" resultType="java.lang.String">
+        select * from
+        USER_AUTH
+        <where>
+            IDENTITY_TYPE = 10001 and USER_ID in ${scope} and DELETE_MARK = 'NO'
+        </where>
+    </select>
 </mapper>

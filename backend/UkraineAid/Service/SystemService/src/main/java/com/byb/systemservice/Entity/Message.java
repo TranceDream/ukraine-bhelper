@@ -15,7 +15,7 @@ import java.sql.Date;
 public class Message {
 
     @TableId(value = "MESSAGE_ID", type = IdType.AUTO)
-    private int messageId;
+    private Long messageId;
 
     @TableField("CREATE_TIME")
     private Date createTime;

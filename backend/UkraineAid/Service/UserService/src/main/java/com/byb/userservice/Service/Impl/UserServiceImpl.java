@@ -2,15 +2,15 @@ package com.byb.userservice.Service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.byb.security.Security.DefaultPasswordEncoder;
 import com.byb.userservice.Dao.RoleDao;
 import com.byb.userservice.Dao.UserAuthDao;
 import com.byb.userservice.Dao.UserDao;
 import com.byb.userservice.Dao.UserRoleDao;
-import com.byb.userservice.Entity.RolePermission;
 import com.byb.userservice.Entity.UserRole;
 import com.byb.userservice.Entity.User;
 import com.byb.userservice.Service.UserService;
+import com.byb.userservice.Vo.MenuVo;
+import com.byb.userservice.Vo.ModuleVo;
 import com.byb.userservice.Vo.UserForm;
 import com.byb.userservice.Vo.UserVo;
 import org.springframework.beans.BeanUtils;
@@ -172,6 +172,52 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         result.put("flag", true);
         result.put("userRoleId", userRole.getRoleId());
         return result;
+    }
+
+    @Override
+    public Map<String, Object> getEmail(List<Long> userIds) {
+        String sql = "(";
+        for(int i = 0; i<userIds.size()-1; i++){
+            Long id = userIds.get(i);
+            sql = sql + id.toString() + ",";
+        }
+        Long id = userIds.get(userIds.size()-1);
+        sql = sql + id + ")";
+
+        List<String> emails = userAuthDao.selectEmails(sql);
+        return null;
+    }
+
+    @Override
+    public Boolean identify(UserForm userForm) {
+        String identityNo = userForm.getIdentityNo();
+        String name = userForm.getName();
+        if(identityNo.length()!=17 && identityNo.length()!=15){
+            return false;
+        }
+        try {
+            User user = baseMapper.selectById(userForm.getUserId());
+            user.setName(name);
+            user.setIdentityNo(identityNo);
+            user.setIfverified("YES");
+            this.save(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public List<ModuleVo> getModuleList(Long userId) {
+        List<ModuleVo> list= baseMapper.selectModuleList(userId);
+        return list;
+    }
+
+    @Override
+    public List<MenuVo> getMenuList(Long userId) {
+        List<MenuVo> list = baseMapper.selectMenuList(userId);
+        return list;
     }
 
 

@@ -7,29 +7,26 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
 import java.sql.Date;
 
-@TableName("UA.DICT_PERMISSION")
+@TableName("UA.MENU")
 @Accessors(chain = true)
 @Data
-public class Permission implements Serializable {
+public class Menu {
 
-    @TableId(value = "PERMISSION_ID", type = IdType.AUTO)
+    @TableId(value = "MENU_ID", type = IdType.AUTO)
     private int permissionId;
 
     @TableField("CREATE_TIME")
     private Date createTime;
 
-    @TableField("PERMISSION_NAME")
+    @TableField("MENU")
     private String permissionName;
 
     @TableField("URL")
     private String url;
 
-    @TableField("PARENT_ID")
-    private int parentId;
-
     @TableField("DELETE_MARK")
     private String deleteMark;
+
 }

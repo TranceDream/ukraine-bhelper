@@ -16,6 +16,7 @@ public class UserForm {
     private String name;
     private String identityNo;
     private String uuid;
+    private String ifverified;
 
 
     private Integer roleId;

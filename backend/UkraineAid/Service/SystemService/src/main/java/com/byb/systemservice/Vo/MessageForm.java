@@ -6,11 +6,12 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.sql.Date;
+import java.util.List;
 
 @Data
 public class MessageForm {
 
-    private int messageId;
+    private Long messageId;
 
     private Date createTime;
 
@@ -22,8 +23,10 @@ public class MessageForm {
 
     private String content;
 
-    private Long specificUsers;
+    private List<Long> specificUsers;
 
     private String title;
+
+    private String[] emails;
 
 }

@@ -17,6 +17,8 @@ public class UserVo {
     private String name;
     private String identityNo;
 
+    private String ifverified;
+
     private int roleId;
     private String roleName;
 

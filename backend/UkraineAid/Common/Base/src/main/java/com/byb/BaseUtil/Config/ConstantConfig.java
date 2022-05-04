@@ -20,4 +20,6 @@ public class ConstantConfig {
 
     public final static String SYSL0G_QUEUE = "syslogQueue";
 
+    public final static String MESSAGE_QUEUE = "messageQueue";
+
 }

@@ -2,7 +2,8 @@ package com.byb.userservice.Dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.byb.userservice.Entity.User;
-import com.byb.userservice.Vo.UserForm;
+import com.byb.userservice.Vo.MenuVo;
+import com.byb.userservice.Vo.ModuleVo;
 import com.byb.userservice.Vo.UserVo;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,4 +21,7 @@ public interface UserDao extends BaseMapper<User> {
 
     UserVo selectUserDetail(Long userId);
 
+    List<ModuleVo> selectModuleList(Long userId);
+
+    List<MenuVo> selectMenuList(Long userId);
 }

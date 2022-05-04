@@ -52,6 +52,8 @@ public class AuthFilter extends BasicAuthenticationFilter {
             ResponseUtil.out(response, new Result(Result.NO_PERMISSION, "TOKEN ERROR"));
         }catch (AccessDeniedException e){
             ResponseUtil.out(response, new Result(Result.NO_PERMISSION, "YOU DON'T HAVE THIS AUTHORITY"));
+        }catch (RuntimeException e){
+            ResponseUtil.out(response, new Result(Result.NO_PERMISSION, "请重新登陆"));
         }
     }
 
@@ -72,6 +74,9 @@ public class AuthFilter extends BasicAuthenticationFilter {
                 }
             }
             List<String> permissionValueList = (List<String>)redisTemplate.opsForValue().get(username);
+            if(permissionValueList == null){
+                throw new RuntimeException();
+            }
             Collection<GrantedAuthority> authority = new ArrayList<>();
 //            for(String permissionValue : permissionValueList) {
 //                SimpleGrantedAuthority auth = new SimpleGrantedAuthority(permissionValue);

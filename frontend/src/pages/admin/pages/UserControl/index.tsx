@@ -1,44 +1,50 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /*
  * @Author: Linhao Yu
  * @Date: 2022-04-24 17:17:45
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-04-28 22:29:27
+ * @Last Modified time: 2022-05-03 15:42:40
  */
 import {
-    DownOutlined, EditOutlined, ExclamationCircleOutlined,
-    QuestionCircleOutlined
+    DownOutlined,
+    EditOutlined,
+    ExclamationCircleOutlined,
+    QuestionCircleOutlined,
 } from '@ant-design/icons'
-import type { ProColumns } from '@ant-design/pro-table'
+import type { ActionType, ProColumns } from '@ant-design/pro-table'
 import ProTable from '@ant-design/pro-table'
 import '@ant-design/pro-table/dist/table.css'
-import { Button, message, Modal, Switch, Tooltip } from 'antd'
-import React, { useState } from 'react'
+import {
+    Button,
+    Dropdown,
+    Menu,
+    message,
+    Modal,
+    Space,
+    Switch,
+    Tooltip,
+} from 'antd'
+import React, { useRef, useState } from 'react'
 import { reqGetAllUser } from '../../api'
+import ChangePwd from '../../components/ChangePwd'
 import EditForm from '../../components/EditForm'
 import './ant-pro-card.scss'
 import styles from './index.module.scss'
+
 export type TableListItem = {
     key: number
-    id: string
+    userId: string
     name: string
-    nickname: string
-    role: string
+    roleName: string
     status: string
     country: string
     city: string
-    createAt: number
+    createTime: number
 }
-const tableListDataSource: TableListItem[] = []
+// const tableListDataSource: TableListItem[] = []
 
 // !删除用户
-
-const getdata = (msg: any) => {
-    tableListDataSource.length = 0
-    msg.data.forEach((item: any) => {
-        item.createAt = new Date(item.createAt).getTime()
-        tableListDataSource.push(item)
-    })
-}
 
 const handleErr = (msg: any) => {
     message.error(msg.errormsg)
@@ -49,16 +55,39 @@ export default function UserControl() {
     const [searchCollapsed, setsearchCollapsed] = useState(false)
     const [visiable, setvisiable] = useState(false)
     const [EditVisiable, setEditVisiable] = useState(false)
+    const [ChangePwdVisible, setchangePwdVisible] = useState(false)
     const [Mutevisible, setMutevisible] = useState(false)
     const [confirmLoading, setConfirmLoading] = useState(false)
     const [modalText, setModalText] = useState('初始文字')
+    const [selectUserName, setselectUserName] = useState('')
+    const [selectUserId, setselectUserId] = useState(0)
     const [record, setRecord] = useState({}) // 记录操作行的数据
+    const [tableListDataSource, settableListDataSource] = useState<
+        TableListItem[]
+    >([]) // 记录操作行的数据
+    const ref = useRef<ActionType>()
+
+    const getdata = (data: any) => {
+        let temp: TableListItem[]
+        temp = []
+        data.forEach((item: any) => {
+            let newitem: TableListItem
+            newitem = { ...item }
+            newitem.key = Date.now()
+            newitem.name = '等待实名'
+            item.createAt = new Date(item.createAt).getTime()
+            temp.push(newitem)
+        })
+
+        settableListDataSource(temp)
+    }
+
     const onCollapse = () => {
         setsearchCollapsed(!searchCollapsed)
     }
     const onChange = (record: any) => {
         setRecord(record)
-        let text = record.status == 'on' ? '封禁' : '解封'
+        let text = record.status === 'on' ? '封禁' : '解封'
         setModalText('确定' + text + '该用户吗？')
         setMutevisible(true)
     }
@@ -68,7 +97,7 @@ export default function UserControl() {
         message.warning(
             '还没实现呢~ReactDOM.render is no longer supported in React 18.'
         )
-        record.status = record.status == 'on' ? 'off' : 'on'
+        record.status = record.status === 'on' ? 'off' : 'on'
         setMutevisible(false)
     }
 
@@ -82,9 +111,6 @@ export default function UserControl() {
         setvisiable(true)
         setModalText('确定要删除该用户吗？')
         //! params 用于更新的时候传参
-        // console.log('user', user)
-        // console.log('record', record)
-        // console.log('index', index)
         // console.log('params', params)
     }
 
@@ -121,11 +147,41 @@ export default function UserControl() {
         setEditVisiable(false)
     }
 
+    // 重置密码
+    const showChangePwd = (record: any) => {
+        setselectUserId(record.userId)
+        setselectUserName(record.name)
+        setchangePwdVisible(true)
+    }
+
+    // 确认重置密码
+    const handleChangePwdOk = () => {
+        message.warning(
+            '还没实现呢~ReactDOM.render is no longer supported in React 18.'
+        )
+        setchangePwdVisible(false)
+    }
+
+    // 取消重置密码
+    const handleChangePwdCancel = () => {
+        setchangePwdVisible(false)
+    }
+
+    const menu = (
+        <Menu>
+            <Menu.Item key='1' onClick={() => showChangePwd(record)}>
+                重置密码
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key='2'>分配权限</Menu.Item>
+        </Menu>
+    )
+
     const columns: ProColumns<TableListItem>[] = [
         {
             title: '用户ID',
             width: 50,
-            dataIndex: 'id',
+            dataIndex: 'userId',
             align: 'center',
             render: (_) => <a>{_}</a>,
         },
@@ -143,21 +199,16 @@ export default function UserControl() {
             align: 'center',
         },
         {
-            title: '昵称',
-            width: 120,
-            dataIndex: 'nickname',
-            align: 'center',
-        },
-        {
             title: '角色',
             width: 80,
-            dataIndex: 'role',
+            dataIndex: 'roleName',
             align: 'center',
-            search: false,
+            // search: false,
             filters: true,
             onFilter: true,
+            // hideInTable: true,
             valueEnum: {
-                Admin: 'Admin',
+                NORMAL_USER: '普通用户',
                 Refugee: 'Refugee',
                 Editor: 'Editor',
             },
@@ -169,6 +220,7 @@ export default function UserControl() {
             search: false,
             filters: true,
             onFilter: true,
+            // hideInTable: true,
             align: 'center',
             // valueEnum: {
             //     on: { text: '正常', status: 'Success' },
@@ -176,7 +228,7 @@ export default function UserControl() {
             // },
             render: (text, record, index) => (
                 <Switch
-                    checked={record.status == 'on' ? true : false}
+                    checked={record.status === 'on' ? true : false}
                     onChange={() => onChange(record)}
                 />
             ),
@@ -197,9 +249,9 @@ export default function UserControl() {
             title: '创建时间',
             width: 140,
             key: 'since',
-            dataIndex: 'createAt',
+            dataIndex: 'createTime',
             valueType: 'date',
-            sorter: (a, b) => a.createAt - b.createAt,
+            sorter: (a, b) => a.createTime - b.createTime,
         },
         {
             title: '操作',
@@ -213,6 +265,23 @@ export default function UserControl() {
                 <a key='edit' onClick={() => EditUser(text, record, index)}>
                     编辑
                 </a>,
+                <Dropdown key={1} overlay={menu}>
+                    <a
+                        onClick={(e) => {
+                            e.preventDefault()
+                            setRecord(record)
+                            console.log('点击了')
+                        }}
+                        onMouseEnter={() => {
+                            setRecord(record)
+                            console.log('hover了')
+                        }}>
+                        <Space>
+                            更多
+                            <DownOutlined />
+                        </Space>
+                    </a>
+                </Dropdown>,
             ],
         },
     ]
@@ -220,24 +289,32 @@ export default function UserControl() {
     return (
         <>
             <ProTable<TableListItem>
+                actionRef={ref}
                 columns={columns}
                 request={async (params, sorter, filter) => {
                     // 表单搜索项会从 params 传入，传递给后端接口。
+                    if ('userId' in params) {
+                        params.userId = parseInt(params.userId)
+                    }
                     setParams(params)
                     console.log('UseControl: ', params, sorter, filter)
                     const msg = await reqGetAllUser({
-                        page: params.current,
-                        pageSize: params.pageSize,
+                        ...params,
+                        ...sorter,
                     })
-                    if (msg.status === 200) {
-                        getdata(msg)
+                    if (msg.code === 200) {
+                        if (msg.data.data) {
+                            getdata(msg.data.data)
+                        } else {
+                            settableListDataSource([])
+                        }
                         return {
                             data: tableListDataSource,
                             // success 请返回 true，
                             // 不然 table 会停止解析数据，即使有数据
                             success: true,
                             // 不传会使用 data 的长度，如果是分页一定要传
-                            total: 100,
+                            total: tableListDataSource.length,
                         }
                     } else {
                         handleErr(msg)
@@ -248,11 +325,14 @@ export default function UserControl() {
                             // 不然 table 会停止解析数据，即使有数据
                             success: true,
                             // 不传会使用 data 的长度，如果是分页一定要传
-                            total: 0,
+                            total: tableListDataSource.length,
                         }
                     }
                 }}
-                rowKey='key'
+                dataSource={tableListDataSource}
+                rowKey={(record) => {
+                    return record.userId + Date.now().toString() //在这里加上一个时间戳就可以了
+                }}
                 pagination={{
                     showQuickJumper: true,
                 }}
@@ -321,7 +401,7 @@ export default function UserControl() {
             <Modal
                 title={
                     <>
-                        <EditOutlined 
+                        <EditOutlined
                             style={{
                                 fontSize: 20,
                                 color: '#000',
@@ -334,8 +414,31 @@ export default function UserControl() {
                 visible={EditVisiable}
                 onOk={() => handleEditOk()}
                 confirmLoading={confirmLoading}
-                onCancel={handleEditCancel}>
+                onCancel={handleEditCancel}
+                footer={null}>
                 <EditForm />
+            </Modal>
+
+            {/* 重置密码 */}
+            <Modal
+                title={
+                    <>
+                        <EditOutlined
+                            style={{
+                                fontSize: 20,
+                                color: '#000',
+                                marginRight: 10,
+                            }}
+                        />
+                        编辑用户信息
+                    </>
+                }
+                visible={ChangePwdVisible}
+                onOk={handleChangePwdOk}
+                confirmLoading={confirmLoading}
+                onCancel={handleChangePwdCancel}
+                footer={null}>
+                <ChangePwd userName={selectUserName} userId={selectUserId} />
             </Modal>
         </>
     )

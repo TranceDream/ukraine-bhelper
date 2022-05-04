@@ -17,10 +17,21 @@ export default function ajax(url, data = {}, type = 'GET') {
         if (type === 'GET') {
             promise = axios.get(url, {
                 params: data,
+                headers: {
+                    'Content-Type': 'application/octet-stream',
+                    token: 'eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQAAiUdpdSKAiUrQzNTQ1NLQ3Mzy1oA2Czs8SAAAAA.T6csDOU-w-uImXscI8ghv80eiZzihTbm4aYOQbuc0tae4ikxIU89jIhFcrZIOBpFDpAXS6y9sfMOGgJX_V0LSQ',
+                    'Access-Control-Allow-Origin': '*',
+                },
             })
         } else {
             // post
-            promise = axios.post(url, data)
+            promise = axios.post(url, data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    token: 'eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQAAiUdpdSKAiUrQzNTQzMDCyMzo1oABSwxPiAAAAA.Hegl1Md3UvjZO6oKqV9S0-8RHMB-AZ4UJLTXPq3dBpzsdJlRwD34KzvhPzX5e1qeASbf1PN_r9VVqHWVJbpgNg',
+                    'Access-Control-Allow-Origin': '*',
+                },
+            })
         }
         promise
             .then((response) => {
