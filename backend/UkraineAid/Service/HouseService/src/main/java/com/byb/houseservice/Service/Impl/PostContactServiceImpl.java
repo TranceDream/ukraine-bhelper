@@ -83,4 +83,17 @@ public class PostContactServiceImpl extends ServiceImpl<ContactMapper, Contact>
         return result;
     }
 
+    @Override
+    public Map<String, Object> selectContact(Map<String, Object> selectCondition) {
+        Map<String, Object> result = new HashMap<>();
+        try{
+            List<Contact> ContactList = baseMapper.selectByMap(selectCondition);
+            result.put("data",ContactList);
+        }catch(Exception e){
+            e.printStackTrace();
+            result.put("msg","失败");
+        }
+        return result;
+    }
+
 }

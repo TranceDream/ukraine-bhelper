@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.byb.houseservice.Dao.TagMapper;
 import com.byb.houseservice.Entity.Contact;
 import com.byb.houseservice.Entity.Tag;
+import com.byb.houseservice.Entity.TagType;
 import com.byb.houseservice.Service.PostTagService;
 import com.byb.houseservice.Vo.ContactVo;
 import com.byb.houseservice.Vo.TagVo;
@@ -62,6 +63,19 @@ public class PostTagServiceImpl extends ServiceImpl<TagMapper, Tag>
         }catch(Exception e){
             e.printStackTrace();
             result.put("msg","删除失败");
+        }
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> selectTag(Map<String, Object> selectCondition) {
+        Map<String, Object> result = new HashMap<>();
+        try{
+            List<Tag> tagList= baseMapper.selectByMap(selectCondition);
+            result.put("data",tagList);
+        }catch(Exception e){
+            e.printStackTrace();
+            result.put("msg","失败");
         }
         return result;
     }

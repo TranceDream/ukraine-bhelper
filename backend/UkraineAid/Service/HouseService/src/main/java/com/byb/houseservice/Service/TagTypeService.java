@@ -1,5 +1,6 @@
 package com.byb.houseservice.Service;
 
+import com.byb.houseservice.Entity.TagType;
 import com.byb.houseservice.Vo.ContactVo;
 import com.byb.houseservice.Vo.TagTypeVo;
 import com.byb.houseservice.Vo.TagVo;
@@ -17,4 +18,6 @@ import java.util.Map;
 public interface TagTypeService {
     Map<String,Object> addTagType (List<TagTypeVo> list);
     Map<String,Object> deleteTagType(int tagid);
+    Map<String ,Object> selectTagType (Map<String,Object> selectCondition);
+
 }

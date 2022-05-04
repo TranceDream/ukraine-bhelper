@@ -15,4 +15,6 @@ import java.util.Map;
 public interface PostTagService {
     Map<String,Object> addPostTag(List<TagVo> list);
     Map<String,Object> deleteTag(int tagid);
+    Map<String,Object> selectTag(Map<String,Object> selectCondition);
+
 }

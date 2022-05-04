@@ -19,5 +19,7 @@ public interface PostContactService extends IService<Contact> {
     Map<String,Object> addPostContact(List<ContactVo> list);
     Map<String,Object> updateContact(ContactVo contactVo);
     Map<String,Object> deleteContact(int contactId);
+    Map<String,Object> selectContact(Map<String,Object> selectCondition);
+
 
 }

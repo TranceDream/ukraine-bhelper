@@ -64,4 +64,18 @@ public class TagTypeServiceImpl extends ServiceImpl<TagTypeMapper, TagType>
         }
         return result;
     }
+
+    @Override
+    public Map<String, Object> selectTagType(Map<String,Object> selectCondition) {
+        Map<String, Object> result = new HashMap<>();
+        try{
+            List<TagType> tagTypeList = baseMapper.selectByMap(selectCondition);
+            result.put("data",tagTypeList);
+        }catch(Exception e){
+            e.printStackTrace();
+            result.put("msg","失败");
+        }
+        return result;
+    }
+
 }

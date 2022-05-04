@@ -37,6 +37,7 @@ public class PostController {
         map.put("message", "welcome to house module");
         return new Result<>(map, Result.SUCCESS);
     }
+
     @Autowired
     private PostHouseService postHouseService;
 
@@ -46,7 +47,7 @@ public class PostController {
     @Autowired
     private PostTagService postTagService;
 
-    //基础房源信息*******************************************************************************************************************
+    //基础房源信息********************************************************************************************************
     @PostMapping("/postinfo")
     public Result<Map<String ,Object>> postHouse(@RequestBody HouseinfoVo houseinfoVo ,
                                                  HttpServletResponse response, HttpServletRequest request){
@@ -58,7 +59,6 @@ public class PostController {
         Map<String,Object> dateMap = postHouseService.addpostHouseInfo(houseinfoVo);
 
         return new Result<>(dateMap, Result.SUCCESS);
-
     }
 
     @PostMapping("/updateinfo")
@@ -81,6 +81,15 @@ public class PostController {
         return new Result<>(dateMap, Result.SUCCESS);
 
     }
+    @PostMapping("/selectHouse")
+    public Result<Map<String,Object>>  selectHouse(@RequestBody Map<String, Object> selectcondiction,
+                                                    HttpServletResponse response, HttpServletRequest request){
+
+        Map<String,Object> dateMap = postHouseService.selcetHouse(selectcondiction);
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+
+
 
 
 //*contact***************************************************************************************************************************
@@ -134,9 +143,9 @@ public class PostController {
     @PostMapping("/deletetag")
     public Result<Map<String , Object>> deletetag(@RequestBody Map<String, Integer> ma,
                                                       HttpServletResponse response, HttpServletRequest request){
-        int contactId = ma.get("contactId");
+        int TagId = ma.get("contactId");
 
-        Map<String ,Object> dateMap = postContactService.deleteContact(contactId);
+        Map<String ,Object> dateMap = postTagService.deleteTag(TagId);
 
         return new Result<>(dateMap, Result.SUCCESS);
     }

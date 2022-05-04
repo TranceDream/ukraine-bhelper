@@ -81,4 +81,18 @@ public class ContactTypeServiceImpl extends ServiceImpl<ContactTypeMapper, Conta
         }
         return result;
     }
+
+    @Override
+    public Map<String, Object> selectContactType(Map<String, Object> selectCondition) {
+        Map<String, Object> result = new HashMap<>();
+        try{
+            List<ContactType> ContactTypeList = baseMapper.selectByMap(selectCondition);
+            result.put("data",ContactTypeList);
+        }catch(Exception e){
+            e.printStackTrace();
+            result.put("msg","失败");
+        }
+        return result;
+    }
+
 }

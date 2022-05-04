@@ -4,6 +4,7 @@ package com.byb.houseservice.Service.Impl;
 //import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.byb.houseservice.Dao.HouseInfoMapper;
+import com.byb.houseservice.Entity.TagType;
 import com.byb.houseservice.Service.PostHouseService;
 import com.byb.houseservice.Entity.HouseInfo;
 import com.byb.houseservice.Vo.ContactVo;
@@ -91,6 +92,20 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
         }catch(Exception e){
             e.printStackTrace();
             result.put("msg","删除失败");
+        }
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> selcetHouse(Map<String, Object> selectCondition) {
+        Map<String, Object> result = new HashMap<>();
+        try{
+            List<HouseInfo> houseInfoList = baseMapper.selectByMap(selectCondition);
+            System.out.println(selectCondition);
+            result.put("data",houseInfoList);
+        }catch(Exception e){
+            e.printStackTrace();
+            result.put("msg","失败");
         }
         return result;
     }
