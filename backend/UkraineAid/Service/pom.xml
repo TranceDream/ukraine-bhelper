@@ -18,6 +18,7 @@
     <modules>
         <module>UserService</module>
         <module>SystemService</module>
+        <module>NewsService</module>
     </modules>
 
     <dependencies>
