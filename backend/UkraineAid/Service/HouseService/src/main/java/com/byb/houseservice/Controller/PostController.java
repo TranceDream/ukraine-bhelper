@@ -31,7 +31,12 @@ import java.util.Map;
 @RequestMapping("/house")
 public class PostController {
 
-
+    @PostMapping("/test")
+    public Result<Map<String, Object>> test() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("message", "welcome to house module");
+        return new Result<>(map, Result.SUCCESS);
+    }
     @Autowired
     private PostHouseService postHouseService;
 
@@ -41,7 +46,7 @@ public class PostController {
     @Autowired
     private PostTagService postTagService;
 
-    //基础房源信息
+    //基础房源信息*******************************************************************************************************************
     @PostMapping("/postinfo")
     public Result<Map<String ,Object>> postHouse(@RequestBody HouseinfoVo houseinfoVo ,
                                                  HttpServletResponse response, HttpServletRequest request){
@@ -78,7 +83,7 @@ public class PostController {
     }
 
 
-
+//*contact***************************************************************************************************************************
 
     @PostMapping("/postcontact")
     public Result<Map<String , Object>> postconnect(@RequestBody Map<String , List<ContactVo> > ma,
@@ -115,6 +120,7 @@ public class PostController {
     }
 
 
+//***********tag**********************************************************************************************************
     @PostMapping("/posttag")
     public Result<Map<String , Object>> posttag(@RequestBody Map<String , List<TagVo> > ma,
                                                     HttpServletResponse response, HttpServletRequest request){
@@ -136,13 +142,10 @@ public class PostController {
     }
 
 
+
+
 ////        test
-//    @PostMapping("/test")
-//    public Result<Map<String, Object>> test() {
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("message", "welcome to house module");
-//        return new Result<>(map, Result.SUCCESS);
-//    }
+
 //
 //    @Value("${pattern.dateformat}")
 //    private String dateformat;

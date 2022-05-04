@@ -33,7 +33,7 @@ public class PostContactServiceImpl extends ServiceImpl<ContactMapper, Contact>
             }
 
             result.put("msg","提交成功");
-            System.out.println("duiduidui");
+//            System.out.println("duiduidui");
 
         }catch(Exception e){
             e.printStackTrace();
