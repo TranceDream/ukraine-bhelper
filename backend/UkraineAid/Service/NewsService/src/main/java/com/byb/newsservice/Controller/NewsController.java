@@ -1,6 +1,6 @@
 package com.byb.newsservice.Controller;
 
-import com.alibaba.fastjson.JSONObject;
+//import com.alibaba.fastjson.JSONObject;
 import com.byb.BaseUtil.Utils.Result;
 import com.byb.newsservice.Service.ArticleService;
 import com.byb.newsservice.Vo.ArticleVo;
@@ -30,7 +30,7 @@ public class NewsController {
     @PostMapping("/test")
     public Result<Map<String, Object>> test() {
         Map<String, Object> map = new HashMap<>();
-        map.put("message", "welcome to house module");
+        map.put("message", "welcome to news module");
         return new Result<>(map, Result.SUCCESS);
     }
 
@@ -81,7 +81,7 @@ public class NewsController {
     }
 
     //图片上传问题
-    @RequestMapping("/fileupload")
+    @PostMapping("/fileupload")
     @ResponseBody
     public Result<Map<String,Object>> fileUpload(@RequestParam(value = "editormd-image-file", required = true) MultipartFile file, HttpServletRequest request) throws IOException {
         //上传路径保存设置

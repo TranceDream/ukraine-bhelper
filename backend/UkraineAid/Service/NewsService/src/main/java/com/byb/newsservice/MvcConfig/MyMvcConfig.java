@@ -1,4 +1,4 @@
-package com.byb.houseservice.MvcConfig;
+package com.byb.newsservice.MvcConfig;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
