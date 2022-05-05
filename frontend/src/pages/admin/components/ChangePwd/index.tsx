@@ -41,15 +41,13 @@ export default function ChangePwd(props: Props) {
         message.error('还没有实现')
         console.log('Received values of form: ', values)
     }
-    const onCancel = () => {
-        form.resetFields()
-    }
     return (
         <Form
             {...formItemLayout}
             form={form}
             name='changePassword'
             onFinish={onFinish}
+            preserve={false}
             scrollToFirstError>
             <Form.Item
                 name='id'
@@ -61,12 +59,13 @@ export default function ChangePwd(props: Props) {
                     },
                 ]}
                 initialValue={props.userId}>
-                <Input />
+                <Input disabled={true} />
             </Form.Item>
 
             <Form.Item
                 name='username'
                 label='用户名'
+                preserve={false}
                 rules={[
                     {
                         required: true,
@@ -79,6 +78,7 @@ export default function ChangePwd(props: Props) {
             <Form.Item
                 name='password'
                 label='新密码'
+                preserve={false}
                 rules={[
                     {
                         required: true,
@@ -92,6 +92,7 @@ export default function ChangePwd(props: Props) {
             <Form.Item
                 name='confirm'
                 label='确认密码'
+                preserve={false}
                 dependencies={['password']}
                 hasFeedback
                 rules={[
@@ -115,12 +116,6 @@ export default function ChangePwd(props: Props) {
                 <Input.Password />
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
-                <Button
-                    style={{ marginRight: 15 }}
-                    type='primary'
-                    onClick={onCancel}>
-                    取消
-                </Button>
                 <Button type='primary' htmlType='submit'>
                     修改
                 </Button>
