@@ -36,6 +36,9 @@
         <directory>D:/ukraine-bhelper/output</directory>
         <plugins>
             <plugin>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
