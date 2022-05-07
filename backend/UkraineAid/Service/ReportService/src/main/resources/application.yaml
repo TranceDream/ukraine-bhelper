@@ -14,7 +14,6 @@ spring:
       pool:
         max-active: 20
         max-wait: -1
-    password: syhxsqqaxfdyhh
 
   reportService:
     reportObjtypeId: 10005
