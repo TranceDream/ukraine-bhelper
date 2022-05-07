@@ -31,4 +31,6 @@ public class ArticleVo  {
     private Date creattime;
 
     private String deletemark;
+
+    private Integer status;
 }

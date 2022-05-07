@@ -1,11 +1,18 @@
 package com.byb.newsservice.Controller;
 
 //import com.alibaba.fastjson.JSONObject;
+import com.byb.BaseUtil.Config.ConstantConfig;
+import com.byb.BaseUtil.Utils.ResponseUtil;
 import com.byb.BaseUtil.Utils.Result;
+import com.byb.newsservice.Entity.Article;
 import com.byb.newsservice.Service.ArticleService;
 import com.byb.newsservice.Vo.ArticleVo;
+import com.byb.openfeign.Client.AuditClient;
+import com.byb.openfeign.Client.ReportClient;
+import com.byb.openfeign.Form.FormGeneration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +40,15 @@ public class NewsController {
         map.put("message", "welcome to news module");
         return new Result<>(map, Result.SUCCESS);
     }
+
+    @Autowired
+    private ReportClient reportClient;
+
+    @Autowired
+    private AuditClient auditClient;
+
+    @Value("${spring.newService.newsObjtypeId}")
+    private int newsObjtypeId;
 
     @Autowired
     private ArticleService articleService;
@@ -116,6 +132,58 @@ public class NewsController {
         return new Result<> (res, Result.SUCCESS);
     }
 
+    @PostMapping("/report")
+    public Result<Map<String, Object>> report(@RequestBody Map<String, Object> reportForm, HttpServletResponse response, HttpServletRequest request){
+        Long postId = (Long) reportForm.get("postId");
+        if(postId == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
+        }
+
+        String reason = (String) reportForm.get("reason");
+        if(reason == null || reason.isEmpty()){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "举报理由为空"));
+        }
+
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+
+        Map<String, Object> form = FormGeneration.generateReportForm(newsObjtypeId, postId, userId, reason, null, null);
+
+        reportClient.addReport(form);
+        return new Result<>(null, Result.SUCCESS, "举报成功，等待管理员审核");
+    }
+
+    @PostMapping("/doAudit")
+    public Result<Map<String, Object>> doAudit(@RequestBody Map<String, Object> newsForm, HttpServletResponse response, HttpServletRequest request){
+
+        Long newsId = (Long) newsForm.get("newsId");
+        if(newsId == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
+        }
+
+        Integer oper = (Integer) newsForm.get("oper");
+        if(oper == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "审核操作为空"));
+        }
+
+        Integer status = (Integer) newsForm.get("status");
+        if(status == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "审核状态为空"));
+        }
+
+        String message = (String) newsForm.get("message");
+
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+
+        Map<String, Object> auditForm = FormGeneration.generateAuditForm(newsObjtypeId, newsId, userId, oper, message, null, null);
+
+        Article article = articleService.getById(newsId);
+        article.setStatus(status);
+        articleService.updateById(article);
+
+        auditClient.addAudit(auditForm);
+        return new Result<>(null, Result.SUCCESS, "审核成功");
+
+    }
 
 
 }
