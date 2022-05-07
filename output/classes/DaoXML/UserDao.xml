@@ -55,8 +55,9 @@
 
     <resultMap id="menuVo" type="com.byb.userservice.Vo.MenuVo">
         <id property="menuId" column="MENU_ID"/>
-        <result property="menuName" column="MENU"/>
-        <result property="url" column="URL"/>
+        <result property="title" column="MENU"/>
+        <result property="key" column="URL"/>
+        <result property="icon" column="ICON"/>
         <result property="createTime" column="CREATE_TIME"/>
     </resultMap>
 
@@ -136,6 +137,8 @@
                 </otherwise>
             </choose>
 
+            AND ur.DELETE_MARK = 'NO'
+
             AND dur.DELETE_MARK = 'NO' AND dr.DELETE_MARK = 'NO'
 
         </where>
@@ -192,6 +195,8 @@
             </otherwise>
         </choose>
 
+        AND ur.DELETE_MARK = 'NO'
+
         AND dur.DELETE_MARK = 'NO' AND dr.DELETE_MARK = 'NO'
 
         <choose>
@@ -217,7 +222,7 @@
             IDENTITY_NO
         from USER
         <where>
-            USER_ID = #{userId}
+            USER_ID = #{userId} AND DELETE_MARK = 'NO'
         </where>
     </select>
 

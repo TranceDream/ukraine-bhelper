@@ -32,7 +32,7 @@ spring:
 
   userService:
     normalUserRoleName: NORMAL_USER
-    activeFilePath: E:\\ukraine-bhelper\\backend\\UkraineAid\\Service\\UserService\\src\\main\\resources\\static\\Active.html
+    activeFilePath: /Uk/HTML/Active.html
     userObjtypeId: 10000
     roleObjtypeId: 10001
     permissionObjtypeId: 10002

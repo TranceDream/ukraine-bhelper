@@ -10,6 +10,7 @@
 
     <artifactId>UserService</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>UserService</name>
     <description>UserService</description>
     <properties>
@@ -46,9 +47,13 @@
 
 
     <build>
-        <directory>D:/ukraine-bhelper/output</directory>
+        <directory>D:/ukraine-bhelper/output/user</directory>
         <plugins>
             <plugin>
+                <configuration>
+<!--                    <skip>true</skip>-->
+                    <executable>true</executable>
+                </configuration>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
