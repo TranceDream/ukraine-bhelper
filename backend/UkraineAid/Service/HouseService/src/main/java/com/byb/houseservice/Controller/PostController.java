@@ -1,5 +1,6 @@
 package com.byb.houseservice.Controller;
 
+import com.byb.BaseUtil.Config.ConstantConfig;
 import com.byb.BaseUtil.Utils.ResponseUtil;
 import com.byb.BaseUtil.Utils.Result;
 import com.byb.houseservice.Service.PostContactService;
@@ -8,6 +9,8 @@ import com.byb.houseservice.Service.PostTagService;
 import com.byb.houseservice.Vo.ContactVo;
 import com.byb.houseservice.Vo.HouseinfoVo;
 import com.byb.houseservice.Vo.TagVo;
+import com.byb.openfeign.Client.ReportClient;
+import com.byb.openfeign.Form.FormGeneration;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -46,6 +49,12 @@ public class PostController {
 
     @Autowired
     private PostTagService postTagService;
+
+    @Autowired
+    private ReportClient reportClient;
+
+    @Value("${spring.houseService.houseObjtypeId}")
+    private int houseObjtypeId;
 
     //基础房源信息********************************************************************************************************
     @PostMapping("/postinfo")
@@ -179,5 +188,25 @@ public class PostController {
 //    public String now(){
 //        return LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateformat));
 //    }
+
+    @PostMapping("/report")
+    public Result<Map<String, Object>> report(@RequestBody Map<String, Object> reportForm, HttpServletResponse response, HttpServletRequest request){
+        Long postId = (Long) reportForm.get("postId");
+        if(postId == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
+        }
+
+        String reason = (String) reportForm.get("reason");
+        if(reason == null || reason.isEmpty()){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "举报理由为空"));
+        }
+
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+
+        Map<String, Object> form = FormGeneration.generateReportForm(houseObjtypeId, postId, userId, reason, null, null);
+
+        reportClient.addReport(form);
+        return new Result<>(null, Result.SUCCESS, "举报成功，等待管理员审核");
+    }
 
 }

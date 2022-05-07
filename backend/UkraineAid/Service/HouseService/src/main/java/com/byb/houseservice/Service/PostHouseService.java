@@ -30,5 +30,4 @@ public interface PostHouseService extends IService<HouseInfo> {
 
 
 
-
 }

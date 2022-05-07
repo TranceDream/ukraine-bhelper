@@ -4,22 +4,24 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-24 17:17:45
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-03 15:42:40
+ * @Last Modified time: 2022-05-07 20:35:22
  */
 import {
     DownOutlined,
     EditOutlined,
     ExclamationCircleOutlined,
-    QuestionCircleOutlined,
+    QuestionCircleOutlined
 } from '@ant-design/icons'
 import type { ActionType, ProColumns } from '@ant-design/pro-table'
 import ProTable from '@ant-design/pro-table'
 import '@ant-design/pro-table/dist/table.css'
-import { Button, Dropdown, Menu, message, Modal, Space, Tooltip } from 'antd'
-import React, { useRef, useState } from 'react'
+import { Button, message, Modal, Tooltip } from 'antd'
+import React, { useEffect, useRef, useState } from 'react'
 import { reqGetAllUser } from '../../api'
 import ChangePwd from '../../components/ChangePwd'
 import EditForm from '../../components/EditForm'
+import MuteForm from '../../components/MuteForm'
+import PubSub from '../../Utils/pubsub'
 import './ant-pro-card.scss'
 import styles from './index.module.scss'
 
@@ -55,11 +57,30 @@ export default function UserControl() {
     const [selectUserId, setselectUserId] = useState(0)
     const [selectCountry, setselectCountry] = useState('')
     const [selectCity, setselectCity] = useState('')
+    const [selectCreateTime, setselectCreateTime] = useState('')
     const [record, setRecord] = useState({}) // 记录操作行的数据
     const [tableListDataSource, settableListDataSource] = useState<
         TableListItem[]
     >([]) // 记录操作行的数据
+
     const ref = useRef<ActionType>()
+
+    useEffect(() => {
+        var token = PubSub.subscribe(
+            'updateUser',
+            // deal
+            (msg: string, data: string) => {
+                console.log('xiugai ')
+                message.success('修改成功')
+                setEditVisiable(false)
+                ref.current?.reload()
+            }
+        )
+
+        return () => {
+            PubSub.unsubscribe(token)
+        }
+    })
 
     const getdata = (data: any) => {
         let temp: TableListItem[]
@@ -79,19 +100,20 @@ export default function UserControl() {
     const onCollapse = () => {
         setsearchCollapsed(!searchCollapsed)
     }
-    const onChange = (record: any) => {
+
+    //封禁用户
+    const handleMute = (record: any) => {
         setRecord(record)
-        let text = record.status === 'on' ? '封禁' : '解封'
-        setModalText('确定' + text + '该用户吗？')
         setMutevisible(true)
+        setselectUserName(record.name)
+        setselectUserId(record.userId)
+        setselectCreateTime(record.createTime)
+        setselectCity(record.city)
+        setselectCountry(record.country)
     }
 
     // 封禁用户
     const handleMuteOk = (record: any) => {
-        message.warning(
-            '还没实现呢~ReactDOM.render is no longer supported in React 18.'
-        )
-        record.status = record.status === 'on' ? 'off' : 'on'
         setMutevisible(false)
     }
 
@@ -123,7 +145,7 @@ export default function UserControl() {
 
     // 编辑用户
     const EditUser = (text: any, record: any, index: any) => {
-        console.log('编辑用户', record)
+        // console.log('编辑用户', record)
         setEditVisiable(true)
         setselectCity(record.city)
         setselectCountry(record.country)
@@ -144,10 +166,6 @@ export default function UserControl() {
     //取消编辑用户
     const handleEditCancel = () => {
         setEditVisiable(false)
-        setselectCity('')
-        setselectCountry('')
-        setselectUserId(0)
-        setselectUserName('')
     }
 
     // 重置密码
@@ -170,15 +188,17 @@ export default function UserControl() {
         setchangePwdVisible(false)
     }
 
-    const menu = (
-        <Menu>
-            <Menu.Item key='1' onClick={() => showChangePwd(record)}>
-                重置密码
-            </Menu.Item>
-            <Menu.Divider />
-            <Menu.Item key='2'>分配权限</Menu.Item>
-        </Menu>
-    )
+    // const menu = (
+    //     <Menu>
+    //         <Menu.Item key='1' onClick={() => showChangePwd(record)}>
+    //             重置密码
+    //         </Menu.Item>
+    //         <Menu.Divider />
+    //         <Menu.Item key='2' onClick={() => handleMute(record)}>
+    //             角色分配
+    //         </Menu.Item>
+    //     </Menu>
+    // )
 
     const columns: ProColumns<TableListItem>[] = [
         {
@@ -186,7 +206,7 @@ export default function UserControl() {
             width: 50,
             dataIndex: 'userId',
             align: 'center',
-            render: (_) => <a>{_}</a>,
+            render: (_,record) => <a onClick={() => handleMute(record)}>{_}</a>,
         },
         {
             title: (
@@ -209,11 +229,11 @@ export default function UserControl() {
             // search: false,
             filters: true,
             onFilter: true,
-            // hideInTable: true,
+            hideInTable: true,
             valueEnum: {
                 NORMAL_USER: '普通用户',
-                Refugee: 'Refugee',
-                Editor: 'Editor',
+                ADMIN: '管理员',
+                EDITOR: '编辑者',
             },
         },
         // {
@@ -281,23 +301,24 @@ export default function UserControl() {
                 <a key='edit' onClick={() => EditUser(text, record, index)}>
                     编辑
                 </a>,
-                <Dropdown key={1} overlay={menu}>
-                    <a
-                        onClick={(e) => {
-                            e.preventDefault()
-                            setRecord(record)
-                            console.log('点击了')
-                        }}
-                        onMouseEnter={() => {
-                            setRecord(record)
-                            console.log('hover了')
-                        }}>
-                        <Space>
-                            更多
-                            <DownOutlined />
-                        </Space>
-                    </a>
-                </Dropdown>,
+                <a key='change' onClick={() => showChangePwd(record)}>
+                    重置密码
+                </a>,
+                // <Dropdown key={1} overlay={menu}>
+                //     <a
+                //         onClick={(e) => {
+                //             e.preventDefault()
+                //             setRecord(record)
+                //         }}
+                //         onMouseEnter={() => {
+                //             setRecord(record)
+                //         }}>
+                //         <Space>
+                //             更多
+                //             <DownOutlined />
+                //         </Space>
+                //     </a>
+                // </Dropdown>,
             ],
         },
     ]
@@ -373,6 +394,8 @@ export default function UserControl() {
             />
             {/* 封禁用户 */}
             <Modal
+                width={800}
+                destroyOnClose={true}
                 title={
                     <>
                         <ExclamationCircleOutlined
@@ -388,8 +411,15 @@ export default function UserControl() {
                 visible={Mutevisible}
                 onOk={() => handleMuteOk(record)}
                 confirmLoading={confirmLoading}
+                footer={null}
                 onCancel={handleMuteCancel}>
-                <p>{modalText}</p>
+                <MuteForm
+                    userName={selectUserName}
+                    userId={selectUserId}
+                    country={selectCountry}
+                    city={selectCity}
+                    createTime={selectCreateTime}
+                />
             </Modal>
 
             {/* 删除用户 */}

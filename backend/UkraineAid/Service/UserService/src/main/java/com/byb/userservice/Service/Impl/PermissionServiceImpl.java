@@ -63,6 +63,8 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionDao, Permission
             baseMapper.insert(permission);
         }catch (Exception e){
             e.printStackTrace();
+            result.put("flag", false);
+            return result;
         }
         Integer permissionId = permission.getPermissionId();
 

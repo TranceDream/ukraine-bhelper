@@ -34,4 +34,7 @@ public class Article {
     @TableField("content")
     private String content;
 
+    @TableField("STATUS")
+    private Integer status;
+
 }

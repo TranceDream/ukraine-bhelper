@@ -7,6 +7,7 @@ import com.byb.BaseUtil.Utils.Result;
 import com.byb.BaseUtil.Utils.UUIDUtils;
 import com.byb.openfeign.Client.SysClient;
 import com.byb.openfeign.Form.FormGeneration;
+import com.byb.security.Security.DefaultPasswordEncoder;
 import com.byb.security.Security.TokenManager;
 import com.byb.userservice.Entity.User;
 import com.byb.userservice.Service.*;
@@ -64,6 +65,9 @@ public class UserController {
 
     @Autowired
     private AmqpTemplate amqpTemplate;
+
+    @Autowired
+    private DefaultPasswordEncoder defaultPasswordEncoder;
 
     @Value("${spring.userService.permissionObjtypeId}")
     private int permissionObjtypeId;
@@ -300,6 +304,45 @@ public class UserController {
         }
 
         return new Result<>("操作成功", Result.SUCCESS);
+    }
+
+    @PostMapping("/deleteUser")
+    public Result<Map<String, Object>> deleteUser(@RequestBody UserForm userForm, HttpServletResponse response, HttpServletRequest request){
+        if(userForm.getUserId() == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
+        }
+
+        Map<String, Object> result = new HashMap<>();
+
+        User user = userService.getById(userForm.getUserId());
+        user.setDeleteMark("YES");
+        userService.updateById(user);
+        try {
+            Map<String, Object> sysForm = FormGeneration.generateSysForm(userRoleObjtypeId, userForm.getUserId(), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "用户删除", updateOperation);
+            this.sendMessage(ConstantConfig.SYSL0G_QUEUE, sysForm);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result<>(null, Result.FAIL, "操作失败");
+        }
+        return new Result<>(null, Result.SUCCESS, "操作成功");
+    }
+
+    @PostMapping("/changePwd")
+    public Result<Map<String, Object>> updatePwd(@RequestBody UserForm userForm, HttpServletResponse response){
+        if(userForm.getCredential() == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "密码为空"));
+        }
+
+        if(userForm.getUserId() == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
+        }
+
+        Boolean flag = userAuthService.updatePwd(userForm);
+        if(flag){
+            return new Result<>(null, Result.SUCCESS, "操作成功");
+        }
+
+        return new Result<>(null, Result.FAIL, "操作失败");
     }
 
     @PostMapping("/getRoleList")

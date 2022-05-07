@@ -36,4 +36,7 @@ public class User implements Serializable {
 
     @TableField("IFVERIFIED")
     private String ifverified;
+
+    @TableField("DELETE_MARK")
+    private String deleteMark;
 }
