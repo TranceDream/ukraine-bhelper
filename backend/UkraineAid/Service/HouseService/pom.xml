@@ -6,12 +6,14 @@
         <artifactId>Service</artifactId>
         <groupId>com.byb</groupId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
+<!--        <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
     </parent>
+
     <artifactId>HouseService</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>HouseService</name>
     <description>HouseService</description>
+    <packaging>jar</packaging>
     <properties>
         <java.version>1.8</java.version>
     </properties>
@@ -34,6 +36,7 @@
     </dependencies>
 
     <build>
+        <directory>D:/ukraine-bhelper/output</directory>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

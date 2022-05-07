@@ -9,6 +9,10 @@
         <module>Gateway</module>
         <module>Service/UserService</module>
         <module>Service/SystemService</module>
+        <module>Service/AuditService</module>
+        <module>Service/HouseService</module>
+        <module>Service/ReportService</module>
+        <module>Service/NewsService</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

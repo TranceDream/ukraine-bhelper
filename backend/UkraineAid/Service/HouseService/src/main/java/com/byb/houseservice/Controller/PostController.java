@@ -131,7 +131,7 @@ public class PostController {
     public Result<Map<String,Object>>  selectContact(@RequestBody Map<String, Object> selectcondiction,
                                                    HttpServletResponse response, HttpServletRequest request){
 
-        Map<String,Object> dateMap = postContactService.selectContact(selectcondiction)
+        Map<String,Object> dateMap = postContactService.selectContact(selectcondiction);
         return new Result<>(dateMap, Result.SUCCESS);
     }
 

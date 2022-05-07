@@ -98,9 +98,11 @@
     </dependencyManagement>
 
     <build>
+        <directory>D:/ukraine-bhelper/output</directory>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
+
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <excludes>
