@@ -2,7 +2,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-28 22:28:04
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-07 20:26:04
+ * @Last Modified time: 2022-05-07 20:55:36
  */
 /*
 包含应用中所有接口请求函数的模块
@@ -44,3 +44,7 @@ export const reqAddRole = (params) => {
     return ajax(BASE + '/user/userEmpowerment', params, 'POST')
 }
 
+
+export const reqGetRoleList = (params) => {
+    return ajax(BASE + '/user/getRoleList', params, 'POST')
+}

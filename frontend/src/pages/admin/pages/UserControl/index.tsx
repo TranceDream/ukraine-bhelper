@@ -4,7 +4,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-24 17:17:45
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-07 20:35:22
+ * @Last Modified time: 2022-05-07 23:07:53
  */
 import {
     DownOutlined,
@@ -17,7 +17,7 @@ import ProTable from '@ant-design/pro-table'
 import '@ant-design/pro-table/dist/table.css'
 import { Button, message, Modal, Tooltip } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
-import { reqGetAllUser } from '../../api'
+import { reqGetAllUser, reqGetRoleList } from '../../api'
 import ChangePwd from '../../components/ChangePwd'
 import EditForm from '../../components/EditForm'
 import MuteForm from '../../components/MuteForm'
@@ -29,7 +29,7 @@ export type TableListItem = {
     key: number
     userId: number
     name: string
-    roleName: string
+    roleId: string
     status: string
     country: string
     city: string
@@ -59,6 +59,7 @@ export default function UserControl() {
     const [selectCity, setselectCity] = useState('')
     const [selectCreateTime, setselectCreateTime] = useState('')
     const [record, setRecord] = useState({}) // 记录操作行的数据
+    const [roleList, setroleList] = useState({}) 
     const [tableListDataSource, settableListDataSource] = useState<
         TableListItem[]
     >([]) // 记录操作行的数据
@@ -66,21 +67,37 @@ export default function UserControl() {
     const ref = useRef<ActionType>()
 
     useEffect(() => {
+        let temp = Object()
+        async function getrolelist() {
+            const res = await reqGetRoleList()
+            // console.log(res)
+            if (res.code === 200) {
+                res.data.data.forEach((item: any) => {
+                    const _key = item.roleId
+                    temp[_key] = item.roleName
+                })
+                setroleList(temp)
+            } else {
+                message.error('请求用户列表出错：' + res.msg)
+            }
+        }
+        getrolelist()
         var token = PubSub.subscribe(
             'updateUser',
             // deal
             (msg: string, data: string) => {
-                console.log('xiugai ')
+                // console.log('xiugai ')
                 message.success('修改成功')
                 setEditVisiable(false)
                 ref.current?.reload()
             }
         )
+        
 
         return () => {
             PubSub.unsubscribe(token)
         }
-    })
+    },[])
 
     const getdata = (data: any) => {
         let temp: TableListItem[]
@@ -206,7 +223,9 @@ export default function UserControl() {
             width: 50,
             dataIndex: 'userId',
             align: 'center',
-            render: (_,record) => <a onClick={() => handleMute(record)}>{_}</a>,
+            render: (_, record) => (
+                <a onClick={() => handleMute(record)}>{_}</a>
+            ),
         },
         {
             title: (
@@ -224,17 +243,13 @@ export default function UserControl() {
         {
             title: '角色',
             width: 80,
-            dataIndex: 'roleName',
+            dataIndex: 'roleId',
             align: 'center',
             // search: false,
             filters: true,
             onFilter: true,
             hideInTable: true,
-            valueEnum: {
-                NORMAL_USER: '普通用户',
-                ADMIN: '管理员',
-                EDITOR: '编辑者',
-            },
+            valueEnum: roleList,
         },
         // {
         //     title: '状态',
@@ -333,7 +348,7 @@ export default function UserControl() {
                     if ('userId' in params) {
                         params.userId = parseInt(params.userId)
                     }
-                    setParams(params)
+                    // setParams(params)
                     console.log('UseControl: ', params, sorter, filter)
                     const msg = await reqGetAllUser({
                         ...params,
@@ -419,6 +434,7 @@ export default function UserControl() {
                     country={selectCountry}
                     city={selectCity}
                     createTime={selectCreateTime}
+                    roleList={ roleList}
                 />
             </Modal>
 
