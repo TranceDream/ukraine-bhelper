@@ -40,7 +40,8 @@
         <plugins>
             <plugin>
                 <configuration>
-                    <skip>true</skip>
+<!--                    <skip>true</skip>-->
+                    <executable>true</executable>
                 </configuration>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
