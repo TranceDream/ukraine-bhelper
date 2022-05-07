@@ -10,4 +10,6 @@ public interface UserAuthService extends IService<UserAuth> {
 
     Boolean checkAccount(UserForm userForm);
 
+    Boolean updatePwd(UserForm userForm);
+
 }

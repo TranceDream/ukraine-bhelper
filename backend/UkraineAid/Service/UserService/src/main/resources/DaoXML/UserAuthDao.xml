@@ -17,7 +17,7 @@
         select * from
         USER u left join USER_AUTH ua on u.USER_ID = ua.USER_ID
         <where>
-            ua.IDENTITY_TYPE = #{type} and ua.IDENTIFIER = #{identifier}
+            ua.IDENTITY_TYPE = #{type} and ua.IDENTIFIER = #{identifier} and ua.DELETE_MARK = 'NO'
         </where>
     </select>
 

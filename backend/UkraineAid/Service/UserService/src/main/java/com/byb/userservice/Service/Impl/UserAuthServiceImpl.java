@@ -53,4 +53,17 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthDao, UserAuth> impl
         }
         return false;
     }
+
+    @Override
+    public Boolean updatePwd(UserForm userForm) {
+        String encode = defaultPasswordEncoder.encode(userForm.getCredential());
+        Map<String, Object> params = new HashMap<>();
+        params.put("pwd", encode);
+        params.put("userId", userForm.getUserId());
+        Integer update = baseMapper.updatePwd(params);
+        if(update != 1){
+            return false;
+        }
+        return true;
+    }
 }

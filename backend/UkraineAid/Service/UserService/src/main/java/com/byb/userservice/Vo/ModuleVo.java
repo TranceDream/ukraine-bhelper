@@ -9,10 +9,12 @@ public class ModuleVo {
 
     private Integer moduleId;
 
-    private String moduleName;
+    private String title;
 
     private List<ModuleVo> childs;
 
-    private String url;
+    private String key;
+
+    private String icon;
 
 }
