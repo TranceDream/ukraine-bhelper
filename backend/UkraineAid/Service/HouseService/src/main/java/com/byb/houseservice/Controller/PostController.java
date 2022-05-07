@@ -127,6 +127,13 @@ public class PostController {
 
         return new Result<>(dateMap, Result.SUCCESS);
     }
+    @PostMapping("/selectcontact")
+    public Result<Map<String,Object>>  selectContact(@RequestBody Map<String, Object> selectcondiction,
+                                                   HttpServletResponse response, HttpServletRequest request){
+
+        Map<String,Object> dateMap = postContactService.selectContact(selectcondiction)
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
 
 
 //***********tag**********************************************************************************************************
@@ -147,6 +154,14 @@ public class PostController {
 
         Map<String ,Object> dateMap = postTagService.deleteTag(TagId);
 
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+
+    @PostMapping("/selectTag")
+    public Result<Map<String,Object>>  selectTag(@RequestBody Map<String, Object> selectcondiction,
+                                                   HttpServletResponse response, HttpServletRequest request){
+
+        Map<String,Object> dateMap = postTagService.selectTag(selectcondiction);
         return new Result<>(dateMap, Result.SUCCESS);
     }
 

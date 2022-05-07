@@ -5,9 +5,19 @@
  * @Last Modified time: 2022-05-03 15:36:23
  */
 import { Button, Form, Input } from 'antd'
+import { reqUpdateUser } from '../../api'
+import PubSub from '../../Utils/pubsub'
 import styles from './index.module.scss'
-const onFinish = (values: any) => {
+const onFinish = async (values: any) => {
     console.log('Success:', values)
+    const res = await reqUpdateUser({
+        userId: values.userId,
+        city: values.city,
+        country: values.country,
+    })
+    if (res.code === 200) {
+        PubSub.publish('updateUser', 'success')
+    }
 }
 
 interface Props {
@@ -41,7 +51,7 @@ export default function index(props: Props) {
             autoComplete='off'>
             <Form.Item
                 label='用户ID'
-                name='userid'
+                name='userId'
                 initialValue={props.userId}
                 preserve={false}
                 rules={[
