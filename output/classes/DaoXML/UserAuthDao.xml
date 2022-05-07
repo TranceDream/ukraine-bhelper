@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.byb.userservice.Dao.UserAuthDao">
+
+    <resultMap id="UserVo" type="com.byb.userservice.Vo.UserVo">
+        <id property="userId" column="USER_ID"/>
+        <result property="country" column="COUNTRY"/>
+        <result property="city" column="CITY"/>
+        <result property="identityType" column="IDENTITY_TYPE"/>
+        <result property="identifier" column="IDENTIFIER"/>
+        <result property="credential" column="CREDENTIAL"/>
+        <result property="createTime" column="CREATE_TIME"/>
+    </resultMap>
+
+    <select id="selectOneVo" parameterType="java.util.Map" resultMap="UserVo">
+        select * from
+        USER u left join USER_AUTH ua on u.USER_ID = ua.USER_ID
+        <where>
+            ua.IDENTITY_TYPE = #{type} and ua.IDENTIFIER = #{identifier}
+        </where>
+    </select>
+
+    <select id="selectEmails" parameterType="java.lang.String" resultType="java.lang.String">
+        select * from
+        USER_AUTH
+        <where>
+            IDENTITY_TYPE = 10001 and USER_ID in ${scope} and DELETE_MARK = 'NO'
+        </where>
+    </select>
+</mapper>

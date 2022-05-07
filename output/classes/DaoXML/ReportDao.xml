@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.byb.reportservice.Dao.ReportDao">
+
+    <resultMap id="ReportVo" type="com.byb.reportservice.Vo.ReportVo">
+        <id property="reportId" column="REPORT_ID"/>
+        <result property="objtypeId" column="OBJTYPE_ID"/>
+        <result property="defense" column="DEFENSE"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="reason" column="REASON"/>
+        <result property="prosecution" column="PROSECUTION"/>
+        <result property="auditStatus" column="AUDIT_STATUS"/>
+        <result property="deleteMark" column="DELETE_MARK"/>
+    </resultMap>
+
+    <select id="selectReportList" resultMap="ReportVo" parameterType="java.util.Map">
+        select * from(
+            select DEFENSE, COUNT(1) as count
+            from REPORT where OBJTYPE_ID = #{objtypeId} AND DELETE_MARK = 'NO'
+            <if test="prosecution!=null and prosecution!=''">
+                PROSECUTION = #{prosecution}
+            </if>
+            AND HANDLE_MARK = 'NO'
+            GROUP BY DEFENSE order by count desc
+        ) m limit #{start}, #{size}
+    </select>
+
+    <select id="selectReportDetail" resultMap="ReportVo" parameterType="java.util.Map">
+        select * from(
+                     select * from REPORT
+                    <where>
+                        OBJTYPE_ID = #{objtypeId}
+                        and DEFENSE = #{defense}
+                        and DELETE_MARK = 'NO'
+                        and HANDLE_MARK = 'NO'
+                    </where>
+                         ) m limit #{start}, #{size}
+    </select>
+
+    <update id="updateHandleMark" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update REPORT t
+            set
+            t.HANDLE_MARK = #{item.handleMark}
+            where t.OBJTYPE_ID = #{item.objtypeId} and t.OBJ_ID = #{item.objId} and t.DELETE_MARK = 'NO'
+        </foreach>
+    </update>
+</mapper>
