@@ -1,8 +1,8 @@
 /*
  * @Author: Linhao Yu
  * @Date: 2022-04-28 16:48:46
- * @Last Modified by:   Linhao Yu
- * @Last Modified time: 2022-04-28 16:48:46
+ * @Last Modified by: Linhao Yu
+ * @Last Modified time: 2022-05-07 11:53:46
  */
 // 发送异步ajax请求的函数
 // 封装axios库
@@ -28,7 +28,7 @@ export default function ajax(url, data = {}, type = 'GET') {
             promise = axios.post(url, data, {
                 headers: {
                     'Content-Type': 'application/json',
-                    token: 'eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQAAiUdpdSKAiUrQzNTQzMLS0MT01oAn2pysSAAAAA.d9shsx0AeyL2v9-HWPENfZhryPZz71MDz7QnAREZ7mm-mj4T_dTNi3HUOKFBDwxKdkQwXoGAqFNyN0xZMnXEog',
+                    token: 'eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQAAiUdpdSKAiUrQzNTQ0sDIwsD01oAXE64piAAAAA.fC9RSJj6u5FIkOCnXPd_finS0t1axnW0Zv7SqxlEAz71nph6qkktYTeqxsDfeoxXuE3pQJHdu2BiG8FAn_Ot9g',
                     'Access-Control-Allow-Origin': '*',
                 },
             })
