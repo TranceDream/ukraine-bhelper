@@ -2,7 +2,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-05-07 09:52:01
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-07 20:39:44
+ * @Last Modified time: 2022-05-07 23:40:55
  */
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { Divider, Form, Input, message, Modal, Switch, Table } from 'antd'
@@ -14,13 +14,14 @@ interface Props {
     country: string
     city: string
     createTime: string
+    roleList: any
 }
 const onFinish = (values: any) => {
-    console.log('Success:', values)
+    // console.log('Success:', values)
 }
 
 const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
+    // console.log('Failed:', errorInfo)
 }
 
 interface DataType {
@@ -29,38 +30,12 @@ interface DataType {
     name: string
     authority: string
 }
-const roles = ['ADMIN', 'EDITOR', 'NORMAL_USER']
-const roledetails = [
-    {
-        key: '1',
-        name: '管理员',
-        roleID: 10000,
-        authority: 'ADMIN',
-    },
-    {
-        key: '2',
-        name: '编辑者',
-        roleID: 10002,
-        authority: 'EDITOR',
-    },
-    {
-        key: '3',
-        name: '普通用户',
-        roleID: 10001,
-        authority: 'NORMAL_USER',
-    },
-]
-
-// const data: DataType[] = []
-
-// const role_data: DataType[] = []
+const roles: string[] = []
+const roledata: any[] = []
 
 export default function MuteForm(props: Props) {
-    const [selectedRowKeys, setselectedRowKeys] = useState<React.Key[]>([])
-    const [data, setData] = useState<DataType[]>([])
-    const [roleData, setroleData] = useState<DataType[]>([])
-    // const [selectedRows, setselectedRows] = useState<DataType[]>([])
-    // const [resData, setResData] = useState<any>()
+    const [hadRoleData, setHadRoleData] = useState<DataType[]>([])
+    const [nonAddRoleData, setNonAddRoleData] = useState<DataType[]>([])
     const [selectUserId, setselectUserId] = useState(0)
     const [selectUserRoleId, setselectUserRoleId] = useState(0)
     const [selectLockedMark, setlockedMark] = useState(false)
@@ -70,10 +45,10 @@ export default function MuteForm(props: Props) {
     const [addRolevisible, setaddRolevisible] = React.useState(false)
     const [confirmLoading, setConfirmLoading] = React.useState(false)
     const [modalText, setModalText] = React.useState('Content of the modal')
-    // let selectedRowKeys: string[] = []
+    const [hadRoleLoading, setHadRoleLoading] = React.useState(true)
+    const [nonHadRoleLoading, setNonHadRoleLoading] = React.useState(true)
 
     const onChange = async (record: any) => {
-        console.log('record', record)
         setVisible(true)
         setselectUserId(record.userId)
         setselectUserRoleId(record.roleID)
@@ -86,7 +61,6 @@ export default function MuteForm(props: Props) {
     }
 
     const addRole = async (record: any) => {
-        console.log("record", record)
         setaddRolevisible(true)
         setselectUserId(record.userId)
         setselectUserRoleId(record.roleID)
@@ -109,12 +83,6 @@ export default function MuteForm(props: Props) {
             dataIndex: 'authority',
             width: 200,
         },
-        // {
-        //     title: 'deletemark',
-        //     width: 200,
-        //     dataIndex: 'delete',
-        //     className: 'notshow',
-        // },
         {
             title: '操作',
             render: (_: any, record: any) => (
@@ -142,12 +110,6 @@ export default function MuteForm(props: Props) {
             dataIndex: 'authority',
             width: 200,
         },
-        // {
-        //     title: 'deletemark',
-        //     width: 200,
-        //     dataIndex: 'delete',
-        //     className: 'notshow',
-        // },
         {
             title: '操作',
             render: (_: any, record: any) => (
@@ -196,34 +158,35 @@ export default function MuteForm(props: Props) {
         setaddRolevisible(false)
     }
 
-    const handleAddRoleCancel =  () => {
-        
+    const handleAddRoleCancel = () => {
         setaddRolevisible(false)
     }
     useEffect(() => {
-        let temp: string[] = []
         async function initialize() {
             const res = await reqUserDetail({ userId: props.userId })
             if (res.code === 500) {
                 message.error(res.msg)
             } else {
-                // setResData(res.data.data)
                 initializeColomns(res.data.data)
-                res.data.data.roleList.forEach((item: any) => {
-                    if (item.roleName === 'ADMIN') {
-                        temp.push('1')
-                    }
-                    if (item.roleName === 'EDITOR') {
-                        temp.push('2')
-                    }
-                    if (item.roleName === 'NORMAL_USER') {
-                        temp.push('3')
-                    }
-                })
-                setselectedRowKeys(temp)
+                setNonHadRoleLoading(false)
+                setHadRoleLoading(false)
             }
         }
+
+        roledata.length = 0
+        for (let Key in props.roleList) {
+            roledata.push({
+                // 111: 222,
+                key: Key.toString() + Date.now().toString(),
+                name: props.roleList[Key],
+                roleId: Key,
+                authority: props.roleList[Key],
+            })
+            roles.push(props.roleList[Key])
+        }
+
         initialize()
+
     }, [])
 
     const initializeColomns = (Data: any) => {
@@ -232,44 +195,28 @@ export default function MuteForm(props: Props) {
         let roledatatemp: any = []
         let mentionedIndex: number[] = []
         Data.roleList.forEach((item: any) => {
+            // console.log("roeldata",roledata)
             const index = roles.indexOf(item.roleName)
-            let newobj = Object.assign(roledetails[index], {
+            let newobj = Object.assign(roledata[index], {
                 lockedMark: item.lockedMark === 'NO' ? false : true,
                 userId: item.userId,
             })
             roledatatemp.push(newobj)
             mentionedIndex.push(index)
         })
-        for (let i: number = 0; i <= 2; i++) {
+        for (let i: number = 0; i < roledata.length; i++) {
             if (mentionedIndex.indexOf(i) === -1) {
-                let newobj = Object.assign(roledetails[i], {
+                let newobj = Object.assign(roledata[i], {
                     userId: Data.userId,
                 })
                 datatemp.push(newobj)
             }
         }
-        setData(datatemp)
-        setroleData(roledatatemp)
+        setHadRoleData(roledatatemp)
+        setNonAddRoleData(datatemp)
     }
 
-    // // rowSelection object indicates the need for row selection
-    // const rowSelection = {
-    //     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-    //         console.log(
-    //             `selectedRowKeys: ${selectedRowKeys}`,
-    //             'selectedRows: ',
-    //             selectedRows
-    //         )
-    //         setselectedRowKeys(selectedRowKeys)
-    //     },
-    //     getCheckboxProps: (record: DataType) => ({
-    //         disabled: record.name === 'Disabled User', // Column configuration not to be checked
-    //         name: record.name,
-    //     }),
-    // }
-    // const changeAuthority = () => {
-    //     // ! todo
-    // }
+
     return (
         <>
             <Divider />
@@ -325,24 +272,22 @@ export default function MuteForm(props: Props) {
             已有角色
             <div>
                 <Table
+                    loading={hadRoleLoading}
                     columns={role_columns}
-                    dataSource={roleData}
+                    dataSource={hadRoleData}
                     pagination={false}
                 />
             </div>
             <Divider />
             角色分配
             <div>
-                <Table columns={columns} dataSource={data} pagination={false} />
+                <Table
+                    loading={nonHadRoleLoading}
+                    columns={columns}
+                    dataSource={nonAddRoleData}
+                    pagination={false}
+                />
             </div>
-            {/* <Col offset={10} span={24}>
-                <Button
-                    type='primary'
-                    style={{ marginTop: 10 }}
-                    onClick={changeAuthority}>
-                    提交
-                </Button>
-            </Col> */}
             {/* 冻结/解冻 */}
             <Modal
                 title={
