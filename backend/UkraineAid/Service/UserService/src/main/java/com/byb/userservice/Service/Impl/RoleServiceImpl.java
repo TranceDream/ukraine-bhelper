@@ -89,7 +89,13 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
         Map<String, Object> result = new HashMap<>();
         Role role = new Role();
         BeanUtils.copyProperties(roleForm, role);
-        baseMapper.insert(role);
+        try {
+            baseMapper.insert(role);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.put("flag",false);
+            return result;
+        }
         int roleId = role.getRoleId();
         try {
             List<RolePermission> list = new ArrayList<>();

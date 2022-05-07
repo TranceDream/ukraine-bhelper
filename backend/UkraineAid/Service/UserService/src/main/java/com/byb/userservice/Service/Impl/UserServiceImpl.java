@@ -185,7 +185,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         sql = sql + id + ")";
 
         List<String> emails = userAuthDao.selectEmails(sql);
-        return null;
+        Map<String, Object> result = new HashMap<>();
+        result.put("data", emails);
+        return result;
     }
 
     @Override
@@ -214,11 +216,11 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         return list;
     }
 
-    @Override
-    public List<MenuVo> getMenuList(Long userId) {
-        List<MenuVo> list = baseMapper.selectMenuList(userId);
-        return list;
-    }
+//    @Override
+//    public List<MenuVo> getMenuList(Long userId) {
+//        List<MenuVo> list = baseMapper.selectMenuList(userId);
+//        return list;
+//    }
 
 
 }
