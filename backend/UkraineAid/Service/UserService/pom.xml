@@ -47,7 +47,7 @@
 
 
     <build>
-        <directory>D:/ukraine-bhelper/output</directory>
+        <directory>D:/ukraine-bhelper/output/user</directory>
         <plugins>
             <plugin>
                 <configuration>

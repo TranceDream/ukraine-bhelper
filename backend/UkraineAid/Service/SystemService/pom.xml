@@ -46,7 +46,7 @@
     </dependencies>
 
     <build>
-        <directory>D:/ukraine-bhelper/output</directory>
+        <directory>D:/ukraine-bhelper/output/system</directory>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

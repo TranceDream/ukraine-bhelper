@@ -99,7 +99,7 @@
     </dependencyManagement>
 
     <build>
-        <directory>D:/ukraine-bhelper/output</directory>
+        <directory>D:/ukraine-bhelper/output/gateway</directory>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

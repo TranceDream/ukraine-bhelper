@@ -34,7 +34,7 @@
     </dependencies>
 
     <build>
-        <directory>D:/ukraine-bhelper/output</directory>
+        <directory>D:/ukraine-bhelper/output/report</directory>
         <plugins>
             <plugin>
                 <configuration>
