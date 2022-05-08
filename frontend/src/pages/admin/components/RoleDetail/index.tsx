@@ -104,6 +104,7 @@ export default function RoleDetail(props: Props) {
             let newItem = { ...item }
             newItem.key = newItem.rolePermissionId
             tempPermissionData.push(newItem)
+
         })
         setPermissionData(tempPermissionData)
     }
@@ -111,7 +112,7 @@ export default function RoleDetail(props: Props) {
     useEffect(() => {
         async function getPermission() {
             const res = await reqRoleDetail({ roleId: props.roleId })
-            console.log('res', res)
+            // console.log('res', res)
             let tempBaseData = Object()
             // tempBaseData = {}
             if (res.code == 200) {

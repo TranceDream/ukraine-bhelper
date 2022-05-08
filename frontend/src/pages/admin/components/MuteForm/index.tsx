@@ -49,7 +49,6 @@ export default function MuteForm(props: Props) {
     const [nonHadRoleLoading, setNonHadRoleLoading] = React.useState(true)
 
     const onChange = async (record: any) => {
-        // console.log('111111111111', record)
         setChecked(record.lockedMark)
         setVisible(true)
         setselectUserId(record.userId)

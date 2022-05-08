@@ -5,16 +5,20 @@
  * @Last Modified time: 2022-05-08 16:26:52
  */
 import { Button, Form, Input, message, Select, Tag } from 'antd'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { reqAddNewRole, reqPermissionList } from '../../api'
 
-const options = [
-    { value: 'gold' },
-    { value: 'lime' },
-    { value: 'green' },
-    { value: 'cyan' },
-]
+// const Options = [
+//     { value: 'gold' },
+//     { value: 'lime' },
+//     { value: 'green' },
+//     { value: 'cyan' },
+// ]
+
+let permissionMapId: any = {}
 
 function tagRender(props: any) {
+    const colors = ['gold', 'lime', 'green', 'cyan']
     const { label, value, closable, onClose } = props
     const onPreventMouseDown = (event: any) => {
         event.preventDefault()
@@ -22,7 +26,7 @@ function tagRender(props: any) {
     }
     return (
         <Tag
-            color={value}
+            color={colors[Math.floor(Math.random() * 4)]}
             onMouseDown={onPreventMouseDown}
             closable={closable}
             onClose={onClose}
@@ -57,9 +61,64 @@ const tailFormItemLayout = {
 
 export default function AddRole() {
     const [form] = Form.useForm()
+    const [options, setOptions] = useState<any[]>([])
+    const [selectedPermission, setSelectedPermission] = useState<any[]>([])
+    const [loading, setLoading] = useState(false)
 
-    const onFinish = (values: any) => {
-        message.error('还没有实现')
+    const onFinish = async (values: any) => {
+        setLoading(true)
+        const res = await reqAddNewRole({
+            roleName: values.roleName,
+            permissions: selectedPermission,
+        })
+        if (res.code === 200) {
+            message.success('添加成功')
+        } else {
+            message.error(res.msg)
+        }
+        // console.log('vvvvv', values)
+
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        for (let key in permissionMapId) {
+            delete permissionMapId[key]
+        }
+        async function getPermissions() {
+            const res = await reqPermissionList()
+            console.log('res', res)
+            if (res.code === 200) {
+                prepareOptions(res.data.data)
+            } else {
+                message.error(res.msg)
+            }
+        }
+        getPermissions()
+    }, [])
+    const prepareOptions = (data: any) => {
+        let tempOptions: any[] = []
+        data.forEach((item: any) => {
+            let tempOption = Object()
+            tempOption = {}
+            tempOption.value = item.permissionName
+            tempOptions.push(tempOption)
+            permissionMapId[item.permissionName] = item.permissionId
+        })
+        setOptions(tempOptions)
+        console.log('permissionMapId', permissionMapId)
+    }
+
+    // 权限选择改变
+    const handleChange = (value: any) => {
+        console.log('changed', value)
+        const tempselectedPermission: any = []
+        value.forEach((item: any) => {
+            console.log('item', item)
+            tempselectedPermission.push(permissionMapId[item])
+        })
+        setSelectedPermission(tempselectedPermission)
+        // console.log('1111111111', selectedPermission)
     }
     return (
         <Form
@@ -70,7 +129,7 @@ export default function AddRole() {
             preserve={false}
             scrollToFirstError>
             <Form.Item
-                name='roleId'
+                name='roleName'
                 label='角色名称'
                 rules={[
                     {
@@ -84,7 +143,7 @@ export default function AddRole() {
             </Form.Item>
 
             <Form.Item
-                name='roleName'
+                name='rolePermissions'
                 label='角色权限'
                 preserve={false}
                 rules={[
@@ -96,10 +155,11 @@ export default function AddRole() {
                 // initialValue={props.roleName}
             >
                 <Select
+                    onChange={handleChange}
                     mode='multiple'
                     showArrow
                     tagRender={tagRender}
-                    defaultValue={['gold', 'cyan']}
+                    // defaultValue={['gold', 'cyan']}
                     style={{ width: '100%' }}
                     options={options}
                 />
