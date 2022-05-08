@@ -20,6 +20,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -212,7 +213,12 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Override
     public List<ModuleVo> getModuleList(Long userId) {
-        List<ModuleVo> list= baseMapper.selectModuleList(userId);
+        List<ModuleVo> list = new ArrayList<>();
+        try {
+            list = baseMapper.selectModuleList(userId);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return list;
     }
 

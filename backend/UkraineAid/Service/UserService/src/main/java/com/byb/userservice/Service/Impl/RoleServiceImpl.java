@@ -8,6 +8,8 @@ import com.byb.userservice.Entity.Permission;
 import com.byb.userservice.Entity.Role;
 import com.byb.userservice.Entity.RolePermission;
 import com.byb.userservice.Service.RoleService;
+import com.byb.userservice.Vo.PermissionForm;
+import com.byb.userservice.Vo.PermissionVo;
 import com.byb.userservice.Vo.RoleForm;
 import com.byb.userservice.Vo.RoleVo;
 import org.springframework.beans.BeanUtils;
@@ -56,8 +58,14 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
         }
         RoleVo roleVo = new RoleVo();
         BeanUtils.copyProperties(role, roleVo);
-        List<RolePermission> permissions = rolePermissionDao.selectList(new QueryWrapper<RolePermission>().lambda().eq(RolePermission::getRoleId, roleForm.getRoleId()).eq(RolePermission::getDeleteMark, "NO"));
-        roleVo.setPermissions(permissions);
+        Map<String, Object> params = new HashMap<>();
+        params.put("roleId", roleForm.getRoleId());
+        try {
+            List<PermissionVo> permissions = rolePermissionDao.selectPermissionList(params);
+            roleVo.setPermissions(permissions);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         result.put("data", roleVo);
         return result;
     }
