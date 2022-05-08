@@ -98,7 +98,6 @@ public class PostController {
 
 
 
-
 //*contact***************************************************************************************************************************
 
     @PostMapping("/postcontact")
@@ -165,10 +164,8 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
     @PostMapping("/deletecontacttype")
     public Result<Map<String , Object>> deleteconnecttype(@RequestBody Map<String, Integer> ma,
                                                       HttpServletResponse response, HttpServletRequest request){
-        int contactId = ma.get("contactId");
-
-        Map<String ,Object> dateMap = contactTypeService.deleteContactType(contactId);
-
+        int contactTypeId = ma.get("typeId");
+        Map<String ,Object> dateMap = contactTypeService.deleteContactType(contactTypeId);
         return new Result<>(dateMap, Result.SUCCESS);
     }
 
@@ -196,7 +193,7 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
     @PostMapping("/deletetag")
     public Result<Map<String , Object>> deletetag(@RequestBody Map<String, Integer> ma,
                                                       HttpServletResponse response, HttpServletRequest request){
-        int TagId = ma.get("contactId");
+        int TagId = ma.get("TagId");
 
         Map<String ,Object> dateMap = postTagService.deleteTag(TagId);
 
@@ -224,7 +221,7 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
     @PostMapping("/deletetagtype")
     public Result<Map<String , Object>> deletetagtype(@RequestBody Map<String, Integer> ma,
                                                   HttpServletResponse response, HttpServletRequest request){
-        int TagTypeId = ma.get("contactId");
+        int TagTypeId = ma.get("typeId");
 
         Map<String ,Object> dateMap = tagTypeService.deleteTagType(TagTypeId);
 

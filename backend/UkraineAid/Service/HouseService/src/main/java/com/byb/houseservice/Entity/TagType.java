@@ -29,6 +29,6 @@ public class TagType {
     @TableField("DELETE_MARK")
     private String deleteMask;
 
-    @TableField("CONTACT_NAME")
+    @TableField("TYPE_NAME")
     private String tagName;
 }
