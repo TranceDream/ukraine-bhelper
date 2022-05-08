@@ -3,9 +3,8 @@ package com.byb.houseservice.Controller;
 import com.byb.BaseUtil.Config.ConstantConfig;
 import com.byb.BaseUtil.Utils.ResponseUtil;
 import com.byb.BaseUtil.Utils.Result;
-import com.byb.houseservice.Service.PostContactService;
-import com.byb.houseservice.Service.PostHouseService;
-import com.byb.houseservice.Service.PostTagService;
+import com.byb.houseservice.Service.*;
+import com.byb.houseservice.Vo.ContactTypeVo;
 import com.byb.houseservice.Vo.ContactVo;
 import com.byb.houseservice.Vo.HouseinfoVo;
 import com.byb.houseservice.Vo.TagVo;
@@ -46,6 +45,13 @@ public class PostController {
 
     @Autowired
     private PostContactService postContactService;
+
+    @Autowired
+    private ContactTypeService contactTypeService;
+
+    @Autowired
+    private TagTypeService tagTypeService;
+
 
     @Autowired
     private PostTagService postTagService;
@@ -143,6 +149,45 @@ public class PostController {
         Map<String,Object> dateMap = postContactService.selectContact(selectcondiction);
         return new Result<>(dateMap, Result.SUCCESS);
     }
+//    **************************************************************************************************************
+@PostMapping("/postcontacttype")
+public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo contactTypeVo,
+                                                HttpServletResponse response, HttpServletRequest request){
+
+
+    Map<String,Object> dateMap = contactTypeService.addContactType(contactTypeVo);
+
+    return new Result<>(dateMap, Result.SUCCESS);
+
+}
+
+    @PostMapping("/updatecontacttype")
+    public Result<Map<String , Object>> updateconnecttype(@RequestBody ContactTypeVo contactTypeVo,
+                                                      HttpServletResponse response, HttpServletRequest request){
+
+        Map<String,Object> dateMap = contactTypeService.updateContactType(contactTypeVo);
+        return new Result<>(dateMap, Result.SUCCESS);
+
+    }
+
+    @PostMapping("/deletecontacttype")
+    public Result<Map<String , Object>> deleteconnecttype(@RequestBody Map<String, Integer> ma,
+                                                      HttpServletResponse response, HttpServletRequest request){
+        int contactId = ma.get("contactId");
+
+        Map<String ,Object> dateMap = contactTypeService.deleteContactType(contactId);
+
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+
+    @PostMapping("/selectcontacttype")
+    public Result<Map<String,Object>>  selectContacttype(@RequestBody Map<String, Object> selectcondiction,
+                                                     HttpServletResponse response, HttpServletRequest request){
+
+        Map<String,Object> dateMap = contactTypeService.selectContactType(selectcondiction);
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+
 
 
 //***********tag**********************************************************************************************************
