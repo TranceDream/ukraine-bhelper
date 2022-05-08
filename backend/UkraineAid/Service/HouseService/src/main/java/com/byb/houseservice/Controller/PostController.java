@@ -4,10 +4,7 @@ import com.byb.BaseUtil.Config.ConstantConfig;
 import com.byb.BaseUtil.Utils.ResponseUtil;
 import com.byb.BaseUtil.Utils.Result;
 import com.byb.houseservice.Service.*;
-import com.byb.houseservice.Vo.ContactTypeVo;
-import com.byb.houseservice.Vo.ContactVo;
-import com.byb.houseservice.Vo.HouseinfoVo;
-import com.byb.houseservice.Vo.TagVo;
+import com.byb.houseservice.Vo.*;
 import com.byb.openfeign.Client.ReportClient;
 import com.byb.openfeign.Form.FormGeneration;
 import org.checkerframework.checker.units.qual.A;
@@ -210,12 +207,40 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
 
         return new Result<>(dateMap, Result.SUCCESS);
     }
-
     @PostMapping("/selectTag")
     public Result<Map<String,Object>>  selectTag(@RequestBody Map<String, Object> selectcondiction,
                                                    HttpServletResponse response, HttpServletRequest request){
 
         Map<String,Object> dateMap = postTagService.selectTag(selectcondiction);
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+
+    //***********************************************************************************************************
+
+    @PostMapping("/posttagtype")
+    public Result<Map<String , Object>> posttagtype(@RequestBody Map<String , List<TagTypeVo> > ma,
+                                                HttpServletResponse response, HttpServletRequest request){
+        List<TagTypeVo> list = ma.get("date");
+        Map<String,Object> dateMap = tagTypeService.addTagType(list);
+
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+
+    @PostMapping("/deletetagtype")
+    public Result<Map<String , Object>> deletetagtype(@RequestBody Map<String, Integer> ma,
+                                                  HttpServletResponse response, HttpServletRequest request){
+        int TagTypeId = ma.get("contactId");
+
+        Map<String ,Object> dateMap = tagTypeService.deleteTagType(TagTypeId);
+
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+
+    @PostMapping("/selecttagtype")
+    public Result<Map<String,Object>>  selecttagtype(@RequestBody Map<String, Object> selectcondiction,
+                                                 HttpServletResponse response, HttpServletRequest request){
+
+        Map<String,Object> dateMap = tagTypeService.selectTagType(selectcondiction);
         return new Result<>(dateMap, Result.SUCCESS);
     }
 
