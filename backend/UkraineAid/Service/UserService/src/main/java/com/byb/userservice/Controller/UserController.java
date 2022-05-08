@@ -9,6 +9,7 @@ import com.byb.openfeign.Client.SysClient;
 import com.byb.openfeign.Form.FormGeneration;
 import com.byb.security.Security.DefaultPasswordEncoder;
 import com.byb.security.Security.TokenManager;
+import com.byb.userservice.Entity.Role;
 import com.byb.userservice.Entity.User;
 import com.byb.userservice.Service.*;
 import com.byb.userservice.Vo.ModuleVo;
@@ -500,6 +501,29 @@ public class UserController {
             return new Result<>(null, Result.SUCCESS, "实名认证成功");
         }
         return new Result<>(null, Result.FAIL, "实名认证失败");
+    }
+
+    @PostMapping("/updateRole")
+    public Result<Map<String, Object>> updateRole(@RequestBody RoleForm roleForm, HttpServletResponse response, HttpServletRequest request){
+        if(roleForm.getRoleId() == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
+        }
+
+        try {
+            Role role = roleService.getById(roleForm.getRoleId());
+            BeanUtils.copyProperties(roleForm, role);
+            roleService.updateById(role);
+        }catch (Exception e){
+            e.printStackTrace();
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "操作失败"));
+        }
+
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        Map<String, Object> syslogForm = FormGeneration.generateSysForm(roleObjtypeId, Long.valueOf(roleForm.getRoleId()), userId, "修改角色", updateOperation);
+
+        this.sendMessage(ConstantConfig.SYSL0G_QUEUE, syslogForm);
+        return new Result<>(null, Result.SUCCESS);
+
     }
 
     @PostMapping("/getModuleList")

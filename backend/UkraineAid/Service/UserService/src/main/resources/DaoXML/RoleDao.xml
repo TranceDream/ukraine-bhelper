@@ -6,7 +6,7 @@
     <resultMap id="RoleVo" type="com.byb.userservice.Vo.RoleVo">
         <id property="roleId" column="ROLE_ID"/>
         <result property="roleName" column="ROLE_NAME"/>
-        <result property="createTime" column="createTime"/>
+        <result property="createTime" column="CREATE_TIME"/>
         <result property="deleteMark" column="DELETE_MARK"/>
     </resultMap>
 

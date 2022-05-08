@@ -12,6 +12,8 @@ public class PermissionForm {
 
     private Date createTime;
 
+    private String roleId;
+
     private String permissionName;
 
     private String url;

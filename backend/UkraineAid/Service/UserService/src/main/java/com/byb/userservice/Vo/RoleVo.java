@@ -17,6 +17,6 @@ public class RoleVo {
 
     private String deleteMark;
 
-    private List<RolePermission> permissions;
+    private List<PermissionVo> permissions;
 
 }

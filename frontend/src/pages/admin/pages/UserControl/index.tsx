@@ -4,7 +4,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-24 17:17:45
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-07 23:07:53
+ * @Last Modified time: 2022-05-08 16:05:19
  */
 import {
     DownOutlined,
@@ -381,6 +381,11 @@ export default function UserControl() {
                         }
                     }
                 }}
+                toolbar={{
+                    multipleLine: false,
+                    actions: [
+                    ],
+                }}
                 dataSource={tableListDataSource}
                 rowKey={(record) => {
                     return record.userId + Date.now().toString() //在这里加上一个时间戳就可以了
@@ -434,7 +439,7 @@ export default function UserControl() {
                     country={selectCountry}
                     city={selectCity}
                     createTime={selectCreateTime}
-                    roleList={ roleList}
+                    roleList={roleList}
                 />
             </Modal>
 
