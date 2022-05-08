@@ -10,10 +10,11 @@
         <result column="PERMISSION_NAME" property="permissionName"/>
         <result column="URL" property="url"/>
         <result column="DELETE_MARK" property="deleteMark"/>
+        <result column="LOCKED_MARK" property="lockedMark"/>
     </resultMap>
 
     <select id="selectPermissionList" parameterType="java.util.Map" resultMap="permissionVo">
-        select dp.*,drp.ID from DICT_ROLE_PERMISSION drp left join DICT_PERMISSION dp on drp.PERMISSION_ID = dp.PERMISSION_ID
+        select dp.*,drp.ID, drp.LOCKED_MARK from DICT_ROLE_PERMISSION drp left join DICT_PERMISSION dp on drp.PERMISSION_ID = dp.PERMISSION_ID
         <where>
             drp.ROLE_ID = #{roleId} and drp.LOCKED_MARK = 'NO' and drp.DELETE_MARK = 'NO' and dp.DELETE_MARK = 'NO' and dp.PARENT_ID != 1
         </where>

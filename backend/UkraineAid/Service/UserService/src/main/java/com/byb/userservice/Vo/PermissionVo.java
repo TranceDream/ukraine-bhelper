@@ -22,6 +22,8 @@ public class PermissionVo {
 
     private int parentId;
 
+    private String lockedMark;
+
     private String deleteMark;
 
 }
