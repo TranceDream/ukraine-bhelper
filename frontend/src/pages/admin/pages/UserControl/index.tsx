@@ -4,7 +4,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-24 17:17:45
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-07 23:07:53
+ * @Last Modified time: 2022-05-08 16:05:19
  */
 import {
     DownOutlined,
@@ -380,6 +380,11 @@ export default function UserControl() {
                             total: tableListDataSource.length,
                         }
                     }
+                }}
+                toolbar={{
+                    multipleLine: false,
+                    actions: [
+                    ],
                 }}
                 dataSource={tableListDataSource}
                 rowKey={(record) => {
