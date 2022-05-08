@@ -23,6 +23,7 @@ export type TableListItem = {
 export default function UserControl() {
     const [confirmLoading, setConfirmLoading] = useState(false)
     const [searchCollapsed, setsearchCollapsed] = useState(false)
+    const [selectRoleId, setselectRoleId] = useState(0)
     const [roleList, setroleList] = useState({})
     const [EditVisible, setEditVisible] = useState(false)
     const [AddRoleVisible, setAddRoleVisible] = useState(false)
@@ -87,8 +88,7 @@ export default function UserControl() {
 
     // 编辑名字
     const handleEdit = (record: any) => {
-        setRecord(record)
-        // console.log('record', record)
+        // console.log('record111', record)
         setEditVisible(true)
     }
 
@@ -110,6 +110,7 @@ export default function UserControl() {
 
     // 编辑用户详情
     const handleRoleDetail = (record: any) => {
+        setselectRoleId(record.roleId)
         setRoleDetailVisible(true)
     }
 
@@ -300,6 +301,7 @@ export default function UserControl() {
 
             {/* 详情权限查看 */}
             <Modal
+                width={800}
                 destroyOnClose={true}
                 title={
                     <>
@@ -317,7 +319,7 @@ export default function UserControl() {
                 confirmLoading={confirmLoading}
                 onCancel={handleRoleDetailCancel}
                 footer={null}>
-                <RoleDetail />
+                <RoleDetail roleId={selectRoleId} />
             </Modal>
         </>
     )

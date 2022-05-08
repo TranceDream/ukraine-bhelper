@@ -48,3 +48,11 @@ export const reqAddRole = (params) => {
 export const reqGetRoleList = (params) => {
     return ajax(BASE + '/user/getRoleList', params, 'POST')
 }
+
+export const reqRoleDetail = (params) => {
+    return ajax(BASE + '/user/getRoleDetail', params, 'POST')
+}
+
+export const reqPermissionManage = (params) => {
+    return ajax(BASE + '/user/managePermission', params, 'POST')
+}
