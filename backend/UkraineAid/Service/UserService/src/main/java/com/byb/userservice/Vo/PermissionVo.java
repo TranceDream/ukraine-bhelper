@@ -12,7 +12,7 @@ public class PermissionVo {
 
     private Date createTime;
 
-    private String permisssionName;
+    private String permissionName;
 
     private String url;
 
