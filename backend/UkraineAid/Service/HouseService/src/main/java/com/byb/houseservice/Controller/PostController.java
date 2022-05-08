@@ -3,15 +3,10 @@ package com.byb.houseservice.Controller;
 import com.byb.BaseUtil.Config.ConstantConfig;
 import com.byb.BaseUtil.Utils.ResponseUtil;
 import com.byb.BaseUtil.Utils.Result;
-import com.byb.houseservice.Service.PostContactService;
-import com.byb.houseservice.Service.PostHouseService;
-import com.byb.houseservice.Service.PostTagService;
-import com.byb.houseservice.Vo.ContactVo;
-import com.byb.houseservice.Vo.HouseinfoVo;
-import com.byb.houseservice.Vo.TagVo;
+import com.byb.houseservice.Service.*;
+import com.byb.houseservice.Vo.*;
 import com.byb.openfeign.Client.ReportClient;
 import com.byb.openfeign.Form.FormGeneration;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +41,12 @@ public class PostController {
     private PostContactService postContactService;
 
     @Autowired
+    private ContactTypeService contactTypeService;
+
+    @Autowired
+    private TagTypeService tagTypeService;
+
+    @Autowired
     private PostTagService postTagService;
 
     @Autowired
@@ -58,8 +57,7 @@ public class PostController {
 
     //基础房源信息********************************************************************************************************
     @PostMapping("/postinfo")
-    public Result<Map<String ,Object>> postHouse(@RequestBody HouseinfoVo houseinfoVo ,
-                                                 HttpServletResponse response, HttpServletRequest request){
+    public Result<Map<String ,Object>> postHouse(@RequestBody HouseinfoVo houseinfoVo ){
         if( houseinfoVo.getCountry() == null || houseinfoVo.getProvince() == null || houseinfoVo.getCity() == null ){
 //            ResponseUtil.out(response ,new Result(null,Result.FAIL,"必要信息不全"));
             return new Result<>(null,Result.FAIL,"必要信息不全");
@@ -97,7 +95,6 @@ public class PostController {
         Map<String,Object> dateMap = postHouseService.selcetHouse(selectcondiction);
         return new Result<>(dateMap, Result.SUCCESS);
     }
-
 
 
 
@@ -143,6 +140,43 @@ public class PostController {
         Map<String,Object> dateMap = postContactService.selectContact(selectcondiction);
         return new Result<>(dateMap, Result.SUCCESS);
     }
+//    **************************************************************************************************************
+@PostMapping("/postcontacttype")
+public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo contactTypeVo,
+                                                HttpServletResponse response, HttpServletRequest request){
+
+
+    Map<String,Object> dateMap = contactTypeService.addContactType(contactTypeVo);
+
+    return new Result<>(dateMap, Result.SUCCESS);
+
+}
+
+    @PostMapping("/updatecontacttype")
+    public Result<Map<String , Object>> updateconnecttype(@RequestBody ContactTypeVo contactTypeVo,
+                                                      HttpServletResponse response, HttpServletRequest request){
+
+        Map<String,Object> dateMap = contactTypeService.updateContactType(contactTypeVo);
+        return new Result<>(dateMap, Result.SUCCESS);
+
+    }
+
+    @PostMapping("/deletecontacttype")
+    public Result<Map<String , Object>> deleteconnecttype(@RequestBody Map<String, Integer> ma,
+                                                      HttpServletResponse response, HttpServletRequest request){
+        int contactTypeId = ma.get("typeId");
+        Map<String ,Object> dateMap = contactTypeService.deleteContactType(contactTypeId);
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+
+    @PostMapping("/selectcontacttype")
+    public Result<Map<String,Object>>  selectContacttype(@RequestBody Map<String, Object> selectcondiction,
+                                                     HttpServletResponse response, HttpServletRequest request){
+
+        Map<String,Object> dateMap = contactTypeService.selectContactType(selectcondiction);
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+
 
 
 //***********tag**********************************************************************************************************
@@ -159,18 +193,46 @@ public class PostController {
     @PostMapping("/deletetag")
     public Result<Map<String , Object>> deletetag(@RequestBody Map<String, Integer> ma,
                                                       HttpServletResponse response, HttpServletRequest request){
-        int TagId = ma.get("contactId");
+        int TagId = ma.get("TagId");
 
         Map<String ,Object> dateMap = postTagService.deleteTag(TagId);
 
         return new Result<>(dateMap, Result.SUCCESS);
     }
-
     @PostMapping("/selectTag")
     public Result<Map<String,Object>>  selectTag(@RequestBody Map<String, Object> selectcondiction,
                                                    HttpServletResponse response, HttpServletRequest request){
 
         Map<String,Object> dateMap = postTagService.selectTag(selectcondiction);
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+
+    //***********************************************************************************************************
+
+    @PostMapping("/posttagtype")
+    public Result<Map<String , Object>> posttagtype(@RequestBody Map<String , List<TagTypeVo> > ma,
+                                                HttpServletResponse response, HttpServletRequest request){
+        List<TagTypeVo> list = ma.get("date");
+        Map<String,Object> dateMap = tagTypeService.addTagType(list);
+
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+
+    @PostMapping("/deletetagtype")
+    public Result<Map<String , Object>> deletetagtype(@RequestBody Map<String, Integer> ma,
+                                                  HttpServletResponse response, HttpServletRequest request){
+        int TagTypeId = ma.get("typeId");
+
+        Map<String ,Object> dateMap = tagTypeService.deleteTagType(TagTypeId);
+
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+
+    @PostMapping("/selecttagtype")
+    public Result<Map<String,Object>>  selecttagtype(@RequestBody Map<String, Object> selectcondiction,
+                                                 HttpServletResponse response, HttpServletRequest request){
+
+        Map<String,Object> dateMap = tagTypeService.selectTagType(selectcondiction);
         return new Result<>(dateMap, Result.SUCCESS);
     }
 
