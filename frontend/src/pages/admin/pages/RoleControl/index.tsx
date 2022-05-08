@@ -63,7 +63,7 @@ export default function UserControl() {
 
     const columns: ProColumns<TableListItem>[] = [
         {
-            title: '用户ID',
+            title: '角色ID',
             width: 100,
             dataIndex: 'roleId',
             align: 'center',
@@ -148,7 +148,7 @@ export default function UserControl() {
                         }
                     }
                 }}
-                // dataSource={tableListDataSource}
+                dataSource={tableListDataSource}
                 rowKey={(record) => {
                     return record.roleId + Date.now().toString() //在这里加上一个时间戳就可以了
                 }}
