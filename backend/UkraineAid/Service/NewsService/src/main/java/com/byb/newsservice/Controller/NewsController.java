@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,6 +34,8 @@ import java.util.*;
 @RefreshScope
 @RestController
 @RequestMapping("/news")
+@Component
+@Configuration
 public class NewsController {
 
     @PostMapping("/test")
@@ -47,7 +51,7 @@ public class NewsController {
     @Autowired
     private AuditClient auditClient;
 
-    @Value("${spring.newService.newsObjtypeId}")
+    @Value("${spring.newsService.newsObjtypeId}")
     private int newsObjtypeId;
 
     @Autowired

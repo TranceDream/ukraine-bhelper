@@ -11,6 +11,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>ReportService</name>
     <description>ReportService</description>
+    <packaging>jar</packaging>
     <properties>
         <java.version>1.8</java.version>
     </properties>
@@ -33,9 +34,13 @@
     </dependencies>
 
     <build>
-        <directory>D:/ukraine-bhelper/output</directory>
+        <directory>D:/ukraine-bhelper/output/report</directory>
         <plugins>
             <plugin>
+                <configuration>
+<!--                    <skip>true</skip>-->
+                    <executable>true</executable>
+                </configuration>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>

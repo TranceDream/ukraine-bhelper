@@ -51,7 +51,7 @@ public class MessageController {
             e.printStackTrace();
             ResponseUtil.out(response, new Result(null, Result.FAIL, "邮箱发送失败"));
         }
-        return null;
+        return new Result<>(null, Result.SUCCESS, "邮件发送成功");
     }
 
 }

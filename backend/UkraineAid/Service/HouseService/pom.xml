@@ -36,9 +36,13 @@
     </dependencies>
 
     <build>
-        <directory>D:/ukraine-bhelper/output</directory>
+        <directory>D:/ukraine-bhelper/output/house</directory>
         <plugins>
             <plugin>
+                <configuration>
+<!--                    <skip>true</skip>-->
+                    <executable>true</executable>
+                </configuration>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
