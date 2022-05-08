@@ -8,6 +8,8 @@ import java.util.List;
 @Data
 public class PermissionVo {
 
+    private int rolePermissionId;
+
     private int permissionId;
 
     private Date createTime;
