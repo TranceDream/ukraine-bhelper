@@ -4,3 +4,9 @@
  * @Last Modified by:   Linhao Yu 
  * @Last Modified time: 2022-04-24 17:18:10 
  */
+ .protable{
+  //  float: right;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+ }
