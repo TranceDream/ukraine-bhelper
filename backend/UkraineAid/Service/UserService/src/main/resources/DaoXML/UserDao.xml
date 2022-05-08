@@ -42,22 +42,22 @@
 
     <resultMap id="moduleVo" type="com.byb.userservice.Vo.ModuleVo">
         <id property="moduleId" column="PERMISSION_ID"/>
-        <result property="moduleName" column="PERMISSION_NAME"/>
-        <result property="url" column="URL"/>
+        <result property="tital" column="PERMISSION_NAME"/>
+        <result property="key" column="URL"/>
         <collection property="childs" column="PERMISSION_ID" ofType="com.byb.userservice.Vo.ModuleVo" select="selectChildmodule"/>
     </resultMap>
 
     <resultMap id="Childmodule" type="com.byb.userservice.Vo.ModuleVo">
         <id property="moduleId" column="PERMISSION_ID"/>
-        <result property="moduleName" column="PERMISSION_NAME"/>
-        <result property="url" column="URL"/>
+        <result property="tital" column="PERMISSION_NAME"/>
+        <result property="key" column="URL"/>
+        <result property="icon" column="ICON"/>
     </resultMap>
 
     <resultMap id="menuVo" type="com.byb.userservice.Vo.MenuVo">
         <id property="menuId" column="MENU_ID"/>
-        <result property="title" column="MENU"/>
-        <result property="key" column="URL"/>
-        <result property="icon" column="ICON"/>
+        <result property="menuName" column="MENU"/>
+        <result property="url" column="URL"/>
         <result property="createTime" column="CREATE_TIME"/>
     </resultMap>
 
