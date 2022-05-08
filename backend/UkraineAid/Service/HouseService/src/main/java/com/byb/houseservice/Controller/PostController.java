@@ -46,7 +46,6 @@ public class PostController {
     @Autowired
     private TagTypeService tagTypeService;
 
-
     @Autowired
     private PostTagService postTagService;
 
@@ -58,8 +57,7 @@ public class PostController {
 
     //基础房源信息********************************************************************************************************
     @PostMapping("/postinfo")
-    public Result<Map<String ,Object>> postHouse(@RequestBody HouseinfoVo houseinfoVo ,
-                                                 HttpServletResponse response, HttpServletRequest request){
+    public Result<Map<String ,Object>> postHouse(@RequestBody HouseinfoVo houseinfoVo ){
         if( houseinfoVo.getCountry() == null || houseinfoVo.getProvince() == null || houseinfoVo.getCity() == null ){
 //            ResponseUtil.out(response ,new Result(null,Result.FAIL,"必要信息不全"));
             return new Result<>(null,Result.FAIL,"必要信息不全");
