@@ -1,12 +1,19 @@
 package com.byb.houseservice.Controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
+import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.byb.BaseUtil.Config.ConstantConfig;
 import com.byb.BaseUtil.Utils.ResponseUtil;
 import com.byb.BaseUtil.Utils.Result;
+import com.byb.houseservice.Entity.HouseInfo;
 import com.byb.houseservice.Service.*;
 import com.byb.houseservice.Vo.*;
 import com.byb.openfeign.Client.ReportClient;
 import com.byb.openfeign.Form.FormGeneration;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 @Slf4j
 @RefreshScope
@@ -33,6 +41,8 @@ public class PostController {
         map.put("message", "welcome to house module");
         return new Result<>(map, Result.SUCCESS);
     }
+
+
 
     @Autowired
     private PostHouseService postHouseService;
@@ -91,6 +101,7 @@ public class PostController {
     @PostMapping("/selectHouse")
     public Result<Map<String,Object>>  selectHouse(@RequestBody Map<String, Object> selectcondiction,
                                                     HttpServletResponse response, HttpServletRequest request){
+
 
         Map<String,Object> dateMap = postHouseService.selcetHouse(selectcondiction);
         return new Result<>(dateMap, Result.SUCCESS);

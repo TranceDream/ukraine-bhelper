@@ -2,6 +2,11 @@ package com.byb.houseservice.Service.Impl;
 
 //import com.baomidou.mybatisplus.core.conditions.Wrapper;
 //import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.byb.houseservice.Dao.HouseInfoMapper;
 import com.byb.houseservice.Entity.TagType;
@@ -10,6 +15,7 @@ import com.byb.houseservice.Entity.HouseInfo;
 import com.byb.houseservice.Vo.ContactVo;
 import com.byb.houseservice.Vo.HouseinfoVo;
 //import com.fasterxml.jackson.databind.util.BeanUtil;
+import lombok.experimental.Accessors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 //import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
@@ -18,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 //import java.util.function.Function;
 
 /**
@@ -98,9 +105,27 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
 
     @Override
     public Map<String, Object> selcetHouse(Map<String, Object> selectCondition) {
+
+        if(!selectCondition.containsKey("pageNo")){
+            selectCondition.put("pageNo",1);
+        }
+        if(!selectCondition.containsKey("pageSize")) {
+            selectCondition.put("pageSize",10);
+        }
+        int pageSize = (int) selectCondition.get("pageSize");
+        int pageNo = (int) selectCondition.get("pageNo");
+        selectCondition.remove("pageNo");
+        selectCondition.remove("pageSize");
+//        selectCondition.put("start",(pageNo-1)*pageSize);
+//        selectCondition.put("size",pageSize);
         Map<String, Object> result = new HashMap<>();
+        result.put("pageNo",pageNo);
+        result.put("pageSize",pageSize);
+
+//        int total = baseMapper.countUser
         try{
             List<HouseInfo> houseInfoList = baseMapper.selectByMap(selectCondition);
+            houseInfoList=houseInfoList.subList((pageNo-1)*pageSize,pageNo*pageSize);
             System.out.println(selectCondition);
             result.put("data",houseInfoList);
         }catch(Exception e){
@@ -109,5 +134,7 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
         }
         return result;
     }
+
+
 
 }
