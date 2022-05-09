@@ -11,7 +11,7 @@ import java.util.Map;
 @Data
 public class HouseinfoVo {
 
-    private int userid;
+    private int userId;
 
     private int houseId;
 
@@ -25,7 +25,7 @@ public class HouseinfoVo {
 
     private String address;
 
-    private int guest;
+    private int guests;
 
     private String pets;
 
@@ -35,8 +35,8 @@ public class HouseinfoVo {
 
     private String title;
 
-    private int pagesize;
+    private int pageSize;
 
-    private int pageno;
+    private int pageNo;
 
 }
