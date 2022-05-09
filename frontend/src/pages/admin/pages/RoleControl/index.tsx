@@ -54,14 +54,13 @@ export default function UserControl() {
         getrolelist()
 
         var token = PubSub.subscribe(
-            'updateUser',
+            'updateRole',
             (msg: string, data: string) => {
                 if (data === 'fail') {
                     message.success('修改失败')
                 } else {
                     message.success('修改成功')
                 }
-
                 setEditVisible(false)
                 ref.current?.reload()
             }

@@ -9,7 +9,7 @@
 import {
     EditOutlined,
     ExclamationCircleOutlined,
-    QuestionCircleOutlined,
+    QuestionCircleOutlined
 } from '@ant-design/icons'
 import type { ActionType, ProColumns } from '@ant-design/pro-table'
 import ProTable from '@ant-design/pro-table'
@@ -52,11 +52,11 @@ export default function UserControl() {
     const [Mutevisible, setMutevisible] = useState(false)
     const [confirmLoading, setConfirmLoading] = useState(false)
     const [modalText, setModalText] = useState('初始文字')
-    const [selectUserName, setselectUserName] = useState('')
-    const [selectUserId, setselectUserId] = useState(0)
-    const [selectCountry, setselectCountry] = useState('')
-    const [selectCity, setselectCity] = useState('')
-    const [selectCreateTime, setselectCreateTime] = useState('')
+    // const [selectUserName, setselectUserName] = useState('')
+    // const [selectUserId, setselectUserId] = useState(0)
+    // const [selectCountry, setselectCountry] = useState('')
+    // const [selectCity, setselectCity] = useState('')
+    // const [selectCreateTime, setselectCreateTime] = useState('')
     const [record, setRecord] = useState<any>({}) // 记录操作行的数据
     const [roleList, setroleList] = useState({})
     const [tableListDataSource, settableListDataSource] = useState<
@@ -116,13 +116,14 @@ export default function UserControl() {
 
     //封禁用户
     const handleMute = (record: any) => {
+        // console.log('record', record)
         setRecord(record)
         setMutevisible(true)
-        setselectUserName(record.name)
-        setselectUserId(record.userId)
-        setselectCreateTime(record.createTime)
-        setselectCity(record.city)
-        setselectCountry(record.country)
+        // setselectUserName(record.name)
+        // setselectUserId(record.userId)
+        // setselectCreateTime(record.createTime)
+        // setselectCity(record.city)
+        // setselectCountry(record.country)
     }
 
     // 封禁用户
@@ -146,8 +147,9 @@ export default function UserControl() {
     const handleDelOk = async () => {
         console.table(record)
         const res = await reqDelUser({ userId: record.userId })
-        if (res === 200) {
+        if (res.code === 200) {
             message.success('删除用户成功')
+            ref.current?.reload()
         } else {
             message.error(res.msg)
         }
@@ -163,10 +165,10 @@ export default function UserControl() {
     const EditUser = (text: any, record: any, index: any) => {
         // console.log('编辑用户', record)
         setEditVisiable(true)
-        setselectCity(record.city)
-        setselectCountry(record.country)
-        setselectUserId(record.userId)
-        setselectUserName(record.name)
+        // setselectCity(record.city)
+        // setselectCountry(record.country)
+        // setselectUserId(record.userId)
+        // setselectUserName(record.name)
     }
 
     // 确认编辑用户
@@ -184,8 +186,9 @@ export default function UserControl() {
 
     // 重置密码
     const showChangePwd = (record: any) => {
-        setselectUserId(record.userId)
-        setselectUserName(record.name)
+        setRecord(record)
+        // setselectUserId(record.userId)
+        // setselectUserName(record.name)
         setchangePwdVisible(true)
     }
 
@@ -284,21 +287,6 @@ export default function UserControl() {
                 <a key='change' onClick={() => showChangePwd(record)}>
                     重置密码
                 </a>,
-                // <Dropdown key={1} overlay={menu}>
-                //     <a
-                //         onClick={(e) => {
-                //             e.preventDefault()
-                //             setRecord(record)
-                //         }}
-                //         onMouseEnter={() => {
-                //             setRecord(record)
-                //         }}>
-                //         <Space>
-                //             更多
-                //             <DownOutlined />
-                //         </Space>
-                //     </a>
-                // </Dropdown>,
             ],
         },
     ]
@@ -388,12 +376,13 @@ export default function UserControl() {
                 footer={null}
                 onCancel={handleMuteCancel}>
                 <MuteForm
-                    userName={selectUserName}
-                    userId={selectUserId}
-                    country={selectCountry}
-                    city={selectCity}
-                    createTime={selectCreateTime}
+                    userName={record.name}
+                    userId={record.userId}
+                    country={record.country}
+                    city={record.city}
+                    createTime={record.createTime}
                     roleList={roleList}
+                    userRoleId={record.id}
                 />
             </Modal>
 
@@ -439,10 +428,10 @@ export default function UserControl() {
                 onCancel={handleEditCancel}
                 footer={null}>
                 <EditForm
-                    userName={selectUserName}
-                    userId={selectUserId}
-                    country={selectCountry}
-                    city={selectCity}
+                    userName={record.name}
+                    userId={record.userId}
+                    country={record.country}
+                    city={record.city}
                 />
             </Modal>
 
@@ -466,7 +455,7 @@ export default function UserControl() {
                 confirmLoading={confirmLoading}
                 onCancel={handleChangePwdCancel}
                 footer={null}>
-                <ChangePwd userName={selectUserName} userId={selectUserId} />
+                <ChangePwd userName={record.name} userId={record.userId} />
             </Modal>
         </>
     )

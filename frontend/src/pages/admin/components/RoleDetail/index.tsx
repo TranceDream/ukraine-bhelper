@@ -117,7 +117,6 @@ export default function RoleDetail(props: Props) {
             newItem.key = newItem.rolePermissionId
             tempPermissionData.push(newItem)
         })
-        console.log('11111111', tempPermissionData)
         setPermissionData(tempPermissionData)
     }
 
@@ -127,7 +126,7 @@ export default function RoleDetail(props: Props) {
             // console.log('res', res)
             let tempBaseData = Object()
             // tempBaseData = {}
-            if (res.code == 200) {
+            if (res.code === 200) {
                 tempBaseData.roleId = res.data.data.roleId
                 tempBaseData.createTime = res.data.data.createTime
                 tempBaseData.roleName = res.data.data.roleName
