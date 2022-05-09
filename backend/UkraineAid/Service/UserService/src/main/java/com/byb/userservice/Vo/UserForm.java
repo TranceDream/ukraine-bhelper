@@ -31,6 +31,8 @@ public class UserForm {
 
     private String orderText;
 
+    private Long loginId;
+
     private int pageSize;
     private int pageNo;
 }

@@ -137,6 +137,8 @@
                 </otherwise>
             </choose>
 
+            AND dur.GROUP_ID IN ${groups}
+
             AND ur.DELETE_MARK = 'NO'
 
             AND dur.DELETE_MARK = 'NO' AND dr.DELETE_MARK = 'NO'
@@ -196,6 +198,8 @@
         </choose>
 
         AND ur.DELETE_MARK = 'NO'
+
+        AND dur.GROUP_ID IN ${groups}
 
         AND dur.DELETE_MARK = 'NO' AND dr.DELETE_MARK = 'NO'
 

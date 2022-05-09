@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.byb.userservice.Dao.GroupDao">
+
+    <select id="selectGroups" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select GROUP_ID from (
+                                 select t1.GROUP_ID,t1.PARENT_ID,
+                                        if(find_in_set(PARENT_ID, @pids) > 0, @pids := concat(@pids, ',', GROUP_ID), 0) as ischild
+                                 from (
+                                          select GROUP_ID,PARENT_ID from DICT_GROUP t where t.DELETE_MARK = 'NO' order by PARENT_ID, GROUP_ID
+                                      ) t1,
+                                      (select @pids := #{groupId}) t2
+                             ) t3 where ischild != 0;
+    </select>
+
+</mapper>

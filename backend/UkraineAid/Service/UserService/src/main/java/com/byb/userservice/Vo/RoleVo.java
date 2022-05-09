@@ -19,6 +19,6 @@ public class RoleVo {
 
     private List<PermissionVo> permissions;
 
-    private String ownMark;
+    private String handleMark;
 
 }
