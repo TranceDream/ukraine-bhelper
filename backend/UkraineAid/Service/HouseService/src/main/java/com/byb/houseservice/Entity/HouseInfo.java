@@ -4,9 +4,12 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 //import java.util.Date;
@@ -15,9 +18,11 @@ import java.sql.Date;
  * @author zjt
  * @date 2022/5/4 0:25
  */
-@TableName("UAHouse.HOUSEINFO")
+@TableName("UAHouse.HouseInfo")
 @Accessors(chain = true)
 @Data
+//@NoArgsConstructor
+//@RequiredArgsConstructor
 public class HouseInfo {
 
     @TableId(value = "HOUSE_ID",type = IdType.AUTO)

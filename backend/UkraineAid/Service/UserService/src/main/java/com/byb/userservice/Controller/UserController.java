@@ -9,8 +9,10 @@ import com.byb.openfeign.Client.SysClient;
 import com.byb.openfeign.Form.FormGeneration;
 import com.byb.security.Security.DefaultPasswordEncoder;
 import com.byb.security.Security.TokenManager;
+import com.byb.userservice.Dao.UserRoleDao;
 import com.byb.userservice.Entity.Role;
 import com.byb.userservice.Entity.User;
+import com.byb.userservice.Entity.UserRole;
 import com.byb.userservice.Service.*;
 import com.byb.userservice.Vo.ModuleVo;
 import com.byb.userservice.Vo.PermissionForm;
@@ -347,13 +349,15 @@ public class UserController {
     }
 
     @PostMapping("/getRoleList")
-    public Result<Map<String, Object>> getRoleList(@RequestBody RoleForm roleForm){
+    public Result<Map<String, Object>> getRoleList(@RequestBody RoleForm roleForm, HttpServletRequest request){
         if(roleForm.getPageNo()==null){
             roleForm.setPageNo(1);
         }
         if(roleForm.getPageSize()==null){
             roleForm.setPageSize(10);
         }
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        roleForm.setUserId(userId);
         Map<String, Object> dataMap = roleService.getRoleList(roleForm);
         return new Result<>(dataMap, Result.SUCCESS);
     }
@@ -525,6 +529,27 @@ public class UserController {
         return new Result<>(null, Result.SUCCESS);
 
     }
+
+    @PostMapping("/deleteRole")
+    public Result<Map<String, Object>> deleteRole(@RequestBody RoleForm roleForm, HttpServletResponse response, HttpServletRequest request){
+        if(roleForm.getRoleId() == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
+        }
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        roleForm.setUserId(userId);
+
+        Boolean flag = roleService.deleteRole(roleForm);
+
+        if(!flag){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "操作失败"));
+        }
+
+        Map<String, Object> syslogForm = FormGeneration.generateSysForm(roleObjtypeId, Long.valueOf(roleForm.getRoleId()), userId, "删除角色", updateOperation);
+
+        this.sendMessage(ConstantConfig.SYSL0G_QUEUE, syslogForm);
+        return new Result<>(null, Result.SUCCESS);
+    }
+
 
     @PostMapping("/getModuleList")
     public Result<List<ModuleVo>> getMenuList(HttpServletRequest request){
