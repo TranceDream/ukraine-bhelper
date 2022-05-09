@@ -49,6 +49,7 @@ export default function MuteForm(props: Props) {
     const [nonHadRoleLoading, setNonHadRoleLoading] = React.useState(true)
 
     const onChange = async (record: any) => {
+        setChecked(record.lockedMark)
         setVisible(true)
         setselectUserId(record.userId)
         setselectUserRoleId(record.roleID)
@@ -138,7 +139,6 @@ export default function MuteForm(props: Props) {
     }
 
     const handleCancel = () => {
-        // console.log('Clicked cancel button')
         setVisible(false)
     }
 
