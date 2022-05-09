@@ -55,7 +55,6 @@ export default function UserControl() {
 
         var token = PubSub.subscribe(
             'updateUser',
-            // deal
             (msg: string, data: string) => {
                 if (data === 'fail') {
                     message.success('修改失败')

@@ -49,10 +49,10 @@ export default function ChangeRoleName(props: Props) {
 
         // console.log('Received values of form: ', values)
         if (res.code === 200) {
-            PubSub.publish('updateUser', 'success')
+            PubSub.publish('updateRole', 'success')
         } else {
             message.error('还没有实现')
-            PubSub.publish('updateUser', 'fail')
+            PubSub.publish('updateRole', 'fail')
         }
     }
     return (

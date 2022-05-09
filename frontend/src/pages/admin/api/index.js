@@ -25,7 +25,7 @@ export const reqGetAllUser = (params) => {
 
 // 删除用户
 export const reqDelUser = (user) => {
-    return ajax(BASE + '/user/getAllUser', user, 'POST')
+    return ajax(BASE + '/user/deleteUser', user, 'POST')
 }
 
 // 更新用户信息
