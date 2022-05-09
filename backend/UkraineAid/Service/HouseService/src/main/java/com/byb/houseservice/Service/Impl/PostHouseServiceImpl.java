@@ -69,12 +69,12 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
             baseMapper.updateById(houseinfo);
 
             result.put("data",houseinfo.getHouseId());
-            result.put("msg","修改成功");
+            result.put("msg","Succeeded in modifying data");
             System.out.println("duiduidui");
 
         }catch(Exception e){
             e.printStackTrace();
-            result.put("msg","修改失败");
+            result.put("msg","Fail to submit!PARAMETER ERROR");
         }
 
         return result;
@@ -92,12 +92,12 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
             baseMapper.updateById(houseinfo);
 
             result.put("data",houseinfo.getHouseId());
-            result.put("msg","删除成功");
-            System.out.println("duiduidui");
+            result.put("msg","Delete the success!");
+
 
         }catch(Exception e){
             e.printStackTrace();
-            result.put("msg","删除失败");
+            result.put("msg","Delete failed!");
         }
         return result;
     }
@@ -121,7 +121,6 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
         result.put("pageNo",pageNo);
         result.put("pageSize",pageSize);
 
-//        int total = baseMapper.countUser
         try{
             List<HouseInfo> houseInfoList = baseMapper.selectByMap(selectCondition);
             houseInfoList=houseInfoList.subList((pageNo-1)*pageSize,pageNo*pageSize);
@@ -133,7 +132,5 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
         }
         return result;
     }
-
-
 
 }

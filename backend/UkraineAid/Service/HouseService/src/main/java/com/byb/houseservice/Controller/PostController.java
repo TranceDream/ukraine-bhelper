@@ -104,31 +104,48 @@ public class PostController {
         if(houseinfoVo.getUserId() != 0){
             return new Result<>(null,Result.FAIL,"It is forbidden to modify the ownership of a house!");
         }
+        if(houseinfoVo.getAddress().length()>200){
+            return new Result<>(null,Result.FAIL,"The address is too long!");
+        }
+        if(houseinfoVo.getTitle().length()>200){
+            return new Result<>(null,Result.FAIL,"The title is too long!");
+        }
+        if(houseinfoVo.getDescription().length()>500){
+            return new Result<>(null,Result.FAIL,"The description is too long!");
+        }
 
         System.out.println(houseinfoVo);
         Map<String,Object> dateMap = postHouseService.updateHouseInfo(houseinfoVo);
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Succeeded in modifying data")) msg = "PARAMETER ERROR!";
+        return new Result<>(dateMap, Result.SUCCESS,msg);
     }
 
     @PostMapping("/deleteinfo")
-    public Result<Map<String ,Object>> deleteHouse(@RequestBody Map<String, Integer> ma,
+    public Result<Map<String ,Object>> deleteHouse(@RequestBody Map<String, Object> ma,
                                                    HttpServletResponse response, HttpServletRequest request){
 
-        int houseid = ma.get("houseId");
+        int houseid = (int)ma.get("houseId");
         Map<String,Object> dateMap = postHouseService.deleteHouseInfo(houseid);
-
-        return new Result<>(dateMap, Result.SUCCESS);
-
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Delete the success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(dateMap, Result.SUCCESS,msg);
     }
+
     @PostMapping("/selectHouse")
     public Result<Map<String,Object>>  selectHouse(@RequestBody Map<String, Object> selectcondiction,
                                                     HttpServletResponse response, HttpServletRequest request){
-
         Map<String,Object> dateMap = postHouseService.selcetHouse(selectcondiction);
         return new Result<>(dateMap, Result.SUCCESS);
     }
-
-
+    @PostMapping("/selectHouseAdmin")
+    public Result<Map<String,Object>>  selectHouseForAdmin(@RequestBody Map<String, Object> selectcondiction,
+                                                   HttpServletResponse response, HttpServletRequest request){
+        Map<String,Object> dateMap = postHouseService.selcetHouse(selectcondiction);
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
 
 //*contact***************************************************************************************************************************
 
