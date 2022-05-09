@@ -20,9 +20,7 @@ const onFinishFailed = (errorInfo: any) => {
     // console.log('Failed:', errorInfo)
 }
 
-interface DataType {}
-const roles: string[] = []
-const roledata: any[] = []
+
 
 export default function RoleDetail(props: Props) {
     const [form] = Form.useForm()
@@ -76,11 +74,6 @@ export default function RoleDetail(props: Props) {
 
     // 点击解冻按钮
     const changeLockdown = (record: any, index: number) => {
-        // var token = PubSub.subscribe('lock', () => {
-        //     record.lockedMark = !record.lockedMark
-        // })
-        // PubSub.unsubscribe(token)
-        // console.log('reeee', record)
         setChangeStatusVisible(true)
         setIndex(index)
         setRecord(record)
@@ -91,8 +84,6 @@ export default function RoleDetail(props: Props) {
                 record.permissionName +
                 '"权限吗？'
         )
-        // if (record.lockedMark == 'NO') {
-        // }
     }
 
     // 取消解冻/冻结
@@ -103,7 +94,6 @@ export default function RoleDetail(props: Props) {
     // 确定解冻按钮
     const handleChangeStatusOk = async () => {
         setConfirmLoading(true)
-        // console.log(Record)
         const res = await reqPermissionManage({
             rolePermissionId: Record.rolePermissionId,
             lockedMark: Record.lockedMark === 'YES' ? 'NO' : 'YES',
@@ -114,9 +104,6 @@ export default function RoleDetail(props: Props) {
             temp[index].lockedMark =
                 temp[index].lockedMark === 'YES' ? 'NO' : 'YES'
             setPermissionData(temp)
-            // temp = { ...Record }
-            // temp.lockedMark = !temp.lockedMark
-            // setRecord(temp)
         } else {
             message.error(res.msg)
         }

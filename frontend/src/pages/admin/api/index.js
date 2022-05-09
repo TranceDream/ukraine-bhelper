@@ -75,3 +75,9 @@ export const reqPermissionList = (params) => {
 export const reqAddNewRole = (params) => {
     return ajax(BASE + '/user/addRole', params, 'POST')
 }
+
+// 更新角色信息
+
+export const reqUpdateRole = (params) => {
+    return ajax(BASE + '/user/updateRole', params, 'POST')
+}
