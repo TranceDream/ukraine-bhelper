@@ -33,12 +33,12 @@ public class ContactTypeServiceImpl extends ServiceImpl<ContactTypeMapper, Conta
             BeanUtils.copyProperties(contactTypeVo,contactType);
             baseMapper.insert(contactType);
 
-            result.put("msg","提交成功");
+            result.put("msg","Success!");
 //            System.out.println("duiduidui");
 
         }catch(Exception e){
             e.printStackTrace();
-            result.put("msg","提交失败");
+            result.put("msg","Failure!");
         }
         return result;
     }
@@ -51,12 +51,12 @@ public class ContactTypeServiceImpl extends ServiceImpl<ContactTypeMapper, Conta
             BeanUtils.copyProperties(contactTypeVo,contactType);
             baseMapper.updateById(contactType);
 
-            result.put("msg","修改成功");
+            result.put("msg","Success!");
 //            System.out.println("duiduidui");
 
         }catch(Exception e){
             e.printStackTrace();
-            result.put("msg","修改失败");
+            result.put("msg","Failure");
         }
         return result;
     }
@@ -67,30 +67,31 @@ public class ContactTypeServiceImpl extends ServiceImpl<ContactTypeMapper, Conta
         try{
             ContactType contactType = new ContactType();
             contactType.setTypeId(contactTypeId);
-            contactType.setDeleteMask("YES");
+            contactType.setDeleteMark("YES");
 
 //            System.out.println(houseinfo);
             baseMapper.updateById(contactType);
 
             result.put("data",contactTypeId);
-            result.put("msg","删除成功");
+            result.put("msg","Success!");
 //            System.out.println("duiduidui");
         }catch(Exception e){
             e.printStackTrace();
-            result.put("msg","删除失败");
+            result.put("msg","Failure");
         }
         return result;
     }
 
     @Override
-    public Map<String, Object> selectContactType(Map<String, Object> selectCondition) {
+    public Map<String, Object> selectContactType(Map<String, Object> selectCondition,boolean isadmin) {
         Map<String, Object> result = new HashMap<>();
+        if(!isadmin) selectCondition.put("deleteMark","NO");
         try{
             List<ContactType> ContactTypeList = baseMapper.selectByMap(selectCondition);
             result.put("data",ContactTypeList);
         }catch(Exception e){
             e.printStackTrace();
-            result.put("msg","失败");
+            result.put("msg","Failure");
         }
         return result;
     }

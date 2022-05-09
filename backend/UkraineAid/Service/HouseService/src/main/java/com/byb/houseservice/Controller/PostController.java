@@ -220,10 +220,12 @@ public class PostController {
 public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo contactTypeVo,
                                                 HttpServletResponse response, HttpServletRequest request){
 
-
     Map<String,Object> dateMap = contactTypeService.addContactType(contactTypeVo);
 
-    return new Result<>(dateMap, Result.SUCCESS);
+    String msg = (String) dateMap.get("msg");
+    dateMap.remove("msg");
+    if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+    return new Result<>(null, Result.SUCCESS,msg);
 
 }
 
@@ -232,7 +234,10 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
                                                       HttpServletResponse response, HttpServletRequest request){
 
         Map<String,Object> dateMap = contactTypeService.updateContactType(contactTypeVo);
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
 
     }
 
@@ -241,14 +246,25 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
                                                       HttpServletResponse response, HttpServletRequest request){
         int contactTypeId = ma.get("typeId");
         Map<String ,Object> dateMap = contactTypeService.deleteContactType(contactTypeId);
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
     }
 
     @PostMapping("/selectcontacttype")
     public Result<Map<String,Object>>  selectContacttype(@RequestBody Map<String, Object> selectcondiction,
                                                      HttpServletResponse response, HttpServletRequest request){
 
-        Map<String,Object> dateMap = contactTypeService.selectContactType(selectcondiction);
+        Map<String,Object> dateMap = contactTypeService.selectContactType(selectcondiction,false);
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+
+    @PostMapping("/selectcontacttypeAdmin")
+    public Result<Map<String,Object>>  selectContacttypeAdmin(@RequestBody Map<String, Object> selectcondiction,
+                                                         HttpServletResponse response, HttpServletRequest request){
+
+        Map<String,Object> dateMap = contactTypeService.selectContactType(selectcondiction,true);
         return new Result<>(dateMap, Result.SUCCESS);
     }
 
