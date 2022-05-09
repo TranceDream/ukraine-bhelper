@@ -102,7 +102,6 @@ public class PostController {
     public Result<Map<String,Object>>  selectHouse(@RequestBody Map<String, Object> selectcondiction,
                                                     HttpServletResponse response, HttpServletRequest request){
 
-
         Map<String,Object> dateMap = postHouseService.selcetHouse(selectcondiction);
         return new Result<>(dateMap, Result.SUCCESS);
     }

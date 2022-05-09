@@ -19,7 +19,6 @@ import java.sql.Date;
 @Data
 public class ArticleVo  {
 
-
     private String author;
 
     private String title;
@@ -33,4 +32,8 @@ public class ArticleVo  {
     private String deletemark;
 
     private Integer status;
+
+    private Integer pageNo;
+
+    private Integer pageSize;
 }
