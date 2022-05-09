@@ -35,8 +35,9 @@ public class HouseinfoVo {
 
     private String title;
 
+    private String active;
+
     private int pageSize;
 
     private int pageNo;
-
 }
