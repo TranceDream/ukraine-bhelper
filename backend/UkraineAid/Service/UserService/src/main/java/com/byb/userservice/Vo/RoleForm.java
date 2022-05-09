@@ -8,6 +8,8 @@ import java.util.List;
 @Data
 public class RoleForm {
 
+    private Long userId;
+
     private Integer roleId;
 
     private Date createTime;
