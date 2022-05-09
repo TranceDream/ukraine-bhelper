@@ -195,8 +195,26 @@ public class PostController {
                                                    HttpServletResponse response, HttpServletRequest request){
 
         Map<String,Object> dateMap = postContactService.selectContact(selectcondiction);
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = "Success!";
+        if((int)dateMap.get("number")==0){
+            msg = "No query matches the conditions!";
+            return new Result<>(dateMap,Result.FAIL,msg);
+        }
+        return new Result<>(dateMap, Result.SUCCESS,msg);
     }
+    @PostMapping("/selectcontactAdmin")
+    public Result<Map<String,Object>>  selectContactAll(@RequestBody Map<String, Object> selectcondiction,
+                                                     HttpServletResponse response, HttpServletRequest request){
+
+        Map<String,Object> dateMap = postContactService.selectContactAll(selectcondiction);
+        String msg = "Success!";
+        if((int)dateMap.get("number")==0){
+            msg = "No query matches the conditions!";
+            return new Result<>(dateMap,Result.FAIL,msg);
+        }
+        return new Result<>(dateMap, Result.SUCCESS,msg);
+    }
+
 //    **************************************************************************************************************
 @PostMapping("/postcontacttype")
 public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo contactTypeVo,
