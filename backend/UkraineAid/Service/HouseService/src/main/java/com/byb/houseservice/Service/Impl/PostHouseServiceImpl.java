@@ -53,7 +53,7 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
 
         }catch(Exception e){
             e.printStackTrace();
-            result.put("msg","Fail to submit!");
+            result.put("msg","Fail to submit!PARAMETER ERROR");
         }
         return result;
     }

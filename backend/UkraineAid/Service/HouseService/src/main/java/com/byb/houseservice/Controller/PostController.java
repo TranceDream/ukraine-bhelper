@@ -70,34 +70,46 @@ public class PostController {
     public Result<Map<String ,Object>> postHouse(@RequestBody HouseinfoVo houseinfoVo ){
 
         if( houseinfoVo.getCountry() == null ){
-//            ResponseUtil.out(response ,new Result(null,Result.FAIL,"必要信息不全"));
-            return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no country");
+
+            return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no country!");
         }
         if(  houseinfoVo.getProvince() == null ){
-
-            return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no province");
+            return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no province!");
         }
         if( houseinfoVo.getCity() == null ){
 
-            return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no city");
+            return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no city!");
+        }
+        if(houseinfoVo.getAddress().length()>200){
+            return new Result<>(null,Result.FAIL,"The address is too long!");
+        }
+        if(houseinfoVo.getTitle().length()>200){
+            return new Result<>(null,Result.FAIL,"The title is too long!");
+        }
+        if(houseinfoVo.getDescription().length()>500){
+            return new Result<>(null,Result.FAIL,"The description is too long!");
         }
 
         System.out.println(houseinfoVo);
         Map<String,Object> dateMap = postHouseService.addpostHouseInfo(houseinfoVo);
-
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("A successful submission")) msg = "PARAMETER ERROR!";
+        return new Result<>(dateMap, Result.SUCCESS,msg);
     }
 
     @PostMapping("/updateinfo")
     public Result<Map<String ,Object>> updateHouse(@RequestBody HouseinfoVo houseinfoVo ,
                                                  HttpServletResponse response, HttpServletRequest request){
+        if(houseinfoVo.getUserId() != 0){
+            return new Result<>(null,Result.FAIL,"It is forbidden to modify the ownership of a house!");
+        }
 
         System.out.println(houseinfoVo);
         Map<String,Object> dateMap = postHouseService.updateHouseInfo(houseinfoVo);
-
         return new Result<>(dateMap, Result.SUCCESS);
-
     }
+
     @PostMapping("/deleteinfo")
     public Result<Map<String ,Object>> deleteHouse(@RequestBody Map<String, Integer> ma,
                                                    HttpServletResponse response, HttpServletRequest request){
