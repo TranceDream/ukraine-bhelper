@@ -27,10 +27,10 @@ const roledata: any[] = []
 export default function RoleDetail(props: Props) {
     const [form] = Form.useForm()
     const [baseData, setBaseData] = useState<any>({})
-    const [record, serRecord] = useState<any>({})
+    const [Record, setRecord] = useState<any>({})
+    const [index, setIndex] = useState(0)
     const [loading, setLoading] = useState(true)
     const [confirmLoading, setConfirmLoading] = useState(false)
-    const [checked, setChecked] = useState<true | false>()
     const [changeStatusVisible, setChangeStatusVisible] = useState(false)
     const [modalText, setmodalText] = useState('')
     const [permissionData, setPermissionData] = useState<any[]>([])
@@ -57,22 +57,40 @@ export default function RoleDetail(props: Props) {
         },
         {
             title: '操作',
-            render: (_: any, record: any) => (
-                <Switch
-                    defaultChecked={record.lockedMark === 'NO' ? true : false}
-                    onClick={() => changeLockdown(record)}
-                    checked={checked}></Switch>
-            ),
+            render: (_: any, record: any, index: number) => {
+                console.table(record)
+                return (
+                    <Switch
+                        key={record.key}
+                        defaultChecked={
+                            record.lockedMark === 'NO' ? true : false
+                        }
+                        onClick={() => changeLockdown(record, index)}
+                        checked={
+                            permissionData[index].lockedMark === 'NO'
+                        }></Switch>
+                )
+            },
         },
     ]
 
     // 点击解冻按钮
-    const changeLockdown = (record: any) => {
-        setChecked(record.lockedMark)
+    const changeLockdown = (record: any, index: number) => {
+        // var token = PubSub.subscribe('lock', () => {
+        //     record.lockedMark = !record.lockedMark
+        // })
+        // PubSub.unsubscribe(token)
         // console.log('reeee', record)
         setChangeStatusVisible(true)
-        serRecord(record)
-        setmodalText('确定删除该角色的' + record.roleName + '权限吗？')
+        setIndex(index)
+        setRecord(record)
+        setmodalText(
+            '确定' +
+                (record.lockedMark === 'YES' ? '解冻' : '冻结') +
+                '该角色的"' +
+                record.permissionName +
+                '"权限吗？'
+        )
         // if (record.lockedMark == 'NO') {
         // }
     }
@@ -85,13 +103,20 @@ export default function RoleDetail(props: Props) {
     // 确定解冻按钮
     const handleChangeStatusOk = async () => {
         setConfirmLoading(true)
+        // console.log(Record)
         const res = await reqPermissionManage({
-            rolePermissionId: record.rolePermissionId,
-            lockedMark: !record.lockedMark,
+            rolePermissionId: Record.rolePermissionId,
+            lockedMark: Record.lockedMark === 'YES' ? 'NO' : 'YES',
         })
         if (res.code === 200) {
-            message.success('成功')
-            setChecked(!checked)
+            message.success('操作成功')
+            let temp = permissionData.slice()
+            temp[index].lockedMark =
+                temp[index].lockedMark === 'YES' ? 'NO' : 'YES'
+            setPermissionData(temp)
+            // temp = { ...Record }
+            // temp.lockedMark = !temp.lockedMark
+            // setRecord(temp)
         } else {
             message.error(res.msg)
         }
@@ -104,8 +129,8 @@ export default function RoleDetail(props: Props) {
             let newItem = { ...item }
             newItem.key = newItem.rolePermissionId
             tempPermissionData.push(newItem)
-
         })
+        console.log('11111111', tempPermissionData)
         setPermissionData(tempPermissionData)
     }
 
