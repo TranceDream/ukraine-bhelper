@@ -155,12 +155,14 @@ public class PostController {
         List<ContactVo> list = ma.get("date");
         if(list.size()==0){
 //            ResponseUtil.out(response,new Result(null,Result.FAIL,"至少有一个联系方式"));
-            return new Result<>(null,Result.FAIL,"至少有一个联系方式");
+            return new Result<>(null,Result.FAIL,"At least have one contact information!");
         }
 
         Map<String,Object> dateMap = postContactService.addPostContact(list);
-
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
 
     }
 
@@ -169,7 +171,10 @@ public class PostController {
                                                     HttpServletResponse response, HttpServletRequest request){
 
         Map<String,Object> dateMap = postContactService.updateContact(contactVo);
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
 
     }
 
@@ -180,7 +185,10 @@ public class PostController {
 
         Map<String ,Object> dateMap = postContactService.deleteContact(contactId);
 
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
     }
     @PostMapping("/selectcontact")
     public Result<Map<String,Object>>  selectContact(@RequestBody Map<String, Object> selectcondiction,
