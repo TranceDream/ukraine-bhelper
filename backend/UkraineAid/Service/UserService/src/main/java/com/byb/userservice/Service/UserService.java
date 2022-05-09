@@ -28,4 +28,6 @@ public interface UserService extends IService<User> {
     Boolean identify(UserForm userForm);
 
     List<ModuleVo> getModuleList(Long userId);
+
+    String getChildGroups(Long userId);
 }

@@ -9,7 +9,7 @@ import { reqUpdateUser } from '../../api'
 import PubSub from '../../Utils/pubsub'
 import styles from './index.module.scss'
 const onFinish = async (values: any) => {
-    console.log('Success:', values)
+    // console.log('Success:', values)
     const res = await reqUpdateUser({
         userId: values.userId,
         city: values.city,

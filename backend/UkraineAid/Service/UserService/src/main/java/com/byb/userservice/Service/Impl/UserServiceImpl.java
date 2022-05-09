@@ -2,10 +2,7 @@ package com.byb.userservice.Service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.byb.userservice.Dao.RoleDao;
-import com.byb.userservice.Dao.UserAuthDao;
-import com.byb.userservice.Dao.UserDao;
-import com.byb.userservice.Dao.UserRoleDao;
+import com.byb.userservice.Dao.*;
 import com.byb.userservice.Entity.UserRole;
 import com.byb.userservice.Entity.User;
 import com.byb.userservice.Service.UserService;
@@ -20,10 +17,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserService {
@@ -41,6 +35,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Autowired
     private RoleDao roleDao;
+
+    @Autowired
+    private GroupDao groupDao;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -92,6 +89,18 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         result.put("pageNo", userForm.getPageNo());
         result.put("pageSize", userForm.getPageSize());
 
+        List<Integer> groupList = userRoleDao.selectGroupByUserId(userForm.getLoginId());
+        Set<Integer> groupSet = new HashSet<>();
+        for(Integer groupId : groupList) {
+            List<Integer> childs = groupDao.selectGroups(groupId);
+            groupSet.addAll(childs);
+        }
+        groupSet.add(0);
+        String childGroupStr = groupSet.toString();
+        childGroupStr = childGroupStr.replace("[","(");
+        childGroupStr = childGroupStr.replace("]",")");
+        System.out.println(childGroupStr);
+        params.put("groups", childGroupStr);
         int total = baseMapper.countUserList(params);
         if(total>0){
             List<UserVo> dataList = baseMapper.selectUserList(params);
@@ -220,6 +229,21 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
             e.printStackTrace();
         }
         return list;
+    }
+
+    @Override
+    public String getChildGroups(Long userId) {
+        List<Integer> groupList = userRoleDao.selectGroupByUserId(userId);
+        Set<Integer> groupSet = new HashSet<>();
+        for(Integer groupId : groupList) {
+            List<Integer> childs = groupDao.selectGroups(groupId);
+            groupSet.addAll(childs);
+        }
+        groupSet.add(0);
+        String childGroupStr = groupSet.toString();
+        childGroupStr = childGroupStr.replace("[","(");
+        childGroupStr = childGroupStr.replace("]",")");
+        return childGroupStr;
     }
 
 //    @Override

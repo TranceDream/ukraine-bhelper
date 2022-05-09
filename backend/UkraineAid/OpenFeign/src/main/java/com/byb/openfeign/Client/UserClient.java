@@ -17,4 +17,7 @@ public interface UserClient {
     @PostMapping("/user/identify")
     Result<Map<String, Object>> identify(@RequestBody Map<String, Object> userForm);
 
+    @PostMapping("/user/getChildGroups")
+    String getChildGroups(Long userId);
+
 }

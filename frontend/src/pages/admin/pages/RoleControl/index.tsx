@@ -54,11 +54,13 @@ export default function UserControl() {
         getrolelist()
 
         var token = PubSub.subscribe(
-            'updateUser',
-            // deal
+            'updateRole',
             (msg: string, data: string) => {
-                // console.log('xiugai ')
-                message.success('修改成功')
+                if (data === 'fail') {
+                    message.success('修改失败')
+                } else {
+                    message.success('修改成功')
+                }
                 setEditVisible(false)
                 ref.current?.reload()
             }
@@ -89,6 +91,7 @@ export default function UserControl() {
     // 编辑名字
     const handleEdit = (record: any) => {
         // console.log('record111', record)
+        setRecord(record)
         setEditVisible(true)
     }
 
@@ -272,8 +275,9 @@ export default function UserControl() {
                 onCancel={handleEditCancel}
                 footer={null}>
                 <ChangeRoleName
-                    roleName={record.roleId}
-                    roleId={record.roleName}
+                    roleName={record.roleName}
+                    roleId={record.roleId}
+                    createTime={record.createTime}
                 />
             </Modal>
 

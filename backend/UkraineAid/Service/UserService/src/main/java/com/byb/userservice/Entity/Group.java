@@ -7,33 +7,26 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
 import java.sql.Date;
 
-@TableName("UA.DICT_USER_ROLE")
+@TableName("UA.DICT_GROUP")
 @Accessors(chain = true)
 @Data
-public class UserRole implements Serializable {
+public class Group {
 
-    @TableId(value = "ID", type = IdType.AUTO)
-    private Long id;
+    @TableId(value = "GROUP_ID", type = IdType.AUTO)
+    private int groupId;
 
     @TableField("CREATE_TIME")
     private Date createTime;
 
-    @TableField("USER_ID")
-    private Long userId;
+    @TableField("GROUP_NAME")
+    private String groupName;
 
-    @TableField("ROLE_ID")
-    private int roleId;
+    @TableField("PARENT_ID")
+    private int parentId;
 
     @TableField("DELETE_MARK")
     private String deleteMark;
-
-    @TableField("GROUP_ID")
-    private int groupId;
-
-    @TableField("LOCKED_MARK")
-    private String lockedMark;
 
 }

@@ -18,4 +18,7 @@ public interface UserRoleDao extends BaseMapper<UserRole> {
 
     @Select(value = "select dp.URL from DICT_ROLE_PERMISSION drp left join DICT_PERMISSION dp on drp.PERMISSION_ID = dp.PERMISSION_ID where drp.ROLE_ID = #{roleId} and drp.DELETE_MARK = 'NO' and dp.DELETE_MARK = 'NO'")
     List<String> selectUrlByRoleId(Map<String, Object> params);
+
+    @Select(value = "select GROUP_ID from DICT_USER_ROLE where USER_ID = #{userId} and LOCKED_MARK = 'NO' and DELETE_MARK = 'NO'")
+    List<Integer> selectGroupByUserId(Long userId);
 }

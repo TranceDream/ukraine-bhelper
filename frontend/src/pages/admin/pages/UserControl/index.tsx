@@ -7,7 +7,6 @@
  * @Last Modified time: 2022-05-08 16:05:19
  */
 import {
-    DownOutlined,
     EditOutlined,
     ExclamationCircleOutlined,
     QuestionCircleOutlined
@@ -15,9 +14,9 @@ import {
 import type { ActionType, ProColumns } from '@ant-design/pro-table'
 import ProTable from '@ant-design/pro-table'
 import '@ant-design/pro-table/dist/table.css'
-import { Button, message, Modal, Tooltip } from 'antd'
+import { message, Modal, Tooltip } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
-import { reqGetAllUser, reqGetRoleList } from '../../api'
+import { reqDelUser, reqGetAllUser, reqGetRoleList } from '../../api'
 import ChangePwd from '../../components/ChangePwd'
 import EditForm from '../../components/EditForm'
 import MuteForm from '../../components/MuteForm'
@@ -53,13 +52,13 @@ export default function UserControl() {
     const [Mutevisible, setMutevisible] = useState(false)
     const [confirmLoading, setConfirmLoading] = useState(false)
     const [modalText, setModalText] = useState('初始文字')
-    const [selectUserName, setselectUserName] = useState('')
-    const [selectUserId, setselectUserId] = useState(0)
-    const [selectCountry, setselectCountry] = useState('')
-    const [selectCity, setselectCity] = useState('')
-    const [selectCreateTime, setselectCreateTime] = useState('')
-    const [record, setRecord] = useState({}) // 记录操作行的数据
-    const [roleList, setroleList] = useState({}) 
+    // const [selectUserName, setselectUserName] = useState('')
+    // const [selectUserId, setselectUserId] = useState(0)
+    // const [selectCountry, setselectCountry] = useState('')
+    // const [selectCity, setselectCity] = useState('')
+    // const [selectCreateTime, setselectCreateTime] = useState('')
+    const [record, setRecord] = useState<any>({}) // 记录操作行的数据
+    const [roleList, setroleList] = useState({})
     const [tableListDataSource, settableListDataSource] = useState<
         TableListItem[]
     >([]) // 记录操作行的数据
@@ -84,20 +83,17 @@ export default function UserControl() {
         getrolelist()
         var token = PubSub.subscribe(
             'updateUser',
-            // deal
             (msg: string, data: string) => {
-                // console.log('xiugai ')
                 message.success('修改成功')
                 setEditVisiable(false)
                 ref.current?.reload()
             }
         )
-        
 
         return () => {
             PubSub.unsubscribe(token)
         }
-    },[])
+    }, [])
 
     const getdata = (data: any) => {
         let temp: TableListItem[]
@@ -120,13 +116,14 @@ export default function UserControl() {
 
     //封禁用户
     const handleMute = (record: any) => {
+        // console.log('record', record)
         setRecord(record)
         setMutevisible(true)
-        setselectUserName(record.name)
-        setselectUserId(record.userId)
-        setselectCreateTime(record.createTime)
-        setselectCity(record.city)
-        setselectCountry(record.country)
+        // setselectUserName(record.name)
+        // setselectUserId(record.userId)
+        // setselectCreateTime(record.createTime)
+        // setselectCity(record.city)
+        // setselectCountry(record.country)
     }
 
     // 封禁用户
@@ -141,17 +138,21 @@ export default function UserControl() {
 
     // 删除用户
     const deleteUser = (text: any, record: any, index: any) => {
+        setRecord(record)
         setvisiable(true)
         setModalText('确定要删除该用户吗？')
-        //! params 用于更新的时候传参
-        // console.log('params', params)
     }
 
     // 确认删除用户
-    const handleDelOk = () => {
-        message.warning(
-            '还没实现呢~ReactDOM.render is no longer supported in React 18.'
-        )
+    const handleDelOk = async () => {
+        console.table(record)
+        const res = await reqDelUser({ userId: record.userId })
+        if (res.code === 200) {
+            message.success('删除用户成功')
+            ref.current?.reload()
+        } else {
+            message.error(res.msg)
+        }
         setvisiable(false)
     }
 
@@ -164,12 +165,10 @@ export default function UserControl() {
     const EditUser = (text: any, record: any, index: any) => {
         // console.log('编辑用户', record)
         setEditVisiable(true)
-        setselectCity(record.city)
-        setselectCountry(record.country)
-        setselectUserId(record.userId)
-        setselectUserName(record.name)
-        //! params 用于更新的时候传参
-        // console.log('params', params)
+        // setselectCity(record.city)
+        // setselectCountry(record.country)
+        // setselectUserId(record.userId)
+        // setselectUserName(record.name)
     }
 
     // 确认编辑用户
@@ -187,8 +186,9 @@ export default function UserControl() {
 
     // 重置密码
     const showChangePwd = (record: any) => {
-        setselectUserId(record.userId)
-        setselectUserName(record.name)
+        setRecord(record)
+        // setselectUserId(record.userId)
+        // setselectUserName(record.name)
         setchangePwdVisible(true)
     }
 
@@ -204,18 +204,6 @@ export default function UserControl() {
     const handleChangePwdCancel = () => {
         setchangePwdVisible(false)
     }
-
-    // const menu = (
-    //     <Menu>
-    //         <Menu.Item key='1' onClick={() => showChangePwd(record)}>
-    //             重置密码
-    //         </Menu.Item>
-    //         <Menu.Divider />
-    //         <Menu.Item key='2' onClick={() => handleMute(record)}>
-    //             角色分配
-    //         </Menu.Item>
-    //     </Menu>
-    // )
 
     const columns: ProColumns<TableListItem>[] = [
         {
@@ -251,26 +239,6 @@ export default function UserControl() {
             hideInTable: true,
             valueEnum: roleList,
         },
-        // {
-        //     title: '状态',
-        //     width: 100,
-        //     dataIndex: 'status',
-        //     search: false,
-        //     filters: true,
-        //     onFilter: true,
-        //     // hideInTable: true,
-        //     align: 'center',
-        //     // valueEnum: {
-        //     //     on: { text: '正常', status: 'Success' },
-        //     //     off: { text: '封禁', status: 'Error' },
-        //     // },
-        //     render: (text, record, index) => (
-        //         <Switch
-        //             checked={record.status === 'on' ? true : false}
-        //             onChange={() => onChange(record)}
-        //         />
-        //     ),
-        // },
         {
             title: '国家',
             width: 80,
@@ -319,21 +287,6 @@ export default function UserControl() {
                 <a key='change' onClick={() => showChangePwd(record)}>
                     重置密码
                 </a>,
-                // <Dropdown key={1} overlay={menu}>
-                //     <a
-                //         onClick={(e) => {
-                //             e.preventDefault()
-                //             setRecord(record)
-                //         }}
-                //         onMouseEnter={() => {
-                //             setRecord(record)
-                //         }}>
-                //         <Space>
-                //             更多
-                //             <DownOutlined />
-                //         </Space>
-                //     </a>
-                // </Dropdown>,
             ],
         },
     ]
@@ -383,8 +336,7 @@ export default function UserControl() {
                 }}
                 toolbar={{
                     multipleLine: false,
-                    actions: [
-                    ],
+                    actions: [],
                 }}
                 dataSource={tableListDataSource}
                 rowKey={(record) => {
@@ -400,16 +352,6 @@ export default function UserControl() {
                 }}
                 dateFormatter='string'
                 headerTitle='所有用户'
-                toolBarRender={() => [
-                    <Button key='show'>查看日志</Button>,
-                    <Button key='out'>
-                        导出数据
-                        <DownOutlined />
-                    </Button>,
-                    <Button type='primary' key='primary'>
-                        添加用户
-                    </Button>,
-                ]}
                 className={styles.protable}
             />
             {/* 封禁用户 */}
@@ -434,12 +376,13 @@ export default function UserControl() {
                 footer={null}
                 onCancel={handleMuteCancel}>
                 <MuteForm
-                    userName={selectUserName}
-                    userId={selectUserId}
-                    country={selectCountry}
-                    city={selectCity}
-                    createTime={selectCreateTime}
+                    userName={record.name}
+                    userId={record.userId}
+                    country={record.country}
+                    city={record.city}
+                    createTime={record.createTime}
                     roleList={roleList}
+                    userRoleId={record.id}
                 />
             </Modal>
 
@@ -485,10 +428,10 @@ export default function UserControl() {
                 onCancel={handleEditCancel}
                 footer={null}>
                 <EditForm
-                    userName={selectUserName}
-                    userId={selectUserId}
-                    country={selectCountry}
-                    city={selectCity}
+                    userName={record.name}
+                    userId={record.userId}
+                    country={record.country}
+                    city={record.city}
                 />
             </Modal>
 
@@ -512,7 +455,7 @@ export default function UserControl() {
                 confirmLoading={confirmLoading}
                 onCancel={handleChangePwdCancel}
                 footer={null}>
-                <ChangePwd userName={selectUserName} userId={selectUserId} />
+                <ChangePwd userName={record.name} userId={record.userId} />
             </Modal>
         </>
     )

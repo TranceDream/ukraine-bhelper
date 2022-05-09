@@ -9,6 +9,7 @@ import com.byb.openfeign.Client.SysClient;
 import com.byb.openfeign.Form.FormGeneration;
 import com.byb.security.Security.DefaultPasswordEncoder;
 import com.byb.security.Security.TokenManager;
+import com.byb.userservice.Dao.GroupDao;
 import com.byb.userservice.Dao.UserRoleDao;
 import com.byb.userservice.Entity.Role;
 import com.byb.userservice.Entity.User;
@@ -62,6 +63,9 @@ public class UserController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private GroupDao groupDao;
 
     @Autowired
     private PermissionService permissionService;
@@ -205,7 +209,7 @@ public class UserController {
     }
 
     @PostMapping("/getUserList")
-    public Result<Map<String, Object>> getUserList(@RequestBody UserForm userForm){
+    public Result<Map<String, Object>> getUserList(@RequestBody UserForm userForm, HttpServletRequest request){
         System.out.println("迪克进来了user");
         Integer pageSize = userForm.getPageSize();
         Integer pageNo = userForm.getPageNo();
@@ -216,6 +220,8 @@ public class UserController {
             userForm.setPageSize(10);
         }
         Map<String, Object> dataMap = new HashMap<>();
+        Long loginId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        userForm.setLoginId(loginId);
         try {
             dataMap = userService.selectUserList(userForm);
         }catch (Exception e){
@@ -567,6 +573,12 @@ public class UserController {
 //        redisTemplate.opsForValue().getAndDelete(userId);
 //        ResponseUtil.out(response, new Result(null, Result.SUCCESS, "登出成功"));
 //    }
+
+    @PostMapping("/getChildGroups")
+    public String getChildGroups(Long userId){
+        String result = userService.getChildGroups(userId);
+        return result;
+    }
 
     private void sendMessage(String queue, Object object){
         String msg = JSONObject.toJSONString(object);

@@ -15,6 +15,7 @@ interface Props {
     city: string
     createTime: string
     roleList: any
+    userRoleId: number
 }
 const onFinish = (values: any) => {
     // console.log('Success:', values)
@@ -24,49 +25,20 @@ const onFinishFailed = (errorInfo: any) => {
     // console.log('Failed:', errorInfo)
 }
 
-interface DataType {
-    key: React.Key
-    roleID: number
-    name: string
-    authority: string
-}
 const roles: string[] = []
 const roledata: any[] = []
 
 export default function MuteForm(props: Props) {
-    const [hadRoleData, setHadRoleData] = useState<DataType[]>([])
-    const [nonAddRoleData, setNonAddRoleData] = useState<DataType[]>([])
-    const [selectUserId, setselectUserId] = useState(0)
-    const [selectUserRoleId, setselectUserRoleId] = useState(0)
-    const [selectLockedMark, setlockedMark] = useState(false)
-    const [checked, setChecked] = useState(false)
-    const [addRolechecked, setaddRolechecked] = useState(false)
+    const [hadRoleData, setHadRoleData] = useState<any[]>([])
+    const [nonAddRoleData, setNonAddRoleData] = useState<any[]>([])
+    const [Index, setIndex] = useState(0)
+    const [record, setRecord] = useState<any>({})
     const [visible, setVisible] = React.useState(false)
     const [addRolevisible, setaddRolevisible] = React.useState(false)
     const [confirmLoading, setConfirmLoading] = React.useState(false)
     const [modalText, setModalText] = React.useState('Content of the modal')
     const [hadRoleLoading, setHadRoleLoading] = React.useState(true)
     const [nonHadRoleLoading, setNonHadRoleLoading] = React.useState(true)
-
-    const onChange = async (record: any) => {
-        setChecked(record.lockedMark)
-        setVisible(true)
-        setselectUserId(record.userId)
-        setselectUserRoleId(record.roleID)
-        setlockedMark(record.lockedMark)
-        if (record.lockedMark) {
-            setModalText('确定解冻该用户吗？')
-        } else {
-            setModalText('确定冻结该用户吗？')
-        }
-    }
-
-    const addRole = async (record: any) => {
-        setaddRolevisible(true)
-        setselectUserId(record.userId)
-        setselectUserRoleId(record.roleID)
-        setModalText('确定给予ID为' + record.userId + '的用户该权限吗？')
-    }
 
     const role_columns = [
         {
@@ -86,12 +58,15 @@ export default function MuteForm(props: Props) {
         },
         {
             title: '操作',
-            render: (_: any, record: any) => (
-                <Switch
-                    defaultChecked={record.lockedMark ? true : false}
-                    onClick={() => onChange(record)}
-                    checked={checked}></Switch>
-            ),
+            render: (_: any, record: any, index: number) => {
+                // console.table(record)
+                return (
+                    <Switch
+                        defaultChecked={false}
+                        onClick={() => onChange(record, index)}
+                        checked={hadRoleData[index].lockedMark}></Switch>
+                )
+            },
         },
     ]
 
@@ -113,24 +88,47 @@ export default function MuteForm(props: Props) {
         },
         {
             title: '操作',
-            render: (_: any, record: any) => (
-                <Switch
-                    defaultChecked={record.lockedMark ? true : false}
-                    onClick={() => addRole(record)}
-                    checked={addRolechecked}></Switch>
-            ),
+            render: (_: any, record: any, index: number) => {
+                // console.table(record)
+                return (
+                    <Switch
+                        defaultChecked={
+                            record.lockedMark === 'NO' ? true : false
+                        }
+                        onClick={() => addRole(record, index)}
+                        checked={nonAddRoleData[index].lockedMark}></Switch>
+                )
+            },
         },
     ]
+    // 点击冻结/解冻用户角色按钮
+    const onChange = async (record: any, index: number) => {
+        console.log('record', record)
+        setVisible(true)
+        setRecord(record)
+        setIndex(index)
+        // setlockedMark(record.lockedMark)
+        if (record.lockedMark === 'YES') {
+            setModalText('确定解冻用户该角色吗？')
+        } else {
+            setModalText('确定冻结用户该角色吗？')
+        }
+    }
+
+    // 确认解冻/冻结用户已有角色
     const handleOk = async () => {
         setConfirmLoading(true)
         const res = await reqLockUser({
-            userId: selectUserId,
-            userRoleId: selectUserRoleId,
-            lockedMark: selectLockedMark ? 'NO' : 'YES',
+            userId: record.userId,
+            userRoleId: record.userRoleId,
+            lockedMark: record.lockedMark === 'YES' ? 'NO' : 'YES',
         })
         if (res.code === 200) {
             message.success('成功')
-            setChecked(!checked)
+            let tempHadRoleData = hadRoleData.slice()
+            tempHadRoleData[Index].lockedMark =
+                tempHadRoleData[Index].lockedMark === 'YES' ? 'NO' : 'YES'
+            setHadRoleData(tempHadRoleData)
         } else {
             message.error(res.msg)
         }
@@ -138,19 +136,27 @@ export default function MuteForm(props: Props) {
         setConfirmLoading(false)
     }
 
+    // 取消冻结/解冻已有角色
     const handleCancel = () => {
         setVisible(false)
+    }
+
+    // 点击没有的角色赋权
+    const addRole = async (record: any, index: number) => {
+        setaddRolevisible(true)
+        setIndex(index)
+        setModalText('确定给予ID为' + record.userId + '的用户该权限吗？')
     }
 
     const handleAddRoleOk = async () => {
         setConfirmLoading(true)
         const res = await reqAddRole({
-            userId: selectUserId,
-            roleId: selectUserRoleId,
+            userId: record.userId,
+            userRoleId: record.id,
+            // lockedMark: selectLockedMark ? 'NO' : 'YES',
         })
-        if (res.code == 200) {
+        if (res.code === 200) {
             message.success('成功')
-            setaddRolechecked(!addRolechecked)
         } else {
             message.error(res.msg)
         }
@@ -167,6 +173,7 @@ export default function MuteForm(props: Props) {
             if (res.code === 500) {
                 message.error(res.msg)
             } else {
+                // console.table(res)
                 initializeColomns(res.data.data)
                 setNonHadRoleLoading(false)
                 setHadRoleLoading(false)
@@ -174,19 +181,18 @@ export default function MuteForm(props: Props) {
         }
 
         roledata.length = 0
+        // console.log("prosp",props.roleList)
         for (let Key in props.roleList) {
             roledata.push({
-                // 111: 222,
                 key: Key.toString() + Date.now().toString(),
                 name: props.roleList[Key],
-                roleId: Key,
+                roleId: +Key,
                 authority: props.roleList[Key],
             })
             roles.push(props.roleList[Key])
         }
 
         initialize()
-
     }, [])
 
     const initializeColomns = (Data: any) => {
@@ -195,11 +201,12 @@ export default function MuteForm(props: Props) {
         let roledatatemp: any = []
         let mentionedIndex: number[] = []
         Data.roleList.forEach((item: any) => {
-            // console.log("roeldata",roledata)
+            // console.log('item', item)
             const index = roles.indexOf(item.roleName)
             let newobj = Object.assign(roledata[index], {
-                lockedMark: item.lockedMark === 'NO' ? false : true,
+                lockedMark: item.lockedMark,
                 userId: item.userId,
+                userRoleId: item.id,
             })
             roledatatemp.push(newobj)
             mentionedIndex.push(index)
@@ -212,10 +219,11 @@ export default function MuteForm(props: Props) {
                 datatemp.push(newobj)
             }
         }
+        console.log('roledatatemp', roledatatemp)
+        console.log('datatemp', datatemp)
         setHadRoleData(roledatatemp)
         setNonAddRoleData(datatemp)
     }
-
 
     return (
         <>

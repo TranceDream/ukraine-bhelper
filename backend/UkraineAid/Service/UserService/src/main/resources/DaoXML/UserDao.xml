@@ -127,15 +127,17 @@
                 </otherwise>
             </choose>
 
-            <choose>
-                <when test="lockedMark !=null and lockedMark!=''">
-                    AND dur.LOCKED_MARK = #{lockedMark}
-                </when>
+<!--            <choose>-->
+<!--                <when test="lockedMark !=null and lockedMark!=''">-->
+<!--                    AND dur.LOCKED_MARK = #{lockedMark}-->
+<!--                </when>-->
 
-                <otherwise>
-                    AND dur.LOCKED_MARK = 'NO'
-                </otherwise>
-            </choose>
+<!--                <otherwise>-->
+<!--                    AND dur.LOCKED_MARK = 'NO'-->
+<!--                </otherwise>-->
+<!--            </choose>-->
+
+            AND dur.GROUP_ID IN ${groups}
 
             AND ur.DELETE_MARK = 'NO'
 
@@ -185,17 +187,19 @@
             </otherwise>
         </choose>
 
-        <choose>
-            <when test="lockedMark !=null and lockedMark!=''">
-                AND dur.LOCKED_MARK = #{lockedMark}
-            </when>
+<!--        <choose>-->
+<!--            <when test="lockedMark !=null and lockedMark!=''">-->
+<!--                AND dur.LOCKED_MARK = #{lockedMark}-->
+<!--            </when>-->
 
-            <otherwise>
-                AND dur.LOCKED_MARK = 'NO'
-            </otherwise>
-        </choose>
+<!--            <otherwise>-->
+<!--                AND dur.LOCKED_MARK = 'NO'-->
+<!--            </otherwise>-->
+<!--        </choose>-->
 
         AND ur.DELETE_MARK = 'NO'
+
+        AND dur.GROUP_ID IN ${groups}
 
         AND dur.DELETE_MARK = 'NO' AND dr.DELETE_MARK = 'NO'
 

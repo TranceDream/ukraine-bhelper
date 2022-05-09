@@ -47,19 +47,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
         List<RoleVo> list = new ArrayList<>();
         int total = baseMapper.countRoleList(params);
         if(total > 0){
-            List<Integer> roleIds = new ArrayList<>();
-            List<UserRole> userRoles = userRoleDao.selectList(new QueryWrapper<UserRole>().lambda().eq(UserRole::getUserId,roleForm.getUserId()));
-            for(UserRole userRole: userRoles){
-                roleIds.add(userRole.getRoleId());
-            }
             list = baseMapper.selectRoleList(params);
-            for(RoleVo roleVo : list){
-                if(roleIds.contains(roleVo.getRoleId())){
-                    roleVo.setOwnMark("YES");
-                }else{
-                    roleVo.setOwnMark("NO");
-                }
-            }
         }
         result.put("total", total);
         result.put("data", list);
