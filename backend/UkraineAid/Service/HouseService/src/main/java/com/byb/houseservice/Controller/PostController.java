@@ -68,10 +68,20 @@ public class PostController {
     //基础房源信息********************************************************************************************************
     @PostMapping("/postinfo")
     public Result<Map<String ,Object>> postHouse(@RequestBody HouseinfoVo houseinfoVo ){
-        if( houseinfoVo.getCountry() == null || houseinfoVo.getProvince() == null || houseinfoVo.getCity() == null ){
+
+        if( houseinfoVo.getCountry() == null ){
 //            ResponseUtil.out(response ,new Result(null,Result.FAIL,"必要信息不全"));
-            return new Result<>(null,Result.FAIL,"必要信息不全");
+            return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no country");
         }
+        if(  houseinfoVo.getProvince() == null ){
+
+            return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no province");
+        }
+        if( houseinfoVo.getCity() == null ){
+
+            return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no city");
+        }
+
         System.out.println(houseinfoVo);
         Map<String,Object> dateMap = postHouseService.addpostHouseInfo(houseinfoVo);
 

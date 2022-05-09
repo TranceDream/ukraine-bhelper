@@ -38,24 +38,23 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
 
     @Override
     public Map<String, Object> addpostHouseInfo(HouseinfoVo houseinfoVo) {
+        System.out.println(houseinfoVo);
         Map<String, Object> result = new HashMap<>();
         try{
             HouseInfo houseinfo = new HouseInfo();
             BeanUtils.copyProperties(houseinfoVo,houseinfo);
             houseinfo.setActive("YES");
             System.out.println(houseinfo);
-
             baseMapper.insert(houseinfo);
 
-            result.put("data",houseinfo.getHouseId());
-            result.put("msg","提交成功");
-            System.out.println("duiduidui");
+            result.put("houseId",houseinfo.getHouseId());
+            result.put("msg","A successful submission");
+//            System.out.println("duiduidui");
 
         }catch(Exception e){
             e.printStackTrace();
-            result.put("msg","提交失败");
+            result.put("msg","Fail to submit!");
         }
-
         return result;
     }
 
