@@ -1,8 +1,8 @@
 /*
  * @Author: Linhao Yu
  * @Date: 2022-05-03 15:36:23
- * @Last Modified by:   Linhao Yu
- * @Last Modified time: 2022-05-03 15:36:23
+ * @Last Modified by: Linhao Yu
+ * @Last Modified time: 2022-05-11 02:24:42
  */
 import { Button, Form, Input } from 'antd'
 import { reqUpdateUser } from '../../api'
@@ -17,6 +17,8 @@ const onFinish = async (values: any) => {
     })
     if (res.code === 200) {
         PubSub.publish('updateUser', 'success')
+    } else {
+        PubSub.publish('updateUser', 'fail')
     }
 }
 
