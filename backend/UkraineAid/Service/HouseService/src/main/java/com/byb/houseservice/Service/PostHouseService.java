@@ -32,6 +32,4 @@ public interface PostHouseService extends IService<HouseInfo> {
 //    Map<String,Object> testpage(HouseinfoVo houseinfoVo);
 //    Map<String ,Object> updateHouseInfo(HouseinfoVo houseinfoVo);
 
-
-
 }
