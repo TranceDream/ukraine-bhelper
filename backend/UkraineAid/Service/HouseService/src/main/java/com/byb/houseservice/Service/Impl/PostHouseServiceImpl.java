@@ -9,18 +9,25 @@ import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapp
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.byb.houseservice.Dao.HouseInfoMapper;
+import com.byb.houseservice.Entity.Contact;
+import com.byb.houseservice.Entity.Tag;
 import com.byb.houseservice.Entity.TagType;
-import com.byb.houseservice.Service.PostHouseService;
+import com.byb.houseservice.Service.*;
 import com.byb.houseservice.Entity.HouseInfo;
 import com.byb.houseservice.Vo.ContactVo;
 import com.byb.houseservice.Vo.HouseinfoVo;
 //import com.fasterxml.jackson.databind.util.BeanUtil;
+import com.byb.houseservice.Vo.TagVo;
 import lombok.experimental.Accessors;
+import org.checkerframework.checker.units.qual.A;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 //import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 //import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +42,14 @@ import java.util.function.Predicate;
 public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
         implements PostHouseService {
 
-
+    @Autowired
+    private PostTagService postTagService;
+    @Autowired
+    private PostContactService postContactService;
+    @Autowired
+    private TagTypeService tagTypeService;
+    @Autowired
+    private ContactTypeService contactTypeService;
     @Override
     public Map<String, Object> addpostHouseInfo(HouseinfoVo houseinfoVo) {
         System.out.println(houseinfoVo);
@@ -133,4 +147,38 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
         return result;
     }
 
+    @Override
+    public Map<String, Object> houseById(int houseid) {
+        Map<String, Object> result = new HashMap<>();
+        try{
+            HouseInfo houseInfo = baseMapper.selectById(houseid);
+            result.put("houseInfo",houseInfo);
+
+            Map<String,Object> select = new HashMap<>();
+            select.put("houseId",houseid);
+
+            Map<String,Object> tagList = postTagService.selectTag(select);
+            List<Tag> tags = (List<Tag>) tagList.get("tagList");
+
+            List<String> tagss = new ArrayList<>();
+            for(Tag tag : tags){
+                tagss.add(tagTypeService.tagNameById(tag.getTypeId()));
+            }
+            result.put("tagList",tagss);
+
+            Map<String,Object> Contact = postContactService.selectContact(select);
+            List<Contact> contacts = (List<com.byb.houseservice.Entity.Contact>) Contact.get("ContactList");
+            Map<String,Object> contactss = new HashMap<>();
+            for (Contact contact : contacts){
+                String contactName = contactTypeService.TypeNameByid(contact.getTypeId());
+                contactss.put(contactName,contact.getContent());
+            }
+            result.put("ContactList",contactss);
+
+        }catch (Exception e){
+            e.printStackTrace();;
+            result.put("msg","失败");
+        }
+        return result;
+    }
 }

@@ -19,6 +19,7 @@ public interface ContactTypeService {
     Map<String,Object> updateContactType(ContactTypeVo contactTypeVo);
     Map<String,Object> deleteContactType(int contactTypeId);
     Map<String,Object> selectContactType(Map<String,Object> selectCondition,boolean isAdmin);
+    String TypeNameByid(int contactTypeId);
 
 
 }

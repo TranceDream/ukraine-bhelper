@@ -133,6 +133,13 @@ public class PostController {
         if(! msg.equals("Delete the success!")) msg = "PARAMETER ERROR!";
         return new Result<>(dateMap, Result.SUCCESS,msg);
     }
+    @PostMapping("/housedetail")
+    public Result<Map<String,Object>>  Housedetial(@RequestBody Map<String, Object> ma){
+
+        int houseid = (int)ma.get("houseId");
+        Map<String,Object> dateMap = postHouseService.houseById(houseid);
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
 
     @PostMapping("/selectHouse")
     public Result<Map<String,Object>>  selectHouse(@RequestBody Map<String, Object> selectcondiction,

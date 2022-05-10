@@ -96,4 +96,10 @@ public class ContactTypeServiceImpl extends ServiceImpl<ContactTypeMapper, Conta
         return result;
     }
 
+    @Override
+    public String TypeNameByid(int contactTypeId) {
+        ContactType contactType = baseMapper.selectById(contactTypeId);
+        return contactType.getContactName();
+    }
+
 }
