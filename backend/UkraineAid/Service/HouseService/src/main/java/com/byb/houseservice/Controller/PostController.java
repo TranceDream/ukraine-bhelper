@@ -13,6 +13,7 @@ import com.byb.houseservice.Service.*;
 import com.byb.houseservice.Vo.*;
 import com.byb.openfeign.Client.ReportClient;
 import com.byb.openfeign.Form.FormGeneration;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -67,8 +68,9 @@ public class PostController {
 
     //基础房源信息********************************************************************************************************
     @PostMapping("/postinfo")
-    public Result<Map<String ,Object>> postHouse(@RequestBody HouseinfoVo houseinfoVo ){
-
+    public Result<Map<String ,Object>> postHouse(@RequestBody HouseinfoVo houseinfoVo ,
+                                    HttpServletResponse response, HttpServletRequest request){
+        int userId = Integer.parseInt(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
         if( houseinfoVo.getCountry() == null ){
 
             return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no country!");
@@ -89,7 +91,7 @@ public class PostController {
         if(houseinfoVo.getDescription().length()>500){
             return new Result<>(null,Result.FAIL,"The description is too long!");
         }
-
+        houseinfoVo.setUserId(userId);
         System.out.println(houseinfoVo);
         Map<String,Object> dateMap = postHouseService.addpostHouseInfo(houseinfoVo);
         String msg = (String) dateMap.get("msg");
@@ -282,6 +284,7 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
     @PostMapping("/posttag")
     public Result<Map<String , Object>> posttag(@RequestBody Map<String , List<TagVo> > ma,
                                                     HttpServletResponse response, HttpServletRequest request){
+
         List<TagVo> list = ma.get("date");
         System.out.println(list);
 //        System.out.println(list.get(0));
