@@ -2,7 +2,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-05-11 01:30:31
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-11 02:25:39
+ * @Last Modified time: 2022-05-11 02:48:45
  */
 
 import { Button, Form, Input } from 'antd'
@@ -140,7 +140,7 @@ export default function EditHouseModal(props:Props) {
 
             <Form.Item
                 name='guests'
-                label='容纳人数'
+                label='接纳人数'
                 preserve={false}
                 rules={[
                     {
@@ -154,7 +154,7 @@ export default function EditHouseModal(props:Props) {
 
             <Form.Item
                 name='duration'
-                label='可待时长'
+                label='接纳时长'
                 preserve={false}
                 rules={[
                     {
@@ -179,8 +179,6 @@ export default function EditHouseModal(props:Props) {
                 initialValue={props.record.description}>
                 <TextArea rows={4} />
             </Form.Item>
-
-            
 
             <Form.Item {...tailFormItemLayout}>
                 <Button type='primary' htmlType='submit'>

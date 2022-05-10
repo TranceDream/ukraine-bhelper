@@ -2,7 +2,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-05-11 00:08:19
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-11 02:32:06
+ * @Last Modified time: 2022-05-11 02:55:47
  */
 import { EditOutlined } from '@ant-design/icons'
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table'
@@ -24,6 +24,7 @@ export type TableListItem = {
     address: string
     guests: number // 容纳人数
     pets: string
+    duration: number
     sort: string
     sortop: string
     labels: []
@@ -63,9 +64,10 @@ export default function HouseControl() {
         temp = []
         data.forEach((item: any) => {
             let newitem: TableListItem
+            item.createAt = new Date(item.createAt).getTime()
             newitem = { ...item }
             newitem.key = Date.now()
-            item.createAt = new Date(item.createAt).getTime()
+            // newitem.duration = item
             temp.push(newitem)
         })
         console.log('temp', temp)
@@ -120,8 +122,25 @@ export default function HouseControl() {
             align: 'center',
             width: 140,
             key: 'since',
+            search: false,
             dataIndex: 'createTime',
             valueType: 'date',
+        },
+        {
+            title: '接待时长',
+            align: 'center',
+            width: 140,
+            key: 'duration',
+            search: false,
+            dataIndex: 'duration',
+        },
+        {
+            title: '接纳人数',
+            align: 'center',
+            width: 140,
+            key: 'guests',
+            search: false,
+            dataIndex: 'guests',
         },
         // {
         //     disable: true,
@@ -143,16 +162,26 @@ export default function HouseControl() {
         //     ),
         // },
         {
-            title: '排序方式',
+            title: '排序字段',
             width: 140,
-            key: 'orderText',
-            dataIndex: 'orderText',
+            key: 'sort',
+            // dataIndex: 'orderText',
             hideInTable: true,
             valueEnum: {
-                'ur.USER_ID asc': '按用户ID升序',
-                'ur.USER_ID des': '按用户ID降序',
-                'ur.CREATE_TIME asc': '按创建时间升序',
-                'ur.CREATE_TIME desc': '按创建时间降序',
+                duration: '接纳时长',
+                guests: '接纳人数',
+                createTime: '创建时间',
+            },
+        },
+        {
+            title: '排序方式',
+            width: 140,
+            key: 'sortop',
+            // dataIndex: 'orderText',
+            hideInTable: true,
+            valueEnum: {
+                asc: '升序',
+                desc: '降序',
             },
         },
         {
@@ -180,9 +209,17 @@ export default function HouseControl() {
                 columns={columns}
                 request={async (params, sorter, filter) => {
                     // 表单搜索项会从 params 传入，传递给后端接口。
-                    if ('userId' in params) {
-                        params.userId = parseInt(params.userId)
+                    if ('houseId' in params) {
+                        params.houseId = parseInt(params.houseId)
                     }
+                    // console.log('before', params)
+
+                    for (let Key in params) {
+                        if (!params[Key]) {
+                            delete params[Key]
+                        }
+                    }
+                    // console.log("after",params)
                     // setParams(params)
                     // console.log('UseControl: ', params, sorter, filter)
                     const msg = await reqHouseList({
