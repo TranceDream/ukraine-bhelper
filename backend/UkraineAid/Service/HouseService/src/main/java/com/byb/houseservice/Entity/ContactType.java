@@ -14,22 +14,22 @@ import java.sql.Date;
  * @date 2022/5/4 1:11
  */
 
-@TableName("UAHouse.CONTACT_TYPE")
+@TableName("UAHouse.contactType")
 @Accessors(chain = true)
 @Data
 public class ContactType {
 
-    @TableId(value = "TYPE_ID",type = IdType.AUTO)
+    @TableId(value = "typeId",type = IdType.AUTO)
     private int typeId;
 
-    @TableField("CREATE_TIME")
+    @TableField("createTime")
     private Date createTime;
 
-    @TableField("DELETE_MARK")
-    private String deleteMask;
+    @TableField("deleteMark")
+    private String deleteMark;
 
-    @TableField("CONTACT_NAME")
-    private String contentName;
+    @TableField("contactName")
+    private String contactName;
 
 
 }

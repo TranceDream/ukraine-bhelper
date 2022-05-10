@@ -25,45 +25,45 @@ import java.sql.Date;
 //@RequiredArgsConstructor
 public class HouseInfo {
 
-    @TableId(value = "HOUSE_ID",type = IdType.AUTO)
+    @TableId(value = "houseId",type = IdType.AUTO)
     private int houseId;
 
-    @TableField(value = "USER_ID")
-    private int userid;
+    @TableField(value = "userId")
+    private int userId;
 
-    @TableField("CREATE_TIME")
+    @TableField("createTime")
     private Date createTime;
 
-    @TableField("DELETE_MARK")
+    @TableField("deleteMark")
     private String deleteMark;
 
-    @TableField("COUNTRY")
+    @TableField("country")
     private String country;
 
-    @TableField("PROVINCE")
+    @TableField("province")
     private String province;
 
-    @TableField("CITY")
+    @TableField("city")
     private String city;
 
-    @TableField("ADDRESS")
+    @TableField("address")
     private String address;
 
-    @TableField("GUESTS")
-    private int guest;
+    @TableField("guests")
+    private int guests;
 
-    @TableField("PETS")
+    @TableField("pets")
     private String pets;
 
-    @TableField("DURATION")
+    @TableField("duration")
     private int duration;
 
-    @TableField("DESCRIPTION")
+    @TableField("description")
     private String description ;
 
-    @TableField("TITLE")
+    @TableField("title")
     private String title;
 
-    @TableField("ACTIVE")
+    @TableField("active")
     private String active;
 }

@@ -21,5 +21,5 @@ public class ContactTypeVo {
 
     private String deleteMask;
 
-    private String contentName;
+    private String contactName;
 }

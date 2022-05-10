@@ -32,7 +32,7 @@ public class TagTypeServiceImpl extends ServiceImpl<TagTypeMapper, TagType>
                 BeanUtils.copyProperties(tagTypeVo,tagtype);
                 baseMapper.insert(tagtype);
             }
-            result.put("msg","提交成功");
+            result.put("msg","Success!");
 //            System.out.println("duiduidui");
 
         }catch(Exception e){
@@ -49,13 +49,13 @@ public class TagTypeServiceImpl extends ServiceImpl<TagTypeMapper, TagType>
         try{
             TagType tagType = new TagType();
             tagType.setTypeId(tagTypeid);
-            tagType.setDeleteMask("YES");
+            tagType.setDeleteMark("YES");
 
 //            System.out.println(houseinfo);
             baseMapper.updateById(tagType);
 
             result.put("data",tagTypeid);
-            result.put("msg","删除成功");
+            result.put("msg","Success!");
 //            System.out.println("duiduidui");
 
         }catch(Exception e){
@@ -70,7 +70,7 @@ public class TagTypeServiceImpl extends ServiceImpl<TagTypeMapper, TagType>
         Map<String, Object> result = new HashMap<>();
         try{
             List<TagType> tagTypeList = baseMapper.selectByMap(selectCondition);
-            result.put("data",tagTypeList);
+            result.put("tagTypeid",tagTypeList);
         }catch(Exception e){
             e.printStackTrace();
             result.put("msg","失败");

@@ -34,14 +34,13 @@ public class PostTagServiceImpl extends ServiceImpl<TagMapper, Tag>
                 baseMapper.insert(tag);
             }
 
-            result.put("msg","提交成功");
+            result.put("msg","Success!");
 //            System.out.println("duiduidui");
 
         }catch(Exception e){
             e.printStackTrace();
-            result.put("msg","提交失败");
+            result.put("msg","Failure!");
         }
-
         return result;
     }
 
@@ -51,18 +50,18 @@ public class PostTagServiceImpl extends ServiceImpl<TagMapper, Tag>
         try{
             Tag tag = new Tag();
             tag.setTagId(tagid);
-            tag.setDeleteMask("YES");
+            tag.setDeleteMark("YES");
 
 //            System.out.println(houseinfo);
             baseMapper.updateById(tag);
 
             result.put("data",tag.getTagId());
-            result.put("msg","删除成功");
+            result.put("msg","Success!");
 //            System.out.println("duiduidui");
 
         }catch(Exception e){
             e.printStackTrace();
-            result.put("msg","删除失败");
+            result.put("msg","Failure!");
         }
         return result;
     }
@@ -70,12 +69,13 @@ public class PostTagServiceImpl extends ServiceImpl<TagMapper, Tag>
     @Override
     public Map<String, Object> selectTag(Map<String, Object> selectCondition) {
         Map<String, Object> result = new HashMap<>();
+        selectCondition.put("deleteMark","NO");
         try{
             List<Tag> tagList= baseMapper.selectByMap(selectCondition);
-            result.put("data",tagList);
+            result.put("tagList",tagList);
         }catch(Exception e){
             e.printStackTrace();
-            result.put("msg","失败");
+            result.put("msg","Failure!");
         }
         return result;
     }

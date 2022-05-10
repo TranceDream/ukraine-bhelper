@@ -68,46 +68,84 @@ public class PostController {
     //基础房源信息********************************************************************************************************
     @PostMapping("/postinfo")
     public Result<Map<String ,Object>> postHouse(@RequestBody HouseinfoVo houseinfoVo ){
-        if( houseinfoVo.getCountry() == null || houseinfoVo.getProvince() == null || houseinfoVo.getCity() == null ){
-//            ResponseUtil.out(response ,new Result(null,Result.FAIL,"必要信息不全"));
-            return new Result<>(null,Result.FAIL,"必要信息不全");
+
+        if( houseinfoVo.getCountry() == null ){
+
+            return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no country!");
         }
+        if(  houseinfoVo.getProvince() == null ){
+            return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no province!");
+        }
+        if( houseinfoVo.getCity() == null ){
+
+            return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no city!");
+        }
+        if(houseinfoVo.getAddress().length()>200){
+            return new Result<>(null,Result.FAIL,"The address is too long!");
+        }
+        if(houseinfoVo.getTitle().length()>200){
+            return new Result<>(null,Result.FAIL,"The title is too long!");
+        }
+        if(houseinfoVo.getDescription().length()>500){
+            return new Result<>(null,Result.FAIL,"The description is too long!");
+        }
+
         System.out.println(houseinfoVo);
         Map<String,Object> dateMap = postHouseService.addpostHouseInfo(houseinfoVo);
-
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("A successful submission")) msg = "PARAMETER ERROR!";
+        return new Result<>(dateMap, Result.SUCCESS,msg);
     }
 
     @PostMapping("/updateinfo")
     public Result<Map<String ,Object>> updateHouse(@RequestBody HouseinfoVo houseinfoVo ,
                                                  HttpServletResponse response, HttpServletRequest request){
+        if(houseinfoVo.getUserId() != 0){
+            return new Result<>(null,Result.FAIL,"It is forbidden to modify the ownership of a house!");
+        }
+        if(houseinfoVo.getAddress().length()>200){
+            return new Result<>(null,Result.FAIL,"The address is too long!");
+        }
+        if(houseinfoVo.getTitle().length()>200){
+            return new Result<>(null,Result.FAIL,"The title is too long!");
+        }
+        if(houseinfoVo.getDescription().length()>500){
+            return new Result<>(null,Result.FAIL,"The description is too long!");
+        }
 
         System.out.println(houseinfoVo);
         Map<String,Object> dateMap = postHouseService.updateHouseInfo(houseinfoVo);
-
-        return new Result<>(dateMap, Result.SUCCESS);
-
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Succeeded in modifying data")) msg = "PARAMETER ERROR!";
+        return new Result<>(dateMap, Result.SUCCESS,msg);
     }
+
     @PostMapping("/deleteinfo")
-    public Result<Map<String ,Object>> deleteHouse(@RequestBody Map<String, Integer> ma,
+    public Result<Map<String ,Object>> deleteHouse(@RequestBody Map<String, Object> ma,
                                                    HttpServletResponse response, HttpServletRequest request){
 
-        int houseid = ma.get("houseId");
+        int houseid = (int)ma.get("houseId");
         Map<String,Object> dateMap = postHouseService.deleteHouseInfo(houseid);
-
-        return new Result<>(dateMap, Result.SUCCESS);
-
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Delete the success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(dateMap, Result.SUCCESS,msg);
     }
+
     @PostMapping("/selectHouse")
     public Result<Map<String,Object>>  selectHouse(@RequestBody Map<String, Object> selectcondiction,
                                                     HttpServletResponse response, HttpServletRequest request){
-
-
         Map<String,Object> dateMap = postHouseService.selcetHouse(selectcondiction);
         return new Result<>(dateMap, Result.SUCCESS);
     }
-
-
+    @PostMapping("/selectHouseAdmin")
+    public Result<Map<String,Object>>  selectHouseForAdmin(@RequestBody Map<String, Object> selectcondiction,
+                                                   HttpServletResponse response, HttpServletRequest request){
+        Map<String,Object> dateMap = postHouseService.selcetHouse(selectcondiction);
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
 
 //*contact***************************************************************************************************************************
 
@@ -115,14 +153,17 @@ public class PostController {
     public Result<Map<String , Object>> postconnect(@RequestBody Map<String , List<ContactVo> > ma,
                                                     HttpServletResponse response, HttpServletRequest request){
         List<ContactVo> list = ma.get("date");
+        System.out.println(list);
         if(list.size()==0){
 //            ResponseUtil.out(response,new Result(null,Result.FAIL,"至少有一个联系方式"));
-            return new Result<>(null,Result.FAIL,"至少有一个联系方式");
+            return new Result<>(null,Result.FAIL,"At least have one contact information!");
         }
 
         Map<String,Object> dateMap = postContactService.addPostContact(list);
-
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
 
     }
 
@@ -131,7 +172,10 @@ public class PostController {
                                                     HttpServletResponse response, HttpServletRequest request){
 
         Map<String,Object> dateMap = postContactService.updateContact(contactVo);
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
 
     }
 
@@ -142,24 +186,47 @@ public class PostController {
 
         Map<String ,Object> dateMap = postContactService.deleteContact(contactId);
 
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
     }
     @PostMapping("/selectcontact")
     public Result<Map<String,Object>>  selectContact(@RequestBody Map<String, Object> selectcondiction,
                                                    HttpServletResponse response, HttpServletRequest request){
 
         Map<String,Object> dateMap = postContactService.selectContact(selectcondiction);
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = "Success!";
+        if((int)dateMap.get("number")==0){
+            msg = "No query matches the conditions!";
+            return new Result<>(dateMap,Result.FAIL,msg);
+        }
+        return new Result<>(dateMap, Result.SUCCESS,msg);
     }
+    @PostMapping("/selectcontactAdmin")
+    public Result<Map<String,Object>>  selectContactAll(@RequestBody Map<String, Object> selectcondiction,
+                                                     HttpServletResponse response, HttpServletRequest request){
+
+        Map<String,Object> dateMap = postContactService.selectContactAll(selectcondiction);
+        String msg = "Success!";
+        if((int)dateMap.get("number")==0){
+            msg = "No query matches the conditions!";
+            return new Result<>(dateMap,Result.FAIL,msg);
+        }
+        return new Result<>(dateMap, Result.SUCCESS,msg);
+    }
+
 //    **************************************************************************************************************
 @PostMapping("/postcontacttype")
 public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo contactTypeVo,
                                                 HttpServletResponse response, HttpServletRequest request){
 
-
     Map<String,Object> dateMap = contactTypeService.addContactType(contactTypeVo);
 
-    return new Result<>(dateMap, Result.SUCCESS);
+    String msg = (String) dateMap.get("msg");
+    dateMap.remove("msg");
+    if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+    return new Result<>(null, Result.SUCCESS,msg);
 
 }
 
@@ -168,7 +235,10 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
                                                       HttpServletResponse response, HttpServletRequest request){
 
         Map<String,Object> dateMap = contactTypeService.updateContactType(contactTypeVo);
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
 
     }
 
@@ -177,14 +247,25 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
                                                       HttpServletResponse response, HttpServletRequest request){
         int contactTypeId = ma.get("typeId");
         Map<String ,Object> dateMap = contactTypeService.deleteContactType(contactTypeId);
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
     }
 
     @PostMapping("/selectcontacttype")
     public Result<Map<String,Object>>  selectContacttype(@RequestBody Map<String, Object> selectcondiction,
                                                      HttpServletResponse response, HttpServletRequest request){
 
-        Map<String,Object> dateMap = contactTypeService.selectContactType(selectcondiction);
+        Map<String,Object> dateMap = contactTypeService.selectContactType(selectcondiction,false);
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+
+    @PostMapping("/selectcontacttypeAdmin")
+    public Result<Map<String,Object>>  selectContacttypeAdmin(@RequestBody Map<String, Object> selectcondiction,
+                                                         HttpServletResponse response, HttpServletRequest request){
+
+        Map<String,Object> dateMap = contactTypeService.selectContactType(selectcondiction,true);
         return new Result<>(dateMap, Result.SUCCESS);
     }
 
@@ -195,10 +276,15 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
     public Result<Map<String , Object>> posttag(@RequestBody Map<String , List<TagVo> > ma,
                                                     HttpServletResponse response, HttpServletRequest request){
         List<TagVo> list = ma.get("date");
+        System.out.println(list);
+//        System.out.println(list.get(0));
 
         Map<String,Object> dateMap = postTagService.addPostTag(list);
 
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
     }
 
     @PostMapping("/deletetag")
@@ -208,8 +294,12 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
 
         Map<String ,Object> dateMap = postTagService.deleteTag(TagId);
 
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
     }
+
     @PostMapping("/selectTag")
     public Result<Map<String,Object>>  selectTag(@RequestBody Map<String, Object> selectcondiction,
                                                    HttpServletResponse response, HttpServletRequest request){
@@ -226,7 +316,10 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
         List<TagTypeVo> list = ma.get("date");
         Map<String,Object> dateMap = tagTypeService.addTagType(list);
 
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
     }
 
     @PostMapping("/deletetagtype")
@@ -235,8 +328,10 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
         int TagTypeId = ma.get("typeId");
 
         Map<String ,Object> dateMap = tagTypeService.deleteTagType(TagTypeId);
-
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
     }
 
     @PostMapping("/selecttagtype")
