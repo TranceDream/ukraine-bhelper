@@ -2,10 +2,13 @@
  * @Author: Linhao Yu
  * @Date: 2022-05-11 00:08:19
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-11 00:43:26
+ * @Last Modified time: 2022-05-11 01:34:27
  */
+import { EditOutlined } from '@ant-design/icons'
 import ProTable, { ProColumns } from '@ant-design/pro-table'
-import React from 'react'
+import { message, Modal } from 'antd'
+import React, { useState } from 'react'
+import { reqHouseList } from '../../api'
 import './ant-pro-card.scss'
 import styles from './index.module.scss'
 
@@ -21,14 +24,51 @@ export type TableListItem = {
     pets: string
     sort: string
     sortop: string
+    labels: []
 }
 
 export default function HouseControl() {
+    const [EditHouseVisible, setEditHouseVisible] = useState(false)
+    const [confirmLoading, setConfirmLoading] = useState(false)
+    const [tableListDataSource, settableListDataSource] = useState<
+        TableListItem[]
+    >([]) // 记录操作行的数据
+
+    // 处理房源信息
+    const getdata = (data: any) => {
+        // console.log("datya",data)
+        let temp: TableListItem[]
+        temp = []
+        data.forEach((item: any) => {
+            let newitem: TableListItem
+            newitem = { ...item }
+            newitem.key = Date.now()
+            item.createAt = new Date(item.createAt).getTime()
+            temp.push(newitem)
+        })
+        console.log('temp', temp)
+        settableListDataSource(temp)
+    }
+
+    // 编辑房源信息
+    const EditHouse = (_: any, record: any, index:number) => {
+        setEditHouseVisible(true)
+    }
+
+    // 成功编辑房屋
+    const handleEditHouseOk = () => {
+        message.error("没有实现")
+    }
+
+    // 取消编辑房屋
+    const handleEditHouseCancel = () =>{
+        message.error('没有实现')
+    }
     const columns: ProColumns<TableListItem>[] = [
         {
             title: '房源ID',
             width: 50,
-            dataIndex: 'userId',
+            dataIndex: 'houseId',
             align: 'center',
             render: (_, record: any) => <a>{_}</a>,
         },
@@ -58,7 +98,7 @@ export default function HouseControl() {
         {
             title: '省份',
             width: 80,
-            dataIndex: 'city',
+            dataIndex: 'province',
             align: 'center',
         },
         {
@@ -75,6 +115,25 @@ export default function HouseControl() {
             dataIndex: 'createTime',
             valueType: 'date',
         },
+        // {
+        //     disable: true,
+        //     title: '标签',
+        //     dataIndex: 'labels',
+        //     search: false,
+        //     width: 100,
+        //     renderFormItem: (_, { defaultRender }) => {
+        //         return defaultRender(_)
+        //     },
+        //     render: (_, record) => (
+        //         <Space>
+        //             {record.labels.map(({ name, color }) => (
+        //                 <Tag color={color} key={name}>
+        //                     {name}
+        //                 </Tag>
+        //             ))}
+        //         </Space>
+        //     ),
+        // },
         {
             title: '排序方式',
             width: 140,
@@ -93,13 +152,13 @@ export default function HouseControl() {
             width: 180,
             key: 'option',
             valueType: 'option',
-            render: (text: any, record: any, index: number) => [
+            render: (_: any, record: any, index: number) => [
                 // <a key='delete' onClick={() => deleteUser(text, record, index)}>
                 //     删除
                 // </a>,
-                // <a key='edit' onClick={() => EditUser(text, record, index)}>
-                //     编辑
-                // </a>,
+                <a key='edit' onClick={() => EditHouse(_, record, index)}>
+                    编辑
+                </a>,
                 // <a key='change' onClick={() => showChangePwd(record)}>
                 //     重置密码
                 // </a>,
@@ -118,10 +177,15 @@ export default function HouseControl() {
                     }
                     // setParams(params)
                     // console.log('UseControl: ', params, sorter, filter)
-                    // const msg = await reqHouseList({
-                    //     ...params,
-                    //     ...sorter,
-                    // })
+                    const msg = await reqHouseList({
+                        ...params,
+                        ...sorter,
+                    })
+                    if (msg.code === 200) {
+                        if (msg.data.houseinfo) {
+                            getdata(msg.data.houseinfo)
+                        }
+                    }
                     return Promise.resolve({
                         // data: tableListDataSource,
                         success: true,
@@ -157,7 +221,7 @@ export default function HouseControl() {
                     multipleLine: false,
                     actions: [],
                 }}
-                // dataSource={tableListDataSource}
+                dataSource={tableListDataSource}
                 // rowKey={(record) => {
                 //     return record.userId + Date.now().toString() //在这里加上一个时间戳就可以了
                 // }}
@@ -175,6 +239,28 @@ export default function HouseControl() {
                 headerTitle='所有房源'
                 className={styles.protable}
             />
+            {/* 编辑房源 */}
+            <Modal
+                destroyOnClose={true}
+                title={
+                    <>
+                        <EditOutlined
+                            style={{
+                                fontSize: 20,
+                                color: '#000',
+                                marginRight: 10,
+                            }}
+                        />
+                        编辑房源信息
+                    </>
+                }
+                visible={EditHouseVisible}
+                onOk={handleEditHouseOk}
+                confirmLoading={confirmLoading}
+                onCancel={handleEditHouseCancel}
+                footer={null}>
+                {/* <ChangePwd userName={record.name} userId={record.userId} /> */}
+            </Modal>
         </>
     )
 }
