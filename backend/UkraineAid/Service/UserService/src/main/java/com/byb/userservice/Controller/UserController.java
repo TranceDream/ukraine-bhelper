@@ -15,10 +15,7 @@ import com.byb.userservice.Entity.Role;
 import com.byb.userservice.Entity.User;
 import com.byb.userservice.Entity.UserRole;
 import com.byb.userservice.Service.*;
-import com.byb.userservice.Vo.ModuleVo;
-import com.byb.userservice.Vo.PermissionForm;
-import com.byb.userservice.Vo.RoleForm;
-import com.byb.userservice.Vo.UserForm;
+import com.byb.userservice.Vo.*;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -291,7 +288,7 @@ public class UserController {
 
     @PostMapping("/userEmpowerment")
     public Result<String> userEmpowerment(@RequestBody UserForm userForm, HttpServletRequest request, HttpServletResponse response){
-        if(userForm.getRoleId() == null || userForm.getUserId() == null){
+        if(userForm.getRoleId() == null || userForm.getUserId() == null || userForm.getGroupId() == null){
             ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
         }
 
@@ -574,10 +571,30 @@ public class UserController {
 //        ResponseUtil.out(response, new Result(null, Result.SUCCESS, "登出成功"));
 //    }
 
-    @PostMapping("/getChildGroups")
-    public String getChildGroups(Long userId){
+    @PostMapping("/getChildGroupsSql")
+    public String getChildGroupsSql(Long userId){
         String result = userService.getChildGroups(userId);
         return result;
+    }
+
+    @PostMapping("/getChildGroupVos")
+    public Result<Map<String, Object>> getChildGroupVos(HttpServletRequest request){
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        List<GroupForm> list = userService.getGroupList(userId);
+        Map<String, Object> map = new HashMap<>();
+        map.put("data", list);
+        return new Result<>(map, Result.SUCCESS);
+    }
+
+    @PostMapping("/getOneGroup")
+    public Result<Map<String, Object>> getOneGroup(Long userId, Integer roleId, HttpServletResponse response){
+        if(userId == null || roleId == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "数据不全"));
+        }
+        GroupForm groupForm = userService.getOneGroup(userId, roleId);
+        Map<String, Object> map = new HashMap<>();
+        map.put("data", groupForm);
+        return new Result<>(map, Result.SUCCESS);
     }
 
     private void sendMessage(String queue, Object object){
