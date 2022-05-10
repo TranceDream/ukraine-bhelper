@@ -150,7 +150,7 @@ public class PostController {
     @PostMapping("/selectHouseAdmin")
     public Result<Map<String,Object>>  selectHouseForAdmin(@RequestBody Map<String, Object> selectcondiction,
                                                    HttpServletResponse response, HttpServletRequest request){
-        Map<String,Object> dateMap = postHouseService.selcetHouse(selectcondiction);
+        Map<String,Object> dateMap = postHouseService.selectBycondition(selectcondiction);
         return new Result<>(dateMap, Result.SUCCESS);
     }
 

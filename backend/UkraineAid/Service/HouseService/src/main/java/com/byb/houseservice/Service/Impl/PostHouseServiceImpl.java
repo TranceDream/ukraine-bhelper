@@ -19,6 +19,7 @@ import com.byb.houseservice.Vo.HouseinfoVo;
 //import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.byb.houseservice.Vo.TagVo;
 import lombok.experimental.Accessors;
+import net.sf.jsqlparser.statement.create.schema.CreateSchema;
 import org.checkerframework.checker.units.qual.A;
 import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.BeanUtils;
@@ -181,4 +182,71 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
         }
         return result;
     }
+
+    @Override
+    public Map<String, Object> selectBycondition(Map<String, Object> selectCondition) {
+
+        int pageSize = (int) selectCondition.get("pageSize");
+        int current = (int) selectCondition.get("current");
+        Page<HouseInfo> houseInfoPage = new Page<>(current,pageSize);
+        QueryWrapper<HouseInfo> queryWrapper = new QueryWrapper<>();
+        if(selectCondition.containsKey("houseId")){
+            int houseId = (int) selectCondition.get("houseId");
+            queryWrapper.eq("houseId" , houseId);
+        }
+        if(selectCondition.containsKey("userId")){
+            int userId = (int) selectCondition.get("userId");
+            queryWrapper.eq("userId",userId);
+        }
+        if(selectCondition.containsKey("country")){
+            String country = (String) selectCondition.get("country");
+            queryWrapper.eq("country",country);
+        }
+        if(selectCondition.containsKey("province")){
+            String province = (String) selectCondition.get("province");
+            queryWrapper.eq("province",province);
+        }
+        if (selectCondition.containsKey("city")){
+            String city = (String) selectCondition.get("city");
+            queryWrapper.eq("city",city);
+        }
+        if(selectCondition.containsKey("deleteMark")){
+            String de = (String) selectCondition.get("deleteMark");
+            queryWrapper.eq("deleteMark",de);
+        }
+        if (selectCondition.containsKey("durationmin")){
+            int duramin = (int) selectCondition.get("durationmin");
+            queryWrapper.ge("duration",duramin);
+        }
+        if(selectCondition.containsKey("durationmax")){
+            int duramax = (int) selectCondition.get("durationmax");
+            queryWrapper.le("duration",duramax);
+        }
+        if (selectCondition.containsKey("guestmin")){
+            int guestmin = (int) selectCondition.get("guestmin");
+            queryWrapper.ge("guest",guestmin);
+        }
+        if (selectCondition.containsKey("guestmax")){
+            int guestmax = (int) selectCondition.get("guestmax");
+            queryWrapper.le("guest",guestmax);
+        }
+        if (selectCondition.containsKey("pets")){
+            String pets = (String) selectCondition.get("pets");
+            queryWrapper.eq("pets",pets);
+        }
+        if (selectCondition.containsKey("actice")){
+            String actice = (String) selectCondition.get("actice");
+            queryWrapper.eq("actice",actice);
+        }
+        if (selectCondition.containsKey("sort")){
+            String sort = (String) selectCondition.get("sort");
+            queryWrapper.orderByAsc(sort);
+        }
+        Page<HouseInfo> page = this.page(houseInfoPage,queryWrapper);
+        Map<String, Object> result = new HashMap<>();
+        result.put("houseinfo",page.getRecords());
+        return result;
+
+    }
+
 }
