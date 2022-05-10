@@ -44,7 +44,6 @@ public class PostController {
     }
 
 
-
     @Autowired
     private PostHouseService postHouseService;
 
@@ -82,15 +81,13 @@ public class PostController {
 
             return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no city!");
         }
-        if(houseinfoVo.getAddress().length()>200){
+        if(houseinfoVo.getAddress() != null && houseinfoVo.getAddress().length()>200)
             return new Result<>(null,Result.FAIL,"The address is too long!");
-        }
-        if(houseinfoVo.getTitle().length()>200){
-            return new Result<>(null,Result.FAIL,"The title is too long!");
-        }
-        if(houseinfoVo.getDescription().length()>500){
-            return new Result<>(null,Result.FAIL,"The description is too long!");
-        }
+
+        if(houseinfoVo.getTitle() != null && houseinfoVo.getTitle().length()>200)
+            return new Result<>(null, Result.FAIL, "The title is too long!");
+        if(houseinfoVo.getDescription() != null && houseinfoVo.getDescription().length()>500)
+            return new Result<>(null, Result.FAIL, "The description is too long!");
         houseinfoVo.setUserId(userId);
         System.out.println(houseinfoVo);
         Map<String,Object> dateMap = postHouseService.addpostHouseInfo(houseinfoVo);
@@ -103,18 +100,14 @@ public class PostController {
     @PostMapping("/updateinfo")
     public Result<Map<String ,Object>> updateHouse(@RequestBody HouseinfoVo houseinfoVo ,
                                                  HttpServletResponse response, HttpServletRequest request){
-        if(houseinfoVo.getUserId() != 0){
-            return new Result<>(null,Result.FAIL,"It is forbidden to modify the ownership of a house!");
-        }
-        if(houseinfoVo.getAddress().length()>200){
+
+        if(houseinfoVo.getAddress() != null && houseinfoVo.getAddress().length()>200)
             return new Result<>(null,Result.FAIL,"The address is too long!");
-        }
-        if(houseinfoVo.getTitle().length()>200){
+
+        if(houseinfoVo.getTitle() != null && houseinfoVo.getTitle().length()>200)
             return new Result<>(null,Result.FAIL,"The title is too long!");
-        }
-        if(houseinfoVo.getDescription().length()>500){
+        if(houseinfoVo.getDescription() != null && houseinfoVo.getDescription().length()>500)
             return new Result<>(null,Result.FAIL,"The description is too long!");
-        }
 
         System.out.println(houseinfoVo);
         Map<String,Object> dateMap = postHouseService.updateHouseInfo(houseinfoVo);

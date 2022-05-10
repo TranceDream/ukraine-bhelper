@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.byb.userservice.Dao.PermissionDao">
+
+    <resultMap id="permissionMap" type="com.byb.userservice.Entity.Permission">
+        <id column="PERMISSION_ID" property="permissionId"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="PERMISSION_NAME" property="permissionName"/>
+        <result column="URL" property="url"/>
+        <result column="DELETE_MARK" property="deleteMark"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="permissionMap">
+        select * from PERMISSION
+    </select>
+
+    <select id="selectByUser" resultType="java.lang.String">
+        select p.URL from
+        DICT_USER_ROLE ur left join DICT_ROLE_PERMISSION rp on ur.ROLE_ID = rp.ROLE_ID
+        left join DICT_PERMISSION p on rp.PERMISSION_ID = p.PERMISSION_ID
+        <where>
+            ur.USER_ID = #{userId}
+            and ur.DELETE_MARK = 'NO'
+            and ur.LOCKED_MARK = 'NO'
+            and rp.LOCKED_MARK = 'NO'
+            and rp.DELETE_MARK = 'NO'
+            and p.DELETE_MARK = 'NO'
+        </where>
+    </select>
+
+    <select id="countPermissionList" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select COUNT(1) from DICT_PERMISSION
+        <where>
+            <if test="permissionId != null and permissionId != ''">
+                PERMISSION_ID = #{permissionId}
+            </if>
+
+            <if test="permissionName != null and permissionName != ''">
+                AND PERMISSION_NAME LIKE "%" #{permissionName} "%"
+            </if>
+
+            <if test="url != null and url != ''">
+                AND URL LIKE "%" #{url} "%"
+            </if>
+
+            <choose>
+                <when test="deleteMark != null and deleteMark != ''">
+                    AND DELETE_MARK = #{deleteMark}
+                </when>
+                <otherwise>
+                    AND DELETE_MARK = 'NO'
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <select id="selectPermissionList" resultMap="permissionMap" parameterType="java.util.Map">
+        select * from(
+        select * from DICT_PERMISSION
+        <where>
+            <if test="permissionId != null and permissionId != ''">
+                PERMISSION_ID = #{permissionId}
+            </if>
+
+            <if test="permissionName != null and permissionName != ''">
+                AND PERMISSION_NAME LIKE "%" #{permissionName} "%"
+            </if>
+
+            <if test="url != null and url != ''">
+                AND URL LIKE "%" #{url} "%"
+            </if>
+
+            <choose>
+                <when test="deleteMark != null and deleteMark != ''">
+                    AND DELETE_MARK = #{deleteMark}
+                </when>
+                <otherwise>
+                    AND DELETE_MARK = 'NO'
+                </otherwise>
+            </choose>
+
+            <choose>
+                <when test="orderText != null and orderText != ''">
+                    ORDER BY ${orderText}
+                </when>
+                <otherwise></otherwise>
+            </choose>
+            ORDER BY CREATE_TIME desc
+        </where> ) m limit #{start}, #{size}
+    </select>
+</mapper>

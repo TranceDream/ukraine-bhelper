@@ -240,13 +240,22 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
         }
         if (selectCondition.containsKey("sort")){
             String sort = (String) selectCondition.get("sort");
-            queryWrapper.orderByAsc(sort);
+            if(selectCondition.containsKey("sortop")){
+                String sortop = (String) selectCondition.get("sortop");
+                if(sortop.equals("asc")){
+                    queryWrapper.orderByAsc(sort);
+                }
+            }
+            queryWrapper.orderByDesc(sort);
         }
+//        if (selectCondition.containsKey("contactlist")){
+//            List<Integer> list = (List<Integer>) selectCondition.get("contactlist");
+//
+//        }
+
         Page<HouseInfo> page = this.page(houseInfoPage,queryWrapper);
         Map<String, Object> result = new HashMap<>();
         result.put("houseinfo",page.getRecords());
         return result;
-
     }
-
 }
