@@ -62,9 +62,13 @@ export default function MuteForm(props: Props) {
                 // console.table(record)
                 return (
                     <Switch
-                        defaultChecked={false}
+                        defaultChecked={
+                            record.lockedMark === 'NO' ? true : false
+                        }
                         onClick={() => onChange(record, index)}
-                        checked={hadRoleData[index].lockedMark}></Switch>
+                        checked={
+                            record.lockedMark === 'NO' ? true : false
+                        }></Switch>
                 )
             },
         },
@@ -96,7 +100,9 @@ export default function MuteForm(props: Props) {
                             record.lockedMark === 'NO' ? true : false
                         }
                         onClick={() => addRole(record, index)}
-                        checked={nonAddRoleData[index].lockedMark}></Switch>
+                        checked={
+                            record.lockedMark === 'NO' ? true : false
+                        }></Switch>
                 )
             },
         },
@@ -117,6 +123,7 @@ export default function MuteForm(props: Props) {
 
     // 确认解冻/冻结用户已有角色
     const handleOk = async () => {
+        console.log('1111111111')
         setConfirmLoading(true)
         const res = await reqLockUser({
             userId: record.userId,
@@ -143,20 +150,26 @@ export default function MuteForm(props: Props) {
 
     // 点击没有的角色赋权
     const addRole = async (record: any, index: number) => {
+        setRecord(record)
         setaddRolevisible(true)
         setIndex(index)
         setModalText('确定给予ID为' + record.userId + '的用户该权限吗？')
     }
 
+    // 确认增加角色
     const handleAddRoleOk = async () => {
+        console.log('eww', record)
         setConfirmLoading(true)
         const res = await reqAddRole({
             userId: record.userId,
-            userRoleId: record.id,
-            // lockedMark: selectLockedMark ? 'NO' : 'YES',
+            roleId: record.roleId,
         })
         if (res.code === 200) {
-            message.success('成功')
+            message.success('赋权成功')
+            let tempNonHadRoleData = nonAddRoleData.slice()
+            tempNonHadRoleData[Index].lockedMark =
+                tempNonHadRoleData[Index].lockedMark === 'YES' ? 'NO' : 'YES'
+            setNonAddRoleData(tempNonHadRoleData)
         } else {
             message.error(res.msg)
         }
@@ -181,7 +194,7 @@ export default function MuteForm(props: Props) {
         }
 
         roledata.length = 0
-        // console.log("prosp",props.roleList)
+        console.log('prosp', props.roleList)
         for (let Key in props.roleList) {
             roledata.push({
                 key: Key.toString() + Date.now().toString(),
@@ -214,6 +227,7 @@ export default function MuteForm(props: Props) {
         for (let i: number = 0; i < roledata.length; i++) {
             if (mentionedIndex.indexOf(i) === -1) {
                 let newobj = Object.assign(roledata[i], {
+                    lockedMark: 'YES',
                     userId: Data.userId,
                 })
                 datatemp.push(newobj)

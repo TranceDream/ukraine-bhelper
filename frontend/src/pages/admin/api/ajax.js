@@ -17,18 +17,18 @@ export default function ajax(url, data = {}, type = 'GET') {
         if (type === 'GET') {
             promise = axios.get(url, {
                 params: data,
-                headers: {
-                    'Content-Type': 'application/octet-stream',
-                    token: 'eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQAAiUdpdSKAiUrQzNTQ1NLQ3Mzy1oA2Czs8SAAAAA.T6csDOU-w-uImXscI8ghv80eiZzihTbm4aYOQbuc0tae4ikxIU89jIhFcrZIOBpFDpAXS6y9sfMOGgJX_V0LSQ',
-                    'Access-Control-Allow-Origin': '*',
-                },
+                // headers: {
+                //     'Content-Type': 'application/octet-stream',
+                //     token: 'eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQAAiUdpdSKAiUrQzNTQ1NLQ3Mzy1oA2Czs8SAAAAA.T6csDOU-w-uImXscI8ghv80eiZzihTbm4aYOQbuc0tae4ikxIU89jIhFcrZIOBpFDpAXS6y9sfMOGgJX_V0LSQ',
+                //     'Access-Control-Allow-Origin': '*',
+                // },
             })
         } else {
             // post
             promise = axios.post(url, data, {
                 headers: {
                     'Content-Type': 'application/json',
-                    token: 'eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQAAiUdpdSKAiUrQzNTI0NDI3MT41oAccu02SAAAAA.TFVZh0sNN0X6SdsqL5eKULgZgHIanB5d3qmxmhDhsq0j9tg4aUOAcoSrMo7UuGwmoMihAKIxIDKB0xhAItSQXQ',
+                    token: 'eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQAAiUdpdSKAiUrQzNTI0MLEyMTw1oAqf0TdCAAAAA.ttl-TyYS23dgePZTwPuosv7i_25PxN_-AcMIn_OtbGdTp0LPBVMJOEjDX01jB_ke_jGkLheDnMsZPVMT_OQkFQ',
                     'Access-Control-Allow-Origin': '*',
                 },
             })
