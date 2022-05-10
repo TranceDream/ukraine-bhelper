@@ -29,8 +29,8 @@ public class Contact {
     @TableField("createTime")
     private Date createTime;
 
-    @TableField("deleteMask")
-    private String deleteMask;
+    @TableField("deleteMark")
+    private String deleteMark;
 
     @TableField("content")
     private String content;

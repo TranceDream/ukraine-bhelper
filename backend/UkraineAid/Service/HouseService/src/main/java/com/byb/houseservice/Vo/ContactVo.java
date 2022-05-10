@@ -21,7 +21,7 @@ public class ContactVo {
 
     private String content;
 
-    private String deleteMask;
+    private String deleteMark;
 
     private int typeId;
 }

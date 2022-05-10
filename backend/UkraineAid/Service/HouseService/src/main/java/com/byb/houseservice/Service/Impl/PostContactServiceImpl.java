@@ -63,7 +63,7 @@ public class PostContactServiceImpl extends ServiceImpl<ContactMapper, Contact>
         try{
             Contact contact = new Contact();
             contact.setContactId(contactId);
-            contact.setDeleteMask("YES");
+            contact.setDeleteMark("YES");
 
 //            System.out.println(houseinfo);
             baseMapper.updateById(contact);
@@ -82,7 +82,7 @@ public class PostContactServiceImpl extends ServiceImpl<ContactMapper, Contact>
     @Override
     public Map<String, Object> selectContact(Map<String, Object> selectCondition) {
         Map<String, Object> result = new HashMap<>();
-        selectCondition.put("deleteMask","NO");
+        selectCondition.put("deleteMark","NO");
         try{
             List<Contact> ContactList = baseMapper.selectByMap(selectCondition);
             result.put("ContactList",ContactList);

@@ -78,4 +78,10 @@ public class TagTypeServiceImpl extends ServiceImpl<TagTypeMapper, TagType>
         return result;
     }
 
+    @Override
+    public String tagNameById(int tagTypeId) {
+      TagType tagType = baseMapper.selectById(tagTypeId);
+        return tagType.getTagName();
+    }
+
 }
