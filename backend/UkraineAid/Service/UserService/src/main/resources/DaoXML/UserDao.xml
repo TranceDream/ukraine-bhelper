@@ -160,7 +160,7 @@
          ur.CREATE_TIME,
          dur.ROLE_ID,
          dr.ROLE_NAME,
-         dur.LOCKED_MARK,
+         dur.LOCKED_MARK
         from
         USER ur left join DICT_USER_ROLE dur on ur.USER_ID = dur.USER_ID
         left join DICT_ROLE dr on dur.ROLE_ID = dr.ROLE_ID
@@ -206,8 +206,6 @@
         AND dur.GROUP_ID IN ${groups}
 
         AND dur.DELETE_MARK = 'NO' AND dr.DELETE_MARK = 'NO'
-
-        AND dg.DELETE_MARK = 'NO'
 
         <choose>
             <when test="orderText != null and orderText != ''">
