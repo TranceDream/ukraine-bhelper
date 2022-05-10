@@ -12,6 +12,8 @@ public class UserRoleVo {
     private int roleId;
     private String roleName;
     private Date createTime;
+    private int groupId;
+    private String groupName;
     private String lockedMark;
     private String deleteMark;
 

@@ -23,6 +23,8 @@
         <result property="roleName" column="ROLE_NAME"/>
         <result property="createTime" column="CREATE_TIME"/>
         <result property="lockedMark" column="LOCKED_MARK"/>
+        <result property="groupId" column="GROUP_ID"/>
+        <result property="groupName" column="GROUP_NAME"/>
         <result property="deleteMark" column="DELETE_MARK"/>
     </resultMap>
 
@@ -91,9 +93,11 @@
                dur.USER_ID,
                dur.CREATE_TIME,
                dur.LOCKED_MARK,
-               dur.ID
-               from DICT_USER_ROLE dur left join DICT_ROLE dr on dur.ROLE_ID = dr.ROLE_ID
-               WHERE dur.USER_ID = #{userId} AND dur.DELETE_MARK = 'NO' AND dr.DELETE_MARK = 'NO'
+               dur.ID,
+               dg.GROUP_ID,
+               dg.GROUP_NAME
+               from DICT_USER_ROLE dur left join DICT_ROLE dr on dur.ROLE_ID = dr.ROLE_ID left join DICT_GROUP dg on dur.GROUP_ID = dg.GROUP_ID
+               WHERE dur.USER_ID = #{userId} AND dur.DELETE_MARK = 'NO' AND dr.DELETE_MARK = 'NO' and dg.DELETE_MARK = 'NO'
     </select>
 
     <select id="countUserList" resultType="java.lang.Integer">
@@ -156,7 +160,7 @@
          ur.CREATE_TIME,
          dur.ROLE_ID,
          dr.ROLE_NAME,
-         dur.LOCKED_MARK
+         dur.LOCKED_MARK,
         from
         USER ur left join DICT_USER_ROLE dur on ur.USER_ID = dur.USER_ID
         left join DICT_ROLE dr on dur.ROLE_ID = dr.ROLE_ID
@@ -202,6 +206,8 @@
         AND dur.GROUP_ID IN ${groups}
 
         AND dur.DELETE_MARK = 'NO' AND dr.DELETE_MARK = 'NO'
+
+        AND dg.DELETE_MARK = 'NO'
 
         <choose>
             <when test="orderText != null and orderText != ''">

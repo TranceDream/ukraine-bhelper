@@ -288,7 +288,7 @@ public class UserController {
 
     @PostMapping("/userEmpowerment")
     public Result<String> userEmpowerment(@RequestBody UserForm userForm, HttpServletRequest request, HttpServletResponse response){
-        if(userForm.getRoleId() == null || userForm.getUserId() == null){
+        if(userForm.getRoleId() == null || userForm.getUserId() == null || userForm.getGroupId() == null){
             ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
         }
 

@@ -33,6 +33,8 @@ public class UserForm {
 
     private Long loginId;
 
+    private Integer groupId;
+
     private int pageSize;
     private int pageNo;
 }
