@@ -3,13 +3,11 @@ package com.byb.userservice.Service.Impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.byb.userservice.Dao.*;
+import com.byb.userservice.Entity.Group;
 import com.byb.userservice.Entity.UserRole;
 import com.byb.userservice.Entity.User;
 import com.byb.userservice.Service.UserService;
-import com.byb.userservice.Vo.MenuVo;
-import com.byb.userservice.Vo.ModuleVo;
-import com.byb.userservice.Vo.UserForm;
-import com.byb.userservice.Vo.UserVo;
+import com.byb.userservice.Vo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -239,11 +237,73 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
             List<Integer> childs = groupDao.selectGroups(groupId);
             groupSet.addAll(childs);
         }
-        groupSet.add(0);
         String childGroupStr = groupSet.toString();
         childGroupStr = childGroupStr.replace("[","(");
         childGroupStr = childGroupStr.replace("]",")");
         return childGroupStr;
+    }
+
+    @Override
+    public List<GroupForm> getGroupList(Long userId) {
+        List<Integer> groupList = userRoleDao.selectGroupByUserId(userId);
+        Set<GroupForm> groupSet = new HashSet<>();
+        for(Integer groupId : groupList) {
+            List<GroupForm> childs = groupDao.selectGroupVos(groupId);
+            groupSet.addAll(childs);
+        }
+        List<GroupForm> result = new ArrayList<>();
+        result.addAll(groupSet);
+        result = sortGroup(result, -1);
+        return result;
+    }
+
+    @Override
+    public GroupForm getOneGroup(Long userId, Integer roleId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("roleId", roleId);
+        GroupForm groupForm = groupDao.selectOneGroup(params);
+        return groupForm;
+    }
+
+    private List<GroupForm> sortGroup(List<GroupForm> origin, int originParentId){
+        List<GroupForm> result = new ArrayList<>();
+        if(origin.size() == 1){
+            if(origin.get(0).getParentId() == originParentId) {
+                return origin;
+            }
+            else {
+                return null;
+            }
+        }
+        for(GroupForm groupForm : origin){
+            int parentId = groupForm.getParentId();
+            int groupId = groupForm.getGroupId();
+            boolean flag = true;
+            try {
+                for (GroupForm groupForm1 : origin) {
+                    if (parentId == groupForm1.getGroupId() && groupId != groupForm1.getGroupId()) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (!flag) {
+                    continue;
+                }
+                if (parentId == originParentId || originParentId == -1) {
+                    result.add(groupForm);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        origin.removeAll(result);
+        if(origin.size() > 0) {
+            for (GroupForm groupForm : result) {
+                groupForm.setChilds(sortGroup(origin, groupForm.getGroupId()));
+            }
+        }
+        return result;
     }
 
 //    @Override
