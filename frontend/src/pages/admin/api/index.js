@@ -2,7 +2,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-28 22:28:04
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-07 20:55:36
+ * @Last Modified time: 2022-05-11 01:15:19
  */
 /*
 包含应用中所有接口请求函数的模块
@@ -18,7 +18,8 @@ export const reqLogin = (username, password) =>
     ajax('./login', { username, password })
 
 // add user
-let BASE = 'http://139.9.231.20:81'
+// let BASE = 'http://139.9.231.20:81'
+let BASE = 'http://192.168.3.2:9001'
 export const reqGetAllUser = (params) => {
     return ajax(BASE + '/user/getUserList', params, 'POST')
 }
@@ -80,4 +81,12 @@ export const reqAddNewRole = (params) => {
 
 export const reqUpdateRole = (params) => {
     return ajax(BASE + '/user/updateRole', params, 'POST')
+}
+
+// ! 房源 ------------------------------------------
+
+
+// 获取房源信息
+export const reqHouseList = (params) => {
+    return ajax(BASE + '/house/selectHouseAdmin', params, 'POST')
 }
