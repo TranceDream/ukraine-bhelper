@@ -13,24 +13,24 @@ import java.sql.Date;
  * @author zjt
  * @date 2022/5/4 1:13
  */
-@TableName("UAHouse.TAG")
+@TableName("UAHouse.tag")
 @Accessors(chain = true)
 @Data
 public class Tag {
 
-    @TableId(value = "TAG_ID",type = IdType.AUTO)
+    @TableId(value = "tagId",type = IdType.AUTO)
     private int tagId;
 
-    @TableField("HOUSE_ID")
+    @TableField("houseId")
     private int houseId;
 
-    @TableField("CREATE_TIME")
+    @TableField("createTime")
     private Date createTime;
 
-    @TableField("DELETE_MARK")
-    private String deleteMask;
+    @TableField("deleteMark")
+    private String deleteMark;
 
-    @TableField("TYPE_ID")
+    @TableField("typeId")
     private int typeId;
 
 }

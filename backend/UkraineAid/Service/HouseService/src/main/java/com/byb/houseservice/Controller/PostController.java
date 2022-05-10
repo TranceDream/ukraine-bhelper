@@ -153,6 +153,7 @@ public class PostController {
     public Result<Map<String , Object>> postconnect(@RequestBody Map<String , List<ContactVo> > ma,
                                                     HttpServletResponse response, HttpServletRequest request){
         List<ContactVo> list = ma.get("date");
+        System.out.println(list);
         if(list.size()==0){
 //            ResponseUtil.out(response,new Result(null,Result.FAIL,"至少有一个联系方式"));
             return new Result<>(null,Result.FAIL,"At least have one contact information!");
@@ -275,10 +276,15 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
     public Result<Map<String , Object>> posttag(@RequestBody Map<String , List<TagVo> > ma,
                                                     HttpServletResponse response, HttpServletRequest request){
         List<TagVo> list = ma.get("date");
+        System.out.println(list);
+//        System.out.println(list.get(0));
 
         Map<String,Object> dateMap = postTagService.addPostTag(list);
 
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
     }
 
     @PostMapping("/deletetag")
@@ -288,8 +294,12 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
 
         Map<String ,Object> dateMap = postTagService.deleteTag(TagId);
 
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
     }
+
     @PostMapping("/selectTag")
     public Result<Map<String,Object>>  selectTag(@RequestBody Map<String, Object> selectcondiction,
                                                    HttpServletResponse response, HttpServletRequest request){
@@ -306,7 +316,10 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
         List<TagTypeVo> list = ma.get("date");
         Map<String,Object> dateMap = tagTypeService.addTagType(list);
 
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
     }
 
     @PostMapping("/deletetagtype")
@@ -315,8 +328,10 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
         int TagTypeId = ma.get("typeId");
 
         Map<String ,Object> dateMap = tagTypeService.deleteTagType(TagTypeId);
-
-        return new Result<>(dateMap, Result.SUCCESS);
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
+        return new Result<>(null, Result.SUCCESS,msg);
     }
 
     @PostMapping("/selecttagtype")
