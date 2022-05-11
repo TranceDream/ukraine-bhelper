@@ -111,4 +111,9 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
         return result;
     }
 
+    @Override
+    public List<Integer> getObjtypeId() {
+        return baseMapper.selectObjtypeList();
+    }
+
 }

@@ -56,4 +56,8 @@
             t.HANDLE_MARK = 'YES'
             where t.OBJTYPE_ID = #{objtypeId} and t.DEFENSE = #{defense} and t.DELETE_MARK = 'NO'
     </update>
+
+    <select id="selectObjtypeList" resultType="java.lang.Integer">
+        select OBJTYPE_ID from REPORT GROUP BY OBJTYPE_ID
+    </select>
 </mapper>

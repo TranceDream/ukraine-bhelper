@@ -163,6 +163,13 @@ public class ReportController {
         }
     }
 
+    @PostMapping("/getObjtypeList")
+    public Result<Map<Integer, String>> getObjtypeList(){
+        List<Integer> list = reportService.getObjtypeId();
+        Map<Integer, String> result = sysClient.getObjtypeList(list);
+        return new Result<>(result, Result.SUCCESS);
+    }
+
     private void sendMessage(String queue, Object object){
         String msg = JSONObject.toJSONString(object);
         amqpTemplate.convertAndSend(queue, msg);

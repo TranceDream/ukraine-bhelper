@@ -22,4 +22,6 @@ public interface ReportDao extends BaseMapper<Report> {
 
     Integer updateIsHandle(Map<String, Object> params);
 
+    List<Integer> selectObjtypeList();
+
 }
