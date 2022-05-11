@@ -12,4 +12,7 @@ public interface SysClient {
     @PostMapping("/sys/addLog")
     Result<Map<String, Object>> addLog(Map<String, Object> syslogForm);
 
+    @PostMapping("/sys/launchMessage")
+    Result<Map<String, Object>> launchMessage(Map<String, Object> messageForm);
+
 }

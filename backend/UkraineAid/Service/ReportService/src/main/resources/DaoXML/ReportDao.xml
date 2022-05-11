@@ -50,12 +50,10 @@
                          ) m limit #{start}, #{size}
     </select>
 
-    <update id="updateHandleMark" parameterType="java.util.List">
-        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+    <update id="updateIsHandle" parameterType="java.util.Map">
             update REPORT t
             set
-            t.HANDLE_MARK = #{item.handleMark}
-            where t.OBJTYPE_ID = #{item.objtypeId} and t.OBJ_ID = #{item.objId} and t.DELETE_MARK = 'NO'
-        </foreach>
+            t.HANDLE_MARK = 'YES'
+            where t.OBJTYPE_ID = #{objtypeId} and t.DEFENSE = #{defense} and t.DELETE_MARK = 'NO'
     </update>
 </mapper>

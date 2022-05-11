@@ -7,10 +7,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Map;
 
-@FeignClient(name = "auditService")
+@FeignClient(name = "AuditService")
 public interface AuditClient {
 
     @PostMapping("/audit/addAudit")
     public Result<Map<String, Object>> addAudit(@RequestBody Map<String, Object> auditForm);
+
+    @PostMapping("/audit/getReportList")
+    public Result<Map<String, Object>> getReportList(@RequestBody Map<String, Object> auditForm);
 
 }

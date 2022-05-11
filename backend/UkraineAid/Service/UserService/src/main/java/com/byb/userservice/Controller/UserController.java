@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -467,11 +468,11 @@ public class UserController {
     @PostMapping("/getEmail")
     public Result<List<String>> getEmail(@RequestBody List<Long> userIds){
         if(userIds == null || userIds.isEmpty()){
-            return null;
+            return new Result<>(new ArrayList<>(), Result.FAIL);
         }
 
         Map<String, Object> dataMap = userService.getEmail(userIds);
-        List<String> emails = (List<String>) dataMap.get("emails");
+        List<String> emails = (List<String>) dataMap.get("data");
         return new Result<>(emails, Result.SUCCESS);
     }
 
@@ -587,9 +588,9 @@ public class UserController {
     }
 
     @PostMapping("/getOneGroup")
-    public Result<Map<String, Object>> getOneGroup(Long userId, Integer roleId, HttpServletResponse response){
+    public Result<Map<String, Object>> getOneGroup(@RequestParam("userId") Long userId, @RequestParam("roleId") Integer roleId){
         if(userId == null || roleId == null){
-            ResponseUtil.out(response, new Result(null, Result.FAIL, "数据不全"));
+            return new Result(null, Result.FAIL, "数据不全");
         }
         GroupForm groupForm = userService.getOneGroup(userId, roleId);
         Map<String, Object> map = new HashMap<>();

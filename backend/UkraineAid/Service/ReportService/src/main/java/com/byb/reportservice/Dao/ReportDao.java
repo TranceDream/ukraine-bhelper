@@ -20,6 +20,6 @@ public interface ReportDao extends BaseMapper<Report> {
     Integer countReportDetail(Map<String, Object> params);
     List<ReportVo> getReportDetail(Map<String, Object> params);
 
-    Integer updateIsHandle(List<Report> list);
+    Integer updateIsHandle(Map<String, Object> params);
 
 }

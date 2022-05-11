@@ -14,6 +14,6 @@ public interface ReportService extends IService<Report> {
 
     Map<String, Object> getReportDetail(ReportForm reportForm);
 
-    Boolean doAudit(ReportForm reportForm);
+    Map<String, Object> doAudit(ReportForm reportForm);
 
 }

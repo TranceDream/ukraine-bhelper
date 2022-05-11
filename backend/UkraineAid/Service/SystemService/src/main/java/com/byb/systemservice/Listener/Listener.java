@@ -53,11 +53,6 @@ public class Listener{
                 return;
             }
 
-            if(messageForm.getScope() == null){
-                System.err.println("未指定范围");
-                return;
-            }
-
             if(messageForm.getSpecificUsers() == null){
                 System.err.println("未指定用户");
                 return;

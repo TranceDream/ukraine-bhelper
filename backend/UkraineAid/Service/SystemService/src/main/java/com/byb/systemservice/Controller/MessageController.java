@@ -30,10 +30,6 @@ public class MessageController {
             ResponseUtil.out(response, new Result(null, Result.FAIL, "内容为空"));
         }
 
-        if(messageForm.getScope() == null){
-            ResponseUtil.out(response, new Result(null, Result.FAIL, "未指定范围"));
-        }
-
         if(messageForm.getSpecificUsers() == null){
             ResponseUtil.out(response, new Result(null, Result.FAIL, "未指定用户"));
         }

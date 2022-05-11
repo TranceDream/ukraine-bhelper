@@ -23,14 +23,11 @@ public class Message {
     @TableField("DELETE_MARK")
     private String deleteMark;
 
-    @TableField("SCOPE")
-    private int scope;
-
     @TableField("CONTENT")
     private String content;
 
     @TableField("SPECIFIC_USERS")
-    private Long specificUsers;
+    private String specificUsers;
 
     @TableField("TITLE")
     private String title;
