@@ -19,7 +19,7 @@ public class TagTypeVo {
 
     private Date createTime;
 
-    private String deleteMask;
+    private String deleteMark;
 
     private String tagName;
 }

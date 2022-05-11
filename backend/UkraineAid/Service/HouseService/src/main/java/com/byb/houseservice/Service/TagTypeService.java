@@ -19,5 +19,6 @@ public interface TagTypeService {
     Map<String,Object> addTagType (List<TagTypeVo> list);
     Map<String,Object> deleteTagType(int tagid);
     Map<String ,Object> selectTagType (Map<String,Object> selectCondition);
+    String tagNameById(int tagId);
 
 }
