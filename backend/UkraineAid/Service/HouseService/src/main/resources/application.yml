@@ -16,7 +16,7 @@ spring:
 #        max-wait: -1
 
   houseService:
-    houseObjtypeId: 10005
+    houseObjtypeId: 10006
 
   cloud:
     nacos:

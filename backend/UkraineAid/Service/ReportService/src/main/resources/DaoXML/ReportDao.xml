@@ -14,7 +14,19 @@
         <result property="deleteMark" column="DELETE_MARK"/>
     </resultMap>
 
-    <select id="selectReportList" resultMap="ReportVo" parameterType="java.util.Map">
+    <select id="countReportList" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select COUNT(1) from(
+        select DEFENSE, COUNT(1) as count
+        from REPORT where OBJTYPE_ID = #{objtypeId} AND DELETE_MARK = 'NO'
+        <if test="prosecution!=null and prosecution!=''">
+            PROSECUTION = #{prosecution}
+        </if>
+        AND HANDLE_MARK = 'NO'
+        GROUP BY DEFENSE
+        ) m
+    </select>
+
+    <select id="getReportList" resultMap="ReportVo" parameterType="java.util.Map">
         select * from(
             select DEFENSE, COUNT(1) as count
             from REPORT where OBJTYPE_ID = #{objtypeId} AND DELETE_MARK = 'NO'
@@ -26,7 +38,7 @@
         ) m limit #{start}, #{size}
     </select>
 
-    <select id="selectReportDetail" resultMap="ReportVo" parameterType="java.util.Map">
+    <select id="getReportDetail" resultMap="ReportVo" parameterType="java.util.Map">
         select * from(
                      select * from REPORT
                     <where>

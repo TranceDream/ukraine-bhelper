@@ -210,7 +210,12 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
             user.setName(name);
             user.setIdentityNo(identityNo);
             user.setIfverified("YES");
-            this.save(user);
+            this.updateById(user);
+            UserRole userRole = new UserRole();
+            userRole.setUserId(userForm.getUserId());
+            userRole.setRoleId(10003);
+            userRole.setGroupId(10005);
+            userRoleDao.insert(userRole);
         }catch (Exception e){
             e.printStackTrace();
             return false;

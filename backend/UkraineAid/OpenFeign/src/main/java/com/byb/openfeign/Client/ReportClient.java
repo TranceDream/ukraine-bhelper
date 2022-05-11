@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Map;
 
-@FeignClient(name = "reportservice")
+@FeignClient(name = "ReportService")
 public interface ReportClient {
 
     @GetMapping("/report/getReportList")

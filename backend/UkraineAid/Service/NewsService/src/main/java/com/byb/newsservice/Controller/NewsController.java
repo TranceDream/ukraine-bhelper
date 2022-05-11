@@ -138,8 +138,8 @@ public class NewsController {
 
     @PostMapping("/report")
     public Result<Map<String, Object>> report(@RequestBody Map<String, Object> reportForm, HttpServletResponse response, HttpServletRequest request){
-        Long postId = (Long) reportForm.get("postId");
-        if(postId == null){
+        Integer articleId = (Integer) reportForm.get("articleId");
+        if(articleId == null){
             ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
         }
 
@@ -150,7 +150,7 @@ public class NewsController {
 
         Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
 
-        Map<String, Object> form = FormGeneration.generateReportForm(newsObjtypeId, postId, userId, reason, null, null);
+        Map<String, Object> form = FormGeneration.generateReportForm(newsObjtypeId, Long.valueOf(articleId.toString()), userId, reason, null, null);
 
         reportClient.addReport(form);
         return new Result<>(null, Result.SUCCESS, "举报成功，等待管理员审核");
@@ -159,7 +159,7 @@ public class NewsController {
     @PostMapping("/doAudit")
     public Result<Map<String, Object>> doAudit(@RequestBody Map<String, Object> newsForm, HttpServletResponse response, HttpServletRequest request){
 
-        Long newsId = (Long) newsForm.get("newsId");
+        Long newsId = (Long) newsForm.get("articleId");
         if(newsId == null){
             ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
         }
