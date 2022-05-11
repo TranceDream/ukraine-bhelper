@@ -30,30 +30,30 @@ public class ReportController {
     public Result<Map<String, Object>> addReport(@RequestBody ReportForm reportForm, HttpServletResponse response, HttpServletRequest request){
 
         if(reportForm.getDefense() == null){
-            ResponseUtil.out(response, new Result(null, Result.FAIL, "举报对象为空"));
+            return new Result(null, Result.FAIL, "举报对象为空");
         }
 
         if(reportForm.getReason() == null){
-            ResponseUtil.out(response, new Result(null, Result.FAIL, "举报理由为空"));
+            return new Result(null, Result.FAIL, "举报理由为空");
         }
 
         if(reportForm.getObjtypeId() == null){
-            ResponseUtil.out(response, new Result(null, Result.FAIL, "举报类型为空"));
+            return  new Result(null, Result.FAIL, "举报类型为空");
         }
 
-        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
-        reportForm.setProsecution(userId);
+//        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+//        reportForm.setProsecution(userId);
 
         Map<String, Object> dataMap = reportService.addReport(reportForm);
         Boolean flag = (Boolean) dataMap.get("flag");
         if(!flag){
-            ResponseUtil.out(response, new Result(null, Result.FAIL, "举报失败"));
+            return new Result(null, Result.FAIL, "举报失败");
         }
 
         return new Result<>(dataMap, Result.SUCCESS, "举报成功");
     }
 
-    @GetMapping("/getReportList")
+    @PostMapping("/getReportList")
     public Result<Map<String, Object>> getReportList(@RequestBody ReportForm reportForm, HttpServletResponse response){
 
         if(reportForm.getObjtypeId() == null){
@@ -73,7 +73,7 @@ public class ReportController {
         return new Result<>(dataMap, Result.SUCCESS);
     }
 
-    @GetMapping("/getReportDetail")
+    @PostMapping("/getReportDetail")
     public Result<Map<String, Object>> getReportDetail(@RequestBody ReportForm reportForm, HttpServletResponse response){
 
         if(reportForm.getObjtypeId() == null){

@@ -2,13 +2,15 @@
  * @Author: Linhao Yu
  * @Date: 2022-05-11 00:08:19
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-11 01:34:27
+ * @Last Modified time: 2022-05-11 02:55:47
  */
 import { EditOutlined } from '@ant-design/icons'
-import ProTable, { ProColumns } from '@ant-design/pro-table'
+import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table'
 import { message, Modal } from 'antd'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { reqHouseList } from '../../api'
+import EditHouseModal from '../../components/House/EditHouse'
+import PubSub from '../../Utils/pubsub'
 import './ant-pro-card.scss'
 import styles from './index.module.scss'
 
@@ -22,6 +24,7 @@ export type TableListItem = {
     address: string
     guests: number // 容纳人数
     pets: string
+    duration: number
     sort: string
     sortop: string
     labels: []
@@ -30,10 +33,30 @@ export type TableListItem = {
 export default function HouseControl() {
     const [EditHouseVisible, setEditHouseVisible] = useState(false)
     const [confirmLoading, setConfirmLoading] = useState(false)
+    const [record, setRecord] = useState<any>({})
     const [tableListDataSource, settableListDataSource] = useState<
         TableListItem[]
     >([]) // 记录操作行的数据
+    const ref = useRef<ActionType>()
 
+    useEffect(() => {
+        var token = PubSub.subscribe(
+            'updateHouse',
+            (msg: string, data: string) => {
+                if (data === 'success') {
+                    message.success('修改成功')
+                } else {
+                    message.error('修改失败')
+                }
+                setEditHouseVisible(false)
+                ref.current?.reload()
+            }
+        )
+
+        return () => {
+            PubSub.unsubscribe(token)
+        }
+    }, [])
     // 处理房源信息
     const getdata = (data: any) => {
         // console.log("datya",data)
@@ -41,9 +64,10 @@ export default function HouseControl() {
         temp = []
         data.forEach((item: any) => {
             let newitem: TableListItem
+            item.createAt = new Date(item.createAt).getTime()
             newitem = { ...item }
             newitem.key = Date.now()
-            item.createAt = new Date(item.createAt).getTime()
+            // newitem.duration = item
             temp.push(newitem)
         })
         console.log('temp', temp)
@@ -51,59 +75,45 @@ export default function HouseControl() {
     }
 
     // 编辑房源信息
-    const EditHouse = (_: any, record: any, index:number) => {
+    const EditHouse = (_: any, record: any, index: number) => {
+        // console.log("record",record)
+        setRecord(record)
         setEditHouseVisible(true)
     }
 
-    // 成功编辑房屋
-    const handleEditHouseOk = () => {
-        message.error("没有实现")
-    }
+    // // 成功编辑房屋
+    // const handleEditHouseOk = () => {
+    //     message.error('没有实现')
+    //     setEditHouseVisible(false)
+    // }
 
     // 取消编辑房屋
-    const handleEditHouseCancel = () =>{
-        message.error('没有实现')
+    const handleEditHouseCancel = () => {
+        setEditHouseVisible(false)
     }
     const columns: ProColumns<TableListItem>[] = [
         {
             title: '房源ID',
-            width: 50,
+            width: 80,
             dataIndex: 'houseId',
             align: 'center',
             render: (_, record: any) => <a>{_}</a>,
         },
-        // {
-        //     title: '国家',
-        //     width: 120,
-        //     dataIndex: 'name',
-        //     align: 'center',
-        // },
-        // {
-        //     title: '城市',
-        //     width: 80,
-        //     dataIndex: 'roleId',
-        //     align: 'center',
-        //     // search: false,
-        //     filters: true,
-        //     onFilter: true,
-        //     hideInTable: true,
-        //     valueEnum: roleList,
-        // },
         {
             title: '国家',
-            width: 80,
+            width: 100,
             dataIndex: 'country',
             align: 'center',
         },
         {
             title: '省份',
-            width: 80,
+            width: 100,
             dataIndex: 'province',
             align: 'center',
         },
         {
             title: '城市',
-            width: 80,
+            width: 100,
             dataIndex: 'city',
             align: 'center',
         },
@@ -112,8 +122,25 @@ export default function HouseControl() {
             align: 'center',
             width: 140,
             key: 'since',
+            search: false,
             dataIndex: 'createTime',
             valueType: 'date',
+        },
+        {
+            title: '接待时长',
+            align: 'center',
+            width: 140,
+            key: 'duration',
+            search: false,
+            dataIndex: 'duration',
+        },
+        {
+            title: '接纳人数',
+            align: 'center',
+            width: 140,
+            key: 'guests',
+            search: false,
+            dataIndex: 'guests',
         },
         // {
         //     disable: true,
@@ -135,16 +162,26 @@ export default function HouseControl() {
         //     ),
         // },
         {
-            title: '排序方式',
+            title: '排序字段',
             width: 140,
-            key: 'orderText',
-            dataIndex: 'orderText',
+            key: 'sort',
+            // dataIndex: 'orderText',
             hideInTable: true,
             valueEnum: {
-                'ur.USER_ID asc': '按用户ID升序',
-                'ur.USER_ID des': '按用户ID降序',
-                'ur.CREATE_TIME asc': '按创建时间升序',
-                'ur.CREATE_TIME desc': '按创建时间降序',
+                duration: '接纳时长',
+                guests: '接纳人数',
+                createTime: '创建时间',
+            },
+        },
+        {
+            title: '排序方式',
+            width: 140,
+            key: 'sortop',
+            // dataIndex: 'orderText',
+            hideInTable: true,
+            valueEnum: {
+                asc: '升序',
+                desc: '降序',
             },
         },
         {
@@ -168,13 +205,21 @@ export default function HouseControl() {
     return (
         <>
             <ProTable<TableListItem>
-                // actionRef={ref}
+                actionRef={ref}
                 columns={columns}
                 request={async (params, sorter, filter) => {
                     // 表单搜索项会从 params 传入，传递给后端接口。
-                    if ('userId' in params) {
-                        params.userId = parseInt(params.userId)
+                    if ('houseId' in params) {
+                        params.houseId = parseInt(params.houseId)
                     }
+                    // console.log('before', params)
+
+                    for (let Key in params) {
+                        if (!params[Key]) {
+                            delete params[Key]
+                        }
+                    }
+                    // console.log("after",params)
                     // setParams(params)
                     // console.log('UseControl: ', params, sorter, filter)
                     const msg = await reqHouseList({
@@ -190,41 +235,15 @@ export default function HouseControl() {
                         // data: tableListDataSource,
                         success: true,
                     })
-                    // if (msg.code === 200) {
-                    //     if (msg.data.data) {
-                    //         getdata(msg.data.data)
-                    //     } else {
-                    //         settableListDataSource([])
-                    //     }
-                    //     return {
-                    //         data: tableListDataSource,
-                    //         // success 请返回 true，
-                    //         // 不然 table 会停止解析数据，即使有数据
-                    //         success: true,
-                    //         // 不传会使用 data 的长度，如果是分页一定要传
-                    //         total: tableListDataSource.length,
-                    //     }
-                    // } else {
-                    //     handleErr(msg)
-                    //     tableListDataSource.length = 0
-                    //     return {
-                    //         data: tableListDataSource,
-                    //         // success 请返回 true，
-                    //         // 不然 table 会停止解析数据，即使有数据
-                    //         success: true,
-                    //         // 不传会使用 data 的长度，如果是分页一定要传
-                    //         total: tableListDataSource.length,
-                    //     }
-                    // }
                 }}
                 toolbar={{
                     multipleLine: false,
                     actions: [],
                 }}
                 dataSource={tableListDataSource}
-                // rowKey={(record) => {
-                //     return record.userId + Date.now().toString() //在这里加上一个时间戳就可以了
-                // }}
+                rowKey={(record) => {
+                    return record.houseId + Date.now().toString() //在这里加上一个时间戳就可以了
+                }}
                 pagination={{
                     showQuickJumper: true,
                 }}
@@ -255,10 +274,11 @@ export default function HouseControl() {
                     </>
                 }
                 visible={EditHouseVisible}
-                onOk={handleEditHouseOk}
+                // onOk={handleEditHouseOk}
                 confirmLoading={confirmLoading}
                 onCancel={handleEditHouseCancel}
                 footer={null}>
+                <EditHouseModal record={record} />
                 {/* <ChangePwd userName={record.name} userId={record.userId} /> */}
             </Modal>
         </>

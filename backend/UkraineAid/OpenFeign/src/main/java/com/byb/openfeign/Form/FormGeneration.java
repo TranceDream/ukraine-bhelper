@@ -21,7 +21,7 @@ public class FormGeneration {
     public static Map<String, Object> generateReportForm(Integer objtypeId, Long denfense, Long prosecution, String reason, Integer pageSize, Integer pageNo){
         Map<String, Object> reportForm = new HashMap<>();
         reportForm.put("objtypeId", objtypeId);
-        reportForm.put("denfense", denfense);
+        reportForm.put("defense", denfense);
         reportForm.put("prosecution", prosecution);
         reportForm.put("reason", reason);
         reportForm.put("pageNo", pageNo);

@@ -72,7 +72,7 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
         params.put("start", (reportForm.getPageNo() - 1) * reportForm.getPageSize());
         params.put("size", reportForm.getPageSize());
         params.put("objtypeId", reportForm.getObjtypeId());
-        params.put("objId", reportForm.getDefense());
+        params.put("defense", reportForm.getDefense());
 
         Map<String, Object> result = new HashMap<>();
 
@@ -80,7 +80,7 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
 
         Integer total = baseMapper.countReportDetail(params);
         if(total > 0){
-            list = baseMapper.getReportList(params);
+            list = baseMapper.getReportDetail(params);
         }
 
         result.put("total", total);

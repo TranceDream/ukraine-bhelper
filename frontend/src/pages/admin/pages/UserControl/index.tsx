@@ -4,7 +4,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-24 17:17:45
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-08 16:05:19
+ * @Last Modified time: 2022-05-11 02:25:11
  */
 import {
     EditOutlined,
@@ -84,7 +84,11 @@ export default function UserControl() {
         var token = PubSub.subscribe(
             'updateUser',
             (msg: string, data: string) => {
-                message.success('修改成功')
+                if (data === 'success') {
+                    message.success('修改成功')
+                } else {
+                    message.error('修改失败')
+                }
                 setEditVisiable(false)
                 ref.current?.reload()
             }
@@ -165,6 +169,7 @@ export default function UserControl() {
     const EditUser = (text: any, record: any, index: any) => {
         // console.log('编辑用户', record)
         setEditVisiable(true)
+        setRecord(record)
         // setselectCity(record.city)
         // setselectCountry(record.country)
         // setselectUserId(record.userId)

@@ -362,7 +362,7 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
 
     @PostMapping("/report")
     public Result<Map<String, Object>> report(@RequestBody Map<String, Object> reportForm, HttpServletResponse response, HttpServletRequest request){
-        Long postId = (Long) reportForm.get("postId");
+        Integer postId = (Integer) reportForm.get("postId");
         if(postId == null){
             ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
         }
@@ -374,10 +374,12 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
 
         Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
 
-        Map<String, Object> form = FormGeneration.generateReportForm(houseObjtypeId, postId, userId, reason, null, null);
+        Map<String, Object> form = FormGeneration.generateReportForm(houseObjtypeId, Long.valueOf(postId.toString()), userId, reason, null, null);
 
-        reportClient.addReport(form);
-        return new Result<>(null, Result.SUCCESS, "举报成功，等待管理员审核");
+        Result<Map<String, Object>> result = reportClient.addReport(form);
+        int code = result.getCode();
+        String msg = result.getMsg();
+        return new Result<>(null, code, msg);
     }
 
 }
