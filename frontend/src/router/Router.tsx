@@ -12,15 +12,15 @@ import AdminHome from '../pages/admin/pages/AdminHome'
 import DataMonitor from '../pages/admin/pages/DataMonitor'
 import HouseControl from '../pages/admin/pages/HouseControl'
 import NewsControl from '../pages/admin/pages/NewsControl'
-import OnlineUser from '../pages/admin/pages/OnlineUser'
+import ReportControl from '../pages/admin/pages/ReportControl'
 import RoleControl from '../pages/admin/pages/RoleControl'
 import ServiceMonitor from '../pages/admin/pages/ServiceMonitor'
 import UserControl from '../pages/admin/pages/UserControl'
 import Home from '../pages/home/Home'
-import { StationList } from '../pages/station/StationList'
 import Login from '../pages/login/Login'
-import Station from '../pages/station/Station'
 import Register from '../pages/register/Register'
+import Station from '../pages/station/Station'
+import { StationList } from '../pages/station/StationList'
 import StationPost from '../pages/station/StationPost'
 
 export default function Router() {
@@ -48,7 +48,10 @@ export default function Router() {
                         path='/admin/news-control'
                         element={<NewsControl />}
                     />
-                    <Route path='/admin/online-user' element={<OnlineUser />} />
+                    <Route
+                        path='/admin/report-control'
+                        element={<ReportControl />}
+                    />
                     <Route
                         path='/admin/data-monitor'
                         element={<DataMonitor />}

@@ -1,16 +1,16 @@
-import { Button, Form, Input, Modal } from 'antd'
-import React, { useEffect, useState } from 'react'
-import Header from '../../components/Header'
-import styles from './Register.module.scss'
 import {
     GlobalOutlined,
     HomeOutlined,
     LockOutlined,
     UserOutlined,
 } from '@ant-design/icons'
-import { register } from '../../lib/request'
+import { Button, Form, Input, Modal } from 'antd'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Cookie from 'universal-cookie'
+import Header from '../../components/Header'
+import { register } from '../../lib/request'
+import styles from './Register.module.scss'
 
 /**
  * 注册页面

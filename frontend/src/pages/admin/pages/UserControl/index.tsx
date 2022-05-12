@@ -176,14 +176,6 @@ export default function UserControl() {
         // setselectUserName(record.name)
     }
 
-    // 确认编辑用户
-    const handleEditOk = () => {
-        message.warning(
-            '还没实现呢~ReactDOM.render is no longer supported in React 18.'
-        )
-        setEditVisiable(false)
-    }
-
     //取消编辑用户
     const handleEditCancel = () => {
         setEditVisiable(false)
@@ -195,14 +187,6 @@ export default function UserControl() {
         // setselectUserId(record.userId)
         // setselectUserName(record.name)
         setchangePwdVisible(true)
-    }
-
-    // 确认重置密码
-    const handleChangePwdOk = () => {
-        message.warning(
-            '还没实现呢~ReactDOM.render is no longer supported in React 18.'
-        )
-        setchangePwdVisible(false)
     }
 
     // 取消重置密码
@@ -428,7 +412,6 @@ export default function UserControl() {
                     </>
                 }
                 visible={EditVisiable}
-                onOk={() => handleEditOk()}
                 confirmLoading={confirmLoading}
                 onCancel={handleEditCancel}
                 footer={null}>
@@ -456,7 +439,6 @@ export default function UserControl() {
                     </>
                 }
                 visible={ChangePwdVisible}
-                onOk={handleChangePwdOk}
                 confirmLoading={confirmLoading}
                 onCancel={handleChangePwdCancel}
                 footer={null}>

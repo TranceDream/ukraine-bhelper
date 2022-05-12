@@ -37,16 +37,21 @@ const menuList = [
         key: '/admin/news-control',
         icon: <NotificationOutlined />,
     },
+    {
+        title: '举报管理',
+        key: '/admin/report-control',
+        icon: <NotificationOutlined />,
+    },
 
     {
         title: '系统监控',
         key: '/service',
         icon: <AppstoreOutlined />,
         children: [
-            {
-                title: '在线用户',
-                key: '/admin/online-user',
-            },
+            // {
+            //     title: '举报管理',
+            //     key: '/admin/report-control',
+            // },
             {
                 title: '数据监控',
                 key: '/admin/data-monitor',
