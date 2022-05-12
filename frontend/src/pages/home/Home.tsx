@@ -29,7 +29,7 @@ export default function Home() {
     return (
         <div className={styles.container}>
             <header>
-                <Header hideNav={hideNav} adminhideNav={false} />
+                <Header hideNav={hideNav} />
             </header>
             <main>
                 <HomePageCover />

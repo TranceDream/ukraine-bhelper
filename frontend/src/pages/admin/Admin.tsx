@@ -66,7 +66,7 @@ export default function Admin() {
     }, [])
     return (
         <Layout className={styles.layout}>
-            <Header adminhideNav={true} />
+            <Header hideNav />
             <Layout className={styles.sublayout}>
                 <MySider />
                 <Content className={styles.content}>
