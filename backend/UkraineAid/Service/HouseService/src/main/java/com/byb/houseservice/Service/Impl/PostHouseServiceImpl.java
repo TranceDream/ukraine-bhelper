@@ -220,6 +220,7 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
             String de = (String) selectCondition.get("deleteMark");
             queryWrapper.eq("deleteMark",de);
         }
+        else queryWrapper.eq("deleteMark","NO");
         if (selectCondition.containsKey("durationmin")){
             int duramin = (int) selectCondition.get("durationmin");
             queryWrapper.ge("duration",duramin);
