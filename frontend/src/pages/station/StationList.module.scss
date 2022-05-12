@@ -6,4 +6,20 @@
     flex-direction: column;
     gap: 40px;
   }
+
+  .pagination {
+    margin-top: 32px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .fab {
+    position: fixed;
+    z-index: 99;
+    bottom: 0;
+    right: 0;
+    margin: 0 2% 2% 0
+  }
 }

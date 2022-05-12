@@ -41,10 +41,9 @@ public class FormGeneration {
         return auditForm;
     }
 
-    public static Map<String, Object> generateMessageForm(String content, Integer scope, String[] emails, List<Long> specificUsers, String title){
+    public static Map<String, Object> generateMessageForm(String content, String[] emails, List<Long> specificUsers, String title){
         Map<String, Object> messageForm = new HashMap<>();
         messageForm.put("content", content);
-        messageForm.put("scope", scope);
         messageForm.put("emails", emails);
         messageForm.put("specificUsers", specificUsers);
         messageForm.put("title", title);

@@ -24,6 +24,8 @@ public class ReportForm {
 
     private String handleMark;
 
+    private String oper;
+
     private String deleteMark;
 
     private Integer pageSize;

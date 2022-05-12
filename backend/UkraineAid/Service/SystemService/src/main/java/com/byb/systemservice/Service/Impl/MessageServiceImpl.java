@@ -20,6 +20,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageDao, Message> impleme
         Map<String, Object> result = new HashMap<>();
         try {
             BeanUtils.copyProperties(messageForm, message);
+            message.setSpecificUsers(messageForm.getSpecificUsers().toString());
             baseMapper.insert(message);
             Long messageId = message.getMessageId();
             result.put("flag", true);

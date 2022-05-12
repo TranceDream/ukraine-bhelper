@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.byb.reportservice.Entity.Report;
 import com.byb.reportservice.Vo.ReportForm;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ReportService extends IService<Report> {
@@ -14,6 +15,8 @@ public interface ReportService extends IService<Report> {
 
     Map<String, Object> getReportDetail(ReportForm reportForm);
 
-    Boolean doAudit(ReportForm reportForm);
+    Map<String, Object> doAudit(ReportForm reportForm);
+
+    List<Integer> getObjtypeId();
 
 }

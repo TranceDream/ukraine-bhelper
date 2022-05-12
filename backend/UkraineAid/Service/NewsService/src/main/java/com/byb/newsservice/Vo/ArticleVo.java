@@ -25,13 +25,15 @@ public class ArticleVo  {
 
     private String content;
 
-    private int articleid;
+    private int articleId;
 
-    private Date creattime;
+    private Date createTime;
 
-    private String deletemark;
+    private String deleteMark;
 
     private Integer status;
+
+    private Integer groupId;
 
     private Integer pageNo;
 

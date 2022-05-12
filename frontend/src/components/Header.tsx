@@ -6,38 +6,40 @@
 import { AlertOutlined, UserOutlined } from '@ant-design/icons'
 import { Button, Dropdown, Menu } from 'antd'
 import * as React from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import styles from './Header.module.scss'
+import Cookie from 'universal-cookie'
+import { cleanCookies } from 'universal-cookie/es6/utils'
 
 interface Props {
     hideNav?: boolean
-    adminhideNav?: boolean
+    hideUser?: boolean
 }
 
 /**
  * 前端通用的Header
  * @param {boolean} hideNav 是否隐藏导航按钮(用于主页Cover处)
+ * @param {boolean} hideUser 是否隐藏登录按钮/个人中心(用于登录注册处)
  * @constructor
  * @author TranceDream
  */
-const Header = ({ hideNav = false, adminhideNav = false }: Props) => {
-    const menu = (
-        <Menu>
-            <Menu.Item key='1'>
-                <NavLink
-                    to={
-                        useLocation().pathname.indexOf('/admin') != -1
-                            ? '/'
-                            : '/admin/home'
-                    }
-                    replace={false}>
-                    Dashboard
-                </NavLink>
-            </Menu.Item>
-            <Menu.Divider />
-            <Menu.Item key='3'>退出登录</Menu.Item>
-        </Menu>
-    )
+const Header = ({ hideNav = false, hideUser = false }: Props) => {
+    const [loginStatus, setLoginStatus] = useState(false)
+    const [menuItems, setMenuItems] = useState<Array<any>>([])
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const cookie = new Cookie()
+        const token = cookie.get('token')
+        if (token) {
+            setLoginStatus(true)
+            if (localStorage.getItem('menus')) {
+                console.log('hello')
+                setMenuItems(JSON.parse(localStorage.getItem('menus') ?? '[]'))
+            }
+        }
+    }, [])
     return (
         <header className={styles.header}>
             <NavLink
@@ -52,13 +54,7 @@ const Header = ({ hideNav = false, adminhideNav = false }: Props) => {
             <div className={styles.nav}>
                 <ul
                     className={
-                        (adminhideNav
-                            ? styles.hidden
-                            : hideNav
-                            ? styles.hidden
-                            : '') +
-                        ' ' +
-                        styles.list
+                        (hideNav ? styles.hidden : '') + ' ' + styles.list
                     }>
                     <li>
                         <NavLink to={'/station'}>寻求援助</NavLink>
@@ -67,18 +63,73 @@ const Header = ({ hideNav = false, adminhideNav = false }: Props) => {
                         <NavLink to={'/'}>新闻中心</NavLink>
                     </li>
                 </ul>
-                <Button
-                    className={styles.notifications}
-                    shape={'circle'}
-                    size={'large'}>
-                    <AlertOutlined />
-                </Button>
-                <Dropdown.Button
-                    className={styles.avatar}
-                    size={'large'}
-                    overlay={menu}
-                    icon={<UserOutlined />}
-                />
+                {loginStatus ? (
+                    <>
+                        <Button
+                            className={
+                                (hideUser ? styles.hidden : '') +
+                                ' ' +
+                                styles.notifications
+                            }
+                            shape={'circle'}
+                            size={'large'}>
+                            <AlertOutlined />
+                        </Button>
+                        <Dropdown.Button
+                            className={
+                                (hideUser ? styles.hidden : '') +
+                                ' ' +
+                                styles.avatar
+                            }
+                            size={'large'}
+                            overlay={
+                                <Menu>
+                                    {menuItems.map((m) => (
+                                        <Menu.Item key={m.menuId}>
+                                            <NavLink to={m.url} replace={true}>
+                                                {m.menuName}
+                                            </NavLink>
+                                        </Menu.Item>
+                                    ))}
+                                    <Menu.Divider />
+                                    <Menu.Item
+                                        key='logout'
+                                        onClick={() => {
+                                            cleanCookies()
+                                            setLoginStatus(false)
+                                            navigate('/')
+                                        }}>
+                                        退出登录
+                                    </Menu.Item>
+                                </Menu>
+                            }
+                            icon={<UserOutlined />}
+                        />
+                    </>
+                ) : (
+                    <>
+                        <NavLink
+                            to={'/register'}
+                            replace
+                            className={
+                                (hideUser ? styles.hidden : '') +
+                                ' ' +
+                                styles.link
+                            }>
+                            注册
+                        </NavLink>
+                        <NavLink
+                            to={'/login'}
+                            replace
+                            className={
+                                (hideUser ? styles.hidden : '') +
+                                ' ' +
+                                styles.link
+                            }>
+                            登录
+                        </NavLink>
+                    </>
+                )}
             </div>
         </header>
     )

@@ -17,8 +17,6 @@ public class MessageForm {
 
     private String deleteMark;
 
-    private Integer scope;
-
     private String scopeDetail;
 
     private String content;

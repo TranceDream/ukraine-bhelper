@@ -16,14 +16,14 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Data
 public class Article {
-    @TableId(value = "articleid",type = IdType.AUTO)
-    private int articleid;
+    @TableId(value = "articleId",type = IdType.AUTO)
+    private int articleId;
 
-    @TableField("creattime")
-    private Data creattime;
+    @TableField("createTime")
+    private Data createTime;
 
-    @TableField("deletemark")
-    private String deletemark;
+    @TableField("deleteMark")
+    private String deleteMark;
 
     @TableField("author")
     private String author;
@@ -34,7 +34,10 @@ public class Article {
     @TableField("content")
     private String content;
 
-    @TableField("STATUS")
+    @TableField("status")
     private Integer status;
+
+    @TableField("groupId")
+    private Integer groupId;
 
 }
