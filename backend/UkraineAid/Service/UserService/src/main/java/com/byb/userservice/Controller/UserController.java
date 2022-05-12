@@ -573,7 +573,7 @@ public class UserController {
 //    }
 
     @PostMapping("/getChildGroupsSql")
-    public String getChildGroupsSql(Long userId){
+    public String getChildGroupsSql(@RequestParam("userId") Long userId){
         String result = userService.getChildGroups(userId);
         return result;
     }

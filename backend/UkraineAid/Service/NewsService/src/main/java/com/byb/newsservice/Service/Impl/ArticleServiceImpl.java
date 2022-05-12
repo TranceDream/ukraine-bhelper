@@ -1,5 +1,7 @@
 package com.byb.newsservice.Service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.byb.newsservice.Dao.ArticleMapper;
 import com.byb.newsservice.Entity.Article;
@@ -9,9 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.encrypt.AesBytesEncryptor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author zjt
@@ -30,7 +30,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
             BeanUtils.copyProperties(articleVo,article);
             baseMapper.insert(article);
 
-            result.put("data",article.getArticleid());
+            result.put("data",article.getArticleId());
             result.put("msg","提交文章成功");
 //            System.out.println("duiduidui");
 
@@ -50,7 +50,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
             BeanUtils.copyProperties(articleVo,article);
             baseMapper.updateById(article);
 
-            result.put("data",article.getArticleid());
+            result.put("data",article.getArticleId());
             result.put("msg","修改文章成功");
 
         }catch(Exception e){
@@ -66,12 +66,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
         Map<String, Object> result = new HashMap<>();
         try{
             Article article = new Article();
-            article.setArticleid(articleid);
-            article.setDeletemark("YES");
+            article.setArticleId(articleid);
+            article.setDeleteMark("YES");
 
             baseMapper.updateById(article);
 
-            result.put("data",article.getArticleid());
+            result.put("data",article.getArticleId());
             result.put("msg","删除文章成功");
 
         }catch(Exception e){
@@ -82,19 +82,45 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
     }
 
     @Override
-    public Map<String, Object> selcetHouse(Map<String, Object> selectCondition) {
-        Map<String, Object> result = new HashMap<>();
-        int pageNo = (int)selectCondition.get("pageNo");
-        int pageSize = (int) selectCondition.get("pageSize");
-        try{
-            List<Article> articlesList = baseMapper.selectByMap(selectCondition);
-            articlesList = articlesList.subList((pageNo-1)*pageSize,pageNo*pageSize);
-            System.out.println(selectCondition);
-            result.put("data",articlesList);
-        }catch(Exception e){
-            e.printStackTrace();
-            result.put("msg","失败");
+    public Map<String, Object> selcetArticle(Map<String, Object> selectCondition) {
+
+        int pageSize = (int) (selectCondition.get("pageSize")==null? 10 : selectCondition.get("pageSize"));
+        int current = (int) (selectCondition.get("current")==null? 1 : selectCondition.get("current"));
+        Page<Article> ArticlePage = new Page<>(current,pageSize);
+        QueryWrapper<Article> queryWrapper = new QueryWrapper<>();
+        if (selectCondition.containsKey("author")){
+            String author = (String) selectCondition.get("author");
+            queryWrapper.eq("author",author);
         }
+        if (selectCondition.containsKey("articleId")){
+            int articleId = (int) selectCondition.get("articleId");
+            queryWrapper.eq("articleId",articleId);
+        }
+        if (selectCondition.containsKey("createTimeMin")){
+            Date createTimeMin = (Date) selectCondition.get("createTimeMin");
+            queryWrapper.ge("createTimeMin",createTimeMin);
+        }
+        if (selectCondition.containsKey("createTimeMax")){
+            Date createTimeMax = (Date) selectCondition.get("createTimeMax");
+            queryWrapper.le("createTimeMax",createTimeMax);
+        }
+        if (selectCondition.containsKey("deleteMark")){
+            String deleteMark = (String) selectCondition.get("deleteMark");
+            queryWrapper.eq("deleteMark",deleteMark);
+        }
+        if (selectCondition.containsKey("status")){
+            int status = (int) selectCondition.get("status");
+            queryWrapper.eq("status",status);
+        }
+
+        String scope = (String) selectCondition.get("scope");
+        scope = scope.substring(1,scope.length()-1);
+        List<String> groupIds = Arrays.asList(scope.split(","));
+        queryWrapper.in("groupId",groupIds);
+
+        Page<Article> page = this.page(ArticlePage,queryWrapper);
+        Map<String, Object> result = new HashMap<>();
+        result.put("houseinfo",page.getRecords());
         return result;
     }
 }

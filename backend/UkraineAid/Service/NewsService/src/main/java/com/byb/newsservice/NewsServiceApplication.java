@@ -2,6 +2,7 @@ package com.byb.newsservice;
 
 import com.byb.openfeign.Client.AuditClient;
 import com.byb.openfeign.Client.ReportClient;
+import com.byb.openfeign.Client.UserClient;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,7 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan("com.byb")
 @MapperScan("com.byb.newsservice.Dao")
-@EnableFeignClients(clients = {ReportClient.class, AuditClient.class})
+@EnableFeignClients(clients = {ReportClient.class, AuditClient.class, UserClient.class})
 public class NewsServiceApplication {
 
     public static void main(String[] args) {
