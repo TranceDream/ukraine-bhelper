@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.byb.BaseUtil.Config.ConstantConfig;
 import com.byb.BaseUtil.Utils.ResponseUtil;
 import com.byb.BaseUtil.Utils.Result;
+import com.byb.BaseUtil.Utils.UploadPicUtil;
 import com.byb.houseservice.Entity.HouseInfo;
 import com.byb.houseservice.Service.*;
 import com.byb.houseservice.Vo.*;
@@ -21,13 +22,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 @Slf4j
@@ -61,6 +66,8 @@ public class PostController {
 
     @Autowired
     private ReportClient reportClient;
+    @Autowired
+    private FilePicService filePicService;
 
     @Value("${spring.houseService.houseObjtypeId}")
     private int houseObjtypeId;
@@ -94,6 +101,29 @@ public class PostController {
         String msg = (String) dateMap.get("msg");
         dateMap.remove("msg");
         if(! msg.equals("A successful submission")) msg = "PARAMETER ERROR!";
+        return new Result<>(dateMap, Result.SUCCESS,msg);
+    }
+
+    @PostMapping("/uploadHousePic")
+    public Result<Map<String ,Object>> uploadHousePic(@RequestBody MultipartFile file ,
+                                                  HttpServletResponse response, HttpServletRequest request)  {
+
+        UploadPicUtil uploadPicUtil = new UploadPicUtil();
+        String filepath = "";
+        try{
+            filepath = uploadPicUtil.uploadFile(file);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result<>(null,Result.FAIL,"Image uploading failed");
+        }
+
+        Map<String,Object> dateMap =new HashMap<>();
+        if (!filepath.equals(""))
+            dateMap = filePicService.uploadHousePic(filepath);
+
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Succeeded in modifying data")) msg = "PARAMETER ERROR!";
         return new Result<>(dateMap, Result.SUCCESS,msg);
     }
 

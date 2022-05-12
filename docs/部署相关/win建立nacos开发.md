@@ -337,6 +337,8 @@ docker push swr.cn-north-4.myhuaweicloud.com/{组织名称}/oa-kunpeng:1.0
 
 密钥需要找我要一下
 
+$2a$10$SD9LdW4Yyv1Hy3E8LLfbau0r2p4uMxzWb7Tv5Eq4QtT344WOX5CCW
+
 或者直接配置mysql
 
 1. 以root用户登录容器引擎所在的虚拟机。

@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: systemservice # 服务名称
+  profiles:
+    active: dev #开发环境，这里是dev
+  cloud:
+    nacos:
+      server-addr: localhost:8848 # Nacos地址,必须是localhost，其他出错
+      config:
+        file-extension: yaml # 文件后缀名,
+#pattern:
+##  dateformat: MM-dd HH:mm:ss
