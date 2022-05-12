@@ -27,11 +27,11 @@ public class AuditController {
     public Result<Map<String, Object>> addAudit(@RequestBody AuditForm auditForm, HttpServletResponse response, HttpServletRequest request){
 
         if(auditForm.getObjtypeId() == null || auditForm.getOper() == null || auditForm.getObjId() == null){
-            ResponseUtil.out(response, new Result(null, Result.FAIL, "审核信息不全"));
+            return new Result(null, Result.FAIL, "审核信息不全");
         }
 
-        Long operator = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
-        auditForm.setOperator(operator);
+//        Long operator = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+//        auditForm.setOperator(operator);
 
         Map<String, Object> dataMap = auditService.addAudit(auditForm);
         return new Result<>(dataMap, Result.SUCCESS);

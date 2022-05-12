@@ -13,14 +13,15 @@ import java.util.Map;
 @Mapper
 public interface ReportDao extends BaseMapper<Report> {
 
-    @Select(value = "select count(1) from REPORT where OBJTYPE_ID = #{objtypeId} and DELETE_MARK = #{deleteMark}")
     Integer countReportList(Map<String, Object> params);
     List<ReportVo> getReportList(Map<String, Object> params);
 
-    @Select(value = "select count(1) from REPORT where OBJTYPE_ID = #{objtypeId} and DEFENSE = #{defense} and DELETE_MARK = #{deleteMark}")
+    @Select(value = "select count(1) from REPORT where OBJTYPE_ID = #{objtypeId} and DEFENSE = #{defense} and DELETE_MARK = 'NO' and HANDLE_MARK = 'NO'")
     Integer countReportDetail(Map<String, Object> params);
     List<ReportVo> getReportDetail(Map<String, Object> params);
 
-    Integer updateIsHandle(List<Report> list);
+    Integer updateIsHandle(Map<String, Object> params);
+
+    List<Integer> selectObjtypeList();
 
 }

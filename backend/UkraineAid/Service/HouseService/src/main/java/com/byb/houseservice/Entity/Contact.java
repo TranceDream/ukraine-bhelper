@@ -15,27 +15,27 @@ import java.sql.Date;
  * @date 2022/5/4 1:03
  */
 
-@TableName("UAHouse.CONTACT")
+@TableName("UAHouse.Contact")
 @Accessors(chain = true)
 @Data
 public class Contact {
 
-    @TableId(value = "CONTACT_ID",type = IdType.AUTO)
+    @TableId(value = "contactId",type = IdType.AUTO)
     private int contactId;
 
-    @TableField("HOUSE_ID")
+    @TableField("houseId")
     private int houseId;
 
-    @TableField("CREATE_TIME")
+    @TableField("createTime")
     private Date createTime;
 
-    @TableField("DELETE_MARK")
-    private String deleteMask;
+    @TableField("deleteMark")
+    private String deleteMark;
 
-    @TableField("CONTENT")
+    @TableField("content")
     private String content;
 
-    @TableField("TYPE_ID")
+    @TableField("typeId")
     private int typeId;
 
 

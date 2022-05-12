@@ -21,7 +21,7 @@ public class FormGeneration {
     public static Map<String, Object> generateReportForm(Integer objtypeId, Long denfense, Long prosecution, String reason, Integer pageSize, Integer pageNo){
         Map<String, Object> reportForm = new HashMap<>();
         reportForm.put("objtypeId", objtypeId);
-        reportForm.put("denfense", denfense);
+        reportForm.put("defense", denfense);
         reportForm.put("prosecution", prosecution);
         reportForm.put("reason", reason);
         reportForm.put("pageNo", pageNo);
@@ -41,10 +41,9 @@ public class FormGeneration {
         return auditForm;
     }
 
-    public static Map<String, Object> generateMessageForm(String content, Integer scope, String[] emails, List<Long> specificUsers, String title){
+    public static Map<String, Object> generateMessageForm(String content, String[] emails, List<Long> specificUsers, String title){
         Map<String, Object> messageForm = new HashMap<>();
         messageForm.put("content", content);
-        messageForm.put("scope", scope);
         messageForm.put("emails", emails);
         messageForm.put("specificUsers", specificUsers);
         messageForm.put("title", title);

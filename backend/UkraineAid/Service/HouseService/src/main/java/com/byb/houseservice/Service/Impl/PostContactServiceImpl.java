@@ -31,13 +31,10 @@ public class PostContactServiceImpl extends ServiceImpl<ContactMapper, Contact>
                 BeanUtils.copyProperties(contactVo,contact);
                 baseMapper.insert(contact);
             }
-
-            result.put("msg","提交成功");
-//            System.out.println("duiduidui");
-
+            result.put("msg","Success!");
         }catch(Exception e){
             e.printStackTrace();
-            result.put("msg","提交失败");
+            result.put("msg","Failure!");
         }
 
         return result;
@@ -50,13 +47,12 @@ public class PostContactServiceImpl extends ServiceImpl<ContactMapper, Contact>
             Contact contact = new Contact();
             BeanUtils.copyProperties(contactVo,contact);
             baseMapper.updateById(contact);
-
-            result.put("msg","修改成功");
-            System.out.println("duiduidui");
+            result.put("msg","Success!");
+//            System.out.println("duiduidui");
 
         }catch(Exception e){
             e.printStackTrace();
-            result.put("msg","修改失败");
+            result.put("msg","Failure!");
         }
         return result;
     }
@@ -67,18 +63,18 @@ public class PostContactServiceImpl extends ServiceImpl<ContactMapper, Contact>
         try{
             Contact contact = new Contact();
             contact.setContactId(contactId);
-            contact.setDeleteMask("YES");
+            contact.setDeleteMark("YES");
 
 //            System.out.println(houseinfo);
             baseMapper.updateById(contact);
 
             result.put("data",contact.getContactId());
-            result.put("msg","删除成功");
+            result.put("msg","Success!");
 //            System.out.println("duiduidui");
 
         }catch(Exception e){
             e.printStackTrace();
-            result.put("msg","删除失败");
+            result.put("msg","Failure!");
         }
         return result;
     }
@@ -86,14 +82,30 @@ public class PostContactServiceImpl extends ServiceImpl<ContactMapper, Contact>
     @Override
     public Map<String, Object> selectContact(Map<String, Object> selectCondition) {
         Map<String, Object> result = new HashMap<>();
+        selectCondition.put("deleteMark","NO");
         try{
             List<Contact> ContactList = baseMapper.selectByMap(selectCondition);
-            result.put("data",ContactList);
+            result.put("ContactList",ContactList);
+            result.put("number",ContactList.size());
         }catch(Exception e){
             e.printStackTrace();
-            result.put("msg","失败");
+            result.put("msg","Failure!");
         }
         return result;
     }
+
+    @Override
+    public Map<String, Object> selectContactAll(Map<String, Object> selectCondition) {
+        Map<String, Object> result = new HashMap<>();
+        try{
+            List<Contact> ContactList = baseMapper.selectByMap(selectCondition);
+            result.put("ContactList",ContactList);
+        }catch(Exception e){
+            e.printStackTrace();
+            result.put("msg","Failure!");
+        }
+        return result;
+    }
+
 
 }

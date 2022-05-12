@@ -14,7 +14,19 @@
         <result property="deleteMark" column="DELETE_MARK"/>
     </resultMap>
 
-    <select id="selectReportList" resultMap="ReportVo" parameterType="java.util.Map">
+    <select id="countReportList" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select COUNT(1) from(
+        select DEFENSE, COUNT(1) as count
+        from REPORT where OBJTYPE_ID = #{objtypeId} AND DELETE_MARK = 'NO'
+        <if test="prosecution!=null and prosecution!=''">
+            PROSECUTION = #{prosecution}
+        </if>
+        AND HANDLE_MARK = 'NO'
+        GROUP BY DEFENSE
+        ) m
+    </select>
+
+    <select id="getReportList" resultMap="ReportVo" parameterType="java.util.Map">
         select * from(
             select DEFENSE, COUNT(1) as count
             from REPORT where OBJTYPE_ID = #{objtypeId} AND DELETE_MARK = 'NO'
@@ -26,7 +38,7 @@
         ) m limit #{start}, #{size}
     </select>
 
-    <select id="selectReportDetail" resultMap="ReportVo" parameterType="java.util.Map">
+    <select id="getReportDetail" resultMap="ReportVo" parameterType="java.util.Map">
         select * from(
                      select * from REPORT
                     <where>
@@ -38,12 +50,14 @@
                          ) m limit #{start}, #{size}
     </select>
 
-    <update id="updateHandleMark" parameterType="java.util.List">
-        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+    <update id="updateIsHandle" parameterType="java.util.Map">
             update REPORT t
             set
-            t.HANDLE_MARK = #{item.handleMark}
-            where t.OBJTYPE_ID = #{item.objtypeId} and t.OBJ_ID = #{item.objId} and t.DELETE_MARK = 'NO'
-        </foreach>
+            t.HANDLE_MARK = 'YES'
+            where t.OBJTYPE_ID = #{objtypeId} and t.DEFENSE = #{defense} and t.DELETE_MARK = 'NO'
     </update>
+
+    <select id="selectObjtypeList" resultType="java.lang.Integer">
+        select OBJTYPE_ID from REPORT GROUP BY OBJTYPE_ID
+    </select>
 </mapper>

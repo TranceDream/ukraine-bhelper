@@ -6,11 +6,13 @@
  */
 import { Button, Form, Input, message } from 'antd'
 import React from 'react'
+import { reqUpdateRole } from '../../api'
 import PubSub from '../../Utils/pubsub'
 
 interface Props {
     roleName: string
     roleId: number
+    createTime: Date
 }
 const formItemLayout = {
     labelCol: {
@@ -37,13 +39,20 @@ const tailFormItemLayout = {
 
 export default function ChangeRoleName(props: Props) {
     const [form] = Form.useForm()
+    // console.log(props)
+    const onFinish = async (values: any) => {
+        const res = await reqUpdateRole({
+            roleName: values.roleName,
+            roleId: props.roleId,
+            createTime: props.createTime,
+        })
 
-    const onFinish = (values: any) => {
-        message.error('还没有实现')
-        const res = { code: 500 }
         // console.log('Received values of form: ', values)
         if (res.code === 200) {
-            PubSub.publish('changeRoleName', 'success')
+            PubSub.publish('updateRole', 'success')
+        } else {
+            message.error('还没有实现')
+            PubSub.publish('updateRole', 'fail')
         }
     }
     return (
@@ -57,12 +66,12 @@ export default function ChangeRoleName(props: Props) {
             <Form.Item
                 name='roleId'
                 label='角色ID'
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input your E-mail!',
-                    },
-                ]}
+                // rules={[
+                //     {
+                //         required: true,
+                //         message: 'Please input your E-mail!',
+                //     },
+                // ]}
                 initialValue={props.roleId}>
                 <Input disabled={true} />
             </Form.Item>

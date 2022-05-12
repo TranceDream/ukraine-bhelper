@@ -1,5 +1,5 @@
 server:
-  port: 8005
+  port: 8009
 
 spring:
   datasource:
@@ -15,14 +15,20 @@ spring:
         max-active: 20
         max-wait: -1
 #    password: syhxsqqaxfdyhh
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
 
   reportService:
-    reportObjtypeId: 10005
+    reportObjtypeId: 10010
 
   #    nacos
   cloud:
     nacos:
-      server-addr: localhost:8848
+      server-addr: 139.9.231.20:8848
       discovery:
         service: ReportService
 

@@ -19,7 +19,7 @@ public class ContactTypeVo {
 
     private Date createTime;
 
-    private String deleteMask;
+    private String deleteMark;
 
-    private String contentName;
+    private String contactName;
 }

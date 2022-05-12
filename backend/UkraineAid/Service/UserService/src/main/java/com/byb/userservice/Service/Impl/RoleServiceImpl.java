@@ -2,11 +2,15 @@ package com.byb.userservice.Service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.byb.BaseUtil.Utils.ResponseUtil;
+import com.byb.BaseUtil.Utils.Result;
 import com.byb.userservice.Dao.RoleDao;
 import com.byb.userservice.Dao.RolePermissionDao;
+import com.byb.userservice.Dao.UserRoleDao;
 import com.byb.userservice.Entity.Permission;
 import com.byb.userservice.Entity.Role;
 import com.byb.userservice.Entity.RolePermission;
+import com.byb.userservice.Entity.UserRole;
 import com.byb.userservice.Service.RoleService;
 import com.byb.userservice.Vo.PermissionForm;
 import com.byb.userservice.Vo.PermissionVo;
@@ -26,6 +30,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
 
     @Autowired
     private RolePermissionDao rolePermissionDao;
+
+    @Autowired
+    private UserRoleDao userRoleDao;
 
     @Override
     public Map<String, Object> getRoleList(RoleForm roleForm) {
@@ -125,6 +132,24 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
         result.put("flag", true);
         result.put("roleId", roleId);
         return result;
+    }
+
+    @Override
+    public Boolean deleteRole(RoleForm roleForm) {
+        UserRole userRole = userRoleDao.selectOne(new QueryWrapper<UserRole>().lambda().eq(UserRole::getUserId,roleForm.getUserId()).eq(UserRole::getRoleId,roleForm.getRoleId()));
+        if(userRole != null){
+            return false;
+        }
+
+        try {
+            Role role = this.getById(roleForm.getRoleId());
+            role.setDeleteMark("YES");
+            this.updateById(role);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 }

@@ -9,13 +9,13 @@ import com.byb.openfeign.Client.SysClient;
 import com.byb.openfeign.Form.FormGeneration;
 import com.byb.security.Security.DefaultPasswordEncoder;
 import com.byb.security.Security.TokenManager;
+import com.byb.userservice.Dao.GroupDao;
+import com.byb.userservice.Dao.UserRoleDao;
 import com.byb.userservice.Entity.Role;
 import com.byb.userservice.Entity.User;
+import com.byb.userservice.Entity.UserRole;
 import com.byb.userservice.Service.*;
-import com.byb.userservice.Vo.ModuleVo;
-import com.byb.userservice.Vo.PermissionForm;
-import com.byb.userservice.Vo.RoleForm;
-import com.byb.userservice.Vo.UserForm;
+import com.byb.userservice.Vo.*;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +61,9 @@ public class UserController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private GroupDao groupDao;
 
     @Autowired
     private PermissionService permissionService;
@@ -203,7 +207,7 @@ public class UserController {
     }
 
     @PostMapping("/getUserList")
-    public Result<Map<String, Object>> getUserList(@RequestBody UserForm userForm){
+    public Result<Map<String, Object>> getUserList(@RequestBody UserForm userForm, HttpServletRequest request){
         System.out.println("迪克进来了user");
         Integer pageSize = userForm.getPageSize();
         Integer pageNo = userForm.getPageNo();
@@ -214,6 +218,8 @@ public class UserController {
             userForm.setPageSize(10);
         }
         Map<String, Object> dataMap = new HashMap<>();
+        Long loginId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        userForm.setLoginId(loginId);
         try {
             dataMap = userService.selectUserList(userForm);
         }catch (Exception e){
@@ -283,7 +289,7 @@ public class UserController {
 
     @PostMapping("/userEmpowerment")
     public Result<String> userEmpowerment(@RequestBody UserForm userForm, HttpServletRequest request, HttpServletResponse response){
-        if(userForm.getRoleId() == null || userForm.getUserId() == null){
+        if(userForm.getRoleId() == null || userForm.getUserId() == null || userForm.getGroupId() == null){
             ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
         }
 
@@ -347,13 +353,15 @@ public class UserController {
     }
 
     @PostMapping("/getRoleList")
-    public Result<Map<String, Object>> getRoleList(@RequestBody RoleForm roleForm){
+    public Result<Map<String, Object>> getRoleList(@RequestBody RoleForm roleForm, HttpServletRequest request){
         if(roleForm.getPageNo()==null){
             roleForm.setPageNo(1);
         }
         if(roleForm.getPageSize()==null){
             roleForm.setPageSize(10);
         }
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        roleForm.setUserId(userId);
         Map<String, Object> dataMap = roleService.getRoleList(roleForm);
         return new Result<>(dataMap, Result.SUCCESS);
     }
@@ -460,11 +468,11 @@ public class UserController {
     @PostMapping("/getEmail")
     public Result<List<String>> getEmail(@RequestBody List<Long> userIds){
         if(userIds == null || userIds.isEmpty()){
-            return null;
+            return new Result<>(new ArrayList<>(), Result.FAIL);
         }
 
         Map<String, Object> dataMap = userService.getEmail(userIds);
-        List<String> emails = (List<String>) dataMap.get("emails");
+        List<String> emails = (List<String>) dataMap.get("data");
         return new Result<>(emails, Result.SUCCESS);
     }
 
@@ -526,6 +534,27 @@ public class UserController {
 
     }
 
+    @PostMapping("/deleteRole")
+    public Result<Map<String, Object>> deleteRole(@RequestBody RoleForm roleForm, HttpServletResponse response, HttpServletRequest request){
+        if(roleForm.getRoleId() == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
+        }
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        roleForm.setUserId(userId);
+
+        Boolean flag = roleService.deleteRole(roleForm);
+
+        if(!flag){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "操作失败"));
+        }
+
+        Map<String, Object> syslogForm = FormGeneration.generateSysForm(roleObjtypeId, Long.valueOf(roleForm.getRoleId()), userId, "删除角色", updateOperation);
+
+        this.sendMessage(ConstantConfig.SYSL0G_QUEUE, syslogForm);
+        return new Result<>(null, Result.SUCCESS);
+    }
+
+
     @PostMapping("/getModuleList")
     public Result<List<ModuleVo>> getMenuList(HttpServletRequest request){
 
@@ -542,6 +571,32 @@ public class UserController {
 //        redisTemplate.opsForValue().getAndDelete(userId);
 //        ResponseUtil.out(response, new Result(null, Result.SUCCESS, "登出成功"));
 //    }
+
+    @PostMapping("/getChildGroupsSql")
+    public String getChildGroupsSql(Long userId){
+        String result = userService.getChildGroups(userId);
+        return result;
+    }
+
+    @PostMapping("/getChildGroupVos")
+    public Result<Map<String, Object>> getChildGroupVos(HttpServletRequest request){
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        List<GroupForm> list = userService.getGroupList(userId);
+        Map<String, Object> map = new HashMap<>();
+        map.put("data", list);
+        return new Result<>(map, Result.SUCCESS);
+    }
+
+    @PostMapping("/getOneGroup")
+    public Result<Map<String, Object>> getOneGroup(@RequestParam("userId") Long userId, @RequestParam("roleId") Integer roleId){
+        if(userId == null || roleId == null){
+            return new Result(null, Result.FAIL, "数据不全");
+        }
+        GroupForm groupForm = userService.getOneGroup(userId, roleId);
+        Map<String, Object> map = new HashMap<>();
+        map.put("data", groupForm);
+        return new Result<>(map, Result.SUCCESS);
+    }
 
     private void sendMessage(String queue, Object object){
         String msg = JSONObject.toJSONString(object);

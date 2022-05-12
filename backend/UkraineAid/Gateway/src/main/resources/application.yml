@@ -13,7 +13,13 @@ spring:
         - id: house_post
           uri: http://localhost:8002
           predicates:
-            - Path=/post/**
+            - Path=/house/**
+
+        - id: report_service
+          uri: http://localhost:8005
+          predicates:
+            - Path=/report/**
+
 #  datasource:
 #    url: jdbc:mysql://82.157.113.175:3306/UkraineAssistance
 #    username: root
@@ -32,6 +38,6 @@ spring:
 #  mapper-locations: classpath:DaoXML/*.xml
 # nacos
     nacos:
-      server-addr: localhost:8848
+      server-addr: 139.9.231.20:8848
       discovery:
         service: Gateway

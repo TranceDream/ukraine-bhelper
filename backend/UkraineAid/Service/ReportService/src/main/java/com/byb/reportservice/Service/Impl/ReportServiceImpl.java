@@ -72,7 +72,7 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
         params.put("start", (reportForm.getPageNo() - 1) * reportForm.getPageSize());
         params.put("size", reportForm.getPageSize());
         params.put("objtypeId", reportForm.getObjtypeId());
-        params.put("objId", reportForm.getDefense());
+        params.put("defense", reportForm.getDefense());
 
         Map<String, Object> result = new HashMap<>();
 
@@ -80,7 +80,7 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
 
         Integer total = baseMapper.countReportDetail(params);
         if(total > 0){
-            list = baseMapper.getReportList(params);
+            list = baseMapper.getReportDetail(params);
         }
 
         result.put("total", total);
@@ -92,16 +92,28 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
     }
 
     @Override
-    public Boolean doAudit(ReportForm reportForm) {
-        List<Report> list = new ArrayList<>();
-        list = baseMapper.selectList(new QueryWrapper<Report>().lambda().eq(Report::getObjtypeId, reportForm.getObjtypeId()).eq(Report::getDefense, reportForm.getDefense()).eq(Report::getDeleteMark, "NO"));
+    public Map<String, Object> doAudit(ReportForm reportForm) {
+        List<Report> list;
+        Map<String, Object> result = new HashMap<>();
+        list = baseMapper.selectList(new QueryWrapper<Report>().lambda().eq(Report::getObjtypeId, reportForm.getObjtypeId()).eq(Report::getDefense, reportForm.getDefense()).eq(Report::getDeleteMark, "NO").eq(Report::getHandleMark, "NO"));
         try {
-            Integer update = reportDao.updateIsHandle(list);
+            Map<String, Object> params = new HashMap<>();
+            params.put("objtypeId", reportForm.getObjtypeId());
+            params.put("defense", reportForm.getDefense());
+            Integer update = reportDao.updateIsHandle(params);
+            result.put("data", list);
         }catch (Exception e){
             e.printStackTrace();
-            return false;
+            result.put("flag", false);
+            return result;
         }
-        return true;
+        result.put("flag",true);
+        return result;
+    }
+
+    @Override
+    public List<Integer> getObjtypeId() {
+        return baseMapper.selectObjtypeList();
     }
 
 }

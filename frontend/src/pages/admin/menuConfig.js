@@ -2,14 +2,14 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-16 22:28:55
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-04-16 23:05:09
+ * @Last Modified time: 2022-05-11 00:16:23
  */
 import {
     AppstoreOutlined,
     HomeOutlined,
     NotificationOutlined,
     SolutionOutlined,
-    UserSwitchOutlined,
+    UserSwitchOutlined
 } from '@ant-design/icons'
 const menuList = [
     {
@@ -28,13 +28,13 @@ const menuList = [
         icon: <SolutionOutlined />,
     },
     {
-        title: '菜单管理',
-        key: '/admin/menu-control',
+        title: '房源管理',
+        key: '/admin/house-control',
         icon: <SolutionOutlined />,
     },
     {
-        title: '通知公告',
-        key: '/admin/announce',
+        title: '新闻管理',
+        key: '/admin/news-control',
         icon: <NotificationOutlined />,
     },
 

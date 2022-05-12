@@ -2,7 +2,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-28 16:48:46
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-08 16:00:44
+ * @Last Modified time: 2022-05-11 01:47:02
  */
 // 发送异步ajax请求的函数
 // 封装axios库
@@ -17,18 +17,18 @@ export default function ajax(url, data = {}, type = 'GET') {
         if (type === 'GET') {
             promise = axios.get(url, {
                 params: data,
-                headers: {
-                    'Content-Type': 'application/octet-stream',
-                    token: 'eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQAAiUdpdSKAiUrQzNTQ1NLQ3Mzy1oA2Czs8SAAAAA.T6csDOU-w-uImXscI8ghv80eiZzihTbm4aYOQbuc0tae4ikxIU89jIhFcrZIOBpFDpAXS6y9sfMOGgJX_V0LSQ',
-                    'Access-Control-Allow-Origin': '*',
-                },
+                // headers: {
+                //     'Content-Type': 'application/octet-stream',
+                //     token: 'eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQAAiUdpdSKAiUrQzNTQ1NLQ3Mzy1oA2Czs8SAAAAA.T6csDOU-w-uImXscI8ghv80eiZzihTbm4aYOQbuc0tae4ikxIU89jIhFcrZIOBpFDpAXS6y9sfMOGgJX_V0LSQ',
+                //     'Access-Control-Allow-Origin': '*',
+                // },
             })
         } else {
             // post
             promise = axios.post(url, data, {
                 headers: {
                     'Content-Type': 'application/json',
-                    token: 'eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQAAiUdpdSKAiUrQzNTIwNjCxMTi1oASg_6iSAAAAA.-4UVJT_QEvNv_s63lpFla53JdybmYXeCUT0GjrhWjTNZGCLmOIZvjEQGCzlhHNg2qoj6fvSl_b96w7SdCdFYFw',
+                    token: 'eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAA_6tWKi5NUrJSMjQAAiUdpdSKAiUrQzNTIyNDQ0tz81oAUqcJKSAAAAA.DqzPaf1Y9-J_PJnT68vENHKNVRQzPzohmJRkGOylT1wWV4sPAHbqE6qTXSrN_0CWGltrIMgZfva45Bq9ZZD4Bw',
                     'Access-Control-Allow-Origin': '*',
                 },
             })

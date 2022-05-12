@@ -15,20 +15,20 @@ import java.sql.Date;
  */
 
 
-@TableName("UAHouse.TAG_TYPE")
+@TableName("UAHouse.tagType")
 @Accessors(chain = true)
 @Data
 public class TagType {
 
-    @TableId(value = "TYPE_ID",type = IdType.AUTO)
+    @TableId(value = "typeId",type = IdType.AUTO)
     private int typeId;
 
-    @TableField("CREATE_TIME")
+    @TableField("createTime")
     private Date createTime;
 
-    @TableField("DELETE_MARK")
-    private String deleteMask;
+    @TableField("deleteMark")
+    private String deleteMark;
 
-    @TableField("TYPE_NAME")
+    @TableField("tagName")
     private String tagName;
 }

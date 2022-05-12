@@ -30,6 +30,9 @@ public class UserRole implements Serializable {
     @TableField("DELETE_MARK")
     private String deleteMark;
 
+    @TableField("GROUP_ID")
+    private int groupId;
+
     @TableField("LOCKED_MARK")
     private String lockedMark;
 

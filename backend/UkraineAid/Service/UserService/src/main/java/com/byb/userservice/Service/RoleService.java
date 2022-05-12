@@ -18,4 +18,6 @@ public interface RoleService extends IService<Role> {
 
      Map<String, Object> addRole(RoleForm roleForm);
 
+     Boolean deleteRole(RoleForm roleForm);
+
 }

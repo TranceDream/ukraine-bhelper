@@ -131,8 +131,9 @@
         \hline
         \hline
         字段名            & 字段类型         & 字段描述   & 初始值              & 约束                        \\ \hline
-        ROLE\_ID     & Long         & 角色唯一约束 &                  & PK,AUTO\_INCREMENT        \\ \hline
+        ROLE\_ID     & INT         & 角色唯一约束 &                  & PK,AUTO\_INCREMENT        \\ \hline
         USER\_ID     & Long         & 用户唯一约束 &                &NOT NULL \\ \hline
+        GROUP\_ID    & INT          & 部门ID        & 10005         & NULL DEFAULT 10005  \\ \hline
         CREATE\_TIME & Date         & 创建时间   & CURRENTTIMESTAMP & NULL DEFAULT CURRENTSTAMP \\ \hline
         LOCK\_MARK   & VARCHAR(3)   & 冻结标识   & NO               & NULL DEFAULT 'NO'         \\ \hline
         DELETE\_MARK & VARCHAR(3)   & 删除标识   & NO               & NULL DEFAULT 'NO'         \\ \hline
@@ -143,6 +144,7 @@
         CREATE TABLE(\\
             ROLE\_ID INT(64) PRIMARY KEY AUTO\_INCREMENT,\\
             USER\_ID INT(64) NOT NULL, \\
+            GROUP\_ID INT NULL DEFAULT 10005, \\
             CREATE\_TIME TIMESTAMP NULL DEFAULT CURRENTTIMESTAMP,\\
             LOCK\_MARK VARCHAR(3) NULL DEFAULT 'NO', \\            
             DELETE\_MARK VARCHAR(3) NULL DEFAULT 'NO'\\
@@ -237,8 +239,37 @@
         )
     \end{enumerate}
 
+    \subsubsection{DICT\_GROUP部门表}
+    此表记录了系统中的所有部门，用于数据权限的管理，不同部门的人之间不能互相看到数据。
+    \begin{enumerate}
+        \item 表结构
+        \begin{table}[htbp]
+            \centering
+            \scalebox{0.8}{
+            \begin{tabular}{|l|l|l|l|l|}
+            \hline
+            \hline
+            字段名            & 字段类型         & 字段描述   & 初始值              & 约束                        \\ \hline
+            GROUP\_ID           & INT         & 唯一标识    &                  & PK,AUTO\_INCREMENT        \\ \hline
+            GROUP\_NAME     & VARCHAR(200)         & 部门名 &                & NOT NULL \\ \hline
+            PARENT\_ID      & INT               & 父级部门         &         & NOT NULL \\ \hline
+            CREATE\_TIME & Date         & 创建时间   & CURRENTTIMESTAMP & NULL DEFAULT CURRENTSTAMP \\ \hline
+            DELETE\_MARK & VARCHAR(3)   & 删除标识   & NO               & NULL DEFAULT 'NO'         \\ \hline
+            \end{tabular}
+            }
+            \end{table}
+        \item 建表语句\\
+            CREATE TABLE(\\
+                GROUP\_ID INT PRIMARY KEY AUTO\_INCREMENT,\\
+                GROUP\_NAME VARCHAR(200) NOT NULL, \\
+                CREATE\_TIME TIMESTAMP NULL DEFAULT CURRENTTIMESTAMP,\\
+                PARENT\_ID INT NULL NOT NULL, \\            
+                DELETE\_MARK VARCHAR(3) NULL DEFAULT 'NO'\\
+            )
+        \end{enumerate}
+
 \subsubsection{表格关系}
-该模块共涉及了8张表，下图~\ref{fig:USER-ER}~为6张表的关系。
+该模块共涉及了9张表，下图~\ref{fig:USER-ER}~为9张表的关系。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{ch7/USER-ER.jpg}

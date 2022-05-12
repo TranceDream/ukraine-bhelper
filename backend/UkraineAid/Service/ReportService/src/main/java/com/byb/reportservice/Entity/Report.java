@@ -32,9 +32,9 @@ public class Report {
     @TableField("PROSECUTION")
     private Long prosecution;
 
-    @TableField("AUDIT_STATUS")
-    private Integer auditStatus;
-
     @TableField("DELETE_MARK")
     private String deleteMark;
+
+    @TableField("HANDLE_MARK")
+    private String handleMark;
 }

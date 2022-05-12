@@ -1,7 +1,9 @@
 package com.byb.userservice.Service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.byb.userservice.Entity.Group;
 import com.byb.userservice.Entity.User;
+import com.byb.userservice.Vo.GroupForm;
 import com.byb.userservice.Vo.MenuVo;
 import com.byb.userservice.Vo.ModuleVo;
 import com.byb.userservice.Vo.UserForm;
@@ -28,4 +30,10 @@ public interface UserService extends IService<User> {
     Boolean identify(UserForm userForm);
 
     List<ModuleVo> getModuleList(Long userId);
+
+    String getChildGroups(Long userId);
+
+    List<GroupForm> getGroupList(Long userId);
+
+    GroupForm getOneGroup(Long userId, Integer roleId);
 }

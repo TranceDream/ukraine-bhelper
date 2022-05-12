@@ -84,8 +84,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
     @Override
     public Map<String, Object> selcetHouse(Map<String, Object> selectCondition) {
         Map<String, Object> result = new HashMap<>();
+        int pageNo = (int)selectCondition.get("pageNo");
+        int pageSize = (int) selectCondition.get("pageSize");
         try{
             List<Article> articlesList = baseMapper.selectByMap(selectCondition);
+            articlesList = articlesList.subList((pageNo-1)*pageSize,pageNo*pageSize);
             System.out.println(selectCondition);
             result.put("data",articlesList);
         }catch(Exception e){
