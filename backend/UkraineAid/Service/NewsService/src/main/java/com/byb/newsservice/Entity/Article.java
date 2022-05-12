@@ -26,7 +26,7 @@ public class Article {
     private String deleteMark;
 
     @TableField("author")
-    private String author;
+    private Long author;
 
     @TableField("title")
     private String title;

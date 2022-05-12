@@ -21,13 +21,13 @@ import java.util.Map;
 @Repository
 public interface PostHouseService extends IService<HouseInfo> {
 
-
     Map<String ,Object> addpostHouseInfo(HouseinfoVo houseinfovo);
     Map<String ,Object> updateHouseInfo(HouseinfoVo houseinfoVo);
     Map<String ,Object> deleteHouseInfo(int houseid);
     Map<String,Object> selcetHouse(Map<String,Object> selectCondition);
     Map<String,Object> houseById(int houseid);
     Map<String,Object> selectBycondition(Map<String,Object> selectCondition);
+
 
 //    Map<String,Object> testpage(HouseinfoVo houseinfoVo);
 //    Map<String ,Object> updateHouseInfo(HouseinfoVo houseinfoVo);

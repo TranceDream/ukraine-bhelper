@@ -588,13 +588,16 @@ public class UserController {
     }
 
     @PostMapping("/getOneGroup")
-    public Result<Map<String, Object>> getOneGroup(@RequestParam("userId") Long userId, @RequestParam("roleId") Integer roleId){
+    public Result<Map<String, Object>> getOneGroup(@RequestBody Map<String, Object> groupMap){
+        Long userId = Long.valueOf(groupMap.get("userId").toString());
+        Integer roleId = (Integer) groupMap.get("roleId");
         if(userId == null || roleId == null){
             return new Result(null, Result.FAIL, "数据不全");
         }
         GroupForm groupForm = userService.getOneGroup(userId, roleId);
         Map<String, Object> map = new HashMap<>();
-        map.put("data", groupForm);
+        map.put("groupId", groupForm.getGroupId());
+        map.put("groupName", groupForm.getGroupName());
         return new Result<>(map, Result.SUCCESS);
     }
 

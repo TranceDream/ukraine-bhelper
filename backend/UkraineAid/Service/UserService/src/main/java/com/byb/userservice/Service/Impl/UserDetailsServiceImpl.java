@@ -53,8 +53,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Set<String> securityMenus = new HashSet<>();
         for(MenuVo menuVo : menuVos){
             SecurityMenu securityMenu = new SecurityMenu();
-            BeanUtils.copyProperties(menuVo, securityMenu);
-            securityMenus.add(JSONObject.toJSONString(securityMenu));
+            if(menuVo!=null) {
+                BeanUtils.copyProperties(menuVo, securityMenu);
+                securityMenus.add(JSONObject.toJSONString(securityMenu));
+            }
         }
         List<SecurityMenu> list = new ArrayList<>();
         for(String str : securityMenus){

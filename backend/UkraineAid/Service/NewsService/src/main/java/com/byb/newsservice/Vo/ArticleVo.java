@@ -19,7 +19,7 @@ import java.sql.Date;
 @Data
 public class ArticleVo  {
 
-    private String author;
+    private Long author;
 
     private String title;
 
