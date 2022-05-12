@@ -1,33 +1,34 @@
 .container {
   box-shadow: 0 0 10px gray;
   display: flex;
-  cursor: pointer;
-  transition: transform ease-in-out 0.25s;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-
-  img {
-    height: 320px;
-    width: 36%;
-    object-fit: cover;
-  }
+  flex-direction: column;
 
   .inner {
     padding: 30px 5%;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    width: 72%;
+    width: 100%;
     overflow: hidden;
 
     * {
       margin: 5px 0;
     }
 
-    .title {
-      font-size: xx-large;
+    .header {
+      margin: 0;
+      display: flex;
+
+      .title {
+        font-size: xx-large;
+        flex: 1;
+      }
+
+      .report {
+        * {
+          margin: 0;
+        }
+      }
     }
 
     .desc {
@@ -51,6 +52,30 @@
 
         &:not(&:first-child) {
           margin-left: 10px;
+        }
+      }
+    }
+
+    .contact {
+      display: flex;
+      flex-direction: column;
+
+      li {
+        font-size: x-large;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    }
+
+    .images {
+      display: flex;
+      flex-direction: column;
+
+      img {
+        cursor: pointer;
+
+        &:not(&:first-child) {
+          margin-top: 24px;
         }
       }
     }
