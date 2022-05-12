@@ -1,5 +1,6 @@
 package com.byb.houseservice.Controller;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
@@ -75,7 +76,7 @@ public class PostController {
     //基础房源信息********************************************************************************************************
     @PostMapping("/postinfo")
     public Result<Map<String ,Object>> postHouse(@RequestBody HouseinfoVo houseinfoVo ,
-                                    HttpServletResponse response, HttpServletRequest request){
+                                     HttpServletRequest request){
         int userId = Integer.parseInt(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
         if( houseinfoVo.getCountry() == null ){
 
@@ -102,6 +103,29 @@ public class PostController {
         dateMap.remove("msg");
         if(! msg.equals("A successful submission")) msg = "PARAMETER ERROR!";
         return new Result<>(dateMap, Result.SUCCESS,msg);
+    }
+
+    @PostMapping("/postHouse")
+    public Result<Map<String ,Object>> postHouse(@RequestBody Map<String,Object> map,
+                                                 HttpServletResponse response, HttpServletRequest request){
+
+        String s = JSON.toJSONString(map.get("Houseinfo"));
+        HouseinfoVo houseinfoVo = JSON.parseObject(s,HouseinfoVo.class);
+        postHouse(houseinfoVo,request);
+
+        s = JSON.toJSONString(map.get("ContactList"));
+        List<ContactVo>  mapContact = JSON.parseArray(s,ContactVo.class);
+        Map<String , List<ContactVo> > ma = new HashMap<>();
+        ma.put("date",mapContact);
+        postconnect(ma);
+
+        s = JSON.toJSONString(map.get("TegList"));
+        List<TagVo>  mapTag = JSON.parseArray(s,TagVo.class);
+        Map<String , List<TagVo> > ma1 = new HashMap<>();
+        ma1.put("date",mapTag);
+        posttag(ma1);
+
+        return new Result<>(Result.SUCCESS,"A successful submission");
     }
 
     @PostMapping("/uploadHousePic")
@@ -182,8 +206,7 @@ public class PostController {
 //*contact***************************************************************************************************************************
 
     @PostMapping("/postcontact")
-    public Result<Map<String , Object>> postconnect(@RequestBody Map<String , List<ContactVo> > ma,
-                                                    HttpServletResponse response, HttpServletRequest request){
+    public Result<Map<String , Object>> postconnect(@RequestBody Map<String , List<ContactVo> > ma){
         List<ContactVo> list = ma.get("date");
         System.out.println(list);
         if(list.size()==0){
@@ -305,8 +328,7 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
 
 //***********tag**********************************************************************************************************
     @PostMapping("/posttag")
-    public Result<Map<String , Object>> posttag(@RequestBody Map<String , List<TagVo> > ma,
-                                                    HttpServletResponse response, HttpServletRequest request){
+    public Result<Map<String , Object>> posttag(@RequestBody Map<String , List<TagVo> > ma){
 
         List<TagVo> list = ma.get("date");
         System.out.println(list);
