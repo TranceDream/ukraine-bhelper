@@ -39,6 +39,7 @@ import java.util.function.Predicate;
  * @author zjt
  * @date 2022/5/4 0:05
  */
+
 @Service
 public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
         implements PostHouseService {
@@ -185,9 +186,14 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
 
     @Override
     public Map<String, Object> selectBycondition(Map<String, Object> selectCondition) {
-
-        int pageSize = (int) selectCondition.get("pageSize");
-        int current = (int) selectCondition.get("current");
+        int pageSize;
+        if (selectCondition.containsKey("pageSize"))
+            pageSize = (int) selectCondition.get("pageSize");
+        else pageSize = 10;
+        int current;
+        if (selectCondition.containsKey("current"))
+            current = (int) selectCondition.get("current");
+        else current = 1;
         Page<HouseInfo> houseInfoPage = new Page<>(current,pageSize);
         QueryWrapper<HouseInfo> queryWrapper = new QueryWrapper<>();
         if(selectCondition.containsKey("houseId")){
@@ -214,6 +220,7 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
             String de = (String) selectCondition.get("deleteMark");
             queryWrapper.eq("deleteMark",de);
         }
+        else queryWrapper.eq("deleteMark","NO");
         if (selectCondition.containsKey("durationmin")){
             int duramin = (int) selectCondition.get("durationmin");
             queryWrapper.ge("duration",duramin);
@@ -258,4 +265,5 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
         result.put("houseinfo",page.getRecords());
         return result;
     }
+
 }
