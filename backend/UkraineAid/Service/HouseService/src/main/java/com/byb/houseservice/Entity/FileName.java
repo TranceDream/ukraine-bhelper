@@ -31,5 +31,7 @@ public class FileName {
 
     @TableField("filePath")
     private String filePath;
+    @TableField("houseId")
+    private int houseId;
 
 }

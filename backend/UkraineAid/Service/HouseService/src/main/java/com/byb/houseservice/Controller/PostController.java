@@ -10,6 +10,7 @@ import com.byb.BaseUtil.Config.ConstantConfig;
 import com.byb.BaseUtil.Utils.ResponseUtil;
 import com.byb.BaseUtil.Utils.Result;
 import com.byb.BaseUtil.Utils.UploadPicUtil;
+import com.byb.houseservice.Entity.FileName;
 import com.byb.houseservice.Entity.HouseInfo;
 import com.byb.houseservice.Service.*;
 import com.byb.houseservice.Vo.*;
@@ -129,7 +130,8 @@ public class PostController {
     }
 
     @PostMapping("/uploadHousePic")
-    public Result<Map<String ,Object>> uploadHousePic(@RequestBody MultipartFile file ,
+    public Result<Map<String ,Object>> uploadHousePic(@RequestPart(value = "files", required = true) MultipartFile file ,
+                                                      @RequestPart(value = "Fileinfo") FileName fileName,
                                                   HttpServletResponse response, HttpServletRequest request)  {
 
         UploadPicUtil uploadPicUtil = new UploadPicUtil();
@@ -142,8 +144,9 @@ public class PostController {
         }
 
         Map<String,Object> dateMap =new HashMap<>();
+        fileName.setFilePath(filepath);
         if (!filepath.equals(""))
-            dateMap = filePicService.uploadHousePic(filepath);
+            dateMap = filePicService.uploadHousePic(fileName);
 
         String msg = (String) dateMap.get("msg");
         dateMap.remove("msg");
