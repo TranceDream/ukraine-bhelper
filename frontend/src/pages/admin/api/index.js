@@ -95,7 +95,21 @@ export const reqHouseList = (params) => {
 
 // 修改房源信息
 
-
 export const reqUpdateHouse = (params) => {
     return ajax(BASE + '/house/updateinfo', params, 'POST')
+}
+
+// !举报
+
+//获取举报信息
+
+export const reqReportList = (params) => {
+    return ajax(BASE + '/report/getReportList', params, 'POST')
+}
+
+// 管理员获取举报类别列表
+
+
+export const reqObjtypeList = (params) => {
+    return ajax(BASE + '/report/getObjtypeList', params, 'POST')
 }
