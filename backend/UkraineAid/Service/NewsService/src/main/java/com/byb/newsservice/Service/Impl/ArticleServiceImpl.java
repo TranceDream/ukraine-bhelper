@@ -89,7 +89,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
         Page<Article> ArticlePage = new Page<>(current,pageSize);
         QueryWrapper<Article> queryWrapper = new QueryWrapper<>();
         if (selectCondition.containsKey("author")){
-            String author = (String) selectCondition.get("author");
+            Long author = (Long) selectCondition.get("author");
             queryWrapper.eq("author",author);
         }
         if (selectCondition.containsKey("articleId")){
