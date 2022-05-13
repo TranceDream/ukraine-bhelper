@@ -35,11 +35,13 @@ public class PostTagServiceImpl extends ServiceImpl<TagMapper, Tag>
             }
 
             result.put("msg","Success!");
+            result.put("code",200);
 //            System.out.println("duiduidui");
 
         }catch(Exception e){
             e.printStackTrace();
             result.put("msg","Failure!");
+            result.put("code",400);
         }
         return result;
     }

@@ -8,7 +8,9 @@ import com.byb.houseservice.Service.FilePicService;
 import org.springframework.stereotype.Service;
 
 import java.net.FileNameMap;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,14 +31,27 @@ public class FilePicServiceImpl extends ServiceImpl<FileNameMapper, FileName>
         }catch (Exception e){
             e.printStackTrace();
              result.put("msg","fail");
+             result.put("code",400);
             return result;
         }
-       result.put("msg","success");
+        result.put("msg","success");
+        result.put("code",200);
         return result;
     }
 
     @Override
     public Map<String, Object> reHousePic(FileName fileName) {
-        return null;
+        Map<String,Object> select = new HashMap<>();
+        select.put("houseId",fileName.getHouseId());
+        Map<String,Object> result = new HashMap<>();
+        List<String> fileList = new ArrayList<>();
+        List<FileName> fileNames = baseMapper.selectByMap(select);
+        for (FileName fileName1 : fileNames){
+            fileList.add(fileName1.getFilePath());
+        }
+        result.put("fileNames",fileList);
+        return result;
     }
+
+
 }

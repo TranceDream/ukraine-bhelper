@@ -8,30 +8,30 @@ import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.byb.BaseUtil.Utils.Result;
+import com.byb.BaseUtil.Utils.UploadPicUtil;
 import com.byb.houseservice.Dao.HouseInfoMapper;
-import com.byb.houseservice.Entity.Contact;
-import com.byb.houseservice.Entity.Tag;
-import com.byb.houseservice.Entity.TagType;
+import com.byb.houseservice.Entity.*;
 import com.byb.houseservice.Service.*;
-import com.byb.houseservice.Entity.HouseInfo;
 import com.byb.houseservice.Vo.ContactVo;
 import com.byb.houseservice.Vo.HouseinfoVo;
 //import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.byb.houseservice.Vo.TagVo;
 import lombok.experimental.Accessors;
 import net.sf.jsqlparser.statement.create.schema.CreateSchema;
+
+import org.apache.commons.io.FileUtils;
 import org.checkerframework.checker.units.qual.A;
 import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 //import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 //import java.util.Collection;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 import java.util.function.Predicate;
 //import java.util.function.Function;
 
@@ -52,6 +52,8 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
     private TagTypeService tagTypeService;
     @Autowired
     private ContactTypeService contactTypeService;
+    @Autowired
+    private FilePicService filePicService;
     @Override
     public Map<String, Object> addpostHouseInfo(HouseinfoVo houseinfoVo) {
         System.out.println(houseinfoVo);
@@ -65,10 +67,12 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
 
             result.put("houseId",houseinfo.getHouseId());
             result.put("msg","A successful submission");
+            result.put("code",200);
 //            System.out.println("duiduidui");
 
         }catch(Exception e){
             e.printStackTrace();
+            result.put("code",400);
             result.put("msg","Fail to submit!PARAMETER ERROR");
         }
         return result;
@@ -177,6 +181,11 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
             }
             result.put("ContactList",contactss);
 
+            FileName fileName = new FileName();
+            fileName.setHouseId(houseid);
+            Map<String,Object> fileList =  filePicService.reHousePic(fileName);
+            result.put("filePicList",fileList.get("fileNames"));
+
         }catch (Exception e){
             e.printStackTrace();;
             result.put("msg","失败");
@@ -261,9 +270,94 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
 //        }
 
         Page<HouseInfo> page = this.page(houseInfoPage,queryWrapper);
+
+//        int count  = baseMapper.selectCount(queryWrapper);
         Map<String, Object> result = new HashMap<>();
         result.put("houseinfo",page.getRecords());
+        result.put("count",baseMapper.selectCount(queryWrapper));
         return result;
+    }
+
+    @Override
+    public Map<String, Object> addHouse(HouseinfoVo houseinfoVo, List<TagVo> tagVoList, List<ContactVo> contactVoList,
+                                        List<MultipartFile> multipartFiles) {
+        Map<String, Object> result = new HashMap<>();
+
+        Map<String, Object> resultHouse =  this.addpostHouseInfo(houseinfoVo);
+        if ((int) resultHouse.get("code") != 200) {
+            result.put("msg","ERROR in insert house!");
+            return  result;
+        }
+        int houseId = (int) resultHouse.get("houseId");
+
+        for (TagVo tagVo : tagVoList){
+            tagVo.setHouseId(houseId);
+        }
+        Map<String,Object> resultTag = postTagService.addPostTag(tagVoList);
+        if ((int) resultTag.get("code") != 200){
+            result.put("msg","ERROR in insert tags!");
+            return result;
+        }
+
+        for (ContactVo contactVo : contactVoList){
+            contactVo.setHouseId(houseId);
+        }
+        Map<String,Object> resultContact = postContactService.addPostContact(contactVoList);
+        if ((int) resultContact.get("code") != 200){
+            result.put("msg","ERROR in insert contact");
+            return result;
+        }
+
+        String filepath = "";
+        try{
+            for (MultipartFile multipartFile: multipartFiles){
+                String fileName=multipartFile.getOriginalFilename();
+                filepath = "/Uk/Housepic/"+ UUID.randomUUID()+fileName.substring(fileName.lastIndexOf("."));
+                FileOutputStream fos=new FileOutputStream(filepath);
+                //获取本地文件输入流
+                File newFile=  transferToFile(multipartFile);
+                InputStream stream = new FileInputStream(newFile);
+                //写入目标文件
+                byte[] buffer = new byte[1024*1024];
+                int byteRead;
+                try {
+                    while((byteRead=stream.read(buffer))!=-1){
+                        fos.write(buffer, 0, byteRead);
+                        fos.flush();
+                    }
+                    fos.close();
+                    stream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                FileName fileName1 = new FileName();
+                fileName1.setFilePath(filepath);
+                Map<String,Object> resultFile = filePicService.uploadHousePic(fileName1);
+                if ((int) resultFile.get("code") != 200){
+                    result.put("msg","ERROR in pic");
+                    return result;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        result.put("msg","Success");
+        return result;
+    }
+
+    private File transferToFile(MultipartFile multipartFile) {
+        File file = null;
+        try {
+            String originalFilename = multipartFile.getOriginalFilename();
+            String[] filename = originalFilename.split(".");
+            file=File.createTempFile(filename[0], filename[1]);
+            multipartFile.transferTo(file);
+            file.deleteOnExit();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
     }
 
 }

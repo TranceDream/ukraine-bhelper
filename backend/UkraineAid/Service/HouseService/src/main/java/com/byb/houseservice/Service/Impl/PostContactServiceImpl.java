@@ -32,8 +32,10 @@ public class PostContactServiceImpl extends ServiceImpl<ContactMapper, Contact>
                 baseMapper.insert(contact);
             }
             result.put("msg","Success!");
+            result.put("code",200);
         }catch(Exception e){
             e.printStackTrace();
+            result.put("code",400);
             result.put("msg","Failure!");
         }
 
