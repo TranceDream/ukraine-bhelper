@@ -100,8 +100,16 @@ export const reqReportList = (params) => {
 }
 
 // 管理员获取举报类别列表
-
-
 export const reqObjtypeList = (params) => {
     return ajax(BASE + '/report/getObjtypeList', params, 'POST')
+}
+
+// 获取举报组详情信息
+export const reqReportDetail = (params) => {
+    return ajax(BASE + '/report/getReportDetail', params, 'POST')
+}
+
+// 处理举报
+export const reqDoAudit = (params) => {
+    return ajax(BASE + '/report/doAudit', params, 'POST')
 }

@@ -18,7 +18,7 @@ export default function useAjax(url, data = {}, type = 'GET') {
     const cookie = new Cookies()
     const token = cookie.get('token')
     if (!token) {
-        // navigate('/login')
+        window.location.replace('/login')
     }
     return new Promise((resolve, reject) => {
         let promise
@@ -42,8 +42,19 @@ export default function useAjax(url, data = {}, type = 'GET') {
         }
         promise
             .then((response) => {
-                resolve(response.data) //异步得到的不是response,而是response.data
+                // console.log('pr', response)
+                if (response.data.code === 401) {
+                    window.location.replace('/login')
+                } else {
+                    resolve(response.data) //异步得到的不是response,而是response.data
+                }
             })
-            .catch((error) => message.error('请求出错了：' + error.message))
+            .catch((error) => {
+                if (error.response.status === 401) {
+                    cookie.remove('token')
+                    window.location.replace('/login')
+                }
+                message.error('请求出错了：' + error.message)
+            })
     })
 }

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /*
  * @Author: Linhao Yu
  * @Date: 2022-04-24 17:18:13
@@ -30,19 +31,20 @@ export default function ReportControl() {
         TableListItem[]
     >([]) // 记录操作行的数据
     const [reportType, setReportType] = useState<any>({})
+    const [objType, setObjType] = useState<number>(0)
     const ref = useRef<ActionType>()
 
     useEffect(() => {
         async function getReportTypes() {
             const res = await reqObjtypeList()
             if (res.code === 200) {
+                console.log(res.data)
                 setReportType(res.data)
             } else {
                 message.error(res.msg)
             }
         }
         getReportTypes()
-
         //   return () => {
         //     second;
         //   };
@@ -51,7 +53,7 @@ export default function ReportControl() {
     const viewReport = (_: any, record: any, index: number) => {}
 
     const getdata = (data: any) => {
-        console.log(data)
+        // console.log(data)
         let temp: TableListItem[] = []
         data.forEach((item: any) => {
             let newitem: TableListItem
@@ -70,9 +72,10 @@ export default function ReportControl() {
     const columns: ProColumns<TableListItem>[] = [
         {
             title: '被举报对象',
-            width: 80,
+            width: 140,
             dataIndex: 'defense',
             align: 'center',
+            hideInSearch: true,
             render: (_, record: any) => <a>{_}</a>,
         },
         {
@@ -83,44 +86,32 @@ export default function ReportControl() {
             key: 'count',
             dataIndex: 'count',
         },
-        // {
-        //     title: '举报者',
-        //     align: 'center',
-        //     width: 140,
-        //     key: 'prosecution',
-        //     dataIndex: 'prosecution',
-        // },
-        // {
-        //     title: '被举报者',
-        //     align: 'center',
-        //     width: 140,
-        //     key: 'auditStatus',
-        //     dataIndex: 'auditStatus',
-        // },
-        // {
-        //     title: '举报时间',
-        //     align: 'center',
-        //     width: 140,
-        //     key: 'since',
-        //     dataIndex: 'createTime',
-        //     valueType: 'date',
-        // },
-        // {
-        //     title: '举报理由',
-        //     align: 'center',
-        //     width: 140,
-        //     dataIndex: 'reason',
-        // },
+        {
+            title: '举报模块',
+            align: 'center',
+            width: 140,
+            dataIndex: 'objtypeId',
+            initialValue: 10006,
+            hideInTable: true,
+            valueEnum: reportType,
+        },
         {
             title: '操作',
             width: 180,
             key: 'option',
             valueType: 'option',
+            align: 'center',
             render: (_: any, record: any, index: number) => [
                 <a
                     key='edit'
                     onClick={() => {
-                        navigate('/admin/report-?' + record.houseId.toString())
+                        navigate(
+                            '/admin/report?defense=' +
+                                record.defense +
+                                '&objtypeId=' +
+                                objType,
+                            { replace: true }
+                        )
                     }}>
                     查看详情
                 </a>,
@@ -133,10 +124,11 @@ export default function ReportControl() {
             columns={columns}
             request={async (params, sorter, filter) => {
                 // 表单搜索项会从 params 传入，传递给后端接口。
-                if ('reportId' in params) {
-                    params.reportId = parseInt(params.reportId)
-                }
-                params.objtypeId = 10006
+                // if ('reportId' in params) {
+                //     params.reportId = parseInt(params.reportId)
+                // }
+                // params.objtypeId = 10006
+                setObjType(params.objtypeId)
                 const msg = await reqReportList({
                     ...params,
                     ...sorter,
@@ -150,7 +142,7 @@ export default function ReportControl() {
                     }
                     return {
                         // data: tableListDataSource,
-                        // success 请返回 true，
+                        // success 请返回 true,
                         // 不然 table 会停止解析数据，即使有数据
                         success: true,
                         // 不传会使用 data 的长度，如果是分页一定要传
