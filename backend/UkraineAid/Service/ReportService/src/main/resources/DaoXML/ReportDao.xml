@@ -28,7 +28,7 @@
 
     <select id="getReportList" resultMap="ReportVo" parameterType="java.util.Map">
         select * from(
-            select REPORT_ID, DEFENSE, COUNT(1) as count
+            select DEFENSE, COUNT(1) as count
             from REPORT where OBJTYPE_ID = #{objtypeId} AND DELETE_MARK = 'NO'
             <if test="prosecution!=null and prosecution!=''">
                 PROSECUTION = #{prosecution}

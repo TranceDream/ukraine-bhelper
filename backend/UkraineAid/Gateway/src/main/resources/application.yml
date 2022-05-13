@@ -16,7 +16,7 @@ spring:
             - Path=/house/**
 
         - id: report_service
-          uri: http://localhost:8005
+          uri: http://localhost:8009
           predicates:
             - Path=/report/**
 
