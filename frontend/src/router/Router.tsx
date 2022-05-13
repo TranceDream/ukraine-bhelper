@@ -18,10 +18,11 @@ import ServiceMonitor from '../pages/admin/pages/ServiceMonitor'
 import UserControl from '../pages/admin/pages/UserControl'
 import Home from '../pages/home/Home'
 import { StationList } from '../pages/station/StationList'
-import Login from '../pages/login/Login'
+import Login from '../pages/user/Login'
 import Station from '../pages/station/Station'
-import Register from '../pages/register/Register'
+import Register from '../pages/user/Register'
 import StationPost from '../pages/station/StationPost'
+import NewsList from '../pages/news/NewsList'
 
 export default function Router() {
     return (
@@ -61,6 +62,7 @@ export default function Router() {
                 <Route path='/station' element={<StationList />} />
                 <Route path='/station/detail' element={<Station />} />
                 <Route path='/station/add' element={<StationPost />} />
+                <Route path='/news' element={<NewsList />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
         </BrowserRouter>

@@ -2,18 +2,10 @@ import React from 'react'
 import styles from './StationDetail.module.scss'
 import { AlertOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
-
-interface Station {
-    id: number
-    title: string
-    description: string
-    address: string
-    tags: Array<string>
-    images: Array<string>
-}
+import { StationModel } from '../lib/request'
 
 interface StationDetailProps {
-    station: Station
+    station: StationModel
     onReport: Function
 }
 
@@ -22,7 +14,7 @@ const StationDetail = (props: StationDetailProps) => {
         <div className={styles.container}>
             <div className={styles.inner}>
                 <div className={styles.header}>
-                    <div className={styles.title}>Title</div>
+                    <div className={styles.title}>{props.station.title}</div>
                     <Button
                         className={styles.report}
                         shape={'circle'}
@@ -32,26 +24,10 @@ const StationDetail = (props: StationDetailProps) => {
                         <AlertOutlined />
                     </Button>
                 </div>
-                <div className={styles.address}>Address</div>
-                <div className={styles.desc}>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Autem eius odit sequi. Accusantium architecto deleniti dolor
-                    enim expedita magnam necessitatibus odit omnis, possimus,
-                    quam quos recusandae sint! Ad blanditiis commodi culpa
-                    debitis earum ex exercitationem fugiat harum ipsa ipsum,
-                    neque nesciunt nulla quae quas ratione rem reprehenderit
-                    sapiente velit, voluptatibus.
-                </div>
-                <div className={styles.tags}>
-                    {props.station.tags.map((tag) => (
-                        <div>{tag}</div>
-                    ))}
-                </div>
-                <div className={styles.images}>
-                    {props.station.images.map((img) => (
-                        <img src={img} alt={'house preview'} />
-                    ))}
-                </div>
+                <div className={styles.address}>{props.station.address}</div>
+                <div className={styles.desc}>{props.station.description}</div>
+                <div className={styles.tags}></div>
+                <div className={styles.images}></div>
                 <div className={styles.contact}>
                     <ul>
                         <li>Tel: 12345678910</li>

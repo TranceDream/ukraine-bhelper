@@ -1,16 +1,42 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './Station.module.scss'
 import Header from '../../components/Header'
 // import { useLocation } from 'react-router-dom'
 import StationDetail from '../../components/StationDetail'
-import { Button, Form, Input, Modal } from 'antd'
+import { Button, Form, Input, Modal, Spin } from 'antd'
+import { useLocation, useNavigate } from 'react-router-dom'
+import {
+    getStationDetail,
+    reportStation,
+    StationModel,
+} from '../../lib/request'
+import { LoadingOutlined } from '@ant-design/icons'
 
 const Station = () => {
-    // const useQuery = () => new URLSearchParams(useLocation().search)
-    // const query = useQuery()
-    // const id = query.get('id')
+    const useQuery = () => new URLSearchParams(useLocation().search)
+    const query = useQuery()
+    const id = query.get('id')
+    const navigate = useNavigate()
     const [modalVisible, setModal] = useState(false)
     const [reportReason, setReportReason] = useState('')
+    const [station, setStation] = useState<StationModel>()
+
+    useEffect(() => {
+        console.log('effect')
+        if (!id) {
+            navigate('/404', { replace: true })
+        }
+        getStationDetail(parseInt(id!)).then((res) => {
+            if (res.code === 200) {
+                console.log(res.data.houseInfo)
+                setStation(res.data.houseInfo)
+            } else {
+                console.log(res.data)
+                navigate('/404', { replace: true })
+            }
+        })
+    }, [])
+
     return (
         <div className={styles.container}>
             <header>
@@ -28,11 +54,15 @@ const Station = () => {
                     footer={null}>
                     <Form
                         onFinish={() => {
-                            console.log(
-                                'Report Success, reason: ' + reportReason
+                            reportStation(parseInt(id!), reportReason).then(
+                                (res) => {
+                                    if (res.code === 200) {
+                                        console.log('已举办')
+                                        setModal(false)
+                                        setReportReason('')
+                                    }
+                                }
                             )
-                            setModal(false)
-                            setReportReason('')
                         }}>
                         <Form.Item>
                             <span style={{ fontSize: 'large' }}>
@@ -65,23 +95,22 @@ const Station = () => {
                         </Form.Item>
                     </Form>
                 </Modal>
-                <StationDetail
-                    station={{
-                        id: 1,
-                        title: 'House',
-                        description: 'Description',
-                        address: 'Address',
-                        tags: ['可容纳xxx人', '允许宠物', '可短期居住(2周内)'],
-                        images: [
-                            'https://cdn.jsdelivr.net/gh/TranceDream/ImgHost@master/img/IMG_20220319_165950__01.5v96fzjetqo0.webp',
-                            'https://cdn.jsdelivr.net/gh/TranceDream/ImgHost@master/img/IMG_20220319_165950__01.5v96fzjetqo0.webp',
-                        ],
-                    }}
-                    onReport={() => {
-                        console.log('modal')
-                        setModal(true)
-                    }}
-                />
+                {station ? (
+                    <StationDetail
+                        station={station!}
+                        onReport={() => {
+                            setModal(true)
+                        }}
+                    />
+                ) : (
+                    <Spin
+                        indicator={
+                            <LoadingOutlined
+                                style={{ fontSize: 'xxx-large' }}
+                            />
+                        }
+                    />
+                )}
             </main>
             <footer>
                 <div>footer</div>
