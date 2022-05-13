@@ -172,8 +172,7 @@ public class PostController {
     }
 
     @PostMapping("/deleteinfo")
-    public Result<Map<String ,Object>> deleteHouse(@RequestBody Map<String, Object> ma,
-                                                   HttpServletResponse response, HttpServletRequest request){
+    public Result<Map<String ,Object>> deleteHouse(@RequestBody Map<String, Object> ma){
 
         int houseid = (int)ma.get("houseId");
         Map<String,Object> dateMap = postHouseService.deleteHouseInfo(houseid);

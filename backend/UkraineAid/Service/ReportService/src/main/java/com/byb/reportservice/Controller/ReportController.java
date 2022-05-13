@@ -5,6 +5,7 @@ import com.byb.BaseUtil.Config.ConstantConfig;
 import com.byb.BaseUtil.Utils.ResponseUtil;
 import com.byb.BaseUtil.Utils.Result;
 import com.byb.openfeign.Client.AuditClient;
+import com.byb.openfeign.Client.HouseClient;
 import com.byb.openfeign.Client.SysClient;
 import com.byb.openfeign.Client.UserClient;
 import com.byb.openfeign.Form.FormGeneration;
@@ -42,6 +43,9 @@ public class ReportController {
 
     @Autowired
     private SysClient sysClient;
+
+    @Autowired
+    private HouseClient houseClientl;
 
     @Autowired
     private AmqpTemplate amqpTemplate;
