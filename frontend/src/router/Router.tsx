@@ -12,7 +12,6 @@ import AdminHome from '../pages/admin/pages/AdminHome'
 import DataMonitor from '../pages/admin/pages/DataMonitor'
 import HouseControl from '../pages/admin/pages/HouseControl'
 import NewsControl from '../pages/admin/pages/NewsControl'
-import OnlineUser from '../pages/admin/pages/OnlineUser'
 import RoleControl from '../pages/admin/pages/RoleControl'
 import ServiceMonitor from '../pages/admin/pages/ServiceMonitor'
 import UserControl from '../pages/admin/pages/UserControl'
@@ -23,6 +22,7 @@ import Station from '../pages/station/Station'
 import Register from '../pages/user/Register'
 import StationPost from '../pages/station/StationPost'
 import NewsList from '../pages/news/NewsList'
+import ReportControl from '../pages/admin/pages/ReportControl'
 
 export default function Router() {
     return (
@@ -49,7 +49,10 @@ export default function Router() {
                         path='/admin/news-control'
                         element={<NewsControl />}
                     />
-                    <Route path='/admin/online-user' element={<OnlineUser />} />
+                    <Route
+                        path='/admin/report-control'
+                        element={<ReportControl />}
+                    />
                     <Route
                         path='/admin/data-monitor'
                         element={<DataMonitor />}
@@ -62,6 +65,7 @@ export default function Router() {
                 <Route path='/station' element={<StationList />} />
                 <Route path='/station/detail' element={<Station />} />
                 <Route path='/station/add' element={<StationPost />} />
+                <Route path='/news' element={<NewsList />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
         </BrowserRouter>
