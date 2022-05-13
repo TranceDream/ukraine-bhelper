@@ -45,9 +45,6 @@ public class ReportController {
     private SysClient sysClient;
 
     @Autowired
-    private HouseClient houseClientl;
-
-    @Autowired
     private AmqpTemplate amqpTemplate;
 
     @PostMapping("/addReport")

@@ -227,5 +227,10 @@ public class NewsController {
 
     }
 
+    @PostMapping("/getNewsGroup")
+    public Result<Map<Integer, String>> getNewsGroup(){
+        Result<Map<Integer, String>> result = userClient.getChildGroup(10001);
+        return result;
+    }
 
 }

@@ -601,6 +601,16 @@ public class UserController {
         return new Result<>(map, Result.SUCCESS);
     }
 
+    @PostMapping("/getChildGroup")
+    public Result<Map<Integer, String>> getChildGroup(@RequestParam("groupId") Integer groupId){
+        List<GroupForm> list = userService.getChildGroup(groupId);
+        Map<Integer, String> result = new HashMap<>();
+        for(GroupForm groupForm : list){
+            result.put(groupForm.getGroupId(), groupForm.getGroupName());
+        }
+        return new Result<>(result, Result.SUCCESS);
+    }
+
     private void sendMessage(String queue, Object object){
         String msg = JSONObject.toJSONString(object);
         amqpTemplate.convertAndSend(queue, msg);
