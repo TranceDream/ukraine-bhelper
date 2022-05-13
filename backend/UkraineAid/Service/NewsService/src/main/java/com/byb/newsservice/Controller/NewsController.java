@@ -65,11 +65,25 @@ public class NewsController {
     public Result<Map<String ,Object>> postHouse(@RequestBody ArticleVo articleVo,
                                                  HttpServletResponse response, HttpServletRequest request){
 
-        if( articleVo.getContent() == null || articleVo.getAuthor() == null || articleVo.getTitle() == null ){
+        if( articleVo.getContent() == null || articleVo.getTitle() == null ){
 //            ResponseUtil.out(response ,new Result(null,Result.FAIL,"必要信息不全"));
             return new Result<>(null,Result.FAIL,"文章必要信息不全");
         }
-
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("roleId", 10002);
+        Result<Map<String, Object>> result = userClient.getOneGroup(params);
+        Map<String, Object> groupMap = result.getData();
+        if(groupMap.get("groupId") == null){
+            return new Result<>(null,Result.FAIL,"你不属于任何新闻组");
+        }
+        Integer groupId = (Integer) groupMap.get("groupId");
+        if(groupId == null){
+            return new Result<>(null,Result.FAIL,"你不属于任何新闻组");
+        }
+        articleVo.setAuthor(userId);
+        articleVo.setGroupId(groupId);
         System.out.println(articleVo);
         Map<String,Object> dateMap = articleService.addArticle(articleVo);
 

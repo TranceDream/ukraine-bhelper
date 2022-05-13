@@ -22,6 +22,6 @@ public interface UserClient {
     String getChildGroupsSql(@RequestParam("userId") Long userId);
 
     @PostMapping("/user/getOneGroup")
-    Result<Map<String, Object>> getOneGroup(@RequestParam("userId") Long userId, @RequestParam("roleId") Integer roleId);
+    Result<Map<String, Object>> getOneGroup(@RequestBody Map<String, Object> groupMap);
 
 }
