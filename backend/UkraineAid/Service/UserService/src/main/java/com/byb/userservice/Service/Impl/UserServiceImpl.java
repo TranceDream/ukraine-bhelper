@@ -263,6 +263,12 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     }
 
     @Override
+    public List<GroupForm> getChildGroup(Integer groupId){
+        List<GroupForm> childs = groupDao.selectGroupVos(groupId);
+        return childs;
+    }
+
+    @Override
     public GroupForm getOneGroup(Long userId, Integer roleId) {
         Map<String, Object> params = new HashMap<>();
         params.put("userId", userId);

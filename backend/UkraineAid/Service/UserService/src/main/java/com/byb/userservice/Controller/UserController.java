@@ -573,7 +573,7 @@ public class UserController {
 //    }
 
     @PostMapping("/getChildGroupsSql")
-    public String getChildGroupsSql(Long userId){
+    public String getChildGroupsSql(@RequestParam("userId") Long userId){
         String result = userService.getChildGroups(userId);
         return result;
     }
@@ -588,14 +588,27 @@ public class UserController {
     }
 
     @PostMapping("/getOneGroup")
-    public Result<Map<String, Object>> getOneGroup(@RequestParam("userId") Long userId, @RequestParam("roleId") Integer roleId){
+    public Result<Map<String, Object>> getOneGroup(@RequestBody Map<String, Object> groupMap){
+        Long userId = Long.valueOf(groupMap.get("userId").toString());
+        Integer roleId = (Integer) groupMap.get("roleId");
         if(userId == null || roleId == null){
             return new Result(null, Result.FAIL, "数据不全");
         }
         GroupForm groupForm = userService.getOneGroup(userId, roleId);
         Map<String, Object> map = new HashMap<>();
-        map.put("data", groupForm);
+        map.put("groupId", groupForm.getGroupId());
+        map.put("groupName", groupForm.getGroupName());
         return new Result<>(map, Result.SUCCESS);
+    }
+
+    @PostMapping("/getChildGroup")
+    public Result<Map<Integer, String>> getChildGroup(@RequestParam("groupId") Integer groupId){
+        List<GroupForm> list = userService.getChildGroup(groupId);
+        Map<Integer, String> result = new HashMap<>();
+        for(GroupForm groupForm : list){
+            result.put(groupForm.getGroupId(), groupForm.getGroupName());
+        }
+        return new Result<>(result, Result.SUCCESS);
     }
 
     private void sendMessage(String queue, Object object){

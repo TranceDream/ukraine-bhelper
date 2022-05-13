@@ -62,7 +62,6 @@ export default function Router() {
                 <Route path='/station' element={<StationList />} />
                 <Route path='/station/detail' element={<Station />} />
                 <Route path='/station/add' element={<StationPost />} />
-                <Route path='/news' element={<NewsList />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
         </BrowserRouter>

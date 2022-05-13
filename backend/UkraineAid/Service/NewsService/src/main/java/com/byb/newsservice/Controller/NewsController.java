@@ -9,6 +9,7 @@ import com.byb.newsservice.Service.ArticleService;
 import com.byb.newsservice.Vo.ArticleVo;
 import com.byb.openfeign.Client.AuditClient;
 import com.byb.openfeign.Client.ReportClient;
+import com.byb.openfeign.Client.UserClient;
 import com.byb.openfeign.Form.FormGeneration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,9 @@ public class NewsController {
     @Autowired
     private AuditClient auditClient;
 
+    @Autowired
+    private UserClient userClient;
+
     @Value("${spring.newsService.newsObjtypeId}")
     private int newsObjtypeId;
 
@@ -61,11 +65,25 @@ public class NewsController {
     public Result<Map<String ,Object>> postHouse(@RequestBody ArticleVo articleVo,
                                                  HttpServletResponse response, HttpServletRequest request){
 
-        if( articleVo.getContent() == null || articleVo.getAuthor() == null || articleVo.getTitle() == null ){
+        if( articleVo.getContent() == null || articleVo.getTitle() == null ){
 //            ResponseUtil.out(response ,new Result(null,Result.FAIL,"必要信息不全"));
             return new Result<>(null,Result.FAIL,"文章必要信息不全");
         }
-
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("roleId", 10002);
+        Result<Map<String, Object>> result = userClient.getOneGroup(params);
+        Map<String, Object> groupMap = result.getData();
+        if(groupMap.get("groupId") == null){
+            return new Result<>(null,Result.FAIL,"你不属于任何新闻组");
+        }
+        Integer groupId = (Integer) groupMap.get("groupId");
+        if(groupId == null){
+            return new Result<>(null,Result.FAIL,"你不属于任何新闻组");
+        }
+        articleVo.setAuthor(userId);
+        articleVo.setGroupId(groupId);
         System.out.println(articleVo);
         Map<String,Object> dateMap = articleService.addArticle(articleVo);
 
@@ -95,8 +113,19 @@ public class NewsController {
     @PostMapping("/selectarticle")
     public Result<Map<String,Object>>  selectHouse(@RequestBody Map<String, Object> selectcondiction,
                                                    HttpServletResponse response, HttpServletRequest request){
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        String scope = userClient.getChildGroupsSql(userId);
+        selectcondiction.put("scope", scope);
+        Map<String,Object> dateMap = articleService.selcetArticle(selectcondiction);
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
 
-        Map<String,Object> dateMap = articleService.selcetHouse(selectcondiction);
+    @PostMapping("/selectYourArticle")
+    public Result<Map<String, Object>> selectYourArticle(@RequestBody Map<String, Object> selectcondiction,
+                                                         HttpServletResponse response, HttpServletRequest request){
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        selectcondiction.put("author", userId);
+        Map<String,Object> dateMap = articleService.selcetArticle(selectcondiction);
         return new Result<>(dateMap, Result.SUCCESS);
     }
 
@@ -159,26 +188,35 @@ public class NewsController {
     @PostMapping("/doAudit")
     public Result<Map<String, Object>> doAudit(@RequestBody Map<String, Object> newsForm, HttpServletResponse response, HttpServletRequest request){
 
-        Long newsId = (Long) newsForm.get("articleId");
+        Integer newsId = (Integer) newsForm.get("articleId");
         if(newsId == null){
             ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
         }
 
-        Integer oper = (Integer) newsForm.get("oper");
-        if(oper == null){
-            ResponseUtil.out(response, new Result(null, Result.FAIL, "审核操作为空"));
+        int oper = 0;
+        String msg = "";
+        int status = 1;
+        if(newsForm.get("oper") == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "审核信息错误"));
         }
-
-        Integer status = (Integer) newsForm.get("status");
-        if(status == null){
-            ResponseUtil.out(response, new Result(null, Result.FAIL, "审核状态为空"));
+        if(newsForm.get("oper").toString().equals("通过")){
+            oper = 10002;
+            msg = "新闻审核通过";
+            status = 2;
+        }else if(newsForm.get("oper").toString().equals("驳回")){
+            oper = 10003;
+            msg = "新闻审核驳回";
+            status = 3;
         }
 
         String message = (String) newsForm.get("message");
+        if(message == null){
+            message = msg;
+        }
 
         Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
 
-        Map<String, Object> auditForm = FormGeneration.generateAuditForm(newsObjtypeId, newsId, userId, oper, message, null, null);
+        Map<String, Object> auditForm = FormGeneration.generateAuditForm(newsObjtypeId, Long.valueOf(newsId.toString()), userId, oper, message, null, null);
 
         Article article = articleService.getById(newsId);
         article.setStatus(status);
@@ -189,5 +227,10 @@ public class NewsController {
 
     }
 
+    @PostMapping("/getNewsGroup")
+    public Result<Map<Integer, String>> getNewsGroup(){
+        Result<Map<Integer, String>> result = userClient.getChildGroup(10001);
+        return result;
+    }
 
 }

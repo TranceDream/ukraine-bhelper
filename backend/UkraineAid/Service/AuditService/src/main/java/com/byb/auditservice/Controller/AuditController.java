@@ -4,7 +4,9 @@ package com.byb.auditservice.Controller;
 import com.byb.BaseUtil.Config.ConstantConfig;
 import com.byb.BaseUtil.Utils.ResponseUtil;
 import com.byb.BaseUtil.Utils.Result;
+import com.byb.auditservice.Entity.Status;
 import com.byb.auditservice.Service.AuditService;
+import com.byb.auditservice.Service.StatusService;
 import com.byb.auditservice.Vo.AuditForm;
 import com.byb.auditservice.Vo.AuditVo;
 import org.checkerframework.checker.units.qual.A;
@@ -23,6 +25,9 @@ public class AuditController {
     @Autowired
     private AuditService auditService;
 
+    @Autowired
+    private StatusService statusService;
+
     @PostMapping("/addAudit")
     public Result<Map<String, Object>> addAudit(@RequestBody AuditForm auditForm, HttpServletResponse response, HttpServletRequest request){
 
@@ -37,11 +42,17 @@ public class AuditController {
         return new Result<>(dataMap, Result.SUCCESS);
     }
 
-    @GetMapping("/getAuditList")
+    @PostMapping("/getAuditList")
     public Result<List<AuditVo>> getAuditList(@RequestBody AuditForm auditForm){
 
         List<AuditVo> list = auditService.getAuditList(auditForm);
 
+        return new Result<>(list, Result.SUCCESS);
+    }
+
+    @PostMapping("/getStatusList")
+    public Result<List<Status>> getStatusList(){
+        List<Status> list = statusService.getStatusList();
         return new Result<>(list, Result.SUCCESS);
     }
 

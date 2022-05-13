@@ -6,6 +6,7 @@
  */
 import { Button, Form, Input, message } from 'antd'
 import React from 'react'
+import { reqChangePwd } from '../../api'
 
 interface Props {
     userName: string
@@ -37,9 +38,19 @@ const tailFormItemLayout = {
 export default function ChangePwd(props: Props) {
     const [form] = Form.useForm()
 
-    const onFinish = (values: any) => {
-        message.error('还没有实现')
-        console.log('Received values of form: ', values)
+    const onFinish = async (values: any) => {
+        console.table(values)
+        let params = Object()
+        params = {}
+        params['userId'] = props.userId
+        params['credential'] = values.password
+        console.log(params)
+        const res = await reqChangePwd(params)
+        if (res.code === 200) {
+            message.success('修改成功')
+        } else {
+            message.error(res.msg)
+        }
     }
     return (
         <Form

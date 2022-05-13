@@ -1,5 +1,6 @@
 package com.byb.houseservice.Controller;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
@@ -8,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.byb.BaseUtil.Config.ConstantConfig;
 import com.byb.BaseUtil.Utils.ResponseUtil;
 import com.byb.BaseUtil.Utils.Result;
+import com.byb.BaseUtil.Utils.UploadPicUtil;
 import com.byb.houseservice.Entity.HouseInfo;
 import com.byb.houseservice.Service.*;
 import com.byb.houseservice.Vo.*;
@@ -21,13 +23,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 @Slf4j
@@ -61,6 +67,8 @@ public class PostController {
 
     @Autowired
     private ReportClient reportClient;
+    @Autowired
+    private FilePicService filePicService;
 
     @Value("${spring.houseService.houseObjtypeId}")
     private int houseObjtypeId;
@@ -68,7 +76,7 @@ public class PostController {
     //基础房源信息********************************************************************************************************
     @PostMapping("/postinfo")
     public Result<Map<String ,Object>> postHouse(@RequestBody HouseinfoVo houseinfoVo ,
-                                    HttpServletResponse response, HttpServletRequest request){
+                                     HttpServletRequest request){
         int userId = Integer.parseInt(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
         if( houseinfoVo.getCountry() == null ){
 
@@ -97,6 +105,52 @@ public class PostController {
         return new Result<>(dateMap, Result.SUCCESS,msg);
     }
 
+    @PostMapping("/postHouse")
+    public Result<Map<String ,Object>> postHouse(@RequestBody Map<String,Object> map,
+                                                 HttpServletResponse response, HttpServletRequest request){
+
+        String s = JSON.toJSONString(map.get("Houseinfo"));
+        HouseinfoVo houseinfoVo = JSON.parseObject(s,HouseinfoVo.class);
+        postHouse(houseinfoVo,request);
+
+        s = JSON.toJSONString(map.get("ContactList"));
+        List<ContactVo>  mapContact = JSON.parseArray(s,ContactVo.class);
+        Map<String , List<ContactVo> > ma = new HashMap<>();
+        ma.put("date",mapContact);
+        postconnect(ma);
+
+        s = JSON.toJSONString(map.get("TegList"));
+        List<TagVo>  mapTag = JSON.parseArray(s,TagVo.class);
+        Map<String , List<TagVo> > ma1 = new HashMap<>();
+        ma1.put("date",mapTag);
+        posttag(ma1);
+
+        return new Result<>(Result.SUCCESS,"A successful submission");
+    }
+
+    @PostMapping("/uploadHousePic")
+    public Result<Map<String ,Object>> uploadHousePic(@RequestBody MultipartFile file ,
+                                                  HttpServletResponse response, HttpServletRequest request)  {
+
+        UploadPicUtil uploadPicUtil = new UploadPicUtil();
+        String filepath = "";
+        try{
+            filepath = uploadPicUtil.uploadFile(file);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result<>(null,Result.FAIL,"Image uploading failed");
+        }
+
+        Map<String,Object> dateMap =new HashMap<>();
+        if (!filepath.equals(""))
+            dateMap = filePicService.uploadHousePic(filepath);
+
+        String msg = (String) dateMap.get("msg");
+        dateMap.remove("msg");
+        if(! msg.equals("Succeeded in modifying data")) msg = "PARAMETER ERROR!";
+        return new Result<>(dateMap, Result.SUCCESS,msg);
+    }
+
     @PostMapping("/updateinfo")
     public Result<Map<String ,Object>> updateHouse(@RequestBody HouseinfoVo houseinfoVo ,
                                                  HttpServletResponse response, HttpServletRequest request){
@@ -118,8 +172,7 @@ public class PostController {
     }
 
     @PostMapping("/deleteinfo")
-    public Result<Map<String ,Object>> deleteHouse(@RequestBody Map<String, Object> ma,
-                                                   HttpServletResponse response, HttpServletRequest request){
+    public Result<Map<String ,Object>> deleteHouse(@RequestBody Map<String, Object> ma){
 
         int houseid = (int)ma.get("houseId");
         Map<String,Object> dateMap = postHouseService.deleteHouseInfo(houseid);
@@ -152,8 +205,7 @@ public class PostController {
 //*contact***************************************************************************************************************************
 
     @PostMapping("/postcontact")
-    public Result<Map<String , Object>> postconnect(@RequestBody Map<String , List<ContactVo> > ma,
-                                                    HttpServletResponse response, HttpServletRequest request){
+    public Result<Map<String , Object>> postconnect(@RequestBody Map<String , List<ContactVo> > ma){
         List<ContactVo> list = ma.get("date");
         System.out.println(list);
         if(list.size()==0){
@@ -275,8 +327,7 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
 
 //***********tag**********************************************************************************************************
     @PostMapping("/posttag")
-    public Result<Map<String , Object>> posttag(@RequestBody Map<String , List<TagVo> > ma,
-                                                    HttpServletResponse response, HttpServletRequest request){
+    public Result<Map<String , Object>> posttag(@RequestBody Map<String , List<TagVo> > ma){
 
         List<TagVo> list = ma.get("date");
         System.out.println(list);

@@ -19,19 +19,21 @@ import java.sql.Date;
 @Data
 public class ArticleVo  {
 
-    private String author;
+    private Long author;
 
     private String title;
 
     private String content;
 
-    private int articleid;
+    private int articleId;
 
-    private Date creattime;
+    private Date createTime;
 
-    private String deletemark;
+    private String deleteMark;
 
     private Integer status;
+
+    private Integer groupId;
 
     private Integer pageNo;
 
