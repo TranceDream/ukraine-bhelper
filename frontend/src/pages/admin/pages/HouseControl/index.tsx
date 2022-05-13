@@ -142,25 +142,6 @@ export default function HouseControl() {
             search: false,
             dataIndex: 'guests',
         },
-        // {
-        //     disable: true,
-        //     title: '标签',
-        //     dataIndex: 'labels',
-        //     search: false,
-        //     width: 100,
-        //     renderFormItem: (_, { defaultRender }) => {
-        //         return defaultRender(_)
-        //     },
-        //     render: (_, record) => (
-        //         <Space>
-        //             {record.labels.map(({ name, color }) => (
-        //                 <Tag color={color} key={name}>
-        //                     {name}
-        //                 </Tag>
-        //             ))}
-        //         </Space>
-        //     ),
-        // },
         {
             title: '排序字段',
             width: 140,

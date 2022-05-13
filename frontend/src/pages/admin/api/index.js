@@ -18,8 +18,8 @@ export const reqLogin = (username, password) =>
     ajax('./login', { username, password })
 
 // add user
-// let BASE = 'http://139.9.231.20:81'
-let BASE = 'http://192.168.3.2:9001'
+let BASE = 'http://139.9.231.20:81'
+// let BASE = 'http://192.168.3.2:9001'
 export const reqGetAllUser = (params) => {
     return ajax(BASE + '/user/getUserList', params, 'POST')
 }
@@ -34,7 +34,6 @@ export const reqUpdateUser = (user) => {
     return ajax(BASE + '/user/updateUser', user, 'POST')
 }
 
-
 // 请求用户详细信息
 export const reqUserDetail = (userId) => {
     return ajax(BASE + '/user/getUserDetail', userId, 'POST')
@@ -44,7 +43,6 @@ export const reqUserDetail = (userId) => {
 export const reqLockUser = (params) => {
     return ajax(BASE + '/user/manageRole', params, 'POST')
 }
-
 
 // 给用户增加角色
 export const reqAddRole = (params) => {
@@ -71,7 +69,6 @@ export const reqPermissionList = (params) => {
     return ajax(BASE + '/user/getPermissionList', params, 'POST')
 }
 
-
 // 增加新角色
 export const reqAddNewRole = (params) => {
     return ajax(BASE + '/user/addRole', params, 'POST')
@@ -81,6 +78,11 @@ export const reqAddNewRole = (params) => {
 
 export const reqUpdateRole = (params) => {
     return ajax(BASE + '/user/updateRole', params, 'POST')
+}
+
+// 修改密码
+export const reqChangePwd = (params) => {
+    return ajax(BASE + '/user/changePwd', params, 'POST')
 }
 
 // ! 房源 ------------------------------------------
@@ -93,7 +95,21 @@ export const reqHouseList = (params) => {
 
 // 修改房源信息
 
-
 export const reqUpdateHouse = (params) => {
     return ajax(BASE + '/house/updateinfo', params, 'POST')
+}
+
+// !举报
+
+//获取举报信息
+
+export const reqReportList = (params) => {
+    return ajax(BASE + '/report/getReportList', params, 'POST')
+}
+
+// 管理员获取举报类别列表
+
+
+export const reqObjtypeList = (params) => {
+    return ajax(BASE + '/report/getObjtypeList', params, 'POST')
 }
