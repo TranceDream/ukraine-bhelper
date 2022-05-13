@@ -1,11 +1,11 @@
+import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { Button, Form, Input, Modal } from 'antd'
 import React, { useEffect, useState } from 'react'
-import Header from '../../components/Header'
-import styles from './Login.module.scss'
-import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { login } from '../../lib/request'
 import { useNavigate } from 'react-router-dom'
 import Cookie from 'universal-cookie'
+import Header from '../../components/Header'
+import { login } from '../../lib/request'
+import styles from './Login.module.scss'
 
 /**
  * 登录页面

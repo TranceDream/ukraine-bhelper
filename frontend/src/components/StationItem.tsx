@@ -4,8 +4,8 @@
  * @author TranceDream
  */
 import React from 'react'
-import styles from './StationItem.module.scss'
 import { useNavigate } from 'react-router-dom'
+import styles from './StationItem.module.scss'
 
 interface Station {
     id: number

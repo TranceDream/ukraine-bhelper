@@ -7,6 +7,7 @@
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table'
 import { message } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { reqObjtypeList, reqReportList } from '../../api'
 import './ant-pro-card.scss'
 import styles from './index.module.scss'
@@ -14,15 +15,16 @@ export type TableListItem = {
     key: number
     reportId: number
     objtypeId: number
-    defense: number
+    defense: number // 被举报人
     reason: string
     prosecution: string // 举报人
-    auditStatus: string // 被举报人
+    auditStatus: string
     count: number
     createTime: number
 }
 
 export default function ReportControl() {
+    const navigate = useNavigate()
     const [record, setRecord] = useState<any>({})
     const [tableListDataSource, settableListDataSource] = useState<
         TableListItem[]
@@ -39,7 +41,7 @@ export default function ReportControl() {
                 message.error(res.msg)
             }
         }
-        // getReportTypes()
+        getReportTypes()
 
         //   return () => {
         //     second;
@@ -67,9 +69,9 @@ export default function ReportControl() {
     }
     const columns: ProColumns<TableListItem>[] = [
         {
-            title: '举报信息ID',
+            title: '被举报对象',
             width: 80,
-            dataIndex: 'reportId',
+            dataIndex: 'defense',
             align: 'center',
             render: (_, record: any) => <a>{_}</a>,
         },
@@ -77,6 +79,7 @@ export default function ReportControl() {
             title: '举报条数',
             align: 'center',
             width: 140,
+            hideInSearch: true,
             key: 'count',
             dataIndex: 'count',
         },
@@ -114,17 +117,14 @@ export default function ReportControl() {
             key: 'option',
             valueType: 'option',
             render: (_: any, record: any, index: number) => [
-                <a key='edit' onClick={() => viewReport(_, record, index)}>
+                <a
+                    key='edit'
+                    onClick={() => {
+                        navigate('/admin/report-?' + record.houseId.toString())
+                    }}>
                     查看详情
                 </a>,
             ],
-        },
-        {
-            title: '举报类型',
-            align: 'center',
-            width: 140,
-            hideInTable: true,
-            valueType: reportType,
         },
     ]
     return (
@@ -175,7 +175,7 @@ export default function ReportControl() {
             }}
             dataSource={tableListDataSource}
             rowKey={(record) => {
-                return record.count + Date.now().toString() //在这里加上一个时间戳就可以了
+                return record.defense + Date.now().toString() //在这里加上一个时间戳就可以了
             }}
             pagination={{
                 showQuickJumper: true,
