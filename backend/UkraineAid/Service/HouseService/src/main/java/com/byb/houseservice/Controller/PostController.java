@@ -253,7 +253,6 @@ public class PostController {
         dateMap.remove("msg");
         if(! msg.equals("Success!")) msg = "PARAMETER ERROR!";
         return new Result<>(null, Result.SUCCESS,msg);
-
     }
 
     @PostMapping("/deletecontact")
