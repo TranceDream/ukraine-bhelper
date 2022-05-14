@@ -13,5 +13,6 @@ import java.util.Map;
  */
 @Repository
 public interface FilePicService extends IService<FileName> {
-    Map<String,Object> uploadHousePic(String fileName);
+    Map<String,Object> uploadHousePic(FileName fileName);
+    Map<String,Object> reHousePic(FileName fileName);
 }

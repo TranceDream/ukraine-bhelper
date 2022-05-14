@@ -1,6 +1,7 @@
 package com.byb.houseservice.Controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
@@ -10,7 +11,9 @@ import com.byb.BaseUtil.Config.ConstantConfig;
 import com.byb.BaseUtil.Utils.ResponseUtil;
 import com.byb.BaseUtil.Utils.Result;
 import com.byb.BaseUtil.Utils.UploadPicUtil;
+import com.byb.houseservice.Entity.FileName;
 import com.byb.houseservice.Entity.HouseInfo;
+import com.byb.houseservice.Entity.Tag;
 import com.byb.houseservice.Service.*;
 import com.byb.houseservice.Vo.*;
 import com.byb.openfeign.Client.ReportClient;
@@ -86,18 +89,17 @@ public class PostController {
             return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no province!");
         }
         if( houseinfoVo.getCity() == null ){
-
             return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no city!");
         }
         if(houseinfoVo.getAddress() != null && houseinfoVo.getAddress().length()>200)
             return new Result<>(null,Result.FAIL,"The address is too long!");
-
         if(houseinfoVo.getTitle() != null && houseinfoVo.getTitle().length()>200)
             return new Result<>(null, Result.FAIL, "The title is too long!");
         if(houseinfoVo.getDescription() != null && houseinfoVo.getDescription().length()>500)
             return new Result<>(null, Result.FAIL, "The description is too long!");
         houseinfoVo.setUserId(userId);
         System.out.println(houseinfoVo);
+
         Map<String,Object> dateMap = postHouseService.addpostHouseInfo(houseinfoVo);
         String msg = (String) dateMap.get("msg");
         dateMap.remove("msg");
@@ -106,44 +108,58 @@ public class PostController {
     }
 
     @PostMapping("/postHouse")
-    public Result<Map<String ,Object>> postHouse(@RequestBody Map<String,Object> map,
+    public Result<Map<String ,Object>> postHouse(@RequestPart (value = "houseinfoVo",required = true) String houseinfoStr,
+                                                 @RequestPart(value = "fileinfo",required = true)List<MultipartFile> multipartFiles,
+                                                 @RequestPart(value = "tagList",required = false) String tagVoListStr,
+                                                 @RequestPart(value = "contactList",required = true) String contactVoListStr,
                                                  HttpServletResponse response, HttpServletRequest request){
+        HouseinfoVo houseinfoVo = JSONObject.parseObject(houseinfoStr, HouseinfoVo.class);
+        List<TagVo> tagVoList = JSONObject.parseArray(tagVoListStr,TagVo.class);
+        List<ContactVo> contactVoList = JSONObject.parseArray(contactVoListStr,ContactVo.class);
+        int userId = Integer.parseInt(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
 
-        String s = JSON.toJSONString(map.get("Houseinfo"));
-        HouseinfoVo houseinfoVo = JSON.parseObject(s,HouseinfoVo.class);
-        postHouse(houseinfoVo,request);
+        if( houseinfoVo.getCountry() == null ){
+            return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no country!");
+        }
+        if(  houseinfoVo.getProvince() == null ){
+            return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no province!");
+        }
+        if( houseinfoVo.getCity() == null ){
+            return new Result<>(null,Result.FAIL,"The necessary information is incomplete.There is no city!");
+        }
+        if(houseinfoVo.getAddress() != null && houseinfoVo.getAddress().length()>200)
+            return new Result<>(null,Result.FAIL,"The address is too long!");
+        if(houseinfoVo.getTitle() != null && houseinfoVo.getTitle().length()>200)
+            return new Result<>(null, Result.FAIL, "The title is too long!");
+        if(houseinfoVo.getDescription() != null && houseinfoVo.getDescription().length()>500)
+            return new Result<>(null, Result.FAIL, "The description is too long!");
+        houseinfoVo.setUserId(userId);
 
-        s = JSON.toJSONString(map.get("ContactList"));
-        List<ContactVo>  mapContact = JSON.parseArray(s,ContactVo.class);
-        Map<String , List<ContactVo> > ma = new HashMap<>();
-        ma.put("date",mapContact);
-        postconnect(ma);
+        Map<String,Object> dateMap =new HashMap<>();
+//        FileName fileName = new FileName();
+        dateMap = postHouseService.addHouse(houseinfoVo,tagVoList,contactVoList,multipartFiles);
 
-        s = JSON.toJSONString(map.get("TegList"));
-        List<TagVo>  mapTag = JSON.parseArray(s,TagVo.class);
-        Map<String , List<TagVo> > ma1 = new HashMap<>();
-        ma1.put("date",mapTag);
-        posttag(ma1);
-
-        return new Result<>(Result.SUCCESS,"A successful submission");
+        return new Result<>(dateMap,Result.SUCCESS,"A successful submission");
     }
 
     @PostMapping("/uploadHousePic")
-    public Result<Map<String ,Object>> uploadHousePic(@RequestBody MultipartFile file ,
+    public Result<Map<String ,Object>> uploadHousePic(@RequestPart(value = "files", required = true) MultipartFile fileName ,
                                                   HttpServletResponse response, HttpServletRequest request)  {
 
         UploadPicUtil uploadPicUtil = new UploadPicUtil();
         String filepath = "";
         try{
-            filepath = uploadPicUtil.uploadFile(file);
+            filepath = uploadPicUtil.uploadFile(fileName);
         }catch (Exception e){
             e.printStackTrace();
             return new Result<>(null,Result.FAIL,"Image uploading failed");
         }
 
         Map<String,Object> dateMap =new HashMap<>();
+        FileName fileName1 = new FileName();
+        fileName1.setFilePath(filepath);
         if (!filepath.equals(""))
-            dateMap = filePicService.uploadHousePic(filepath);
+            dateMap = filePicService.uploadHousePic(fileName1);
 
         String msg = (String) dateMap.get("msg");
         dateMap.remove("msg");
@@ -198,6 +214,13 @@ public class PostController {
     @PostMapping("/selectHouseAdmin")
     public Result<Map<String,Object>>  selectHouseForAdmin(@RequestBody Map<String, Object> selectcondiction,
                                                    HttpServletResponse response, HttpServletRequest request){
+        Map<String,Object> dateMap = postHouseService.selectBycondition(selectcondiction);
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+    @PostMapping("/userHouse")
+    public Result<Map<String,Object>>  userHouse(@RequestBody Map<String, Object> selectcondiction,
+                                                           HttpServletResponse response, HttpServletRequest request){
+        selectcondiction.put("userId",Integer.parseInt(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)));
         Map<String,Object> dateMap = postHouseService.selectBycondition(selectcondiction);
         return new Result<>(dateMap, Result.SUCCESS);
     }

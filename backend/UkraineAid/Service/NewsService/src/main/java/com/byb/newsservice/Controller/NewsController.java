@@ -61,7 +61,7 @@ public class NewsController {
     @Autowired
     private ArticleService articleService;
 
-    @PostMapping("/addarticle")
+    @PostMapping("/addArticle")
     public Result<Map<String ,Object>> postHouse(@RequestBody ArticleVo articleVo,
                                                  HttpServletResponse response, HttpServletRequest request){
 
@@ -75,7 +75,7 @@ public class NewsController {
         params.put("roleId", 10002);
         Result<Map<String, Object>> result = userClient.getOneGroup(params);
         Map<String, Object> groupMap = result.getData();
-        if(groupMap.get("groupId") == null){
+        if(groupMap == null || groupMap.get("groupId") == null){
             return new Result<>(null,Result.FAIL,"你不属于任何新闻组");
         }
         Integer groupId = (Integer) groupMap.get("groupId");
@@ -90,7 +90,7 @@ public class NewsController {
         return new Result<>(dateMap, Result.SUCCESS);
     }
 
-    @PostMapping("/updatearticle")
+    @PostMapping("/updateArticle")
     public Result<Map<String ,Object>> updateHouse(@RequestBody ArticleVo articleVo ,
                                                    HttpServletResponse response, HttpServletRequest request){
 
@@ -100,7 +100,7 @@ public class NewsController {
         return new Result<>(dateMap, Result.SUCCESS);
 
     }
-    @PostMapping("/deletearticle")
+    @PostMapping("/deleteArticle")
     public Result<Map<String ,Object>> deleteHouse(@RequestBody Map<String, Integer> ma,
                                                    HttpServletResponse response, HttpServletRequest request){
 
@@ -110,13 +110,22 @@ public class NewsController {
         return new Result<>(dateMap, Result.SUCCESS);
 
     }
-    @PostMapping("/selectarticle")
+    @PostMapping("/selectArticle")
     public Result<Map<String,Object>>  selectHouse(@RequestBody Map<String, Object> selectcondiction,
                                                    HttpServletResponse response, HttpServletRequest request){
         Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
         String scope = userClient.getChildGroupsSql(userId);
         selectcondiction.put("scope", scope);
         Map<String,Object> dateMap = articleService.selcetArticle(selectcondiction);
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+    @PostMapping("/selectArticleForC")
+    public Result<Map<String,Object>>  selectHouseForC(@RequestBody Map<String, Object> selectcondiction,
+                                                   HttpServletResponse response, HttpServletRequest request){
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        String scope = userClient.getChildGroupsSql(userId);
+        selectcondiction.put("scope", scope);
+        Map<String,Object> dateMap = articleService.selcetArticleForC(selectcondiction);
         return new Result<>(dateMap, Result.SUCCESS);
     }
 
@@ -136,7 +145,7 @@ public class NewsController {
         //上传路径保存设置
 
         //获得SpringBoot当前项目的路径：System.getProperty("user.dir")
-        String path = System.getProperty("user.dir")+"/upload/";
+        String path ="/Ukother/Ukpic/NewPic";
 
         //按照月份进行分类：
         Calendar instance = Calendar.getInstance();
@@ -158,7 +167,7 @@ public class NewsController {
 
         //给editormd进行回调
         Map<String,Object> res= new HashMap<>();
-        res.put("url","/upload/"+month+"/"+ filename);
+        res.put("url","image/"+month+"/"+ filename);
         res.put("success", 1);
         res.put("message", "upload success!");
 
@@ -225,6 +234,24 @@ public class NewsController {
         auditClient.addAudit(auditForm);
         return new Result<>(null, Result.SUCCESS, "审核成功");
 
+    }
+
+    @PostMapping("/getAuditLog")
+    public Result<List<Object>> getAuditLog(@RequestBody Map<String, Object> params, HttpServletResponse response){
+        Integer articleId = (Integer) params.get("articleId");
+        if(articleId == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
+        }
+
+        Map<String, Object> auditForm = new HashMap<>();
+        auditForm.put("objtypeId", newsObjtypeId);
+        auditForm.put("objId", articleId);
+        Result<List<Object>> auditResult = auditClient.getReportList(auditForm);
+        if(auditResult == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "获取失败"));
+        }
+
+        return auditResult;
     }
 
     @PostMapping("/getNewsGroup")

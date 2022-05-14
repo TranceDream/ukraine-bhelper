@@ -1,0 +1,59 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  main {
+    padding: 180px 18%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    flex: 1;
+
+    .md {
+      padding: 30px 5%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 0 10px gray;
+    }
+
+    .header {
+      margin: 0 0 32px 0;
+      display: flex;
+
+      .title {
+        font-size: xx-large;
+        flex: 1;
+      }
+
+      .report {
+        * {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  .share {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    span {
+      font-size: medium;
+      margin-right: 16px;
+    }
+
+    button {
+      height: 32px;
+    }
+  }
+
+  .report-label {
+    font-size: large;
+  }
+}
