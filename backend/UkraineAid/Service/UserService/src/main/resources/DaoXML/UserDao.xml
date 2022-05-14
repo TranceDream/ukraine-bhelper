@@ -80,12 +80,12 @@
     </select>
 
     <select id="selectModuleList" resultMap="moduleVo" parameterType="java.lang.Long">
-        select dp.PERMISSION_ID, dp.PERMISSION_NAME, dp.URL ,dp.ICON, dp.PAGEKEY from DICT_USER_ROLE dur left join DICT_ROLE_PERMISSION drp on dur.ROLE_ID = drp.ROLE_ID
-        left join DICT_PERMISSION dp on drp.PERMISSION_ID = dp.PERMISSION_ID
+        select dp2.PERMISSION_ID, dp2.PERMISSION_NAME, dp2.URL ,dp2.ICON, dp2.PAGEKEY from DICT_USER_ROLE dur left join DICT_ROLE_PERMISSION drp on dur.ROLE_ID = drp.ROLE_ID
+        left join DICT_PERMISSION dp on drp.PERMISSION_ID = dp.PERMISSION_ID left join DICT_PERMISSION dp2 on dp.PARENT_ID = dp2.PERMISSION_ID
         <where>
             dur.USER_ID = #{userId} and dur.DELETE_MARK = 'NO' and dur.LOCKED_MARK = 'NO'
             and drp.DELETE_MARK = 'NO' and drp.LOCKED_MARK = 'NO'
-            and dp.PARENT_ID = 1 and dp.DELETE_MARK = 'NO'
+            and dp2.PARENT_ID = 1 and dp.DELETE_MARK = 'NO'
         </where>
     </select>
 
