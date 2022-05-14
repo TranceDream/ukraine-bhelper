@@ -17,8 +17,8 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
 //        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
         //上传的图片在D盘下的image目录下，访问路径如：http://localhost:8082/image/100942.jpg
         //其中image表示访问的前缀。"file:D:/image/"是文件真实的存储路径
-        registry.addResourceHandler("/image/**").addResourceLocations("file:/Ukother/Ukpic/housePic/");
-        registry.addResourceHandler("/log/**").addResourceLocations("file:/Ukother/Uklog");
+        registry.addResourceHandler("/image/**").addResourceLocations("file:/Uk/Housepic/");
+//        registry.addResourceHandler("/log/**").addResourceLocations("file:/Ukother/Uklog");
     }
 }
 
