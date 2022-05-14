@@ -1,10 +1,11 @@
 package com.byb.systemservice.Vo;
 
 import lombok.Data;
+
 import java.sql.Date;
 
 @Data
-public class SyslogForm {
+public class SyslogVo {
 
     private Long logId;
 
@@ -18,16 +19,12 @@ public class SyslogForm {
 
     private Long operator;
 
-    private Integer operation;
+    private Integer operationId;
 
     private String message;
 
     private String objtype;
 
-    private Integer pageSize;
-
-    private Integer current;
-
-    private String orderText;
+    private String operation;
 
 }
