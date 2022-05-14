@@ -1,7 +1,8 @@
+import { RollbackOutlined } from '@ant-design/icons'
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table'
 import { Button, message, Modal } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { reqReportDetail } from '../../api'
 import Audit from '../../components/Audit'
 import PubSub from '../../Utils/pubsub'
@@ -20,6 +21,7 @@ export type TableListItem = {
 }
 export default function ReportDetail(props: any) {
     const ref = useRef<ActionType>()
+    const navigate = useNavigate()
     const useQuery = () => new URLSearchParams(useLocation().search)
     const [tableListDataSource, settableListDataSource] = useState<
         TableListItem[]
@@ -141,7 +143,17 @@ export default function ReportDetail(props: any) {
                     showQuickJumper: true,
                 }}
                 dateFormatter='string'
-                headerTitle='待审核举报'
+                headerTitle={
+                    <>
+                        <Button
+                            className='btn'
+                            icon={<RollbackOutlined />}
+                            onClick={() => {
+                                navigate(-1)
+                            }}></Button>
+                        未审核举报
+                    </>
+                }
                 className={styles.protable}
             />
             <Modal

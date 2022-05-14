@@ -91,6 +91,10 @@ export default function HouseControl() {
     const handleEditHouseCancel = () => {
         setEditHouseVisible(false)
     }
+
+    const handleErr = (msg: any) => {
+        message.error(msg.errormsg)
+    }
     const columns: ProColumns<TableListItem>[] = [
         {
             title: '房源ID',
@@ -189,6 +193,7 @@ export default function HouseControl() {
                 actionRef={ref}
                 columns={columns}
                 request={async (params, sorter, filter) => {
+                    params = Object.assign(params, { pageNo: params.current })
                     // 表单搜索项会从 params 传入，传递给后端接口。
                     if ('houseId' in params) {
                         params.houseId = parseInt(params.houseId)
@@ -211,11 +216,26 @@ export default function HouseControl() {
                         if (msg.data.houseinfo) {
                             getdata(msg.data.houseinfo)
                         }
+                        return {
+                            data: tableListDataSource,
+                            // success 请返回 true，
+                            // 不然 table 会停止解析数据，即使有数据
+                            success: true,
+                            // 不传会使用 data 的长度，如果是分页一定要传
+                            total: msg.data.count,
+                        }
+                    } else {
+                        handleErr(msg)
+                        tableListDataSource.length = 0
+                        return {
+                            data: tableListDataSource,
+                            // success 请返回 true，
+                            // 不然 table 会停止解析数据，即使有数据
+                            success: true,
+                            // 不传会使用 data 的长度，如果是分页一定要传
+                            total: tableListDataSource.length,
+                        }
                     }
-                    return Promise.resolve({
-                        // data: tableListDataSource,
-                        success: true,
-                    })
                 }}
                 toolbar={{
                     multipleLine: false,

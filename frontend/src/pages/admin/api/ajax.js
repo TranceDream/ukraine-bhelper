@@ -12,6 +12,7 @@
 import { message } from 'antd'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
+import { cleanCookies } from 'universal-cookie/es6/utils'
 export default function useAjax(url, data = {}, type = 'GET') {
     // const navigate = useNavigate()
 
@@ -44,6 +45,7 @@ export default function useAjax(url, data = {}, type = 'GET') {
             .then((response) => {
                 // console.log('pr', response)
                 if (response.data.code === 401) {
+                    cleanCookies()
                     window.location.replace('/login')
                 } else {
                     resolve(response.data) //异步得到的不是response,而是response.data
@@ -51,7 +53,7 @@ export default function useAjax(url, data = {}, type = 'GET') {
             })
             .catch((error) => {
                 if (error.response.status === 401) {
-                    cookie.remove('token')
+                    cleanCookies()
                     window.location.replace('/login')
                 }
                 message.error('请求出错了：' + error.message)

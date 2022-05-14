@@ -6,21 +6,31 @@
  */
 import {
     AppstoreOutlined,
+    FileTextOutlined,
     HomeOutlined,
     NotificationOutlined,
     SolutionOutlined,
-    UserSwitchOutlined
+    TagOutlined,
+    ToolOutlined,
+    UserOutlined,
 } from '@ant-design/icons'
-const menuList = [
-    {
-        title: '首页',
-        key: '/admin/home',
-        icon: <HomeOutlined />,
-    },
+export const mapIcon = {
+    '<UserOutlined />': <UserOutlined />,
+    '<FileTextOutlined />': <FileTextOutlined />,
+    '<HomeOutlined />': <HomeOutlined />,
+    '<TagOutlined />': <TagOutlined />,
+    '<ToolOutlined />': <ToolOutlined />,
+}
+export const menuList = [
+    // {
+    //     title: '首页',
+    //     key: '/admin/home',
+    //     icon: <HomeOutlined />,
+    // },
     {
         title: '用户管理',
         key: '/admin/user-control',
-        icon: <UserSwitchOutlined />,
+        icon: '<UserSwitchOutlined />',
     },
     {
         title: '角色管理',
@@ -64,4 +74,3 @@ const menuList = [
     },
 ]
 
-export default menuList

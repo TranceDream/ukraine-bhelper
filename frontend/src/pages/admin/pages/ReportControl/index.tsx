@@ -32,6 +32,7 @@ export default function ReportControl() {
     >([]) // 记录操作行的数据
     const [reportType, setReportType] = useState<any>({})
     const [objType, setObjType] = useState<number>(0)
+    const [initialValue, setinitialValue] = useState('10006')
     const ref = useRef<ActionType>()
 
     useEffect(() => {
@@ -40,6 +41,7 @@ export default function ReportControl() {
             if (res.code === 200) {
                 console.log(res.data)
                 setReportType(res.data)
+                setinitialValue(res.data['10006'])
             } else {
                 message.error(res.msg)
             }
@@ -49,8 +51,6 @@ export default function ReportControl() {
         //     second;
         //   };
     }, [])
-
-    const viewReport = (_: any, record: any, index: number) => {}
 
     const getdata = (data: any) => {
         // console.log(data)
@@ -91,7 +91,7 @@ export default function ReportControl() {
             align: 'center',
             width: 140,
             dataIndex: 'objtypeId',
-            initialValue: 10006,
+            initialValue: initialValue,
             hideInTable: true,
             valueEnum: reportType,
         },
@@ -110,7 +110,7 @@ export default function ReportControl() {
                                 record.defense +
                                 '&objtypeId=' +
                                 objType,
-                            { replace: true }
+                            { replace: false }
                         )
                     }}>
                     查看详情
@@ -123,6 +123,7 @@ export default function ReportControl() {
             actionRef={ref}
             columns={columns}
             request={async (params, sorter, filter) => {
+                params = Object.assign(params, { pageNo: params.current })
                 // 表单搜索项会从 params 传入，传递给后端接口。
                 // if ('reportId' in params) {
                 //     params.reportId = parseInt(params.reportId)
