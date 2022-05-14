@@ -14,7 +14,7 @@ import {
 import type { ActionType, ProColumns } from '@ant-design/pro-table'
 import ProTable from '@ant-design/pro-table'
 import '@ant-design/pro-table/dist/table.css'
-import { message, Modal, Tooltip } from 'antd'
+import { Button, message, Modal, Tooltip } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import { reqDelUser, reqGetAllUser, reqGetRoleList } from '../../api'
 import ChangePwd from '../../components/ChangePwd'
@@ -44,7 +44,6 @@ const handleErr = (msg: any) => {
 }
 
 export default function UserControl() {
-    const [params, setParams] = useState({})
     const [searchCollapsed, setsearchCollapsed] = useState(false)
     const [visiable, setvisiable] = useState(false)
     const [EditVisiable, setEditVisiable] = useState(false)
@@ -286,6 +285,7 @@ export default function UserControl() {
                 actionRef={ref}
                 columns={columns}
                 request={async (params, sorter, filter) => {
+                    // params = Object.assign(params, { pageNo: params.pageSize })
                     // 表单搜索项会从 params 传入，传递给后端接口。
                     if ('userId' in params) {
                         params.userId = parseInt(params.userId)
@@ -325,7 +325,16 @@ export default function UserControl() {
                 }}
                 toolbar={{
                     multipleLine: false,
-                    actions: [],
+                    actions: [
+                        <Button
+                            key='key'
+                            type='primary'
+                            onClick={() => {
+                                alert('add')
+                            }}>
+                            审核
+                        </Button>,
+                    ],
                 }}
                 dataSource={tableListDataSource}
                 rowKey={(record) => {

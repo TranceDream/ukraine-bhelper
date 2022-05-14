@@ -20,7 +20,9 @@ export const HomePageCover = () => {
                 <NavLink to={'/station'}>
                     <button>寻求援助</button>
                 </NavLink>
-                <button>查看新闻</button>
+                <NavLink to={'/news'}>
+                    <button>查看新闻</button>
+                </NavLink>
             </div>
         </div>
     )

@@ -13,15 +13,17 @@ import DataMonitor from '../pages/admin/pages/DataMonitor'
 import HouseControl from '../pages/admin/pages/HouseControl'
 import NewsControl from '../pages/admin/pages/NewsControl'
 import ReportControl from '../pages/admin/pages/ReportControl'
+import ReportDetail from '../pages/admin/pages/ReportDetail'
 import RoleControl from '../pages/admin/pages/RoleControl'
 import ServiceMonitor from '../pages/admin/pages/ServiceMonitor'
 import UserControl from '../pages/admin/pages/UserControl'
 import Home from '../pages/home/Home'
-import Login from '../pages/login/Login'
-import Register from '../pages/register/Register'
+import NewsList from '../pages/news/NewsList'
 import Station from '../pages/station/Station'
 import { StationList } from '../pages/station/StationList'
 import StationPost from '../pages/station/StationPost'
+import Login from '../pages/user/Login'
+import Register from '../pages/user/Register'
 
 export default function Router() {
     return (
@@ -60,10 +62,12 @@ export default function Router() {
                         path='/admin/service-monitor'
                         element={<ServiceMonitor />}
                     />
+                    <Route path='/admin/report' element={<ReportDetail />} />
                 </Route>
                 <Route path='/station' element={<StationList />} />
                 <Route path='/station/detail' element={<Station />} />
                 <Route path='/station/add' element={<StationPost />} />
+                <Route path='/news' element={<NewsList />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
         </BrowserRouter>

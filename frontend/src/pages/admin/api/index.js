@@ -9,14 +9,6 @@
 */
 
 import ajax from './ajax'
-// 登录
-/* export default reqLogin(username, password){
-  return ajax('./login', {username, password})
-} */
-
-export const reqLogin = (username, password) =>
-    ajax('./login', { username, password })
-
 // add user
 let BASE = 'http://139.9.231.20:81'
 // let BASE = 'http://192.168.3.2:9001'
@@ -108,8 +100,16 @@ export const reqReportList = (params) => {
 }
 
 // 管理员获取举报类别列表
-
-
 export const reqObjtypeList = (params) => {
     return ajax(BASE + '/report/getObjtypeList', params, 'POST')
+}
+
+// 获取举报组详情信息
+export const reqReportDetail = (params) => {
+    return ajax(BASE + '/report/getReportDetail', params, 'POST')
+}
+
+// 处理举报
+export const reqDoAudit = (params) => {
+    return ajax(BASE + '/report/doAudit', params, 'POST')
 }

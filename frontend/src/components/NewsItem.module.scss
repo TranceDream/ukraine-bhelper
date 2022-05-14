@@ -1,0 +1,59 @@
+.container {
+  padding: 16px;
+
+  .title {
+    cursor: pointer;
+    font-size: xx-large;
+    font-weight: bold;
+    align-items: center;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .info {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+
+    .date {
+      color: gray;
+    }
+
+    .flex {
+      flex: 1;
+    }
+
+    .shareGroup {
+      display: flex;
+      align-items: center;
+      margin-right: 16px;
+      overflow: hidden;
+      clip-path: inset(0 0 0 100%);
+      transition: clip-path ease-in-out .25s;
+
+      button {
+        height: 32px;
+      }
+    }
+
+    .expanded {
+      clip-path: inset(0 0 0 0);
+    }
+
+    .share {
+      font-size: 1.5em;
+    }
+  }
+
+  .share {
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  &:not(&:first-child) {
+    border-top: 1px solid lightgray;
+  }
+}

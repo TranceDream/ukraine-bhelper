@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import { HomePageCover } from '../../components/HomePageCover'
 import styles from './Home.module.scss'
+import Footer from '../../components/Footer'
 
 /**
  * 前端主页
@@ -36,7 +37,7 @@ export default function Home() {
                 <section />
             </main>
             <footer>
-                <div>footer</div>
+                <Footer />
             </footer>
         </div>
     )
