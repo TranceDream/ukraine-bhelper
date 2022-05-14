@@ -2,6 +2,7 @@ package com.byb.houseservice.Service.Impl;
 
 //import com.baomidou.mybatisplus.core.conditions.Wrapper;
 //import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.alibaba.cloud.commons.lang.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
@@ -308,56 +309,66 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
             return result;
         }
 
-        String filepath = "";
-        try{
-            for (MultipartFile multipartFile: multipartFiles){
-                String fileName=multipartFile.getOriginalFilename();
-                filepath = "/Uk/Housepic/"+ UUID.randomUUID()+fileName.substring(fileName.lastIndexOf("."));
-                FileOutputStream fos=new FileOutputStream(filepath);
-                //获取本地文件输入流
-                File newFile=  transferToFile(multipartFile);
-                InputStream stream = new FileInputStream(newFile);
-                //写入目标文件
-                byte[] buffer = new byte[1024*1024];
-                int byteRead;
-                try {
-                    while((byteRead=stream.read(buffer))!=-1){
-                        fos.write(buffer, 0, byteRead);
-                        fos.flush();
-                    }
-                    fos.close();
-                    stream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                FileName fileName1 = new FileName();
-                fileName1.setFilePath(filepath);
-                Map<String,Object> resultFile = filePicService.uploadHousePic(fileName1);
-                if ((int) resultFile.get("code") != 200){
-                    result.put("msg","ERROR in pic");
-                    return result;
-                }
+        //新文件名
+        StringBuilder newFileName;
+        //全部文件名，若多个，则逗号分隔
+        StringBuilder allFileNames = new StringBuilder();
+        //上传路径
+        String fileSavePath = "/Uk/Housepic/";
+        //若文件夹不存在，则创建文件夹
+        //test.txt不会创建，故给任意值占位即可
+        File parentFile = new File(fileSavePath + "test.txt").getParentFile();
+        if (!parentFile.exists()) {
+            parentFile.mkdirs();
+        }
+        //遍历所有文件
+        for (MultipartFile file : multipartFiles) {
+            //得到原始文件名
+            newFileName = new StringBuilder(file.getOriginalFilename());
+            //查询文件名中点号所处位置
+            int i = newFileName.lastIndexOf(".");
+            //若点号位置大于0，则文件名正常
+            if (i > 0) {
+                //在点号前拼接UUID防止文件重名
+                newFileName.insert(i, "_" + UUID.randomUUID().toString().substring(0, 5));
+            } else {
+                //若点号位置小于等于0，则文件名不规范
+                result.put("msg","ERROR IN PIC");
+                return result;
             }
-        }catch (Exception e){
-            e.printStackTrace();
+            try {
+                // 保存文件
+                file.transferTo(new File(fileSavePath + newFileName));
+                //若全部文件名为空，则此为第一个文件，直接追加此文件名
+                if (StringUtils.isBlank(allFileNames.toString())) {
+                    allFileNames.append(newFileName);
+                } else {
+                    //若全部文件名不为空，则追加逗号和文件名
+                    allFileNames
+                            .append(",")
+                            .append(newFileName)
+                            .toString();
+                }
+            } catch (IOException e) {
+                result.put("msg","ERROR IN PIC");
+                return result;
+            }
+        }
+        List<String> fileNameList = Arrays.asList(allFileNames.toString().split(","));
+        for (String str : fileNameList){
+            FileName fileName1 = new FileName();
+            fileName1.setFilePath(str);
+            fileName1.setHouseId(houseId);
+            filePicService.uploadHousePic(fileName1);
         }
 
+
         result.put("msg","Success");
+        result.put("fileNames",fileNameList);
+        result.put("filePath", fileSavePath);
         return result;
     }
 
-    private File transferToFile(MultipartFile multipartFile) {
-        File file = null;
-        try {
-            String originalFilename = multipartFile.getOriginalFilename();
-            String[] filename = originalFilename.split(".");
-            file=File.createTempFile(filename[0], filename[1]);
-            multipartFile.transferTo(file);
-            file.deleteOnExit();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return file;
-    }
+
 
 }

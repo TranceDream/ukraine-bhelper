@@ -136,10 +136,10 @@ public class PostController {
         houseinfoVo.setUserId(userId);
 
         Map<String,Object> dateMap =new HashMap<>();
-        FileName fileName = new FileName();
+//        FileName fileName = new FileName();
         dateMap = postHouseService.addHouse(houseinfoVo,tagVoList,contactVoList,multipartFiles);
 
-        return new Result<>(Result.SUCCESS,"A successful submission");
+        return new Result<>(dateMap,Result.SUCCESS,"A successful submission");
     }
 
     @PostMapping("/uploadHousePic")
