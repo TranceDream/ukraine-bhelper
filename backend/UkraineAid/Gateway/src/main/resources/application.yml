@@ -5,33 +5,33 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: user_auth
-          uri: http://localhost:8001
+        - id: UserService
+          uri:  lb://UserService
           predicates:
             - Path=/user/**
 
-        - id: house_post
-          uri: http://localhost:8002
+        - id: HouseService
+          uri: lb://HouseService
           predicates:
             - Path=/house/**
 
-        - id: report_service
-          uri: http://localhost:8005
+        - id: ReportService
+          uri: lb://ReportService
           predicates:
             - Path=/report/**
 
-        - id: news_service
-          uri: http://localhost:8006
+        - id: NewsService
+          uri: lb://NewsService
           predicates:
             - Path=/news/**
 
-        - id: audit_service
-          uri: http://localhost:8004
+        - id: AuditService
+          uri: lb://AuditService
           predicates:
             - Path=/audit/**
 
-        - id: system_service
-          uri: http://localhost:8003
+        - id: SystemService
+          uri: lb://SystemService
           predicates:
             - Path=/sys/**
             - Path=/message/**
