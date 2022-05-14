@@ -17,6 +17,12 @@ spring:
 
   houseService:
     houseObjtypeId: 10006
+    contactObjtypeId: 10007
+    tagObjtypeId: 10008
+
+    addOperation: 10000
+    updateOperation: 10001
+    deleteOperation: 10002
 
   cloud:
     nacos:
