@@ -14,6 +14,7 @@ import { Option } from 'antd/es/mentions'
 import { PlusOutlined } from '@ant-design/icons'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { getStationList, StationModel } from '../../lib/request'
+import Footer from '../../components/Footer'
 
 /**
  * 寻求援助页面，用于查找救助站和显示救助站列表
@@ -75,7 +76,7 @@ export const StationList = () => {
                 </div>
             </main>
             <footer>
-                <div>footer</div>
+                <Footer />
             </footer>
         </div>
     )

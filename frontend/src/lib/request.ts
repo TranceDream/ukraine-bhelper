@@ -53,16 +53,21 @@ const get = async (
  * @param url
  * @param body
  * @param withCookie
+ * @param redirect
  */
 const post = async (
     url: string,
     body: any,
-    withCookie: boolean = true
+    withCookie: boolean = true,
+    redirect: boolean = true
 ): Promise<Response> => {
     const cookie = new Cookie()
     const token = cookie.get('token')
     if (withCookie && !token) {
-        window.location.replace('/login')
+        if (redirect) {
+            cookie.remove('token')
+            window.location.replace('/login')
+        }
         return {
             code: 0,
             msg: 'No token',
@@ -81,7 +86,8 @@ const post = async (
         body: JSON.stringify(body),
     })
     const res = await raw.json()
-    if (res.code !== 200) {
+    if ((res === 401 || res === 403) && redirect) {
+        cookie.remove('token')
         window.location.replace('/login')
     }
     return res
@@ -103,6 +109,7 @@ export const login = async (
     const res = await post(
         '/user/login',
         { identifier, credential, identityType },
+        false,
         false
     )
     if (res.code === 200) {
@@ -140,6 +147,7 @@ export const register = async (
             city,
             country,
         },
+        false,
         false
     )
 }

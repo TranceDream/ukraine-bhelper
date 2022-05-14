@@ -10,12 +10,12 @@ import {
 } from '../../lib/request'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { LoadingOutlined } from '@ant-design/icons'
+import Footer from '../../components/Footer'
 
 const StationPost = () => {
     const useQuery = () => new URLSearchParams(useLocation().search)
     const query = useQuery()
     const id = query.get('id')
-    const edit = query.get('edit')
     const navigate = useNavigate()
     const [station, setStation] = useState<StationModel>({
         country: '',
@@ -40,7 +40,7 @@ const StationPost = () => {
         } else {
             setLoadingState(false)
         }
-    }, [id])
+    }, [id, navigate])
 
     return (
         <div className={styles.container}>
@@ -189,7 +189,7 @@ const StationPost = () => {
                 </div>
             </main>
             <footer>
-                <div>footer</div>
+                <Footer />
             </footer>
         </div>
     )

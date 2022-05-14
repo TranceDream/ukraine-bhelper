@@ -11,6 +11,7 @@ import {
     StationModel,
 } from '../../lib/request'
 import { LoadingOutlined } from '@ant-design/icons'
+import Footer from '../../components/Footer'
 
 const Station = () => {
     const useQuery = () => new URLSearchParams(useLocation().search)
@@ -35,66 +36,64 @@ const Station = () => {
                 navigate('/404', { replace: true })
             }
         })
-    }, [])
+    }, [id, navigate])
 
     return (
         <div className={styles.container}>
             <header>
                 <Header />
             </header>
-            <main>
-                <Modal
-                    visible={modalVisible}
-                    onCancel={() => {
-                        setModal(false)
-                        setReportReason('')
-                    }}
-                    title={'举报'}
-                    centered
-                    footer={null}>
-                    <Form
-                        onFinish={() => {
-                            reportStation(parseInt(id!), reportReason).then(
-                                (res) => {
-                                    if (res.code === 200) {
-                                        console.log('已举办')
-                                        setModal(false)
-                                        setReportReason('')
-                                    }
+            <Modal
+                visible={modalVisible}
+                onCancel={() => {
+                    setModal(false)
+                    setReportReason('')
+                }}
+                title={'举报'}
+                centered
+                footer={null}>
+                <Form
+                    onFinish={() => {
+                        reportStation(parseInt(id!), reportReason).then(
+                            (res) => {
+                                if (res.code === 200) {
+                                    console.log('已举办')
+                                    setModal(false)
+                                    setReportReason('')
                                 }
-                            )
-                        }}>
-                        <Form.Item>
-                            <span style={{ fontSize: 'large' }}>
-                                请填写举报理由
-                            </span>
-                        </Form.Item>
-                        <Form.Item
-                            name={'reason'}
-                            rules={[
-                                { required: true, message: '请输入举报理由' },
-                            ]}>
-                            <Input.TextArea
-                                placeholder={'填写举报理由'}
-                                size={'large'}
-                                autoSize={{ maxRows: 10, minRows: 3 }}
-                                value={reportReason}
-                                required
-                                onChange={(e) => {
-                                    setReportReason(e.target.value)
-                                }}></Input.TextArea>
-                        </Form.Item>
-                        <Form.Item>
-                            <Button
-                                htmlType={'submit'}
-                                type={'primary'}
-                                size={'large'}
-                                style={{ width: '100%' }}>
-                                Submit
-                            </Button>
-                        </Form.Item>
-                    </Form>
-                </Modal>
+                            }
+                        )
+                    }}>
+                    <Form.Item>
+                        <span style={{ fontSize: 'large' }}>
+                            请填写举报理由
+                        </span>
+                    </Form.Item>
+                    <Form.Item
+                        name={'reason'}
+                        rules={[{ required: true, message: '请输入举报理由' }]}>
+                        <Input.TextArea
+                            placeholder={'填写举报理由'}
+                            size={'large'}
+                            autoSize={{ maxRows: 10, minRows: 3 }}
+                            value={reportReason}
+                            required
+                            onChange={(e) => {
+                                setReportReason(e.target.value)
+                            }}></Input.TextArea>
+                    </Form.Item>
+                    <Form.Item>
+                        <Button
+                            htmlType={'submit'}
+                            type={'primary'}
+                            size={'large'}
+                            style={{ width: '100%' }}>
+                            Submit
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </Modal>
+            <main>
                 {station ? (
                     <StationDetail
                         station={station!}
@@ -113,7 +112,7 @@ const Station = () => {
                 )}
             </main>
             <footer>
-                <div>footer</div>
+                <Footer />
             </footer>
         </div>
     )

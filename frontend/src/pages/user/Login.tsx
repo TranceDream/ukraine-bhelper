@@ -6,6 +6,7 @@ import Cookie from 'universal-cookie'
 import Header from '../../components/Header'
 import { login } from '../../lib/request'
 import styles from './Login.module.scss'
+import Footer from '../../components/Footer'
 
 /**
  * 登录页面
@@ -108,7 +109,7 @@ const Login = () => {
                 </div>
             </main>
             <footer>
-                <div>footer</div>
+                <Footer />
             </footer>
         </div>
     )

@@ -11,6 +11,7 @@ import Cookie from 'universal-cookie'
 import Header from '../../components/Header'
 import { register } from '../../lib/request'
 import styles from './Register.module.scss'
+import Footer from '../../components/Footer'
 
 /**
  * 注册页面
@@ -163,7 +164,7 @@ const Register = () => {
                 </div>
             </main>
             <footer>
-                <div>footer</div>
+                <Footer />
             </footer>
         </div>
     )
