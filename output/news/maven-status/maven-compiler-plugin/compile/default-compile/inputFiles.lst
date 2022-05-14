@@ -1,4 +1,5 @@
 D:\ukraine-bhelper\backend\UkraineAid\Service\NewsService\src\main\java\com\byb\newsservice\NewsServiceApplication.java
+D:\ukraine-bhelper\backend\UkraineAid\Service\NewsService\src\main\java\com\byb\newsservice\Config\WebMvcConfigurer.java
 D:\ukraine-bhelper\backend\UkraineAid\Service\NewsService\src\main\java\com\byb\newsservice\Entity\Article.java
 D:\ukraine-bhelper\backend\UkraineAid\Service\NewsService\src\main\java\com\byb\newsservice\Controller\NewsController.java
 D:\ukraine-bhelper\backend\UkraineAid\Service\NewsService\src\main\java\com\byb\newsservice\Vo\ArticleVo.java

@@ -20,6 +20,16 @@ spring:
           predicates:
             - Path=/report/**
 
+        - id: news_service
+          uri: http://localhost:8006
+          predicates:
+            - Path=/news/**
+
+        - id: audit_service
+          uri: http://localhost:8004
+          predicates:
+            - Path=/audit/**
+
 #  datasource:
 #    url: jdbc:mysql://82.157.113.175:3306/UkraineAssistance
 #    username: root

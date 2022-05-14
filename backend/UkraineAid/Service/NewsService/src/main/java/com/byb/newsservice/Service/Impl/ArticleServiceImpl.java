@@ -108,10 +108,17 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
             String deleteMark = (String) selectCondition.get("deleteMark");
             queryWrapper.eq("deleteMark",deleteMark);
         }
+        else{
+            queryWrapper.eq("deleteMark","NO");
+        }
         if (selectCondition.containsKey("status")){
             int status = (int) selectCondition.get("status");
             queryWrapper.eq("status",status);
         }
+//        if (selectCondition.containsKey("groupId")){
+//            int groupId = (int) selectCondition.get("groupId");
+//            queryWrapper.eq("groupId",groupId);
+//        }
 
         String scope = (String) selectCondition.get("scope");
         scope = scope.substring(1,scope.length()-1);
@@ -120,7 +127,55 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
 
         Page<Article> page = this.page(ArticlePage,queryWrapper);
         Map<String, Object> result = new HashMap<>();
-        result.put("houseinfo",page.getRecords());
+        result.put("articles",page.getRecords());
+        result.put("count",baseMapper.selectCount(queryWrapper));
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> selcetArticleForC(Map<String, Object> selectCondition) {
+
+        int pageSize = (int) (selectCondition.get("pageSize")==null? 10 : selectCondition.get("pageSize"));
+        int current = (int) (selectCondition.get("current")==null? 1 : selectCondition.get("current"));
+        Page<Article> ArticlePage = new Page<>(current,pageSize);
+        QueryWrapper<Article> queryWrapper = new QueryWrapper<>();
+        if (selectCondition.containsKey("author")){
+            Long author = (Long) selectCondition.get("author");
+            queryWrapper.eq("author",author);
+        }
+        if (selectCondition.containsKey("articleId")){
+            int articleId = (int) selectCondition.get("articleId");
+            queryWrapper.eq("articleId",articleId);
+        }
+        if (selectCondition.containsKey("createTimeMin")){
+            Date createTimeMin = (Date) selectCondition.get("createTimeMin");
+            queryWrapper.ge("createTimeMin",createTimeMin);
+        }
+        if (selectCondition.containsKey("createTimeMax")){
+            Date createTimeMax = (Date) selectCondition.get("createTimeMax");
+            queryWrapper.le("createTimeMax",createTimeMax);
+        }
+        if (selectCondition.containsKey("deleteMark")){
+            String deleteMark = (String) selectCondition.get("deleteMark");
+            queryWrapper.eq("deleteMark",deleteMark);
+        }
+        else{
+            queryWrapper.eq("deleteMark","NO");
+        }
+//        if (selectCondition.containsKey("status")){
+//            int status = (int) selectCondition.get("status");
+            queryWrapper.eq("status",2);
+//        }
+        if (selectCondition.containsKey("groupId")){
+            int groupId = (int) selectCondition.get("groupId");
+            queryWrapper.eq("groupId",groupId);
+        }
+
+
+        Page<Article> page = this.page(ArticlePage,queryWrapper);
+        Map<String, Object> result = new HashMap<>();
+        result.put("articles",page.getRecords());
+        result.put("count",baseMapper.selectCount(queryWrapper));
         return result;
     }
 }

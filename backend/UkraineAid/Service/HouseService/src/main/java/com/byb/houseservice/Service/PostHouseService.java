@@ -2,11 +2,14 @@ package com.byb.houseservice.Service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.byb.houseservice.Entity.Contact;
+import com.byb.houseservice.Entity.FileName;
 import com.byb.houseservice.Entity.HouseInfo;
 import com.byb.houseservice.Service.Impl.PostHouseServiceImpl;
 import com.byb.houseservice.Vo.ContactVo;
 import com.byb.houseservice.Vo.HouseinfoVo;
+import com.byb.houseservice.Vo.TagVo;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.ConcurrentModificationException;
@@ -27,6 +30,7 @@ public interface PostHouseService extends IService<HouseInfo> {
     Map<String,Object> selcetHouse(Map<String,Object> selectCondition);
     Map<String,Object> houseById(int houseid);
     Map<String,Object> selectBycondition(Map<String,Object> selectCondition);
+    Map<String,Object> addHouse(HouseinfoVo houseinfoVo, List<TagVo> tagVoList, List<ContactVo> contactVoList, List<MultipartFile> multipartFiles);
 
 
 //    Map<String,Object> testpage(HouseinfoVo houseinfoVo);

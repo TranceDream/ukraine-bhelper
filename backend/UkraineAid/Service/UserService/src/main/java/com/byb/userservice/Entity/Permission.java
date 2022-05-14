@@ -33,6 +33,9 @@ public class Permission implements Serializable {
     @TableField("ICON")
     private String icon;
 
+    @TableField("PAGEKEY")
+    private String key;
+
     @TableField("DELETE_MARK")
     private String deleteMark;
 }
