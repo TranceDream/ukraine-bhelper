@@ -135,8 +135,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
     @Override
     public Map<String, Object> selcetArticleForC(Map<String, Object> selectCondition) {
 
-        int pageSize = (int) (selectCondition.get("pageSize")==null? 10 : selectCondition.get("pageSize"));
-        int current = (int) (selectCondition.get("current")==null? 1 : selectCondition.get("current"));
+        int pageSize;
+        if (selectCondition.containsKey("pageSize"))
+            pageSize = (int) selectCondition.get("pageSize");
+        else pageSize = 10;
+        int current;
+        if (selectCondition.containsKey("current"))
+            current = (int) selectCondition.get("current");
+        else current = 1;
+
         Page<Article> ArticlePage = new Page<>(current,pageSize);
         QueryWrapper<Article> queryWrapper = new QueryWrapper<>();
         if (selectCondition.containsKey("author")){
