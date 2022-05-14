@@ -5,6 +5,7 @@ com\byb\houseservice\Service\Impl\TagTypeServiceImpl.class
 com\byb\houseservice\Entity\TagType.class
 com\byb\houseservice\Entity\Contact.class
 com\byb\houseservice\Service\Impl\ContactTypeServiceImpl.class
+com\byb\houseservice\Config\WebMvcConfigurer.class
 com\byb\houseservice\Vo\ContactTypeVo.class
 com\byb\houseservice\Controller\PostController.class
 com\byb\houseservice\Dao\TagMapper.class

@@ -108,9 +108,16 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
             String deleteMark = (String) selectCondition.get("deleteMark");
             queryWrapper.eq("deleteMark",deleteMark);
         }
+        else{
+            queryWrapper.eq("deleteMark","NO");
+        }
         if (selectCondition.containsKey("status")){
             int status = (int) selectCondition.get("status");
             queryWrapper.eq("status",status);
+        }
+        if (selectCondition.containsKey("groupId")){
+            int groupId = (int) selectCondition.get("groupId");
+            queryWrapper.eq("groupId",groupId);
         }
 
         String scope = (String) selectCondition.get("scope");
@@ -120,7 +127,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
 
         Page<Article> page = this.page(ArticlePage,queryWrapper);
         Map<String, Object> result = new HashMap<>();
-        result.put("houseinfo",page.getRecords());
+        result.put("articles",page.getRecords());
+        result.put("count",baseMapper.selectCount(queryWrapper));
         return result;
     }
 }
