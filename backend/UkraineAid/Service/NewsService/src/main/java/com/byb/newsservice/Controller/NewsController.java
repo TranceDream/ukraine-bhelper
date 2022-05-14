@@ -110,13 +110,22 @@ public class NewsController {
         return new Result<>(dateMap, Result.SUCCESS);
 
     }
-    @PostMapping("/selectarticle")
+    @PostMapping("/selectArticle")
     public Result<Map<String,Object>>  selectHouse(@RequestBody Map<String, Object> selectcondiction,
                                                    HttpServletResponse response, HttpServletRequest request){
         Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
         String scope = userClient.getChildGroupsSql(userId);
         selectcondiction.put("scope", scope);
         Map<String,Object> dateMap = articleService.selcetArticle(selectcondiction);
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
+    @PostMapping("/selectArticleForC")
+    public Result<Map<String,Object>>  selectHouseForC(@RequestBody Map<String, Object> selectcondiction,
+                                                   HttpServletResponse response, HttpServletRequest request){
+        Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        String scope = userClient.getChildGroupsSql(userId);
+        selectcondiction.put("scope", scope);
+        Map<String,Object> dateMap = articleService.selcetArticleForC(selectcondiction);
         return new Result<>(dateMap, Result.SUCCESS);
     }
 

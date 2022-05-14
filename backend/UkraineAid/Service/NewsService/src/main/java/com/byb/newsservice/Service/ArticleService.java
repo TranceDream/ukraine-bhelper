@@ -19,5 +19,7 @@ public interface ArticleService extends IService<Article> {
     Map<String ,Object> updateArticle(ArticleVo articleVo);
     Map<String ,Object> deleteArticle(int articleid);
     Map<String,Object> selcetArticle(Map<String,Object> selectCondition);
+    Map<String,Object> selcetArticleForC(Map<String,Object> selectCondition);
+
 
 }
