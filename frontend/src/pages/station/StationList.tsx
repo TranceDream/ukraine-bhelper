@@ -8,10 +8,13 @@ import { useEffect, useState } from 'react'
 import styles from './StationList.module.scss'
 import Header from '../../components/Header'
 import StationItem from '../../components/StationItem'
+import Cookie from 'universal-cookie'
 import { Button, Form, Pagination, Select } from 'antd'
 import { Option } from 'antd/es/mentions'
 import { PlusOutlined } from '@ant-design/icons'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { getStationList, StationModel } from '../../lib/request'
+import Footer from '../../components/Footer'
 
 /**
  * 寻求援助页面，用于查找救助站和显示救助站列表
@@ -20,13 +23,19 @@ import { NavLink } from 'react-router-dom'
  */
 export const StationList = () => {
     const [index, setIndex] = useState(1)
-
+    const [stationList, setStationList] = useState<Array<StationModel>>([])
+    const navigate = useNavigate()
     useEffect(() => {
-        console.log('Request ' + index)
-        // getStationList(index, {}).then((res) => {
-        //     console.table(res.data)
-        // })
-    }, [index])
+        getStationList(index, {}).then((res) => {
+            if (res.code === 401) {
+                const cookie = new Cookie()
+                cookie.remove('token')
+                navigate('/login', { replace: true })
+            } else if (res.code === 200) {
+                setStationList(res.data.houseinfo)
+            }
+        })
+    }, [index, navigate])
 
     return (
         <div className={styles.container}>
@@ -53,24 +62,8 @@ export const StationList = () => {
                         </Form.Item>
                     </Form>
                 </div>
-                {[1, 2, 3, 4, 5].map((e) => (
-                    <StationItem
-                        key={'station' + e}
-                        station={{
-                            id: e,
-                            title: 'House ' + e,
-                            description: 'Description ' + e,
-                            address: 'Address ' + e,
-                            tags: [
-                                '可容纳xxx人',
-                                '允许宠物',
-                                '可短期居住(2周内)',
-                            ],
-                            images: [
-                                'https://cdn.jsdelivr.net/gh/TranceDream/ImgHost@master/img/IMG_20220319_165950__01.5v96fzjetqo0.webp',
-                            ],
-                        }}
-                    />
+                {stationList.map((station, index) => (
+                    <StationItem key={'station' + index} station={station} />
                 ))}
                 <div className={styles.pagination}>
                     <Pagination
@@ -83,7 +76,7 @@ export const StationList = () => {
                 </div>
             </main>
             <footer>
-                <div>footer</div>
+                <Footer />
             </footer>
         </div>
     )

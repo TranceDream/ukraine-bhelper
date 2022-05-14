@@ -36,4 +36,6 @@ public interface UserService extends IService<User> {
     List<GroupForm> getGroupList(Long userId);
 
     GroupForm getOneGroup(Long userId, Integer roleId);
+
+    List<GroupForm> getChildGroup(Integer groupId);
 }

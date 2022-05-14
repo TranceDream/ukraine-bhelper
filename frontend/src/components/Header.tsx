@@ -3,8 +3,9 @@
  * @file 前端通用的Header
  * @author TranceDream
  */
-import { AlertOutlined, UserOutlined } from '@ant-design/icons'
-import { Button, Dropdown, Menu } from 'antd'
+import { UserOutlined } from '@ant-design/icons'
+import { Dropdown, Menu } from 'antd'
+import logo from '../header.png'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
@@ -44,12 +45,12 @@ const Header = ({ hideNav = false, hideUser = false }: Props) => {
         <header className={styles.header}>
             <NavLink
                 to={
-                    useLocation().pathname.indexOf('/admin') != -1
+                    useLocation().pathname.indexOf('/admin') !== -1
                         ? '/admin/home'
                         : '/'
                 }
                 replace>
-                <h2 className={styles.logo}>Header</h2>
+                <img className={styles.logo} src={logo} alt={'Logo'}></img>
             </NavLink>
             <div className={styles.nav}>
                 <ul
@@ -60,52 +61,42 @@ const Header = ({ hideNav = false, hideUser = false }: Props) => {
                         <NavLink to={'/station'}>寻求援助</NavLink>
                     </li>
                     <li>
-                        <NavLink to={'/'}>新闻中心</NavLink>
+                        <NavLink to={'/news'}>新闻中心</NavLink>
                     </li>
                 </ul>
                 {loginStatus ? (
-                    <>
-                        <Button
-                            className={
-                                (hideUser ? styles.hidden : '') +
-                                ' ' +
-                                styles.notifications
-                            }
-                            shape={'circle'}
-                            size={'large'}>
-                            <AlertOutlined />
-                        </Button>
-                        <Dropdown.Button
-                            className={
-                                (hideUser ? styles.hidden : '') +
-                                ' ' +
-                                styles.avatar
-                            }
-                            size={'large'}
-                            overlay={
-                                <Menu>
-                                    {menuItems.map((m) => (
-                                        <Menu.Item key={m.menuId}>
-                                            <NavLink to={m.url} replace={true}>
-                                                {m.menuName}
-                                            </NavLink>
-                                        </Menu.Item>
-                                    ))}
-                                    <Menu.Divider />
+                    <Dropdown.Button
+                        className={
+                            (hideUser ? styles.hidden : '') +
+                            ' ' +
+                            styles.avatar
+                        }
+                        size={'large'}
+                        overlay={
+                            <Menu>
+                                {menuItems.map((m) => (
                                     <Menu.Item
-                                        key='logout'
-                                        onClick={() => {
-                                            cleanCookies()
-                                            setLoginStatus(false)
-                                            navigate('/')
-                                        }}>
-                                        退出登录
+                                        key={m.menuId}
+                                        style={{ padding: '8px' }}>
+                                        <NavLink to={m.url} replace={true}>
+                                            {m.menuName}
+                                        </NavLink>
                                     </Menu.Item>
-                                </Menu>
-                            }
-                            icon={<UserOutlined />}
-                        />
-                    </>
+                                ))}
+                                <Menu.Divider />
+                                <Menu.Item
+                                    key='logout'
+                                    onClick={() => {
+                                        cleanCookies()
+                                        setLoginStatus(false)
+                                        navigate('/')
+                                    }}>
+                                    退出登录
+                                </Menu.Item>
+                            </Menu>
+                        }
+                        icon={<UserOutlined />}
+                    />
                 ) : (
                     <>
                         <NavLink

@@ -11,7 +11,15 @@
 //      2. 异步得到的不是response,而是response.data
 import { message } from 'antd'
 import axios from 'axios'
-export default function ajax(url, data = {}, type = 'GET') {
+import Cookies from 'universal-cookie'
+export default function useAjax(url, data = {}, type = 'GET') {
+    // const navigate = useNavigate()
+
+    const cookie = new Cookies()
+    const token = cookie.get('token')
+    if (!token) {
+        window.location.replace('/login')
+    }
     return new Promise((resolve, reject) => {
         let promise
         if (type === 'GET') {
@@ -28,15 +36,25 @@ export default function ajax(url, data = {}, type = 'GET') {
             promise = axios.post(url, data, {
                 headers: {
                     'Content-Type': 'application/json',
-                    token: 'eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQAAiUdpdSKAiUrQzNTI2NLY0Nz81oABFVZ3CAAAAA.yYUXktczMggAagAsFgrhM_o68Bg1ctdvAuQ2GTboYenWtec9EHEhdzU9euFqFTmworEg9c8B_QZqCBf2k8y14w',
-                    'Access-Control-Allow-Origin': '*',
+                    token: token,
                 },
             })
         }
         promise
             .then((response) => {
-                resolve(response.data) //异步得到的不是response,而是response.data
+                // console.log('pr', response)
+                if (response.data.code === 401) {
+                    window.location.replace('/login')
+                } else {
+                    resolve(response.data) //异步得到的不是response,而是response.data
+                }
             })
-            .catch((error) => message.error('请求出错了：' + error.message))
+            .catch((error) => {
+                if (error.response.status === 401) {
+                    cookie.remove('token')
+                    window.location.replace('/login')
+                }
+                message.error('请求出错了：' + error.message)
+            })
     })
 }

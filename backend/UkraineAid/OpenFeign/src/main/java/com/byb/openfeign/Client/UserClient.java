@@ -24,4 +24,7 @@ public interface UserClient {
     @PostMapping("/user/getOneGroup")
     Result<Map<String, Object>> getOneGroup(@RequestBody Map<String, Object> groupMap);
 
+    @PostMapping("/user/getChildGroup")
+    Result<Map<Integer, String>> getChildGroup(@RequestParam("groupId") Integer groupId);
+
 }

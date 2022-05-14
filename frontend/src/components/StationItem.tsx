@@ -4,20 +4,12 @@
  * @author TranceDream
  */
 import React from 'react'
-import styles from './StationItem.module.scss'
 import { useNavigate } from 'react-router-dom'
-
-interface Station {
-    id: number
-    title: string
-    description: string
-    address: string
-    tags: Array<string>
-    images: Array<string>
-}
+import { StationModel } from '../lib/request'
+import styles from './StationItem.module.scss'
 
 interface StationItemProps {
-    station: Station
+    station: StationModel
 }
 
 /**
@@ -32,18 +24,27 @@ const StationItem = (props: StationItemProps) => {
         <div
             className={styles.container}
             onClick={() => {
-                navigate('/station/detail')
+                navigate('/station/detail?id=' + props.station.houseId)
             }}>
-            <img src={props.station.images[0]} alt={'House Preview'} />
+            <img
+                src={
+                    'https://cdn.jsdelivr.net/gh/TranceDream/ImgHost@master/img/IMG_20220319_165950__01.5v96fzjetqo0.webp'
+                }
+                alt={'House Preview'}
+            />
             <div className={styles.inner}>
-                <div className={styles.title}>{props.station.title}</div>
-                <div className={styles.desc}>{props.station.description}</div>
-                <div className={styles.address}>{props.station.address}</div>
-                <div className={styles.tags}>
-                    {props.station.tags.map((tag) => (
-                        <div>{tag}</div>
-                    ))}
+                <div className={styles.title}>{props.station.title ?? ''}</div>
+                <div className={styles.desc}>
+                    {props.station.description ?? ''}
                 </div>
+                <div className={styles.address}>
+                    {props.station.country +
+                        ' ' +
+                        props.station.province +
+                        ' ' +
+                        props.station.city}
+                </div>
+                <div className={styles.tags}></div>
             </div>
         </div>
     )

@@ -336,8 +336,31 @@ public class UserController {
 
     @PostMapping("/changePwd")
     public Result<Map<String, Object>> updatePwd(@RequestBody UserForm userForm, HttpServletResponse response){
-        if(userForm.getCredential() == null){
-            ResponseUtil.out(response, new Result(null, Result.FAIL, "密码为空"));
+
+        String credential = userForm.getCredential();
+
+        if(credential==null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "密码不能为空"));
+        }
+
+        if(credential.length()<8){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "密码长度至少8位"));
+        }
+
+        if(credential.length()>20){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "密码长度不超过20位"));
+        }
+
+        String letter = ".*[a-zA-Z]+.*";
+        String digit = ".*[0-9]+.*";
+        Matcher m = Pattern.compile(letter).matcher(credential);
+        if(!m.matches()){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "密码需要包含大小写字母"));
+        }
+
+        m =  Pattern.compile(digit).matcher(credential);
+        if(!m.matches()){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "密码需要包含数字"));
         }
 
         if(userForm.getUserId() == null){
@@ -599,6 +622,16 @@ public class UserController {
         map.put("groupId", groupForm.getGroupId());
         map.put("groupName", groupForm.getGroupName());
         return new Result<>(map, Result.SUCCESS);
+    }
+
+    @PostMapping("/getChildGroup")
+    public Result<Map<Integer, String>> getChildGroup(@RequestParam("groupId") Integer groupId){
+        List<GroupForm> list = userService.getChildGroup(groupId);
+        Map<Integer, String> result = new HashMap<>();
+        for(GroupForm groupForm : list){
+            result.put(groupForm.getGroupId(), groupForm.getGroupName());
+        }
+        return new Result<>(result, Result.SUCCESS);
     }
 
     private void sendMessage(String queue, Object object){

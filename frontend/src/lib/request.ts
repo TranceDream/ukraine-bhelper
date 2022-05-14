@@ -53,15 +53,21 @@ const get = async (
  * @param url
  * @param body
  * @param withCookie
+ * @param redirect
  */
 const post = async (
     url: string,
     body: any,
-    withCookie: boolean = true
+    withCookie: boolean = true,
+    redirect: boolean = true
 ): Promise<Response> => {
     const cookie = new Cookie()
     const token = cookie.get('token')
     if (withCookie && !token) {
+        if (redirect) {
+            cookie.remove('token')
+            window.location.replace('/login')
+        }
         return {
             code: 0,
             msg: 'No token',
@@ -79,11 +85,17 @@ const post = async (
             : { 'content-type': 'application/json' },
         body: JSON.stringify(body),
     })
-    return await raw.json()
+    const res = await raw.json()
+    if ((res === 401 || res === 403) && redirect) {
+        cookie.remove('token')
+        window.location.replace('/login')
+    }
+    return res
 }
 
 /**
  * 登录接口，登录成功将token存入cookie
+ * Tested
  * @param {string} identifier 用户名或邮箱，当前仅邮箱
  * @param {string} credential 密码
  * @param {number} identityType 登录类型，分为系统登录10000和邮箱登录10001，目前仅一个帐号使用系统登录
@@ -97,6 +109,7 @@ export const login = async (
     const res = await post(
         '/user/login',
         { identifier, credential, identityType },
+        false,
         false
     )
     if (res.code === 200) {
@@ -113,6 +126,7 @@ export const login = async (
 
 /**
  * 注册接口，返回状态码和状态信息
+ * Tested
  * @param identifier
  * @param credential
  * @param city
@@ -133,6 +147,7 @@ export const register = async (
             city,
             country,
         },
+        false,
         false
     )
 }
@@ -176,40 +191,26 @@ export const updateUser = async (
     }
 }
 
-export interface UserStationModel {
-    country: string
-    province: string
-    city: string
-    address?: string
-    guests?: number
-    pets?: string
-    duration?: number
-    description?: string
-    title?: string
-}
-
 /**
  * 发布房源
  * @todo 待修改
- * @param userId
  * @param station
  */
 export const publishStation = async (
-    userId: number,
-    station: UserStationModel
+    station: StationModel
 ): Promise<Response> => {
     return post('/house/postinfo', station)
 }
 
 /**
  * 修改房源信息
+ * @todo 待修改
  */
 export const updateStation = async (
     houseId: number,
-    active: boolean,
-    station: UserStationModel
+    station: StationModel
 ): Promise<Response> => {
-    return post('/house/updateinfo', { houseId, active, ...station })
+    return post('/house/updateinfo', { houseId, ...station })
 }
 
 /**
@@ -223,9 +224,9 @@ export const deleteStation = async (houseId: number): Promise<Response> => {
 export interface StationModel {
     houseId?: number
     userId?: number
-    country?: string
-    province?: string
-    city?: string
+    country: string
+    province: string
+    city: string
     address?: string
     guests?: number
     pets?: string
@@ -234,13 +235,28 @@ export interface StationModel {
     title?: string
 }
 
-export const getStationList = async (current: number, filter: StationModel) => {
+export const getStationList = async (current: number, filter: any) => {
     return post('/house/selectHouseAdmin', {
         current,
         pageSize: 10,
     })
 }
 
+/**
+ * 根据房源ID获取房屋信息
+ * Tested
+ * @param houseId
+ */
+export const getStationDetail = async (houseId: number): Promise<Response> => {
+    return post('/house/housedetail', { houseId })
+}
+
+/**
+ * 举报房源
+ * Tested
+ * @param postId
+ * @param reason
+ */
 export const reportStation = async (postId: number, reason: string) => {
     return post('/house/report', { postId, reason })
 }
