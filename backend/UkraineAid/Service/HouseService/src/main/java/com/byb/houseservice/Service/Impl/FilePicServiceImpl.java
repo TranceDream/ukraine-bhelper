@@ -44,7 +44,9 @@ public class FilePicServiceImpl extends ServiceImpl<FileNameMapper, FileName>
         Map<String,Object> select = new HashMap<>();
         select.put("houseId",fileName.getHouseId());
         Map<String,Object> result = new HashMap<>();
+
         List<String> fileList = new ArrayList<>();
+
         List<FileName> fileNames = baseMapper.selectByMap(select);
         for (FileName fileName1 : fileNames){
             fileList.add(fileName1.getFilePath());
@@ -52,6 +54,5 @@ public class FilePicServiceImpl extends ServiceImpl<FileNameMapper, FileName>
         result.put("fileNames",fileList);
         return result;
     }
-
 
 }
