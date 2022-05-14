@@ -2,14 +2,14 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-16 22:28:43
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-04-27 18:58:03
+ * @Last Modified time: 2022-05-15 03:18:00
  */
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import { Button, Layout, Menu } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { reqModuleList } from '../../api'
-import { menuList } from '../../menuConfig'
+// import { menuList } from '../../menuConfig'
 import PubSub from '../../Utils/pubsub'
 import Icon from '../Icon/Icon'
 import styles from './MySider.module.scss'
@@ -28,8 +28,8 @@ export default function MySider() {
     const getMenuNode = (menuList: any[], hasIcon: boolean) => {
         console.log('menu', menuList)
         return menuList.map((item) => {
-            if (item.children && item.children.length !== 0) {
-                const cItem = item.children.find(
+            if (item.childs && item.childs.length !== 0) {
+                const cItem = item.childs.find(
                     (cItem: { key: string }) => cItem.key === local.pathname
                 )
                 if (cItem) {
@@ -40,7 +40,7 @@ export default function MySider() {
                         key={Date.now() + item.title}
                         icon={Icon(item.icon)}
                         title={item.title}>
-                        {getMenuNode(item.children, false)}
+                        {getMenuNode(item.childs, false)}
                     </SubMenu>
                 )
             } else {
@@ -68,7 +68,7 @@ export default function MySider() {
             const res = await reqModuleList()
             console.table(res.data)
             // !修改
-            setNodes(getMenuNode(menuList, true))
+            setNodes(getMenuNode(res.data, true))
             // setMenuList(res.data)
         }
         getMenulist()
