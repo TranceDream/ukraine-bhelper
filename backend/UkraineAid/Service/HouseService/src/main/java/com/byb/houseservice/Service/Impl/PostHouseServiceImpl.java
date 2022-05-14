@@ -279,7 +279,8 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
             FileName fileName1 = new FileName();
             fileName1.setHouseId(houseinfo.getHouseId());
             Map<String, Object> stringObjectMap = filePicService.reHousePic(fileName1);
-            houseinfoVo.setFileNames(stringObjectMap.get("fileNames").toString());
+            List<String> fileNames = (List<String>) stringObjectMap.get("fileNames");
+            houseinfoVo.setFileNames(fileNames);
             houseinfoVoList.add(houseinfoVo);
         }
 //        int count  = baseMapper.selectCount(queryWrapper);
