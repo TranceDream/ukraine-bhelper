@@ -6,6 +6,7 @@ import com.byb.userservice.Dao.RoleDao;
 import com.byb.userservice.Entity.Permission;
 import com.byb.userservice.Entity.RolePermission;
 import com.byb.userservice.Service.PermissionService;
+import com.byb.userservice.Vo.ModuleVo;
 import com.byb.userservice.Vo.PermissionForm;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.BeanUtils;
@@ -25,7 +26,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionDao, Permission
 
     @Override
     public Map<String, Object> getPermissionList(PermissionForm permissionForm) {
-        List<Permission> list = new ArrayList<>();
+        List<ModuleVo> list = new ArrayList<>();
         Map<String, Object> result = new HashMap<>();
         try {
                 list = baseMapper.selectPermissionList(new HashMap<>());
