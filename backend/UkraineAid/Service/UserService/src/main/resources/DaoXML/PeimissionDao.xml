@@ -17,6 +17,7 @@
         <result property="url" column="URL"/>
         <result property="icon" column="ICON"/>
         <result property="key" column="PAGEKEY"/>
+        <result column="DELETE_MARK" property="deleteMark"/>
         <collection property="childs" column="PERMISSION_ID" ofType="com.byb.userservice.Vo.ModuleVo" select="selectSecmodule"/>
     </resultMap>
 
@@ -26,6 +27,7 @@
         <result property="url" column="URL"/>
         <result property="key" column="PAGEKEY"/>
         <result property="icon" column="ICON"/>
+        <result column="DELETE_MARK" property="deleteMark"/>
         <collection property="childs" column="PERMISSION_ID" ofType="com.byb.userservice.Vo.ModuleVo" select="selectThrmodule"/>
     </resultMap>
 
@@ -34,18 +36,19 @@
         <result property="title" column="PERMISSION_NAME"/>
         <result property="url" column="URL"/>
         <result property="key" column="PAGEKEY"/>
+        <result column="DELETE_MARK" property="deleteMark"/>
         <result property="icon" column="ICON"/>
     </resultMap>
 
 
     <select id="selectSecmodule" resultMap="Secmodule" parameterType="java.lang.Integer">
-        select PERMISSION_ID, PERMISSION_NAME, URL, ICON, PAGEKEY FROM DICT_PERMISSION
-        where PARENT_ID = #{moduleId} and DELETE_MARK = 'NO'
+        select PERMISSION_ID, PERMISSION_NAME, URL, ICON, PAGEKEY, DELETE_MARK FROM DICT_PERMISSION
+        where PARENT_ID = #{moduleId}
     </select>
 
     <select id="selectThrmodule" resultMap="Thrmodule" parameterType="java.lang.Integer">
-        select PERMISSION_ID, PERMISSION_NAME, URL, ICON, PAGEKEY FROM DICT_PERMISSION
-        where PARENT_ID = #{moduleId} and DELETE_MARK = 'NO'
+        select PERMISSION_ID, PERMISSION_NAME, URL, ICON, PAGEKEY,DELETE_MARK FROM DICT_PERMISSION
+        where PARENT_ID = #{moduleId}
     </select>
 
     <select id="selectAll" resultMap="permissionMap">
