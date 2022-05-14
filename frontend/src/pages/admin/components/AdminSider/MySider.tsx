@@ -8,8 +8,10 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import { Button, Layout, Menu } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import menuList from '../../menuConfig'
+import { reqModuleList } from '../../api'
+import { menuList } from '../../menuConfig'
 import PubSub from '../../Utils/pubsub'
+import Icon from '../Icon/Icon'
 import styles from './MySider.module.scss'
 const { Sider } = Layout
 const { SubMenu } = Menu
@@ -24,8 +26,9 @@ export default function MySider() {
     }
     //动态获取展示列表
     const getMenuNode = (menuList: any[], hasIcon: boolean) => {
+        console.log('menu', menuList)
         return menuList.map((item) => {
-            if (item.children) {
+            if (item.children && item.children.length !== 0) {
                 const cItem = item.children.find(
                     (cItem: { key: string }) => cItem.key === local.pathname
                 )
@@ -33,20 +36,25 @@ export default function MySider() {
                     setSubmenu([item.key])
                 }
                 return (
-                    <SubMenu key={item.key} icon={item.icon} title={item.title}>
+                    <SubMenu
+                        key={Date.now() + item.title}
+                        icon={Icon(item.icon)}
+                        title={item.title}>
                         {getMenuNode(item.children, false)}
                     </SubMenu>
                 )
             } else {
                 if (hasIcon) {
                     return (
-                        <Menu.Item key={item.key} icon={item.icon}>
+                        <Menu.Item
+                            key={Date.now() + item.title}
+                            icon={Icon(item.icon)}>
                             <Link to={item.key}>{item.title}</Link>
                         </Menu.Item>
                     )
                 } else {
                     return (
-                        <Menu.Item key={item.key}>
+                        <Menu.Item key={Date.now() + item.title}>
                             <Link to={item.key}>{item.title}</Link>
                         </Menu.Item>
                     )
@@ -56,7 +64,14 @@ export default function MySider() {
     }
 
     useEffect(() => {
-        setNodes(getMenuNode(menuList, true))
+        async function getMenulist() {
+            const res = await reqModuleList()
+            console.table(res.data)
+            // !修改
+            setNodes(getMenuNode(menuList, true))
+            // setMenuList(res.data)
+        }
+        getMenulist()
     }, [])
 
     useEffect(() => {

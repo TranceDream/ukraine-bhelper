@@ -5,13 +5,13 @@
  */
 import { UserOutlined } from '@ant-design/icons'
 import { Dropdown, Menu } from 'antd'
-import logo from '../header.png'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
-import styles from './Header.module.scss'
 import Cookie from 'universal-cookie'
 import { cleanCookies } from 'universal-cookie/es6/utils'
+import logo from '../header.png'
+import styles from './Header.module.scss'
 
 interface Props {
     hideNav?: boolean
@@ -46,7 +46,7 @@ const Header = ({ hideNav = false, hideUser = false }: Props) => {
             <NavLink
                 to={
                     useLocation().pathname.indexOf('/admin') !== -1
-                        ? '/admin/home'
+                        ? '/admin/user-control'
                         : '/'
                 }
                 replace>

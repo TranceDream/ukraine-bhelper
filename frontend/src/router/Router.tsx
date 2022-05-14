@@ -8,7 +8,6 @@ import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import NotFound from '../pages/404/404'
 import Admin from '../pages/admin/Admin'
-import AdminHome from '../pages/admin/pages/AdminHome'
 import DataMonitor from '../pages/admin/pages/DataMonitor'
 import HouseControl from '../pages/admin/pages/HouseControl'
 import NewsControl from '../pages/admin/pages/NewsControl'
@@ -34,7 +33,6 @@ export default function Router() {
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
                 <Route path='/admin' element={<Admin />}>
-                    <Route path='/admin/home' element={<AdminHome />} />
                     <Route
                         path='/admin/user-control'
                         element={<UserControl />}

@@ -183,6 +183,7 @@ export default function UserControl() {
                 actionRef={ref}
                 columns={columns}
                 request={async (params, sorter, filter) => {
+                    params = Object.assign(params, { pageNo: params.current })
                     const msg = await reqGetRoleList({
                         ...params,
                         ...sorter,
