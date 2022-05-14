@@ -57,4 +57,10 @@ public class SyslogController {
         return result;
     }
 
+    @PostMapping("/getAdminObjtypeList")
+    public Result<Map<Integer, String>> getAdminObjtypeList(){
+        Map<Integer, String> objtypeMap = (Map<Integer, String>) redisTemplate.opsForValue().get("objtype");
+        return new Result<>(objtypeMap, Result.SUCCESS);
+    }
+
 }

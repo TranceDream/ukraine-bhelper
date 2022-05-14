@@ -30,6 +30,12 @@ spring:
           predicates:
             - Path=/audit/**
 
+        - id: system_service
+          uri: http://localhost:8003
+          predicates:
+            - Path=/sys/**
+            - Path=/message/**
+
 #  datasource:
 #    url: jdbc:mysql://82.157.113.175:3306/UkraineAssistance
 #    username: root
