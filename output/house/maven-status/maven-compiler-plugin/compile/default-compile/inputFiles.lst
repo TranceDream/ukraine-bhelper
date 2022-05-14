@@ -29,5 +29,6 @@ D:\ukraine-bhelper\backend\UkraineAid\Service\HouseService\src\main\java\com\byb
 D:\ukraine-bhelper\backend\UkraineAid\Service\HouseService\src\main\java\com\byb\houseservice\Service\Impl\PostHouseServiceImpl.java
 D:\ukraine-bhelper\backend\UkraineAid\Service\HouseService\src\main\java\com\byb\houseservice\Service\TagTypeService.java
 D:\ukraine-bhelper\backend\UkraineAid\Service\HouseService\src\main\java\com\byb\houseservice\HouseServiceApplication.java
+D:\ukraine-bhelper\backend\UkraineAid\Service\HouseService\src\main\java\com\byb\houseservice\Config\WebMvcConfigurer.java
 D:\ukraine-bhelper\backend\UkraineAid\Service\HouseService\src\main\java\com\byb\houseservice\Service\Impl\TagTypeServiceImpl.java
 D:\ukraine-bhelper\backend\UkraineAid\Service\HouseService\src\main\java\com\byb\houseservice\Entity\TagType.java

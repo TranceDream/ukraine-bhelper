@@ -23,6 +23,7 @@ import Footer from '../../components/Footer'
  */
 export const StationList = () => {
     const [index, setIndex] = useState(1)
+    const [count, setCount] = useState(0)
     const [stationList, setStationList] = useState<Array<StationModel>>([])
     const navigate = useNavigate()
     useEffect(() => {
@@ -33,6 +34,7 @@ export const StationList = () => {
                 navigate('/login', { replace: true })
             } else if (res.code === 200) {
                 setStationList(res.data.houseinfo)
+                setCount(res.data.count)
             }
         })
     }, [index, navigate])
@@ -68,7 +70,7 @@ export const StationList = () => {
                 <div className={styles.pagination}>
                     <Pagination
                         defaultCurrent={index}
-                        total={50}
+                        total={count}
                         onChange={(page) => {
                             setIndex(page)
                         }}

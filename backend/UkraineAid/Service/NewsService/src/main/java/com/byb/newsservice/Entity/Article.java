@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.sql.Date;
+
 /**
  * @author zjt
  * @emile 1214341145@qq.com
@@ -20,7 +22,7 @@ public class Article {
     private int articleId;
 
     @TableField("createTime")
-    private Data createTime;
+    private Date createTime;
 
     @TableField("deleteMark")
     private String deleteMark;

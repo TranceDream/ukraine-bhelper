@@ -261,6 +261,59 @@ export const reportStation = async (postId: number, reason: string) => {
     return post('/house/report', { postId, reason })
 }
 
+export interface NewsModel {
+    articleId: number
+    createTime?: Date
+    groupId: number
+    title: string
+    content?: string
+    author?: number
+}
+
+export interface NewsGroupModel {
+    id: number
+    name: string
+}
+
+/**
+ * 获取新闻列表
+ * Tested
+ * @param current
+ * @param groupId
+ */
+export const getNewsList = async (
+    current: number,
+    groupId?: number
+): Promise<Response> => {
+    const body = groupId
+        ? { status: 2, pageSize: 10, groupId, current }
+        : { pageSize: 10, status: 2, current }
+    return post('/news/selectArticleForC', body)
+}
+
+/**
+ * 获取新闻内容
+ * Tested
+ * @param articleId
+ */
+export const getNewsDetail = async (articleId: number): Promise<Response> => {
+    return post('/news/selectArticleForC', { articleId })
+}
+
+/**
+ * 获取新闻组列表
+ * Tested
+ */
+export const getNewsGroupList = async (): Promise<Response> => {
+    return post('/news/getNewsGroup', {})
+}
+
+/**
+ * 举办新闻
+ * Tested
+ * @param articleId
+ * @param reason
+ */
 export const reportNews = async (articleId: number, reason: string) => {
     return post('/news/report', { articleId, reason })
 }
