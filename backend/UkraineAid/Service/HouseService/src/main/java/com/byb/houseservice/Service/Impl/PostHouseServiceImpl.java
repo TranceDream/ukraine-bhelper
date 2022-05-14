@@ -271,10 +271,21 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
 //        }
 
         Page<HouseInfo> page = this.page(houseInfoPage,queryWrapper);
-
+        List<HouseInfo> houseInfoList = page.getRecords();
+        List<HouseinfoVo> houseinfoVoList = new ArrayList<>();
+        for (HouseInfo houseinfo : houseInfoList){
+            HouseinfoVo houseinfoVo = new HouseinfoVo();
+            BeanUtils.copyProperties(houseinfo,houseinfoVo);
+            FileName fileName1 = new FileName();
+            fileName1.setHouseId(houseinfo.getHouseId());
+            Map<String, Object> stringObjectMap = filePicService.reHousePic(fileName1);
+            houseinfoVo.setFileNames(stringObjectMap.get("fileNames").toString());
+            houseinfoVoList.add(houseinfoVo);
+        }
 //        int count  = baseMapper.selectCount(queryWrapper);
         Map<String, Object> result = new HashMap<>();
-        result.put("houseinfo",page.getRecords());
+
+        result.put("houseinfo",houseinfoVoList);
         result.put("count",baseMapper.selectCount(queryWrapper));
         return result;
     }

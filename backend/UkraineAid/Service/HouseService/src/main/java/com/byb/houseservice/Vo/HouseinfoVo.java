@@ -40,4 +40,6 @@ public class HouseinfoVo {
     private int pageSize;
 
     private int pageNo;
+
+    private String fileNames;
 }
