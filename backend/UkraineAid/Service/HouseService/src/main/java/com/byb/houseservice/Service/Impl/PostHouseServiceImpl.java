@@ -2,36 +2,37 @@ package com.byb.houseservice.Service.Impl;
 
 //import com.baomidou.mybatisplus.core.conditions.Wrapper;
 //import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.alibaba.cloud.commons.lang.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.byb.BaseUtil.Utils.Result;
+import com.byb.BaseUtil.Utils.UploadPicUtil;
 import com.byb.houseservice.Dao.HouseInfoMapper;
-import com.byb.houseservice.Entity.Contact;
-import com.byb.houseservice.Entity.Tag;
-import com.byb.houseservice.Entity.TagType;
+import com.byb.houseservice.Entity.*;
 import com.byb.houseservice.Service.*;
-import com.byb.houseservice.Entity.HouseInfo;
 import com.byb.houseservice.Vo.ContactVo;
 import com.byb.houseservice.Vo.HouseinfoVo;
 //import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.byb.houseservice.Vo.TagVo;
 import lombok.experimental.Accessors;
 import net.sf.jsqlparser.statement.create.schema.CreateSchema;
+
+import org.apache.commons.io.FileUtils;
 import org.checkerframework.checker.units.qual.A;
 import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 //import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 //import java.util.Collection;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 import java.util.function.Predicate;
 //import java.util.function.Function;
 
@@ -52,6 +53,8 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
     private TagTypeService tagTypeService;
     @Autowired
     private ContactTypeService contactTypeService;
+    @Autowired
+    private FilePicService filePicService;
     @Override
     public Map<String, Object> addpostHouseInfo(HouseinfoVo houseinfoVo) {
         System.out.println(houseinfoVo);
@@ -65,10 +68,12 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
 
             result.put("houseId",houseinfo.getHouseId());
             result.put("msg","A successful submission");
+            result.put("code",200);
 //            System.out.println("duiduidui");
 
         }catch(Exception e){
             e.printStackTrace();
+            result.put("code",400);
             result.put("msg","Fail to submit!PARAMETER ERROR");
         }
         return result;
@@ -177,6 +182,11 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
             }
             result.put("ContactList",contactss);
 
+            FileName fileName = new FileName();
+            fileName.setHouseId(houseid);
+            Map<String,Object> fileList =  filePicService.reHousePic(fileName);
+            result.put("filePicList",fileList.get("fileNames"));
+
         }catch (Exception e){
             e.printStackTrace();;
             result.put("msg","失败");
@@ -261,9 +271,104 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
 //        }
 
         Page<HouseInfo> page = this.page(houseInfoPage,queryWrapper);
+
+//        int count  = baseMapper.selectCount(queryWrapper);
         Map<String, Object> result = new HashMap<>();
         result.put("houseinfo",page.getRecords());
+        result.put("count",baseMapper.selectCount(queryWrapper));
         return result;
     }
+
+    @Override
+    public Map<String, Object> addHouse(HouseinfoVo houseinfoVo, List<TagVo> tagVoList, List<ContactVo> contactVoList,
+                                        List<MultipartFile> multipartFiles) {
+        Map<String, Object> result = new HashMap<>();
+
+        Map<String, Object> resultHouse =  this.addpostHouseInfo(houseinfoVo);
+        if ((int) resultHouse.get("code") != 200) {
+            result.put("msg","ERROR in insert house!");
+            return  result;
+        }
+        int houseId = (int) resultHouse.get("houseId");
+
+        for (TagVo tagVo : tagVoList){
+            tagVo.setHouseId(houseId);
+        }
+        Map<String,Object> resultTag = postTagService.addPostTag(tagVoList);
+        if ((int) resultTag.get("code") != 200){
+            result.put("msg","ERROR in insert tags!");
+            return result;
+        }
+
+        for (ContactVo contactVo : contactVoList){
+            contactVo.setHouseId(houseId);
+        }
+        Map<String,Object> resultContact = postContactService.addPostContact(contactVoList);
+        if ((int) resultContact.get("code") != 200){
+            result.put("msg","ERROR in insert contact");
+            return result;
+        }
+
+        //新文件名
+        StringBuilder newFileName;
+        //全部文件名，若多个，则逗号分隔
+        StringBuilder allFileNames = new StringBuilder();
+        //上传路径
+        String fileSavePath = "/Uk/Housepic/";
+        //若文件夹不存在，则创建文件夹
+        //test.txt不会创建，故给任意值占位即可
+        File parentFile = new File(fileSavePath + "test.txt").getParentFile();
+        if (!parentFile.exists()) {
+            parentFile.mkdirs();
+        }
+        //遍历所有文件
+        for (MultipartFile file : multipartFiles) {
+            //得到原始文件名
+            newFileName = new StringBuilder(file.getOriginalFilename());
+            //查询文件名中点号所处位置
+            int i = newFileName.lastIndexOf(".");
+            //若点号位置大于0，则文件名正常
+            if (i > 0) {
+                //在点号前拼接UUID防止文件重名
+                newFileName.insert(i, "_" + UUID.randomUUID().toString().substring(0, 5));
+            } else {
+                //若点号位置小于等于0，则文件名不规范
+                result.put("msg","ERROR IN PIC");
+                return result;
+            }
+            try {
+                // 保存文件
+                file.transferTo(new File(fileSavePath + newFileName));
+                //若全部文件名为空，则此为第一个文件，直接追加此文件名
+                if (StringUtils.isBlank(allFileNames.toString())) {
+                    allFileNames.append(newFileName);
+                } else {
+                    //若全部文件名不为空，则追加逗号和文件名
+                    allFileNames
+                            .append(",")
+                            .append(newFileName)
+                            .toString();
+                }
+            } catch (IOException e) {
+                result.put("msg","ERROR IN PIC");
+                return result;
+            }
+        }
+        List<String> fileNameList = Arrays.asList(allFileNames.toString().split(","));
+        for (String str : fileNameList){
+            FileName fileName1 = new FileName();
+            fileName1.setFilePath(str);
+            fileName1.setHouseId(houseId);
+            filePicService.uploadHousePic(fileName1);
+        }
+
+
+        result.put("msg","Success");
+        result.put("fileNames",fileNameList);
+        result.put("filePath", fileSavePath);
+        return result;
+    }
+
+
 
 }
