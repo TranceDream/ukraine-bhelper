@@ -10,7 +10,7 @@ public class PermissionVo {
 
     private int rolePermissionId;
 
-    private int permissionId;
+    private Integer permissionId;
 
     private Date createTime;
 
@@ -20,7 +20,7 @@ public class PermissionVo {
 
     private List<Integer> roles;
 
-    private int parentId;
+    private Integer parentId;
 
     private String lockedMark;
 

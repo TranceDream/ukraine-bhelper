@@ -11,6 +11,43 @@
         <result column="DELETE_MARK" property="deleteMark"/>
     </resultMap>
 
+    <resultMap id="moduleVo" type="com.byb.userservice.Vo.ModuleVo">
+        <id property="moduleId" column="PERMISSION_ID"/>
+        <result property="title" column="PERMISSION_NAME"/>
+        <result property="url" column="URL"/>
+        <result property="icon" column="ICON"/>
+        <result property="key" column="PAGEKEY"/>
+        <collection property="childs" column="PERMISSION_ID" ofType="com.byb.userservice.Vo.ModuleVo" select="selectSecmodule"/>
+    </resultMap>
+
+    <resultMap id="Secmodule" type="com.byb.userservice.Vo.ModuleVo">
+        <id property="moduleId" column="PERMISSION_ID"/>
+        <result property="title" column="PERMISSION_NAME"/>
+        <result property="url" column="URL"/>
+        <result property="key" column="PAGEKEY"/>
+        <result property="icon" column="ICON"/>
+        <collection property="childs" column="PERMISSION_ID" ofType="com.byb.userservice.Vo.ModuleVo" select="selectThrmodule"/>
+    </resultMap>
+
+    <resultMap id="Thrmodule" type="com.byb.userservice.Vo.ModuleVo">
+        <id property="moduleId" column="PERMISSION_ID"/>
+        <result property="title" column="PERMISSION_NAME"/>
+        <result property="url" column="URL"/>
+        <result property="key" column="PAGEKEY"/>
+        <result property="icon" column="ICON"/>
+    </resultMap>
+
+
+    <select id="selectSecmodule" resultMap="Secmodule" parameterType="java.lang.Integer">
+        select PERMISSION_ID, PERMISSION_NAME, URL, ICON, PAGEKEY FROM DICT_PERMISSION
+        where PARENT_ID = #{moduleId} and DELETE_MARK = 'NO'
+    </select>
+
+    <select id="selectThrmodule" resultMap="Thrmodule" parameterType="java.lang.Integer">
+        select PERMISSION_ID, PERMISSION_NAME, URL, ICON, PAGEKEY FROM DICT_PERMISSION
+        where PARENT_ID = #{moduleId} and DELETE_MARK = 'NO'
+    </select>
+
     <select id="selectAll" resultMap="permissionMap">
         select * from PERMISSION
     </select>
@@ -55,38 +92,10 @@
         </where>
     </select>
 
-    <select id="selectPermissionList" resultMap="permissionMap" parameterType="java.util.Map">
-        select * from(
+    <select id="selectPermissionList" resultMap="moduleVo" parameterType="java.util.Map">
         select * from DICT_PERMISSION
         <where>
-            <if test="permissionId != null and permissionId != ''">
-                PERMISSION_ID = #{permissionId}
-            </if>
-
-            <if test="permissionName != null and permissionName != ''">
-                AND PERMISSION_NAME LIKE "%" #{permissionName} "%"
-            </if>
-
-            <if test="url != null and url != ''">
-                AND URL LIKE "%" #{url} "%"
-            </if>
-
-            <choose>
-                <when test="deleteMark != null and deleteMark != ''">
-                    AND DELETE_MARK = #{deleteMark}
-                </when>
-                <otherwise>
-                    AND DELETE_MARK = 'NO'
-                </otherwise>
-            </choose>
-
-            <choose>
-                <when test="orderText != null and orderText != ''">
-                    ORDER BY ${orderText}
-                </when>
-                <otherwise></otherwise>
-            </choose>
-            ORDER BY CREATE_TIME desc
-        </where> ) m limit #{start}, #{size}
+           PARENT_ID = 1
+        </where>
     </select>
 </mapper>

@@ -25,30 +25,14 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionDao, Permission
 
     @Override
     public Map<String, Object> getPermissionList(PermissionForm permissionForm) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("start", (permissionForm.getPageNo()-1) * permissionForm.getPageSize());
-        params.put("size", permissionForm.getPageSize());
-        params.put("permissionId", permissionForm.getPermissionId());
-        params.put("permissionName", permissionForm.getPermissionName());
-        params.put("deleteMark", permissionForm.getDeleteMark());
-        params.put("orderText", permissionForm.getOrderText());
-        params.put("url", permissionForm.getUrl());
-
-        Map<String, Object> result = new HashMap<>();
         List<Permission> list = new ArrayList<>();
-
-        Integer total = baseMapper.countPermissionList(params);
+        Map<String, Object> result = new HashMap<>();
         try {
-            if (total > 0) {
-                list = baseMapper.selectPermissionList(params);
-            }
+                list = baseMapper.selectPermissionList(new HashMap<>());
         }catch (Exception e){
             e.printStackTrace();
         }
-        result.put("total", total);
         result.put("data", list);
-        result.put("pageSize", permissionForm.getPageSize());
-        result.put("pageNo", permissionForm.getPageNo());
         return result;
     }
 
@@ -58,33 +42,18 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionDao, Permission
         Map<String, Object> result = new HashMap<>();
 
         Permission permission = new Permission();
-        BeanUtils.copyProperties(permissionForm, permission);
         try {
+            BeanUtils.copyProperties(permissionForm, permission);
             baseMapper.insert(permission);
+            Integer permissionId = permission.getPermissionId();
+
+            result.put("flag", true);
+            result.put("permissionId", permissionId);
         }catch (Exception e){
             e.printStackTrace();
             result.put("flag", false);
             return result;
         }
-        Integer permissionId = permission.getPermissionId();
-
-        List<RolePermission> list = new ArrayList<>();
-        if(permissionForm.getRoles()!=null && !permissionForm.getRoles().isEmpty()){
-            for(Integer roleId : permissionForm.getRoles()){
-                RolePermission rolePermission = new RolePermission();
-                rolePermission.setRoleId(roleId);
-                rolePermission.setPermissionId(permissionId);
-                list.add(rolePermission);
-            }
-
-            Integer total = roleDao.addList(list);
-            if(total != permissionForm.getRoles().size()){
-                result.put("flag", false);
-                return result;
-            }
-        }
-        result.put("flag", true);
-        result.put("permissionId", permissionId);
         return result;
     }
 

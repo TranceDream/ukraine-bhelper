@@ -85,7 +85,7 @@
         <where>
             dur.USER_ID = #{userId} and dur.DELETE_MARK = 'NO' and dur.LOCKED_MARK = 'NO'
             and drp.DELETE_MARK = 'NO' and drp.LOCKED_MARK = 'NO'
-            and dp2.PARENT_ID = 1 and dp.DELETE_MARK = 'NO'
+            and dp2.PARENT_ID = 1 and dp.DELETE_MARK = 'NO' and dp2.DELETE_MARK = 'NO'
         </where>
     </select>
 
