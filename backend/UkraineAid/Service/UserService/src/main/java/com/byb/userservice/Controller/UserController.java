@@ -11,6 +11,7 @@ import com.byb.security.Security.DefaultPasswordEncoder;
 import com.byb.security.Security.TokenManager;
 import com.byb.userservice.Dao.GroupDao;
 import com.byb.userservice.Dao.UserRoleDao;
+import com.byb.userservice.Entity.Permission;
 import com.byb.userservice.Entity.Role;
 import com.byb.userservice.Entity.User;
 import com.byb.userservice.Entity.UserRole;
@@ -94,6 +95,9 @@ public class UserController {
 
     @Value("${spring.userService.updateOperation}")
     private int updateOperation;
+
+    @Value("${spring.userService.deleteOperation}")
+    private int deleteOperation;
 
     @PostMapping("/test")
     public Result<Map<String, Object>> test(@RequestBody UserForm userForm){
@@ -453,15 +457,6 @@ public class UserController {
 
     @PostMapping("/getPermissionList")
     public Result<Map<String, Object>> getPermissionList(@RequestBody PermissionForm permissionForm){
-
-        if(permissionForm.getPageNo()==null){
-            permissionForm.setPageNo(1);
-        }
-
-        if(permissionForm.getPageSize()==null){
-            permissionForm.setPageSize(10);
-        }
-
         Map<String, Object> dataMap = permissionService.getPermissionList(permissionForm);
         return new Result<>(dataMap, Result.SUCCESS);
     }
@@ -474,17 +469,64 @@ public class UserController {
         if(permissionForm.getPermissionName() == null){
             ResponseUtil.out(response, new Result(null, Result.FAIL, "NAME IS EMPTY"));
         }
-
-        Map<String, Object> dataMap = permissionService.addPermission(permissionForm);
-        Boolean flag = (Boolean) dataMap.get("flag");
-        if(!flag){
-            ResponseUtil.out(response, new Result(null, Result.FAIL, "操作失败"));
+        if(permissionForm.getParentId() == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "PARENT IS EMPTY"));
         }
-        Long objId = Long.valueOf((Integer)dataMap.get("permissionId"));
-        Map<String, Object> sysForm = FormGeneration.generateSysForm(permissionObjtypeId, objId, Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "增加权限", addOperation);
+        try {
+
+            Map<String, Object> dataMap = permissionService.addPermission(permissionForm);
+            Boolean flag = (Boolean) dataMap.get("flag");
+            if (!flag) {
+                ResponseUtil.out(response, new Result(null, Result.FAIL, "操作失败"));
+            }
+            Long objId = Long.valueOf(dataMap.get("permissionId").toString());
+            Map<String, Object> sysForm = FormGeneration.generateSysForm(permissionObjtypeId, objId, Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "增加权限", addOperation);
 
 //        Result<Map<String, Object>> sysResult = sysClient.addLog(sysForm);
+            this.sendMessage(ConstantConfig.SYSL0G_QUEUE, sysForm);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new Result(Result.SUCCESS, "操作成功");
+    }
+
+    @PostMapping("/updatePermission")
+    public Result<Map<String, Object>> updatePermission(@RequestBody PermissionForm permissionForm, HttpServletResponse response, HttpServletRequest request){
+        if(permissionForm.getPermissionId() == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
+        }
+        try {
+            Permission permission = permissionService.getById(permissionForm.getPermissionId());
+            permission.setPermissionName(permissionForm.getPermissionName());
+            permission.setIcon(permissionForm.getIcon());
+            permission.setUrl(permissionForm.getUrl());
+            permission.setParentId(permissionForm.getParentId());
+
+            permissionService.updateById(permission);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        Map<String, Object> sysForm = FormGeneration.generateSysForm(permissionObjtypeId, Long.valueOf(permissionForm.getPermissionId().toString()), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "修改权限", updateOperation);
         this.sendMessage(ConstantConfig.SYSL0G_QUEUE, sysForm);
+
+        return new Result(Result.SUCCESS, "操作成功");
+    }
+
+    @PostMapping("/deletePermission")
+    public Result<Map<String, Object>> deletePermission(@RequestBody PermissionForm permissionForm, HttpServletResponse response, HttpServletRequest request){
+        if(permissionForm.getPermissionId() == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
+        }
+
+        Permission permission = permissionService.getById(permissionForm.getPermissionId());
+
+        permission.setDeleteMark("YES");
+        permissionService.updateById(permission);
+
+        Map<String, Object> sysForm = FormGeneration.generateSysForm(permissionObjtypeId, Long.valueOf(permissionForm.getPermissionId().toString()), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "删除权限", deleteOperation);
+        this.sendMessage(ConstantConfig.SYSL0G_QUEUE, sysForm);
+
         return new Result(Result.SUCCESS, "操作成功");
     }
 

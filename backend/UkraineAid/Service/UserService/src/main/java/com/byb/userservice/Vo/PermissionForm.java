@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public class PermissionForm {
 
-    private int permissionId;
+    private Integer permissionId;
 
     private Date createTime;
 
@@ -18,9 +18,11 @@ public class PermissionForm {
 
     private String url;
 
+    private String icon;
+
     private List<Integer> roles;
 
-    private int parentId;
+    private Integer parentId;
 
     private String deleteMark;
 
