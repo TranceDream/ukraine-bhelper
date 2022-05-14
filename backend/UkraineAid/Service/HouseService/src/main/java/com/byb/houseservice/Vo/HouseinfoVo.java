@@ -2,6 +2,7 @@ package com.byb.houseservice.Vo;
 
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,5 +42,5 @@ public class HouseinfoVo {
 
     private int pageNo;
 
-    private String fileNames;
+    private List<String> fileNames;
 }
