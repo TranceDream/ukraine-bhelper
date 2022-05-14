@@ -217,6 +217,13 @@ public class PostController {
         Map<String,Object> dateMap = postHouseService.selectBycondition(selectcondiction);
         return new Result<>(dateMap, Result.SUCCESS);
     }
+    @PostMapping("/userHouse")
+    public Result<Map<String,Object>>  userHouse(@RequestBody Map<String, Object> selectcondiction,
+                                                           HttpServletResponse response, HttpServletRequest request){
+        selectcondiction.put("userId",Integer.parseInt(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)));
+        Map<String,Object> dateMap = postHouseService.selectBycondition(selectcondiction);
+        return new Result<>(dateMap, Result.SUCCESS);
+    }
 
 //*contact***************************************************************************************************************************
 
