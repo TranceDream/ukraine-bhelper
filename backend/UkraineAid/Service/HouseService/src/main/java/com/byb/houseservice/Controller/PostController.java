@@ -48,7 +48,7 @@ public class PostController {
     @PostMapping("/test")
     public Result<Map<String, Object>> test() {
         Map<String, Object> map = new HashMap<>();
-        map.put("message", "welcome to house module");
+        map.put("message", "welcome to house module 2 !");
         return new Result<>(map, Result.SUCCESS);
     }
 
