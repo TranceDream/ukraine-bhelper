@@ -13,17 +13,24 @@
     .column {
       display: flex;
       justify-content: space-evenly;
-      gap: 16px;
+      gap: 2px;
 
       span {
         cursor: pointer;
-        padding: 8px;
-        font-size: x-large;
+        padding: 8px 0;
+        font-size: large;
         color: white;
         background-color: dodgerblue;
         width: 100%;
         text-align: center;
       }
+    }
+
+    .pagination {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }
