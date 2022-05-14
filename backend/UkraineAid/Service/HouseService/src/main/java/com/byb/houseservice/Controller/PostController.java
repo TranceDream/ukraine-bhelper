@@ -19,6 +19,7 @@ import com.byb.houseservice.Vo.*;
 import com.byb.openfeign.Client.ReportClient;
 import com.byb.openfeign.Form.FormGeneration;
 import org.checkerframework.checker.units.qual.C;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -73,8 +74,26 @@ public class PostController {
     @Autowired
     private FilePicService filePicService;
 
+    @Autowired
+    private AmqpTemplate amqpTemplate;
+
     @Value("${spring.houseService.houseObjtypeId}")
     private int houseObjtypeId;
+
+    @Value("${spring.houseService.contactObjtypeId}")
+    private int contactObjtypeId;
+
+    @Value("${spring.houseService.tagObjtypeId}")
+    private int tagObjtypeId;
+
+    @Value("${spring.userService.addOperation}")
+    private int addOperation;
+
+    @Value("${spring.userService.updateOperation}")
+    private int updateOperation;
+
+    @Value("${spring.userService.deleteOperation}")
+    private int deleteOperation;
 
     //基础房源信息********************************************************************************************************
     @PostMapping("/postinfo")
@@ -188,13 +207,17 @@ public class PostController {
     }
 
     @PostMapping("/deleteinfo")
-    public Result<Map<String ,Object>> deleteHouse(@RequestBody Map<String, Object> ma){
+    public Result<Map<String ,Object>> deleteHouse(@RequestBody Map<String, Object> ma, HttpServletRequest request){
 
         int houseid = (int)ma.get("houseId");
         Map<String,Object> dateMap = postHouseService.deleteHouseInfo(houseid);
         String msg = (String) dateMap.get("msg");
         dateMap.remove("msg");
         if(! msg.equals("Delete the success!")) msg = "PARAMETER ERROR!";
+        else{
+            Map<String, Object> syslogForm = FormGeneration.generateSysForm(houseObjtypeId, Long.valueOf(String.valueOf(houseid)), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "删除房源", deleteOperation);
+            this.sendMessage(ConstantConfig.SYSL0G_QUEUE, syslogForm);
+        }
         return new Result<>(dateMap, Result.SUCCESS,msg);
     }
     @PostMapping("/housedetail")
@@ -456,4 +479,8 @@ public Result<Map<String , Object>> postconnecttype(@RequestBody ContactTypeVo c
         return new Result<>(null, code, msg);
     }
 
+    private void sendMessage(String queue, Object object){
+        String msg = JSONObject.toJSONString(object);
+        amqpTemplate.convertAndSend(queue, msg);
+    }
 }
