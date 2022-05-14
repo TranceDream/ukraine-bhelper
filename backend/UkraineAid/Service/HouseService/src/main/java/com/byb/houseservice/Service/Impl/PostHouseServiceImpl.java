@@ -166,21 +166,30 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
 
             Map<String,Object> tagList = postTagService.selectTag(select);
             List<Tag> tags = (List<Tag>) tagList.get("tagList");
-
-//            List<String> tagss = new ArrayList<>();
-//            for(Tag tag : tags){
-//                tagss.add(tagTypeService.tagNameById(tag.getTypeId()));
-//            }
-            result.put("tagList",tags);
+            List<TagVo> tagVoList = new ArrayList<>();
+            for(Tag tag : tags){
+                String tagName =  tagTypeService.tagNameById(tag.getTypeId());
+                TagVo tagVo = new TagVo();
+                BeanUtils.copyProperties(tag,tagVo);
+                tagVo.setTagName(tagName);
+                tagVoList.add(tagVo);
+            }
+            result.put("tagList",tagVoList);
 
             Map<String,Object> Contact = postContactService.selectContact(select);
             List<Contact> contacts = (List<com.byb.houseservice.Entity.Contact>) Contact.get("ContactList");
 //            Map<String,Object> contactss = new HashMap<>();
-//            for (Contact contact : contacts){
-//                String contactName = contactTypeService.TypeNameByid(contact.getTypeId());
+            List<ContactVo> contactVoList = new ArrayList<>();
+
+            for (Contact contact : contacts){
+                String contactName = contactTypeService.TypeNameByid(contact.getTypeId());
 //                contactss.put(contactName,contact.getContent());
-//            }
-            result.put("ContactList",contacts);
+                ContactVo contactVo =new ContactVo();
+                BeanUtils.copyProperties(contact,contactVo);
+                contactVo.setContactName(contactName);
+                contactVoList.add(contactVo);
+            }
+            result.put("ContactList",contactVoList);
 
             FileName fileName = new FileName();
             fileName.setHouseId(houseid);
