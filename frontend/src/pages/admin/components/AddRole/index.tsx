@@ -2,7 +2,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-05-08 16:08:01
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-08 16:26:52
+ * @Last Modified time: 2022-05-15 04:11:00
  */
 import { Button, Form, Input, message, Select, Tag } from 'antd'
 import React, { useEffect, useState } from 'react'
@@ -87,7 +87,7 @@ export default function AddRole() {
         }
         async function getPermissions() {
             const res = await reqPermissionList()
-            console.log('res', res)
+            // console.log('res', res)
             if (res.code === 200) {
                 prepareOptions(res.data.data)
             } else {
@@ -106,15 +106,15 @@ export default function AddRole() {
             permissionMapId[item.permissionName] = item.permissionId
         })
         setOptions(tempOptions)
-        console.log('permissionMapId', permissionMapId)
+        // console.log('permissionMapId', permissionMapId)
     }
 
     // 权限选择改变
     const handleChange = (value: any) => {
-        console.log('changed', value)
+        // console.log('changed', value)
         const tempselectedPermission: any = []
         value.forEach((item: any) => {
-            console.log('item', item)
+            // console.log('item', item)
             tempselectedPermission.push(permissionMapId[item])
         })
         setSelectedPermission(tempselectedPermission)

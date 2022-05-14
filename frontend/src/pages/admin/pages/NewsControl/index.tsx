@@ -2,15 +2,19 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-24 17:19:29
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-11 00:25:58
+ * @Last Modified time: 2022-05-15 02:24:38
  */
 import ProTable from '@ant-design/pro-table'
+import { Button } from 'antd'
 import React from 'react'
 import { reqGetAllUser } from '../../api'
 import { TableListItem } from '../RoleControl'
 import './ant-pro-card.scss'
 import styles from './index.module.scss'
 export default function NewsControl() {
+    const handleAddNews = () => {
+        
+    }
     return (
         <>
             <ProTable<TableListItem>
@@ -60,7 +64,16 @@ export default function NewsControl() {
                 }}
                 toolbar={{
                     multipleLine: false,
-                    actions: [],
+                    actions: [
+                        <Button
+                            key='add'
+                            type='primary'
+                            onClick={() => {
+                                handleAddNews()
+                            }}>
+                            添加新闻
+                        </Button>,
+                    ],
                 }}
                 // dataSource={tableListDataSource}
                 // rowKey={(record) => {
@@ -77,7 +90,7 @@ export default function NewsControl() {
                     }
                 }
                 dateFormatter='string'
-                headerTitle='所有房源'
+                headerTitle='所有新闻'
                 className={styles.protable}
             />
         </>
