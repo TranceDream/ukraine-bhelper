@@ -1,6 +1,6 @@
 spring:
   application:
-    name: systemservice # 服务名称
+    name: SystemService # 服务名称
   profiles:
     active: dev #开发环境，这里是dev
   cloud:
