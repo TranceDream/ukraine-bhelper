@@ -15,18 +15,24 @@ import {
     WhatsappShareButton,
 } from 'react-share'
 import { ShareAltOutlined } from '@ant-design/icons'
+import { NewsModel } from '../lib/request'
+import { NavLink } from 'react-router-dom'
 
-const NewsItem = () => {
-    const url = 'https://baidu.com'
+interface NewsItemProps {
+    news: NewsModel
+}
+
+const NewsItem = (props: NewsItemProps) => {
+    const url = window.location.host + '/news/detail?id=' + props.news.articleId
     const [showShare, setShare] = useState(false)
 
     return (
         <div className={styles.container}>
-            <h3 className={styles.title}>
-                习近平：把人民生命安全放在第一位 古诗文寄望青年
-            </h3>
+            <NavLink to={'/news/detail?id=' + props.news.articleId}>
+                <h3 className={styles.title}>{props.news.title}</h3>
+            </NavLink>
             <div className={styles.info}>
-                <span className={styles.date}>2天前</span>
+                <span className={styles.date}>{props.news.createTime}</span>
                 <div className={styles.flex}></div>
                 <div
                     className={
