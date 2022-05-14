@@ -167,20 +167,20 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
             Map<String,Object> tagList = postTagService.selectTag(select);
             List<Tag> tags = (List<Tag>) tagList.get("tagList");
 
-            List<String> tagss = new ArrayList<>();
-            for(Tag tag : tags){
-                tagss.add(tagTypeService.tagNameById(tag.getTypeId()));
-            }
-            result.put("tagList",tagss);
+//            List<String> tagss = new ArrayList<>();
+//            for(Tag tag : tags){
+//                tagss.add(tagTypeService.tagNameById(tag.getTypeId()));
+//            }
+            result.put("tagList",tags);
 
             Map<String,Object> Contact = postContactService.selectContact(select);
             List<Contact> contacts = (List<com.byb.houseservice.Entity.Contact>) Contact.get("ContactList");
-            Map<String,Object> contactss = new HashMap<>();
-            for (Contact contact : contacts){
-                String contactName = contactTypeService.TypeNameByid(contact.getTypeId());
-                contactss.put(contactName,contact.getContent());
-            }
-            result.put("ContactList",contactss);
+//            Map<String,Object> contactss = new HashMap<>();
+//            for (Contact contact : contacts){
+//                String contactName = contactTypeService.TypeNameByid(contact.getTypeId());
+//                contactss.put(contactName,contact.getContent());
+//            }
+            result.put("ContactList",contacts);
 
             FileName fileName = new FileName();
             fileName.setHouseId(houseid);
