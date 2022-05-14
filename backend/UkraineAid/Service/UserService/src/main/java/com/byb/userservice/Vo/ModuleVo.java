@@ -13,6 +13,8 @@ public class ModuleVo {
 
     private List<ModuleVo> childs;
 
+    private String url;
+
     private String key;
 
     private String icon;
