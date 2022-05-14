@@ -20,6 +20,8 @@ public class PermissionForm {
 
     private String icon;
 
+    private String pagekey;
+
     private List<Integer> roles;
 
     private Integer parentId;

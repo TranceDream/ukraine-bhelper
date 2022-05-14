@@ -2,6 +2,7 @@ package com.byb.userservice.Dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.byb.userservice.Entity.Permission;
+import com.byb.userservice.Vo.ModuleVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,6 +14,6 @@ public interface PermissionDao extends BaseMapper<Permission> {
     List<String> selectByUser(String userId);
 
     Integer countPermissionList(Map<String, Object> params);
-    List<Permission> selectPermissionList(Map<String, Object> params);
+    List<ModuleVo> selectPermissionList(Map<String, Object> params);
 
 }
