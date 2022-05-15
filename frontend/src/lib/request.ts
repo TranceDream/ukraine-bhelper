@@ -6,7 +6,7 @@
 import Cookie from 'universal-cookie'
 import { cleanCookies } from 'universal-cookie/lib/utils'
 
-const baseUrl = 'http://139.9.231.20:81'
+export const baseUrl = 'http://139.9.231.20:81'
 
 export const imageUrl = 'http://139.9.231.20:8007/image/houseimage'
 
@@ -392,6 +392,14 @@ export const getNewsDetail = async (articleId: number): Promise<Response> => {
  */
 export const getNewsGroupList = async (): Promise<Response> => {
     return post('/news/getNewsGroup', {})
+}
+
+export const updateNews = async (
+    articleId: number,
+    title: string,
+    content: string
+): Promise<Response> => {
+    return post('/news/updateArticle', { articleId, title, content })
 }
 
 /**
