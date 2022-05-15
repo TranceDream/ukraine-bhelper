@@ -1,24 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MarkdownIt from 'markdown-it'
 import MdEditor from 'react-markdown-editor-lite'
 import 'react-markdown-editor-lite/lib/index.css'
 import { Button, Form, Input } from 'antd'
 import Cookie from 'universal-cookie'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import styles from './NewsEdit.module.scss'
+import { getNewsDetail, updateNews } from '../../../../lib/request'
 
 const upload = async (file: File): Promise<string> => {
     const formData = new FormData()
     formData.append('newsPic', file)
-    // const raw = await axios({
-    //     method: 'post',
-    //     url: 'https://sm.ms/api/v2/upload',
-    //     data: formData,
-    //     headers: {
-    //         'Content-Type': 'multipart/form-data',
-    //         Authorization: 'clDg9R7N9nK3yDTwNvHL0EHqxRGosFmV',
-    //     },
-    // })
 
     const cookie = new Cookie()
 
@@ -59,9 +51,23 @@ const addArticle = async (title: string, content: string) => {
 const NewsEdit = () => {
     const [title, setTitle] = useState<string>('')
     const [content, setContent] = useState<string>('')
+    const useQuery = () => new URLSearchParams(useLocation().search)
+    const query = useQuery()
+    const id = query.get('id')
     const navigate = useNavigate()
-
     const mdParser = new MarkdownIt()
+
+    useEffect(() => {
+        if (id) {
+            getNewsDetail(parseInt(id!)).then((res) => {
+                if (res.code === 200) {
+                    setTitle(res.data.articles[0].title)
+                    setContent(res.data.articles[0].content)
+                }
+            })
+        }
+    }, [id, navigate])
+
     return (
         <div className={styles.container}>
             <Form.Item>
@@ -80,6 +86,7 @@ const NewsEdit = () => {
                 onChange={(text) => {
                     setContent(text.text)
                 }}
+                value={content}
                 renderHTML={(text) => mdParser.render(text)}
                 onImageUpload={(file: File) => {
                     return upload(file)
@@ -89,9 +96,15 @@ const NewsEdit = () => {
                 type={'primary'}
                 style={{ marginTop: '16px' }}
                 onClick={() => {
-                    addArticle(title, content).then((res) => {
-                        navigate('/admin/news-control')
-                    })
+                    if (id) {
+                        updateNews(parseInt(id), title, content).then((res) => {
+                            navigate('/admin/news-control')
+                        })
+                    } else {
+                        addArticle(title, content).then((res) => {
+                            navigate('/admin/news-control')
+                        })
+                    }
                 }}>
                 提交
             </Button>
