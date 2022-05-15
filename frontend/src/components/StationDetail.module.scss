@@ -39,6 +39,10 @@
     .address {
       font-size: large;
       color: gray;
+
+      span {
+        display: block;
+      }
     }
 
     .tags {
@@ -47,9 +51,6 @@
 
       div {
         white-space: nowrap;
-        border: 1px solid gray;
-        padding: 2px 4px;
-
         &:not(&:first-child) {
           margin-left: 10px;
         }

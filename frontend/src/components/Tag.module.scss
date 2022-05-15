@@ -1,0 +1,17 @@
+.container {
+  border: 1px solid lightgray;
+  padding: 2px 8px;
+  display: flex;
+  align-items: center;
+  user-select: none;
+
+  :nth-child(1) {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+
+    svg {
+      margin: 0;
+    }
+  }
+}

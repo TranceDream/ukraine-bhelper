@@ -8,13 +8,19 @@ import { useEffect, useState } from 'react'
 import styles from './StationList.module.scss'
 import Header from '../../components/Header'
 import StationItem from '../../components/StationItem'
-import Cookie from 'universal-cookie'
 import { Button, Form, Pagination, Select } from 'antd'
 import { Option } from 'antd/es/mentions'
 import { PlusOutlined } from '@ant-design/icons'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { getStationList, StationModel } from '../../lib/request'
+import {
+    ContactTypeModel,
+    getContactTypeList,
+    getStationList,
+    getTagTypeList,
+    StationModel,
+} from '../../lib/request'
 import Footer from '../../components/Footer'
+import { cleanCookies } from 'universal-cookie/lib/utils'
 
 /**
  * 寻求援助页面，用于查找救助站和显示救助站列表
@@ -25,14 +31,22 @@ export const StationList = () => {
     const [index, setIndex] = useState(1)
     const [count, setCount] = useState(0)
     const [stationList, setStationList] = useState<Array<StationModel>>([])
+    const [contactType, setContactType] = useState<Array<ContactTypeModel>>([])
     const navigate = useNavigate()
     useEffect(() => {
+        getContactTypeList().then((res) => {
+            setContactType(res.data.data)
+            console.log(res.data.data)
+        })
+        getTagTypeList().then((res) => {
+            console.log(res.data)
+        })
         getStationList(index, {}).then((res) => {
             if (res.code === 401) {
-                const cookie = new Cookie()
-                cookie.remove('token')
+                cleanCookies()
                 navigate('/login', { replace: true })
             } else if (res.code === 200) {
+                console.log(res.data)
                 setStationList(res.data.houseinfo)
                 setCount(res.data.count)
             }
@@ -56,16 +70,32 @@ export const StationList = () => {
             <main>
                 <div className={styles.search}>
                     <Form>
-                        <Form.Item name={'country'} label={'Country'}>
-                            <Select placeholder={'N/A'}>
-                                <Option value={''}>N/A</Option>
-                                <Option value={'china'}>China</Option>
+                        <Form.Item name='country' label='Country'>
+                            <Select placeholder='Please select a country'>
+                                <Option value='china'>China</Option>
+                                <Option value='usa'>U.S.A</Option>
+                            </Select>
+                        </Form.Item>
+                        <Form.Item name='province' label='Province'>
+                            <Select placeholder='Please select a province'>
+                                <Option value='tianjin'>TianJin</Option>
+                                <Option value='hebei'>HeBei</Option>
+                            </Select>
+                        </Form.Item>
+                        <Form.Item name='city' label='City'>
+                            <Select placeholder='Please select a city'>
+                                <Option value='nankai'>NanKai</Option>
+                                <Option value='caoxian'>CaoXian</Option>
                             </Select>
                         </Form.Item>
                     </Form>
                 </div>
                 {stationList.map((station, index) => (
-                    <StationItem key={'station' + index} station={station} />
+                    <StationItem
+                        key={'station' + index}
+                        station={station}
+                        edit={false}
+                    />
                 ))}
                 <div className={styles.pagination}>
                     <Pagination

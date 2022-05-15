@@ -1,15 +1,40 @@
 import React, { useEffect, useState } from 'react'
 import styles from './StationPost.module.scss'
 import Header from '../../components/Header'
-import { Button, Form, Input, InputNumber, Select, Spin } from 'antd'
+import {
+    Button,
+    Checkbox,
+    Form,
+    Input,
+    InputNumber,
+    Select,
+    Space,
+    Spin,
+    Table,
+    Upload,
+} from 'antd'
 import { Option } from 'antd/es/mentions'
 import {
+    ContactModel,
+    ContactTypeModel,
+    deleteTag,
+    getContactTypeList,
     getStationDetail,
+    getTagTypeList,
+    postTag,
     publishStation,
     StationModel,
+    TagModel,
+    updateStation,
 } from '../../lib/request'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { LoadingOutlined } from '@ant-design/icons'
+import {
+    DeleteOutlined,
+    EditOutlined,
+    LoadingOutlined,
+    MinusOutlined,
+    PlusOutlined,
+} from '@ant-design/icons'
 import Footer from '../../components/Footer'
 
 const StationPost = () => {
@@ -23,6 +48,31 @@ const StationPost = () => {
         city: '',
     })
     const [loading, setLoadingState] = useState(true)
+    const [fileList, setFileList] = useState<any[]>([])
+    const [contactTypeList, setContactTypeList] = useState<ContactTypeModel[]>()
+    const [contactList, setContactList] = useState<ContactModel[]>([
+        {
+            content: '',
+        },
+    ])
+    const [tagList, setTagList] = useState<TagModel[]>([])
+    const [selectedTags, setSelectedTags] = useState<number[]>([])
+    const [tagTypeList, setTagTypeList] = useState<TagModel[]>([])
+
+    const columns = [
+        { title: 'Contact type', key: 'contactName', dataIndex: 'contactName' },
+        { title: 'Content', key: 'content', dataIndex: 'content' },
+        {
+            title: 'Action',
+            key: 'action',
+            render: () => (
+                <Space size={'middle'}>
+                    <Button shape={'circle'} icon={<EditOutlined />}></Button>
+                    <Button shape={'circle'} icon={<DeleteOutlined />}></Button>
+                </Space>
+            ),
+        },
+    ]
 
     useEffect(() => {
         if (id) {
@@ -30,17 +80,47 @@ const StationPost = () => {
                 if (res.code === 200) {
                     const info = res.data.houseInfo
                     setStation(info)
-                    setLoadingState(false)
-                    console.log(info)
+                    setContactList(res.data.ContactList)
+                    setTagList(res.data.tagList)
+                    setSelectedTags(
+                        res.data.tagList.map(
+                            (tag: { typeId: any }) => tag.typeId
+                        )
+                    )
+                    getTagTypeList()
+                        .then((tag) => {
+                            setTagTypeList(tag.data.tagTypeid)
+                        })
+                        .then((r) => {
+                            setLoadingState(false)
+                        })
                 } else {
-                    console.log(res.data)
                     navigate('/404', { replace: true })
                 }
             })
         } else {
-            setLoadingState(false)
+            getTagTypeList()
+                .then((tag) => {
+                    setTagTypeList(tag.data.tagTypeid)
+                })
+                .then((r) => {
+                    setLoadingState(false)
+                })
         }
+        getContactTypeList().then((res) => {
+            setContactTypeList(res.data.data)
+        })
     }, [id, navigate])
+
+    let getCheckStatus = (typeId: number): boolean => {
+        let ret = false
+        selectedTags.map((tag) => {
+            if (tag === typeId) {
+                ret = true
+            }
+        })
+        return ret
+    }
 
     return (
         <div className={styles.container}>
@@ -53,10 +133,51 @@ const StationPost = () => {
                         <Form
                             labelCol={{ span: 2 }}
                             size={'large'}
-                            onFinish={(values) => {
-                                publishStation(values).then((res) => {
-                                    console.log(res)
-                                })
+                            onFinish={(values: StationModel) => {
+                                if (id) {
+                                    Promise.all(
+                                        tagList.map((tag) => {
+                                            return deleteTag(tag.tagId!)
+                                        })
+                                    ).then((res) => {
+                                        console.log(
+                                            selectedTags.map((st) => ({
+                                                houseId: parseInt(id!),
+                                                typeId: st,
+                                            }))
+                                        )
+                                        postTag(
+                                            selectedTags.map((st) => ({
+                                                houseId: parseInt(id!),
+                                                typeId: st,
+                                            }))
+                                        ).then((res2) => {
+                                            console.log(res2)
+                                        })
+                                    })
+                                    updateStation(parseInt(id!), values).then(
+                                        (res) => {
+                                            if (res.code === 200) {
+                                                navigate('/station')
+                                            }
+                                        }
+                                    )
+                                } else {
+                                    publishStation(
+                                        values,
+                                        fileList.map(
+                                            (file) => file.originFileObj
+                                        ),
+                                        contactList,
+                                        selectedTags.map((st) => ({
+                                            typeId: st,
+                                        }))
+                                    ).then((res) => {
+                                        if (res.code === 200) {
+                                            navigate('/station')
+                                        }
+                                    })
+                                }
                             }}>
                             <h2>House information</h2>
                             <Form.Item
@@ -174,10 +295,207 @@ const StationPost = () => {
                                     maxLength={500}
                                 />
                             </Form.Item>
+
+                            {/*TODO*/}
+                            {id ? (
+                                <>
+                                    <Form.Item>
+                                        <Table
+                                            columns={columns}
+                                            dataSource={contactList}
+                                        />
+                                    </Form.Item>
+                                </>
+                            ) : (
+                                <>
+                                    <Form.Item>
+                                        <Button
+                                            className={styles.loginFormButton}
+                                            onClick={() => {
+                                                let list = contactList.slice()
+                                                list.push({ content: '' })
+                                                setContactList(list)
+                                            }}>
+                                            Add Contact
+                                        </Button>
+                                    </Form.Item>
+                                    {contactList.map((contact, index) => (
+                                        <Form.Item
+                                            label={'Contact'}
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message:
+                                                        'Please input Contact!',
+                                                },
+                                            ]}>
+                                            <div
+                                                style={{
+                                                    display: 'flex',
+                                                    width: '100%',
+                                                    gap: '16px',
+                                                }}>
+                                                <Form.Item
+                                                    style={{ width: '120px' }}
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message:
+                                                                'Please input Contact!',
+                                                        },
+                                                    ]}>
+                                                    <Select
+                                                        value={contact.typeId}
+                                                        onChange={(v) => {
+                                                            let list =
+                                                                contactList.slice()
+                                                            list[index].typeId =
+                                                                v
+                                                            setContactList(list)
+                                                        }}>
+                                                        {contactTypeList?.map(
+                                                            (c) => (
+                                                                <Option
+                                                                    key={c.typeId.toString()}
+                                                                    value={c.typeId.toString()}>
+                                                                    {
+                                                                        c.contactName
+                                                                    }
+                                                                </Option>
+                                                            )
+                                                        )}
+                                                    </Select>
+                                                </Form.Item>
+                                                <Form.Item
+                                                    style={{ flex: 1 }}
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message:
+                                                                'Please input Contact!',
+                                                        },
+                                                    ]}>
+                                                    <Input
+                                                        value={contact.content}
+                                                        onChange={(v) => {
+                                                            let list =
+                                                                contactList.slice()
+                                                            list[
+                                                                index
+                                                            ].content =
+                                                                v.target.value
+                                                            setContactList(list)
+                                                        }}></Input>
+                                                </Form.Item>
+                                                <Form.Item>
+                                                    <Button
+                                                        shape={'circle'}
+                                                        icon={<MinusOutlined />}
+                                                        onClick={() => {
+                                                            if (
+                                                                contactList.length >
+                                                                1
+                                                            ) {
+                                                                let list =
+                                                                    contactList.slice()
+                                                                list.splice(
+                                                                    index,
+                                                                    1
+                                                                )
+                                                                setContactList(
+                                                                    list
+                                                                )
+                                                            }
+                                                        }}></Button>
+                                                </Form.Item>
+                                            </div>
+                                        </Form.Item>
+                                    ))}
+                                </>
+                            )}
+
+                            <Form.Item label='Tags'>
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                    }}>
+                                    {tagTypeList.map((tagType) => (
+                                        <Checkbox
+                                            style={{
+                                                margin: 0,
+                                                lineHeight: '32px',
+                                            }}
+                                            value={tagType.typeId!}
+                                            checked={getCheckStatus(
+                                                tagType.typeId!
+                                            )}
+                                            onChange={(v) => {
+                                                console.log(v.target.value)
+                                                let list = selectedTags.slice()
+                                                if (
+                                                    list.includes(
+                                                        v.target.value
+                                                    )
+                                                ) {
+                                                    list = list.filter(
+                                                        (e) =>
+                                                            e !== v.target.value
+                                                    )
+                                                    setSelectedTags(list)
+                                                } else {
+                                                    list.push(v.target.value)
+                                                    setSelectedTags(list)
+                                                }
+                                            }}>
+                                            {tagType.tagName!}
+                                        </Checkbox>
+                                    ))}
+                                </div>
+                            </Form.Item>
+
+                            {id ? (
+                                <></>
+                            ) : (
+                                <Form.Item
+                                    name='image'
+                                    label='Image'
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please upload Image!',
+                                        },
+                                    ]}>
+                                    <Upload
+                                        maxCount={9}
+                                        beforeUpload={() => {
+                                            return false
+                                        }}
+                                        fileList={fileList}
+                                        listType='picture-card'
+                                        onChange={(info) => {
+                                            setFileList(info.fileList)
+                                        }}>
+                                        <div>
+                                            <PlusOutlined />
+                                            <div
+                                                style={{
+                                                    marginTop: 8,
+                                                    color: '#666',
+                                                }}>
+                                                上传图片
+                                            </div>
+                                        </div>
+                                    </Upload>
+                                </Form.Item>
+                            )}
                             <Form.Item>
                                 <Button
                                     type='primary'
                                     htmlType='submit'
+                                    onClick={() => {
+                                        console.log(tagList)
+                                    }}
                                     className={styles.loginFormButton}>
                                     Submit
                                 </Button>
