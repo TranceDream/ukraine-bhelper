@@ -22,6 +22,14 @@ import {
 } from '../../lib/request'
 import Footer from '../../components/Footer'
 import { cleanCookies } from 'universal-cookie/lib/utils'
+import {
+    CityModel,
+    CountryModel,
+    getCities,
+    getCountries,
+    getStates,
+    StateModel,
+} from '../../lib/district'
 
 /**
  * 寻求援助页面，用于查找救助站和显示救助站列表
@@ -35,8 +43,14 @@ export const StationList = () => {
     const [contactType, setContactType] = useState<Array<ContactTypeModel>>([])
     const [filter, setFilter] = useState<StationFilter>({})
     const [requestFilter, setRequestFilter] = useState<StationFilter>({})
+
+    const [countryList, setCountryList] = useState<CountryModel[]>([])
+    const [stateList, setStateList] = useState<StateModel[]>([])
+    const [cityList, setCityList] = useState<CityModel[]>([])
+
     const navigate = useNavigate()
     useEffect(() => {
+        setCountryList(getCountries())
         getContactTypeList().then((res) => {
             setContactType(res.data.data)
             console.log(res.data.data)
@@ -80,34 +94,53 @@ export const StationList = () => {
                                     let f = Object.assign(filter)
                                     f.country = e
                                     setFilter(f)
+                                    setStateList(getStates(e))
                                     console.log(filter)
                                 }}>
-                                <Option value='china'>China</Option>
-                                <Option value='usa'>U.S.A</Option>
+                                {countryList.map((country) => (
+                                    <Option
+                                        key={'c' + country.code}
+                                        value={country.code}>
+                                        {country.country}
+                                    </Option>
+                                ))}
                             </Select>
                         </Form.Item>
                         <Form.Item name='province' label='Province'>
                             <Select
+                                disabled={filter.country == null}
                                 placeholder='Please select a province'
                                 onChange={(e) => {
                                     let f = Object.assign(filter)
                                     f.province = e
+                                    setCityList(getCities(filter.country!, e))
                                     setFilter(f)
                                 }}>
-                                <Option value='tianjin'>TianJin</Option>
-                                <Option value='hebei'>HeBei</Option>
+                                {stateList.map((state) => (
+                                    <Option
+                                        key={'s' + state.code}
+                                        value={state.code}>
+                                        {state.state}
+                                    </Option>
+                                ))}
                             </Select>
                         </Form.Item>
                         <Form.Item name='city' label='City'>
                             <Select
+                                disabled={filter.province == null}
                                 placeholder='Please select a city'
                                 onChange={(e) => {
                                     let f = Object.assign(filter)
                                     f.city = e
                                     setFilter(f)
                                 }}>
-                                <Option value='nankai'>NanKai</Option>
-                                <Option value='caoxian'>CaoXian</Option>
+                                {cityList.map((city) => (
+                                    <Option
+                                        key={'t' + city.city}
+                                        value={city.city}>
+                                        {city.city}
+                                    </Option>
+                                ))}
                             </Select>
                         </Form.Item>
                         <Form.Item name='pets' label='Pets'>
