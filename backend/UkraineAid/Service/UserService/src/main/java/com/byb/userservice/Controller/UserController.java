@@ -1,6 +1,7 @@
 package com.byb.userservice.Controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.byb.BaseUtil.Config.ConstantConfig;
 import com.byb.BaseUtil.Utils.ResponseUtil;
 import com.byb.BaseUtil.Utils.Result;
@@ -10,11 +11,9 @@ import com.byb.openfeign.Form.FormGeneration;
 import com.byb.security.Security.DefaultPasswordEncoder;
 import com.byb.security.Security.TokenManager;
 import com.byb.userservice.Dao.GroupDao;
+import com.byb.userservice.Dao.MenuDao;
 import com.byb.userservice.Dao.UserRoleDao;
-import com.byb.userservice.Entity.Permission;
-import com.byb.userservice.Entity.Role;
-import com.byb.userservice.Entity.User;
-import com.byb.userservice.Entity.UserRole;
+import com.byb.userservice.Entity.*;
 import com.byb.userservice.Service.*;
 import com.byb.userservice.Vo.*;
 
@@ -64,7 +63,7 @@ public class UserController {
     private RoleService roleService;
 
     @Autowired
-    private GroupDao groupDao;
+    private MenuDao menuDao;
 
     @Autowired
     private PermissionService permissionService;
@@ -455,6 +454,12 @@ public class UserController {
         return new Result(Result.SUCCESS, "操作成功");
     }
 
+    @PostMapping("/getPermission4Role")
+    public Result<List<Permission>> getPermission4Role(@RequestBody PermissionForm permissionForm){
+        List<Permission> list = permissionService.getPermission4Role(permissionForm);
+        return new Result<>(list, Result.SUCCESS);
+    }
+
     @PostMapping("/getPermissionList")
     public Result<Map<String, Object>> getPermissionList(@RequestBody PermissionForm permissionForm){
         Map<String, Object> dataMap = permissionService.getPermissionList(permissionForm);
@@ -621,12 +626,20 @@ public class UserController {
 
 
     @PostMapping("/getModuleList")
-    public Result<List<ModuleVo>> getMenuList(HttpServletRequest request){
+    public Result<List<ModuleVo>> getModuleList(HttpServletRequest request){
 
         Long userId = Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
         List<ModuleVo> list = userService.getModuleList(userId);
 
         return new Result<>(list, Result.SUCCESS);
+    }
+
+    @PostMapping("/getMenuList")
+    public Result<List<Menu>> getMenuList(){
+
+        List<Menu> menus = menuDao.selectList(new QueryWrapper<Menu>().lambda().eq(Menu::getDeleteMark,"NO"));
+        return new Result<>(menus, Result.SUCCESS);
+
     }
 
 //    @PostMapping("/logout")
