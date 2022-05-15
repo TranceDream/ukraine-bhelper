@@ -2,7 +2,7 @@
  * @Author: Linhao Yu & Xixian Li
  * @Date: 2022-04-14 22:29:06
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-15 03:04:37
+ * @Last Modified time: 2022-05-15 16:29:35
  */
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -10,7 +10,8 @@ import NotFound from '../pages/404/404'
 import Admin from '../pages/admin/Admin'
 import DataMonitor from '../pages/admin/pages/DataMonitor'
 import HouseControl from '../pages/admin/pages/HouseControl'
-import MenuControl from '../pages/admin/pages/menu-control'
+import LogControl from '../pages/admin/pages/LogControl'
+import MenuControl from '../pages/admin/pages/Menu-control'
 import NewsControl from '../pages/admin/pages/NewsControl'
 import ReportControl from '../pages/admin/pages/ReportControl'
 import ReportDetail from '../pages/admin/pages/ReportDetail'
@@ -62,6 +63,7 @@ export default function Router() {
                         element={<MenuControl />}
                     />
                     <Route path='/admin/report' element={<ReportDetail />} />
+                    <Route path='/admin/log-control' element={<LogControl />} />
                 </Route>
                 <Route path='/station' element={<StationList />} />
                 <Route path='/station/detail' element={<Station />} />
