@@ -2,7 +2,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-28 22:28:04
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-15 20:12:27
+ * @Last Modified time: 2022-05-15 21:23:26
  */
 /*
 包含应用中所有接口请求函数的模块
@@ -150,4 +150,11 @@ export const reqSyslogList = (params) => {
 //管理员获取操作列表下拉框
 export const reqOperationList = (params) => {
     return ajax(BASE + '/sys/getOperationList', params, 'POST')
+}   
+
+// ! 新闻
+
+// 管理获取新闻
+export const reqSelectArticle = (params) => {
+    return ajax(BASE + '/news/selectArticle', params, 'POST')
 }   

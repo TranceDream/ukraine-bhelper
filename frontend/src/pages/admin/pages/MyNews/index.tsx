@@ -2,10 +2,9 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-24 17:19:29
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-15 22:23:29
+ * @Last Modified time: 2022-05-15 22:41:50
  */
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table'
-import { Button } from 'antd'
 import React, { useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { reqSelectArticle } from '../../api'
@@ -22,9 +21,9 @@ export type TableListItem = {
     groupId: number
 }
 
-export default function NewsControl() {
+export default function MyNews() {
     const loca = useLocation()
-    const navigate  = useNavigate()
+    const navigate = useNavigate()
     const [tableListDataSource, settableListDataSource] = useState<
         TableListItem[]
     >([]) // 记录操作行的数据
@@ -83,23 +82,26 @@ export default function NewsControl() {
             key: 'option',
             valueType: 'option',
             render: (text, record, index) => [
-                <a key='delete' onClick={() => deleteNews( record, index)}>
-                    删除
-                </a>,
-                <a key='change' onClick={() => auditNews(record,index)}>
-                    审核
+                <a
+                    key='edit'
+                    onClick={
+                        record.status === 1
+                            ? pause
+                            : () => editNews(record, index)
+                    }>
+                    {record.status === 1 ? '-----' : '编辑'}
                 </a>,
             ],
         },
     ]
 
-    //点击审核
-    const auditNews = (record: any, index: number) => {
-       
-    }
+    const pause = () => {}
 
-    // 点击删除
-    const deleteNews = (record: any, index: number) => {}
+    // 点击编辑
+    const editNews = (record: any, index: number) => {
+        //  console.log(loca.pathname + '?edit=' + record.articleId)
+        navigate('/admin/news-edit' + '?id=' + record.articleId)
+    }
 
     const getdata = (data: any) => {
         // console.log('data', data)
@@ -160,14 +162,14 @@ export default function NewsControl() {
                 toolbar={{
                     multipleLine: false,
                     actions: [
-                        <Button
-                            key='add'
-                            type='primary'
-                            onClick={() => {
-                                handleAddNews()
-                            }}>
-                            添加新闻
-                        </Button>,
+                        // <Button
+                        //     key='add'
+                        //     type='primary'
+                        //     onClick={() => {
+                        //         handleAddNews()
+                        //     }}>
+                        //     添加新闻
+                        // </Button>,
                     ],
                 }}
                 dataSource={tableListDataSource}
