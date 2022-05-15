@@ -31,7 +31,7 @@ public interface UserService extends IService<User> {
 
     List<ModuleVo> getModuleList(Long userId);
 
-    String getChildGroups(Long userId);
+    String getOwnAndChildGroups(Long userId);
 
     List<GroupForm> getGroupList(Long userId);
 

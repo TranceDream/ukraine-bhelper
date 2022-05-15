@@ -194,7 +194,8 @@ public class PostController {
     @PostMapping("/updateinfo")
     public Result<Map<String ,Object>> updateHouse(@RequestBody HouseinfoVo houseinfoVo ,
                                                  HttpServletResponse response, HttpServletRequest request){
-
+        int userId = Integer.parseInt(request.getHeader(ConstantConfig.LOGIN_USER_HEADER));
+        houseinfoVo.setUserId(userId);
         if(houseinfoVo.getAddress() != null && houseinfoVo.getAddress().length()>200)
             return new Result<>(null,Result.FAIL,"The address is too long!");
 

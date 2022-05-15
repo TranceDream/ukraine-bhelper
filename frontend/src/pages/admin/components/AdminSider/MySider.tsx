@@ -2,7 +2,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-16 22:28:43
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-15 07:20:24
+ * @Last Modified time: 2022-05-15 22:14:25
  */
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import { Button, Layout, Menu } from 'antd'
@@ -26,7 +26,7 @@ export default function MySider() {
     }
     //动态获取展示列表
     const getMenuNode = (menuList: any[], hasIcon: boolean) => {
-        console.log('menu', menuList)
+        // console.log('menu', menuList)
         return menuList.map((item) => {
             if (item.childs && item.childs.length !== 0) {
                 const cItem = item.childs.find(
@@ -64,7 +64,7 @@ export default function MySider() {
     useEffect(() => {
         async function getMenulist() {
             const res = await reqModuleList()
-            console.table(res.data)
+            // console.table(res.data)
             // !修改
             setNodes(getMenuNode(res.data, true))
             // setMenuList(res.data)
