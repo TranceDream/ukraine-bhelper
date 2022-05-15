@@ -2,7 +2,7 @@
  * @Author: Linhao Yu & Xixian Li
  * @Date: 2022-04-14 22:29:06
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-15 16:29:35
+ * @Last Modified time: 2022-05-15 19:16:37
  */
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -22,6 +22,7 @@ import News from '../pages/news/News'
 import NewsList from '../pages/news/NewsList'
 import Station from '../pages/station/Station'
 import { StationList } from '../pages/station/StationList'
+import StationManagement from '../pages/station/StationManagement'
 import StationPost from '../pages/station/StationPost'
 import Login from '../pages/user/Login'
 import Register from '../pages/user/Register'
@@ -68,6 +69,10 @@ export default function Router() {
                 <Route path='/station' element={<StationList />} />
                 <Route path='/station/detail' element={<Station />} />
                 <Route path='/station/add' element={<StationPost />} />
+                <Route
+                    path='/station/management'
+                    element={<StationManagement />}
+                />
                 <Route path='/news' element={<NewsList />} />
                 <Route path='/news/detail' element={<News />} />
                 <Route path='*' element={<NotFound />} />

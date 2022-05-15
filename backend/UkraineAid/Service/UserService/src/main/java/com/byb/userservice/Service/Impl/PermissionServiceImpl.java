@@ -1,5 +1,6 @@
 package com.byb.userservice.Service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.byb.userservice.Dao.PermissionDao;
 import com.byb.userservice.Dao.RoleDao;
@@ -11,6 +12,7 @@ import com.byb.userservice.Vo.PermissionForm;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -54,6 +56,19 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionDao, Permission
             e.printStackTrace();
             result.put("flag", false);
             return result;
+        }
+        return result;
+    }
+
+    @Override
+    public List<Permission> getPermission4Role(PermissionForm permissionForm) {
+
+        List<Permission> temp = baseMapper.selectList(new QueryWrapper<Permission>().lambda().eq(Permission::getDeleteMark, "NO"));
+        List<Permission> result = new ArrayList<>();
+        for(Permission permission : temp){
+            if(permission.getParentId() != 1){
+                result.add(permission);
+            }
         }
         return result;
     }

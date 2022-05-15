@@ -81,10 +81,17 @@
         ) m  limit #{start}, #{size}
     </select>
 
-    <insert id="addList" parameterType="java.util.List">
+    <insert id="addRolePermissionList" parameterType="java.util.List">
         insert into DICT_ROLE_PERMISSION(ROLE_ID, PERMISSION_ID) values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.roleId}, #{item.permissionId})
+        </foreach>
+    </insert>
+
+    <insert id="addRoleMenuList" parameterType="java.util.List">
+        insert into DICT_ROLE_MENU(ROLE_ID, MENU_ID) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.roleId}, #{item.menuId})
         </foreach>
     </insert>
 </mapper>

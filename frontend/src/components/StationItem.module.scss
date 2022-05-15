@@ -36,8 +36,14 @@
     }
 
     .address {
+      display: flex;
+      align-items: center;
       font-size: large;
       color: gray;
+
+      span {
+        flex: 1;
+      }
     }
 
     .tags {
@@ -52,6 +58,18 @@
         &:not(&:first-child) {
           margin-left: 10px;
         }
+      }
+    }
+
+    .edit {
+      display: flex;
+      gap: 16px;
+      justify-content: flex-end;
+
+      button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
   }

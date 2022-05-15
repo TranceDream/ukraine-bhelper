@@ -6,6 +6,7 @@ import StationDetail from '../../components/StationDetail'
 import { Button, Form, Input, Modal, Spin } from 'antd'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
+    ContactModel,
     getStationDetail,
     reportStation,
     StationModel,
@@ -21,18 +22,22 @@ const Station = () => {
     const [modalVisible, setModal] = useState(false)
     const [reportReason, setReportReason] = useState('')
     const [station, setStation] = useState<StationModel>()
+    const [contactList, setContactList] = useState<ContactModel[]>()
 
     useEffect(() => {
-        console.log('effect')
         if (!id) {
             navigate('/404', { replace: true })
         }
         getStationDetail(parseInt(id!)).then((res) => {
             if (res.code === 200) {
-                console.log(res.data.houseInfo)
-                setStation(res.data.houseInfo)
-            } else {
+                const obj = {
+                    ...res.data.houseInfo,
+                    fileNames: res.data.filePicList,
+                }
                 console.log(res.data)
+                setContactList(res.data.ContactList)
+                setStation(obj)
+            } else {
                 navigate('/404', { replace: true })
             }
         })
@@ -97,6 +102,7 @@ const Station = () => {
                 {station ? (
                     <StationDetail
                         station={station!}
+                        contactList={contactList!}
                         onReport={() => {
                             setModal(true)
                         }}

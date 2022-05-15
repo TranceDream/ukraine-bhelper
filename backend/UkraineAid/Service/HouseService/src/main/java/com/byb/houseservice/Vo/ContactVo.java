@@ -24,4 +24,6 @@ public class ContactVo {
     private String deleteMark;
 
     private int typeId;
+
+    private String ContactName;
 }

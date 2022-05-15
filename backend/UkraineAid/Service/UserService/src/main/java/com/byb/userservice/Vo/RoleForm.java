@@ -26,6 +26,8 @@ public class RoleForm {
 
     private List<Integer> permissions;
 
+    private List<Integer> menus;
+
     private String lockedMark;
 
 
