@@ -90,6 +90,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         List<Integer> groupList = userRoleDao.selectGroupByUserId(userForm.getLoginId());
         Set<Integer> groupSet = new HashSet<>();
         for(Integer groupId : groupList) {
+            groupSet.add(groupId);
             List<Integer> childs = groupDao.selectGroups(groupId);
             groupSet.addAll(childs);
         }
@@ -243,10 +244,11 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     }
 
     @Override
-    public String getChildGroups(Long userId) {
+    public String getOwnAndChildGroups(Long userId) {
         List<Integer> groupList = userRoleDao.selectGroupByUserId(userId);
         Set<Integer> groupSet = new HashSet<>();
         for(Integer groupId : groupList) {
+            groupSet.add(groupId);
             List<Integer> childs = groupDao.selectGroups(groupId);
             groupSet.addAll(childs);
         }
@@ -266,7 +268,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         }
         List<GroupForm> result = new ArrayList<>();
         result.addAll(groupSet);
-        result = sortGroup(result, -1);
+//        result = sortGroup(result, -1);
         return result;
     }
 
