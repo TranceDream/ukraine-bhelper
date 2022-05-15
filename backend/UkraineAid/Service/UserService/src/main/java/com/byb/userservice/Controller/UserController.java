@@ -506,6 +506,9 @@ public class UserController {
             permission.setIcon(permissionForm.getIcon());
             permission.setUrl(permissionForm.getUrl());
             permission.setParentId(permissionForm.getParentId());
+            if(permissionForm.getDeleteMark().equals("YES") || permissionForm.getDeleteMark().equals("NO")) {
+                permission.setDeleteMark(permissionForm.getDeleteMark());
+            }
 
             permissionService.updateById(permission);
         }catch (Exception e){
