@@ -32,6 +32,13 @@ spring:
           uri: lb://SystemService
           predicates:
             - Path=/sys/**
+
+        - id: PicService
+          uri: lb://PicService
+          predicates:
+            - Path=/image/**
+
+
 #            - Path=/message/**
 
 #  datasource:
