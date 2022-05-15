@@ -2,11 +2,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-28 22:28:04
  * @Last Modified by: Linhao Yu
-<<<<<<< HEAD
- * @Last Modified time: 2022-05-15 17:11:02
-=======
- * @Last Modified time: 2022-05-15 21:23:26
->>>>>>> github/master
+ * @Last Modified time: 2022-05-15 23:04:54
  */
 /*
 包含应用中所有接口请求函数的模块
@@ -144,9 +140,6 @@ export const reqUpdatePermission = (params) => {
 //管理员获取类别列表下拉框
 export const reqAdminObjtypeList = (params) => {
     return ajax(BASE + '/sys/getAdminObjtypeList', params, 'POST')
-<<<<<<< HEAD
-}   
-=======
 }   
 
 // 管理员获取日志列表
@@ -165,4 +158,8 @@ export const reqOperationList = (params) => {
 export const reqSelectArticle = (params) => {
     return ajax(BASE + '/news/selectArticle', params, 'POST')
 }   
->>>>>>> github/master
+
+//管理员审核新闻
+export const reqNewsDoAudit = (params) => {
+    return ajax(BASE + '/news/doAudit', params, 'POST')
+}  
