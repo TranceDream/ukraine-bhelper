@@ -506,21 +506,30 @@ public class UserController {
         }
         try {
             Permission permission = permissionService.getById(permissionForm.getPermissionId());
-            permission.setPermissionName(permissionForm.getPermissionName());
-            permission.setIcon(permissionForm.getIcon());
-            permission.setUrl(permissionForm.getUrl());
-            permission.setParentId(permissionForm.getParentId());
+            if(permissionForm.getPermissionName()!=null) {
+                permission.setPermissionName(permissionForm.getPermissionName());
+            }
+            if(permissionForm.getIcon()!=null) {
+                permission.setIcon(permissionForm.getIcon());
+            }
+            if(permissionForm.getUrl()!=null) {
+                permission.setUrl(permissionForm.getUrl());
+            }
+            if(permissionForm.getParentId()!=null) {
+                permission.setParentId(permissionForm.getParentId());
+            }
+            if(permissionForm.getDeleteMark()!=null)
             if(permissionForm.getDeleteMark().equals("YES") || permissionForm.getDeleteMark().equals("NO")) {
                 permission.setDeleteMark(permissionForm.getDeleteMark());
             }
 
             permissionService.updateById(permission);
+
+            Map<String, Object> sysForm = FormGeneration.generateSysForm(permissionObjtypeId, Long.valueOf(permissionForm.getPermissionId().toString()), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "修改权限", updateOperation);
+            this.sendMessage(ConstantConfig.SYSL0G_QUEUE, sysForm);
         }catch (Exception e){
             e.printStackTrace();
         }
-
-        Map<String, Object> sysForm = FormGeneration.generateSysForm(permissionObjtypeId, Long.valueOf(permissionForm.getPermissionId().toString()), Long.valueOf(request.getHeader(ConstantConfig.LOGIN_USER_HEADER)), "修改权限", updateOperation);
-        this.sendMessage(ConstantConfig.SYSL0G_QUEUE, sysForm);
 
         return new Result(Result.SUCCESS, "操作成功");
     }
