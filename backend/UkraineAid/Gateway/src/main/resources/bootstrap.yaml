@@ -1,11 +1,16 @@
+server:
+  port: 9001
+
 spring:
   application:
-    name: gatewayservice # 服务名称
+    name: GatewayService # 服务名称
   profiles:
-    active: dev #开发环境，这里是dev
+    active: dev #
   cloud:
     nacos:
       server-addr: 139.9.231.20:8848 # Nacos地址,必须是localhost，其他出错
+#      discovery:
+#        cluster-name:
       config:
         file-extension: yaml # 文件后缀名,
 

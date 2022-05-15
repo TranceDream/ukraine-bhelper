@@ -3,6 +3,7 @@ package com.byb.gateway.Filter;
 import com.alibaba.fastjson.JSONObject;
 import com.byb.BaseUtil.Config.ConstantConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -24,6 +25,9 @@ import java.util.Map;
 @Component
 public class JWTAuthFilter implements GlobalFilter , Ordered {
 
+    @Value("${server.port}")
+    private int port;
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String token = exchange.getRequest().getHeaders().getFirst(ConstantConfig.TOKEN_HEADER);
@@ -39,6 +43,7 @@ public class JWTAuthFilter implements GlobalFilter , Ordered {
         HttpHeaders headers = new HttpHeaders();
         headers.add(ConstantConfig.TOKEN_HEADER, token);
         headers.add(ConstantConfig.REQUEST_HEADER, url);
+        headers.add("port", String.valueOf(port));
         HttpEntity<String> formEntity = new HttpEntity<String>(null, headers);
         RestTemplate restTemplate = new RestTemplate();
         String isAuth =  restTemplate.postForObject(ConstantConfig.TOKEN_CHECK_URL, formEntity, String.class);

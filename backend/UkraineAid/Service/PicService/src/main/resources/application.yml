@@ -1,0 +1,9 @@
+server:
+  port: 8007
+
+spring:
+  datasource:
+    url: jdbc:mysql://121.37.70.144:3306/UAHouse
+    username: root
+    password: Zjt@123456
+
