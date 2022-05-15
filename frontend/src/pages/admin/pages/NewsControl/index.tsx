@@ -11,9 +11,11 @@ import { reqGetAllUser } from '../../api'
 import { TableListItem } from '../RoleControl'
 import './ant-pro-card.scss'
 import styles from './index.module.scss'
+import { useNavigate } from 'react-router-dom'
 export default function NewsControl() {
+    const navigate = useNavigate()
     const handleAddNews = () => {
-        
+        navigate('/admin/news-edit')
     }
     return (
         <>

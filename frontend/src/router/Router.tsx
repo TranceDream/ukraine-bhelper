@@ -8,14 +8,13 @@ import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import NotFound from '../pages/404/404'
 import Admin from '../pages/admin/Admin'
-import AdminHome from '../pages/admin/pages/AdminHome'
 import DataMonitor from '../pages/admin/pages/DataMonitor'
 import HouseControl from '../pages/admin/pages/HouseControl'
 import NewsControl from '../pages/admin/pages/NewsControl'
 import ReportControl from '../pages/admin/pages/ReportControl'
 import ReportDetail from '../pages/admin/pages/ReportDetail'
 import RoleControl from '../pages/admin/pages/RoleControl'
-import ServiceMonitor from '../pages/admin/pages/ServiceMonitor'
+import MenuControl from '../pages/admin/pages/menu-control'
 import UserControl from '../pages/admin/pages/UserControl'
 import Home from '../pages/home/Home'
 import NewsList from '../pages/news/NewsList'
@@ -26,6 +25,7 @@ import Login from '../pages/user/Login'
 import Register from '../pages/user/Register'
 import News from '../pages/news/News'
 import StationManagement from '../pages/station/StationManagement'
+import NewsEdit from '../pages/admin/pages/NewsControl/NewsEdit'
 
 export default function Router() {
     return (
@@ -35,7 +35,6 @@ export default function Router() {
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
                 <Route path='/admin' element={<Admin />}>
-                    <Route path='/admin/home' element={<AdminHome />} />
                     <Route
                         path='/admin/user-control'
                         element={<UserControl />}
@@ -52,6 +51,7 @@ export default function Router() {
                         path='/admin/news-control'
                         element={<NewsControl />}
                     />
+                    <Route path='/admin/news-edit' element={<NewsEdit />} />
                     <Route
                         path='/admin/report-control'
                         element={<ReportControl />}
