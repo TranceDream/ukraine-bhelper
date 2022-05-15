@@ -1,3 +1,9 @@
+/*
+ * @Author: Linhao Yu
+ * @Date: 2022-05-15 02:21:01
+ * @Last Modified by: Linhao Yu
+ * @Last Modified time: 2022-05-15 04:18:38
+ */
 import {
     FileTextOutlined,
     HomeOutlined,
@@ -6,10 +12,10 @@ import {
     UserOutlined,
 } from '@ant-design/icons'
 import React from 'react'
-const Icon = (name: string) => {
+const Icon = (name: any) => {
     switch (name) {
         default:
-            return <></>
+            return <>111</>
         case '<UserOutlined />':
             return <UserOutlined />
         case '<FileTextOutlined />':

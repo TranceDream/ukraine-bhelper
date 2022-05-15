@@ -2,7 +2,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-16 22:28:55
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-11 00:16:23
+ * @Last Modified time: 2022-05-15 03:03:56
  */
 import {
     AppstoreOutlined,
@@ -12,7 +12,7 @@ import {
     SolutionOutlined,
     TagOutlined,
     ToolOutlined,
-    UserOutlined,
+    UserOutlined
 } from '@ant-design/icons'
 export const mapIcon = {
     '<UserOutlined />': <UserOutlined />,
@@ -63,8 +63,8 @@ export const menuList = [
             //     key: '/admin/report-control',
             // },
             {
-                title: '数据监控',
-                key: '/admin/data-monitor',
+                title: '菜单管理',
+                key: '/admin/menu-control',
             },
             {
                 title: '服务监控',
