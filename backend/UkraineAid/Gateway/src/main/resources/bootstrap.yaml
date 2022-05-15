@@ -1,5 +1,5 @@
 server:
-  port: 9001
+  port: 9003
 
 spring:
   application:
@@ -10,7 +10,7 @@ spring:
     nacos:
       server-addr: 139.9.231.20:8848 # Nacos地址,必须是localhost，其他出错
       discovery:
-        cluster-name: FIRST
+        cluster-name: THIRD
       config:
         file-extension: yaml # 文件后缀名,
 
