@@ -45,11 +45,16 @@ import java.util.function.Predicate;
 @RestController
 @RequestMapping("/house")
 public class PostController {
+    @Value("${define.string}")
+    private String string;
 
     @PostMapping("/test")
-    public Result<Map<String, Object>> test() {
+    public Result<Map<String, Object>> test(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         map.put("message", "welcome to house module 2 !");
+        int port = Integer.parseInt(request.getHeader("port"));
+        map.put("GatewayPort",port);
+        map.put("WHOIAM",string);
         return new Result<>(map, Result.SUCCESS);
     }
 
@@ -86,13 +91,13 @@ public class PostController {
     @Value("${spring.houseService.tagObjtypeId}")
     private int tagObjtypeId;
 
-    @Value("${spring.userService.addOperation}")
+    @Value("${spring.houseService.addOperation}")
     private int addOperation;
 
-    @Value("${spring.userService.updateOperation}")
+    @Value("${spring.houseService.updateOperation}")
     private int updateOperation;
 
-    @Value("${spring.userService.deleteOperation}")
+    @Value("${spring.houseService.deleteOperation}")
     private int deleteOperation;
 
     //基础房源信息********************************************************************************************************

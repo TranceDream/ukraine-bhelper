@@ -2,7 +2,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-28 22:28:04
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-11 02:20:56
+ * @Last Modified time: 2022-05-15 17:11:02
  */
 /*
 包含应用中所有接口请求函数的模块
@@ -115,7 +115,29 @@ export const reqDoAudit = (params) => {
 }
 
 // !模块
-
 export const reqModuleList = (params) => {
     return ajax(BASE + '/user/getModuleList', params, 'POST')
 }
+
+// 获取列表
+export const reqMenuPermissionData = (params) => {
+    return ajax(BASE + '/user/getPermissionList', params, 'POST')
+}
+
+
+// 管理员增加模块
+export const reqAddPermission = (params) => {
+    return ajax(BASE + '/user/addPermission', params, 'POST')
+}
+
+
+// 管理员更新模块
+export const reqUpdatePermission = (params) => {
+    return ajax(BASE + '/user/updatePermission', params, 'POST')
+}
+
+//!系统。。。。。。。。。。。。。。。。。。。。。。。。。
+//管理员获取类别列表下拉框
+export const reqAdminObjtypeList = (params) => {
+    return ajax(BASE + '/sys/getAdminObjtypeList', params, 'POST')
+}   
