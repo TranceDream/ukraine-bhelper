@@ -9,10 +9,12 @@ import { imageUrl, StationModel } from '../lib/request'
 import styles from './StationItem.module.scss'
 import { Button } from 'antd'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { deleteStation } from '../lib/request'
 
 interface StationItemProps {
     station: StationModel
     edit: boolean
+    onDelete?: () => void
 }
 
 /**
@@ -66,9 +68,14 @@ const StationItem = (props: StationItemProps) => {
                                 shape={'circle'}
                                 onClick={(event) => {
                                     event.stopPropagation()
-                                    navigate(
-                                        '/station/add?id=' +
-                                            props.station.houseId
+                                    deleteStation(props.station.houseId!).then(
+                                        (res) => {
+                                            if (res.code === 200) {
+                                                if (props.onDelete) {
+                                                    props.onDelete()
+                                                }
+                                            }
+                                        }
                                     )
                                 }}
                                 icon={<DeleteOutlined />}></Button>

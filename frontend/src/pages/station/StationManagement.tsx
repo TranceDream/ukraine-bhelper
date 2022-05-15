@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './StationList.module.scss'
 import Header from '../../components/Header'
 import { NavLink } from 'react-router-dom'
@@ -6,12 +6,20 @@ import { Button, Pagination } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import StationItem from '../../components/StationItem'
 import Footer from '../../components/Footer'
-import { StationModel } from '../../lib/request'
+import { getMyStations, StationModel } from '../../lib/request'
 
 const StationManagement = () => {
     const [index, setIndex] = useState(1)
     const [count, setCount] = useState(0)
     const [stationList, setStationList] = useState<Array<StationModel>>([])
+
+    useEffect(() => {
+        getMyStations(index).then((res) => {
+            setStationList(res.data.houseinfo)
+            setCount(res.data.count)
+        })
+    }, [index])
+
     return (
         <div className={styles.container}>
             <header>
@@ -32,6 +40,9 @@ const StationManagement = () => {
                         key={'station' + index}
                         station={station}
                         edit
+                        onDelete={() => {
+                            setIndex(index)
+                        }}
                     />
                 ))}
                 <div className={styles.pagination}>
