@@ -5,11 +5,14 @@
  */
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { StationModel } from '../lib/request'
+import { imageUrl, StationModel } from '../lib/request'
 import styles from './StationItem.module.scss'
+import { Button } from 'antd'
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 interface StationItemProps {
     station: StationModel
+    edit: boolean
 }
 
 /**
@@ -28,7 +31,9 @@ const StationItem = (props: StationItemProps) => {
             }}>
             <img
                 src={
-                    'https://cdn.jsdelivr.net/gh/TranceDream/ImgHost@master/img/IMG_20220319_165950__01.5v96fzjetqo0.webp'
+                    props.station.fileNames!.length === 0
+                        ? 'https://www.51gaifang.com/tu/UploadSoftPic/201906/2019060313023213.jpg'
+                        : imageUrl + '/' + props.station.fileNames![0]
                 }
                 alt={'House Preview'}
             />
@@ -38,11 +43,39 @@ const StationItem = (props: StationItemProps) => {
                     {props.station.description ?? ''}
                 </div>
                 <div className={styles.address}>
-                    {props.station.country +
-                        ' ' +
-                        props.station.province +
-                        ' ' +
-                        props.station.city}
+                    <span>
+                        {props.station.country +
+                            ' ' +
+                            props.station.province +
+                            ' ' +
+                            props.station.city}
+                    </span>
+                    {props.edit ? (
+                        <div className={styles.edit}>
+                            <Button
+                                shape={'circle'}
+                                onClick={(event) => {
+                                    event.stopPropagation()
+                                    navigate(
+                                        '/station/add?id=' +
+                                            props.station.hou,seId
+                                    )
+                                }}
+                                icon={<EditOutlined />}></Button>
+                            <Button
+                                shape={'circle'}
+                                onClick={(event) => {
+                                    event.stopPropagation()
+                                    navigate(
+                                        '/station/add?id=' +
+                                            props.station,.houseId
+                                    )
+                                }}
+                                icon={<DeleteOutlined />}></Button>
+                        </div>
+                    ) : (
+                        <></>
+                    )}
                 </div>
                 <div className={styles.tags}></div>
             </div>

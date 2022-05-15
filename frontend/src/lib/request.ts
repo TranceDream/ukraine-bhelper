@@ -4,8 +4,11 @@
  */
 
 import Cookie from 'universal-cookie'
+import { cleanCookies } from 'universal-cookie/lib/utils'
 
 const baseUrl = 'http://139.9.231.20:81'
+
+export const imageUrl = 'http://139.9.231.20:8002/image'
 
 export interface Response {
     msg: string
@@ -87,7 +90,9 @@ const post = async (
     })
     const res = await raw.json()
     if ((res === 401 || res === 403) && redirect) {
+        console.log('这里居然报了401')
         cookie.remove('token')
+        cleanCookies()
         window.location.replace('/login')
     }
     return res
@@ -153,53 +158,53 @@ export const register = async (
 }
 
 /**
- * 更新用户信息
- * @param userId
- * @param city
- * @param country
+ * 发布房源
+ * Tested
+ * @param station
+ * @param images
+ * @param contactList
+ * @param tagList
  */
-export const updateUser = async (
-    userId: number,
-    city: string | null,
-    country: string | null
-) => {
+export const publishStation = async (
+    station: StationModel,
+    images: File[],
+    contactList: ContactModel[],
+    tagList: TagModel[],
+): Promise<Response> => {
+    console.log({ station, images })
     const cookie = new Cookie()
     const token = cookie.get('token')
     if (!token) {
-        return
+        cookie.remove('token')
+        window.location.replace('/login')
+
+        return {
+            code: 0,
+            msg: 'No token',
+            data: null,
+        }
     }
-    let user: Map<string, number | string> = new Map()
-    user.set('userId', userId)
-    if (city) {
-        user.set('city', city)
-    }
-    if (country) {
-        user.set('country', country)
-    }
-    const raw = await fetch(baseUrl + '/user/addUserByEmail', {
+    const form = new FormData()
+    form.append('houseinfoVo', JSON.stringify(station))
+    form.append('tagList', JSON.stringify(tagList))
+    form.append('contactList', JSON.stringify(contactList))
+    images.forEach((img) => {
+        form.append('fileinfo', img)
+    })
+    const raw = await fetch(baseUrl + '/house/postHouse', {
         method: 'post',
         headers: {
-            'content-type': 'application/json',
             token: token,
         },
-        body: JSON.stringify(user),
+        body: form,
     })
     const res = await raw.json()
-    return {
-        code: res.code,
-        msg: res.msg,
+    if (res === 401 || res === 403) {
+        cookie.remove('token')
+        console.log(cookie.getAll())
+        window.location.replace('/login')
     }
-}
-
-/**
- * 发布房源
- * @todo 待修改
- * @param station
- */
-export const publishStation = async (
-    station: StationModel
-): Promise<Response> => {
-    return post('/house/postinfo', station)
+    return res
 }
 
 /**
@@ -208,9 +213,45 @@ export const publishStation = async (
  */
 export const updateStation = async (
     houseId: number,
-    station: StationModel
+    station: StationModel,
 ): Promise<Response> => {
     return post('/house/updateinfo', { houseId, ...station })
+}
+
+export interface ContactTypeModel {
+    typeId: number
+    contactName: string
+}
+
+/**
+ * 获取联系方式类型列表
+ * Tested
+ */
+export const getContactTypeList = async (): Promise<Response> => {
+    return post('/house/selectcontacttype', {})
+}
+
+/**
+ * 获取Tag类型列表
+ */
+export const getTagTypeList = async (): Promise<Response> => {
+    return post('/house/selecttagtype', {})
+}
+
+/**
+ * 根据ID获取联系方式
+ * @param houseId
+ */
+export const getContactList = async (houseId: number): Promise<Response> => {
+    return post('/house/selectcontact', { houseId })
+}
+
+export const deleteTag = async (tagId: number): Promise<Response> => {
+    return post('/house/deletetag', { TagId: tagId })
+}
+
+export const postTag = async (list: any[]): Promise<Response> => {
+    return post('/house/posttag', { date: list })
 }
 
 /**
@@ -233,6 +274,22 @@ export interface StationModel {
     duration?: number
     description?: string
     title?: string
+    fileNames?: string[]
+}
+
+export interface ContactModel {
+    typeId?: number
+    houseId?: number
+    contactId?: number
+    contactName?: string
+    content?: string
+}
+
+export interface TagModel {
+    tagId?: number
+    houseId?: number
+    tagName?: string
+    typeId?: number
 }
 
 export const getStationList = async (current: number, filter: any) => {
@@ -249,6 +306,10 @@ export const getStationList = async (current: number, filter: any) => {
  */
 export const getStationDetail = async (houseId: number): Promise<Response> => {
     return post('/house/housedetail', { houseId })
+}
+
+export const getMyStations = async (current: number) => {
+    return post('/house/userHouse', { current, pageSize: 10 })
 }
 
 /**

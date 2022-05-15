@@ -25,6 +25,7 @@ import StationPost from '../pages/station/StationPost'
 import Login from '../pages/user/Login'
 import Register from '../pages/user/Register'
 import News from '../pages/news/News'
+import StationManagement from '../pages/station/StationManagement'
 
 export default function Router() {
     return (
@@ -68,6 +69,10 @@ export default function Router() {
                 <Route path='/station' element={<StationList />} />
                 <Route path='/station/detail' element={<Station />} />
                 <Route path='/station/add' element={<StationPost />} />
+                <Route
+                    path='/station/management'
+                    element={<StationManagement />}
+                />
                 <Route path='/news' element={<NewsList />} />
                 <Route path='/news/detail' element={<News />} />
                 <Route path='*' element={<NotFound />} />
