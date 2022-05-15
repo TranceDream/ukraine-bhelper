@@ -1,5 +1,4 @@
-package com.byb.newsservice.Config;
-
+package com.byb.PicService.Config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -17,7 +16,8 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
 //        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
         //上传的图片在D盘下的image目录下，访问路径如：http://localhost:8082/image/100942.jpg
         //其中image表示访问的前缀。"file:D:/image/"是文件真实的存储路径
-//        registry.addResourceHandler("/image/**").addResourceLocations("file:/Ukother/Ukpic/NewPic/");
+        registry.addResourceHandler("/image/houseimage/**").addResourceLocations("file:/Ukother/Ukpic/housePic/");
+        registry.addResourceHandler("/image/newsimage/**").addResourceLocations("file:/Ukother/Ukpic/NewPic/");
 //        registry.addResourceHandler("/log/**").addResourceLocations("file:/Ukother/Uklog");
     }
 }

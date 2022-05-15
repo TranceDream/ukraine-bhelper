@@ -13,6 +13,7 @@
         <module>Service/HouseService</module>
         <module>Service/ReportService</module>
         <module>Service/NewsService</module>
+        <module>Service/PicService</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

@@ -2,7 +2,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-16 22:28:43
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-15 03:18:00
+ * @Last Modified time: 2022-05-15 07:20:24
  */
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import { Button, Layout, Menu } from 'antd'
@@ -33,11 +33,11 @@ export default function MySider() {
                     (cItem: { key: string }) => cItem.key === local.pathname
                 )
                 if (cItem) {
-                    setSubmenu([item.key])
+                    setSubmenu([item.title])
                 }
                 return (
                     <SubMenu
-                        key={Date.now() + item.title}
+                        key={item.title}
                         icon={Icon(item.icon)}
                         title={item.title}>
                         {getMenuNode(item.childs, false)}
@@ -46,15 +46,13 @@ export default function MySider() {
             } else {
                 if (hasIcon) {
                     return (
-                        <Menu.Item
-                            key={Date.now() + item.title}
-                            icon={Icon(item.icon)}>
+                        <Menu.Item key={item.key} icon={Icon(item.key)}>
                             <Link to={item.key}>{item.title}</Link>
                         </Menu.Item>
                     )
                 } else {
                     return (
-                        <Menu.Item key={Date.now() + item.title}>
+                        <Menu.Item key={item.key}>
                             <Link to={item.key}>{item.title}</Link>
                         </Menu.Item>
                     )
