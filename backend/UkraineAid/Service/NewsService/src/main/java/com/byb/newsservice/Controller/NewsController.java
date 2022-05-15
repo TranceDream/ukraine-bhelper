@@ -141,15 +141,15 @@ public class NewsController {
     //图片上传问题
     @PostMapping("/fileupload")
     @ResponseBody
-    public Result<Map<String,Object>> fileUpload(@RequestParam(value = "editormd-image-file", required = true) MultipartFile file, HttpServletRequest request) throws IOException {
+    public Result<Map<String,Object>> fileUpload(@RequestParam(value = "newsPic") MultipartFile file, HttpServletRequest request) throws IOException {
         //上传路径保存设置
 
         //获得SpringBoot当前项目的路径：System.getProperty("user.dir")
-        String path ="/Ukother/Ukpic/NewPic";
+        String path ="/Ukother/Ukpic/NewPic/";
 
         //按照月份进行分类：
         Calendar instance = Calendar.getInstance();
-        String month = (instance.get(Calendar.MONTH) + 1)+"月";
+        String month = (instance.get(Calendar.MONTH) + 1)+"mouth";
         path = path+month;
 
         File realPath = new File(path);
@@ -161,13 +161,14 @@ public class NewsController {
         System.out.println("上传文件保存地址："+realPath);
 
         //解决文件名字问题：我们使用uuid;
-        String filename = "ks-"+ UUID.randomUUID().toString().replaceAll("-", "");
+
+        String filename = UUID.randomUUID().toString().replaceAll("-", "")+file.getOriginalFilename();
         //通过CommonsMultipartFile的方法直接写文件（注意这个时候）
         file.transferTo(new File(realPath +"/"+ filename));
 
         //给editormd进行回调
         Map<String,Object> res= new HashMap<>();
-        res.put("url","image/"+month+"/"+ filename);
+        res.put("url","image/newsimage/"+month+"/"+ filename);
         res.put("success", 1);
         res.put("message", "upload success!");
 
