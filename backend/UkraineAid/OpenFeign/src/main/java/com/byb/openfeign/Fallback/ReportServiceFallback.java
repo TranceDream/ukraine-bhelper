@@ -20,7 +20,7 @@ public class ReportServiceFallback implements FallbackFactory<ReportClient> {
 
             @Override
             public Result<Map<String, Object>> addReport(Map<String, Object> reportForm) {
-                return new Result<>(new HashMap<>(), Result.FAIL);
+                return new Result<>(new HashMap<>(), Result.FAIL,"添加失败");
             }
 
             @Override

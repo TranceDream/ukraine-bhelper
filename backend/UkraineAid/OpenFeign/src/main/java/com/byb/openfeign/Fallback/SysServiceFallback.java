@@ -18,12 +18,12 @@ public class SysServiceFallback implements FallbackFactory<SysClient> {
         return new SysClient() {
             @Override
             public Result<Map<String, Object>> addLog(Map<String, Object> syslogForm) {
-                return new Result<>(new HashMap<>(), Result.FAIL);
+                return new Result<>(new HashMap<>(), Result.FAIL,"添加失败");
             }
 
             @Override
             public Result<Map<String, Object>> launchMessage(Map<String, Object> messageForm) {
-                return new Result<>(new HashMap<>(), Result.FAIL);
+                return new Result<>(new HashMap<>(), Result.FAIL, "发送失败");
             }
 
             @Override
