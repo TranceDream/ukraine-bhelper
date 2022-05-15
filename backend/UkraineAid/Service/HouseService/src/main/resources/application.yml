@@ -30,4 +30,6 @@ spring:
       discovery:
         service: HouseService
 
+define:
+  string: who i am
 
