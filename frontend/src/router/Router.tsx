@@ -2,7 +2,7 @@
  * @Author: Linhao Yu & Xixian Li
  * @Date: 2022-04-14 22:29:06
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-15 19:16:37
+ * @Last Modified time: 2022-05-15 19:26:27
  */
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
