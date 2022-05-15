@@ -5,9 +5,19 @@
  * @Last Modified time: 2022-05-07 23:40:55
  */
 import { ExclamationCircleOutlined } from '@ant-design/icons'
-import { Divider, Form, Input, message, Modal, Switch, Table } from 'antd'
+import {
+    Button,
+    Divider,
+    Form,
+    Input,
+    message,
+    Modal,
+    Switch,
+    Table,
+} from 'antd'
 import React, { useEffect, useState } from 'react'
 import { reqAddRole, reqLockUser, reqUserDetail } from '../../api'
+import { getGroupIdList } from '../../../../lib/request'
 interface Props {
     userName: string
     userId: number
@@ -17,6 +27,12 @@ interface Props {
     roleList: any
     userRoleId: number
 }
+
+interface GroupIdModel {
+    groupId: number
+    groupName: string
+}
+
 const onFinish = (values: any) => {
     // console.log('Success:', values)
 }
@@ -39,6 +55,9 @@ export default function MuteForm(props: Props) {
     const [modalText, setModalText] = React.useState('Content of the modal')
     const [hadRoleLoading, setHadRoleLoading] = React.useState(true)
     const [nonHadRoleLoading, setNonHadRoleLoading] = React.useState(true)
+    const [groupModalVisible, setGroupModal] = useState<boolean>(false)
+    const [groupIdList, setGroupIdList] = useState<GroupIdModel[]>()
+    const [groupId, setGroupId] = useState<number>()
 
     const role_columns = [
         {
@@ -99,7 +118,12 @@ export default function MuteForm(props: Props) {
                         defaultChecked={
                             record.lockedMark === 'NO' ? true : false
                         }
-                        onClick={() => addRole(record, index)}
+                        onClick={() => {
+                            setGroupModal(true)
+                            setRecord(record)
+                            setIndex(index)
+                        }}
+                        // onClick={() => addRole(record, index)}
                         checked={
                             record.lockedMark === 'NO' ? true : false
                         }></Switch>
@@ -163,12 +187,14 @@ export default function MuteForm(props: Props) {
         const res = await reqAddRole({
             userId: record.userId,
             roleId: record.roleId,
+            groupId,
         })
         if (res.code === 200) {
             message.success('赋权成功')
             let tempNonHadRoleData = nonAddRoleData.slice()
             tempNonHadRoleData[Index].lockedMark =
                 tempNonHadRoleData[Index].lockedMark === 'YES' ? 'NO' : 'YES'
+            setGroupModal(false)
             setNonAddRoleData(tempNonHadRoleData)
         } else {
             message.error(res.msg)
@@ -182,11 +208,16 @@ export default function MuteForm(props: Props) {
     }
     useEffect(() => {
         async function initialize() {
+            const groupRes = await getGroupIdList()
             const res = await reqUserDetail({ userId: props.userId })
             if (res.code === 500) {
                 message.error(res.msg)
+            }
+            if (groupRes.code === 500) {
+                message.error(groupRes.msg)
             } else {
                 // console.table(res)
+                setGroupIdList(groupRes.data.data)
                 initializeColomns(res.data.data)
                 setNonHadRoleLoading(false)
                 setHadRoleLoading(false)
@@ -329,6 +360,40 @@ export default function MuteForm(props: Props) {
                 confirmLoading={confirmLoading}
                 onCancel={handleCancel}>
                 <p>{modalText}</p>
+            </Modal>
+            {/* GroupID选择 */}
+            <Modal
+                title={'Group ID 选择'}
+                visible={groupModalVisible}
+                onCancel={() => {
+                    setGroupModal(false)
+                }}
+                footer={null}>
+                <Table
+                    dataSource={groupIdList}
+                    columns={[
+                        { title: 'GroupID', dataIndex: 'groupId' },
+                        { title: 'Group Name', dataIndex: 'groupName' },
+                        {
+                            title: 'Action',
+                            render: (value, rec, index) => {
+                                return (
+                                    <Button
+                                        onClick={() => {
+                                            setaddRolevisible(true)
+                                            setModalText(
+                                                '确定给予ID为' +
+                                                    record.userId +
+                                                    '的用户该权限吗？'
+                                            )
+                                            setGroupId(rec.groupId)
+                                        }}>
+                                        选择
+                                    </Button>
+                                )
+                            },
+                        },
+                    ]}></Table>
             </Modal>
             {/* 赋权 */}
             <Modal

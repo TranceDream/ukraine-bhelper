@@ -411,3 +411,15 @@ export const updateNews = async (
 export const reportNews = async (articleId: number, reason: string) => {
     return post('/news/report', { articleId, reason })
 }
+
+export const getGroupIdList = async (): Promise<Response> => {
+    return post('/user/getChildGroupVos', {})
+}
+
+export const getPermissionForRole = async (): Promise<Response> => {
+    return post('/user/getPermission4Role', {})
+}
+
+export const getMenuList = async (): Promise<Response> => {
+    return post('/user/getMenuList', {})
+}
