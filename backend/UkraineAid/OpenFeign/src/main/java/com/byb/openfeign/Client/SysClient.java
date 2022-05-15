@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.Map;
 
-@FeignClient(name = "systemservice", fallbackFactory = SysServiceFallback.class)
+@FeignClient(name = "SystemService", fallbackFactory = SysServiceFallback.class)
 public interface SysClient {
 
     @PostMapping("/sys/addLog")
