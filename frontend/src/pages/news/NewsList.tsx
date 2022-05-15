@@ -53,7 +53,6 @@ const NewsList = () => {
                                 <span
                                     key={'g' + g.id}
                                     onClick={() => {
-                                        console.log('set group')
                                         setGroup(g.id)
                                     }}>
                                     {g.name}

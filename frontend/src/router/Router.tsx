@@ -11,21 +11,22 @@ import Admin from '../pages/admin/Admin'
 import DataMonitor from '../pages/admin/pages/DataMonitor'
 import HouseControl from '../pages/admin/pages/HouseControl'
 import LogControl from '../pages/admin/pages/LogControl'
-import MenuControl from '../pages/admin/pages/Menu-control'
+import MenuControl from '../pages/admin/pages/menu-control'
 import NewsControl from '../pages/admin/pages/NewsControl'
 import ReportControl from '../pages/admin/pages/ReportControl'
 import ReportDetail from '../pages/admin/pages/ReportDetail'
 import RoleControl from '../pages/admin/pages/RoleControl'
 import UserControl from '../pages/admin/pages/UserControl'
 import Home from '../pages/home/Home'
-import News from '../pages/news/News'
 import NewsList from '../pages/news/NewsList'
 import Station from '../pages/station/Station'
 import { StationList } from '../pages/station/StationList'
-import StationManagement from '../pages/station/StationManagement'
 import StationPost from '../pages/station/StationPost'
 import Login from '../pages/user/Login'
 import Register from '../pages/user/Register'
+import News from '../pages/news/News'
+import StationManagement from '../pages/station/StationManagement'
+import NewsEdit from '../pages/admin/pages/NewsControl/NewsEdit'
 
 export default function Router() {
     return (
@@ -51,6 +52,7 @@ export default function Router() {
                         path='/admin/news-control'
                         element={<NewsControl />}
                     />
+                    <Route path='/admin/news-edit' element={<NewsEdit />} />
                     <Route
                         path='/admin/report-control'
                         element={<ReportControl />}

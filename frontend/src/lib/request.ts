@@ -6,9 +6,9 @@
 import Cookie from 'universal-cookie'
 import { cleanCookies } from 'universal-cookie/lib/utils'
 
-const baseUrl = 'http://139.9.231.20:81'
+export const baseUrl = 'http://139.9.231.20:81'
 
-export const imageUrl = 'http://139.9.231.20:8002/image'
+export const imageUrl = 'http://139.9.231.20:8007/image/houseimage'
 
 export interface Response {
     msg: string
@@ -246,6 +246,19 @@ export const getContactList = async (houseId: number): Promise<Response> => {
     return post('/house/selectcontact', { houseId })
 }
 
+export const updateContact = async (
+    contactId: number,
+    houseId: number,
+    typeId: number,
+    content: string
+): Promise<Response> => {
+    return post('/house/updatecontact', { contactId, houseId, typeId, content })
+}
+
+export const deleteContact = async (contactId: number): Promise<Response> => {
+    return post('/house/deletecontact', { contactId })
+}
+
 export const deleteTag = async (tagId: number): Promise<Response> => {
     return post('/house/deletetag', { TagId: tagId })
 }
@@ -292,10 +305,22 @@ export interface TagModel {
     typeId?: number
 }
 
+export interface StationFilter {
+    country?: string
+    province?: string
+    city?: string
+    durationmin?: number
+    durationmax?: number
+    guestmin?: number
+    guestmax?: number
+    pets?: string
+}
+
 export const getStationList = async (current: number, filter: any) => {
     return post('/house/selectHouseAdmin', {
         current,
         pageSize: 10,
+        ...filter,
     })
 }
 
@@ -367,6 +392,14 @@ export const getNewsDetail = async (articleId: number): Promise<Response> => {
  */
 export const getNewsGroupList = async (): Promise<Response> => {
     return post('/news/getNewsGroup', {})
+}
+
+export const updateNews = async (
+    articleId: number,
+    title: string,
+    content: string
+): Promise<Response> => {
+    return post('/news/updateArticle', { articleId, title, content })
 }
 
 /**
