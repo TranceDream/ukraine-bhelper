@@ -2,7 +2,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-28 22:28:04
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-15 23:04:54
+ * @Last Modified time: 2022-05-15 23:31:42
  */
 /*
 包含应用中所有接口请求函数的模块
@@ -162,4 +162,9 @@ export const reqSelectArticle = (params) => {
 //管理员审核新闻
 export const reqNewsDoAudit = (params) => {
     return ajax(BASE + '/news/doAudit', params, 'POST')
+}  
+
+// 删除文章
+export const reqDelNews = (params) => {
+    return ajax(BASE + '/news/deleteArticle', params, 'POST')
 }  
