@@ -32,7 +32,7 @@ spring:
           uri: lb://SystemService
           predicates:
             - Path=/sys/**
-            - Path=/message/**
+#            - Path=/message/**
 
 #  datasource:
 #    url: jdbc:mysql://82.157.113.175:3306/UkraineAssistance
