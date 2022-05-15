@@ -7,10 +7,7 @@ import com.byb.BaseUtil.Utils.Result;
 import com.byb.userservice.Dao.RoleDao;
 import com.byb.userservice.Dao.RolePermissionDao;
 import com.byb.userservice.Dao.UserRoleDao;
-import com.byb.userservice.Entity.Permission;
-import com.byb.userservice.Entity.Role;
-import com.byb.userservice.Entity.RolePermission;
-import com.byb.userservice.Entity.UserRole;
+import com.byb.userservice.Entity.*;
 import com.byb.userservice.Service.RoleService;
 import com.byb.userservice.Vo.PermissionForm;
 import com.byb.userservice.Vo.PermissionVo;
@@ -121,8 +118,22 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
                     rolePermission.setPermissionId(permissionId);
                     list.add(rolePermission);
                 }
-                Integer insertTotal = baseMapper.addList(list);
-                if (insertTotal == null && insertTotal != roleForm.getPermissions().size()) {
+                Integer insertTotal = baseMapper.addRolePermissionList(list);
+                if (insertTotal == null || insertTotal != roleForm.getPermissions().size()) {
+                    result.put("flag", false);
+                }
+            }
+
+            List<RoleMenu> roleMenus = new ArrayList<>();
+            if(roleForm.getMenus() != null && !roleForm.getMenus().isEmpty()){
+                for(Integer menuId : roleForm.getMenus()) {
+                    RoleMenu roleMenu = new RoleMenu();
+                    roleMenu.setMenuId(menuId);
+                    roleMenu.setRoleId(roleId);
+                    roleMenus.add(roleMenu);
+                }
+                Integer insertTotal = baseMapper.addRoleMenuList(roleMenus);
+                if (insertTotal == null || insertTotal != roleForm.getMenus().size()) {
                     result.put("flag", false);
                 }
             }
