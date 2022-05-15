@@ -301,7 +301,11 @@ export default function UserControl() {
                 confirmLoading={confirmLoading}
                 onCancel={handleAddRoleCancel}
                 footer={null}>
-                <AddRole />
+                <AddRole
+                    callback={() => {
+                        setAddRoleVisible(false)
+                    }}
+                />
             </Modal>
 
             {/* 详情权限查看 */}

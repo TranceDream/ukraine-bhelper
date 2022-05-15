@@ -7,6 +7,8 @@
 import { Button, Form, Input, message, Select, Tag } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { reqAddNewRole, reqPermissionList } from '../../api'
+import { getMenuList, getPermissionForRole } from '../../../../lib/request'
+import { values } from 'lodash'
 
 // const Options = [
 //     { value: 'gold' },
@@ -16,6 +18,7 @@ import { reqAddNewRole, reqPermissionList } from '../../api'
 // ]
 
 let permissionMapId: any = {}
+let menusMap: Map<string, number> = new Map()
 
 function tagRender(props: any) {
     const colors = ['gold', 'lime', 'green', 'cyan']
@@ -59,10 +62,16 @@ const tailFormItemLayout = {
     },
 }
 
-export default function AddRole() {
+interface AddRoleProps {
+    callback: () => void
+}
+
+export default function AddRole(props: AddRoleProps) {
     const [form] = Form.useForm()
     const [options, setOptions] = useState<any[]>([])
+    const [menus, setMenus] = useState<any[]>([])
     const [selectedPermission, setSelectedPermission] = useState<any[]>([])
+    const [selectedMenus, setSelectedMenus] = useState<any[]>([])
     const [loading, setLoading] = useState(false)
 
     const onFinish = async (values: any) => {
@@ -70,9 +79,11 @@ export default function AddRole() {
         const res = await reqAddNewRole({
             roleName: values.roleName,
             permissions: selectedPermission,
+            menus: selectedMenus,
         })
         if (res.code === 200) {
             message.success('添加成功')
+            props.callback()
         } else {
             message.error(res.msg)
         }
@@ -85,28 +96,43 @@ export default function AddRole() {
         for (let key in permissionMapId) {
             delete permissionMapId[key]
         }
-        async function getPermissions() {
-            const res = await reqPermissionList()
-            // console.log('res', res)
+        getPermissionForRole().then((res) => {
             if (res.code === 200) {
-                prepareOptions(res.data.data)
+                prepareOptions(res.data)
             } else {
                 message.error(res.msg)
             }
-        }
-        getPermissions()
+        })
+        getMenuList().then((res) => {
+            if (res.code === 200) {
+                prepareMenus(res.data)
+            } else {
+                message.error(res.msg)
+            }
+        })
     }, [])
     const prepareOptions = (data: any) => {
         let tempOptions: any[] = []
         data.forEach((item: any) => {
             let tempOption = Object()
-            tempOption = {}
             tempOption.value = item.permissionName
             tempOptions.push(tempOption)
             permissionMapId[item.permissionName] = item.permissionId
         })
         setOptions(tempOptions)
         // console.log('permissionMapId', permissionMapId)
+    }
+
+    const prepareMenus = (data: any) => {
+        let tempMenus: any[] = []
+        data.forEach((item: any) => {
+            let tempMenu = Object()
+            tempMenu.id = item.menuId
+            tempMenu.value = item.menu
+            menusMap.set(tempMenu.value, tempMenu.id)
+            tempMenus.push(tempMenu)
+        })
+        setMenus(tempMenus)
     }
 
     // 权限选择改变
@@ -120,6 +146,16 @@ export default function AddRole() {
         setSelectedPermission(tempselectedPermission)
         // console.log('1111111111', selectedPermission)
     }
+
+    const handleMenusChange = (value: any) => {
+        console.log(value)
+        const temp: any[] | ((prevState: never[]) => never[]) = []
+        value.forEach((e: any) => {
+            temp.push(menusMap.get(e))
+        })
+        setSelectedMenus(temp)
+    }
+
     return (
         <Form
             {...formItemLayout}
@@ -162,6 +198,29 @@ export default function AddRole() {
                     // defaultValue={['gold', 'cyan']}
                     style={{ width: '100%' }}
                     options={options}
+                />
+            </Form.Item>
+
+            <Form.Item
+                name='roleMenus'
+                label='菜单管理'
+                preserve={false}
+                rules={[
+                    {
+                        required: true,
+                        message: '请选择菜单项',
+                    },
+                ]}
+                // initialValue={props.roleName}
+            >
+                <Select
+                    onChange={handleMenusChange}
+                    mode='multiple'
+                    showArrow
+                    tagRender={tagRender}
+                    // defaultValue={['gold', 'cyan']}
+                    style={{ width: '100%' }}
+                    options={menus}
                 />
             </Form.Item>
 

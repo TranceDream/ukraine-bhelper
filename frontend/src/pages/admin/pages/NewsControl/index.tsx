@@ -2,14 +2,14 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-24 17:19:29
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-15 23:15:29
+ * @Last Modified time: 2022-05-15 23:40:41
  */
-import { EditOutlined } from '@ant-design/icons'
+import { EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table'
 import { Button, message, Modal } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { reqSelectArticle } from '../../api'
+import { reqDelNews, reqSelectArticle } from '../../api'
 import AuditNews from '../../components/AuditNews'
 import PubSub from '../../Utils/pubsub'
 import './ant-pro-card.scss'
@@ -30,11 +30,12 @@ export default function NewsControl() {
     const navigate = useNavigate()
     const [record, setRecord] = useState<any>({})
     const [newsVisble, setNewsVisble] = useState(false)
+    const [delNewsVisible, setDelNewsVisible] = useState(false)
     const [confirmLoading, setconfirmLoading] = useState(false)
-
     const [tableListDataSource, settableListDataSource] = useState<
         TableListItem[]
-    >([]) // 记录操作行的数据
+        >([]) // 记录操作行的数据
+    const [modalText, setModalText] = useState("确认删除这条新闻吗？")
     const handleAddNews = () => {
         navigate('/admin/news-edit')
     }
@@ -45,9 +46,9 @@ export default function NewsControl() {
             'newsaudit',
             (msg: string, data: string) => {
                 if (data === 'success') {
-                    message.success('修改成功')
+                    message.success('审核成功')
                 } else {
-                    message.error('修改失败')
+                    message.error('审核失败')
                 }
                 setNewsVisble(false)
                 ref.current?.reload()
@@ -137,7 +138,29 @@ export default function NewsControl() {
     }
 
     // 点击删除
-    const deleteNews = (record: any, index: number) => {}
+    const deleteNews = (record: any, index: number) => {
+        setDelNewsVisible(true)
+        setRecord(record)
+    }
+
+    //确认删除
+    const handleDelOk = async() => {
+        setconfirmLoading(true)
+        const res = await reqDelNews({ article: record.articleId })
+        if (res.code === 200) {
+            message.success("删除成功")
+        } else {
+            message.error(res.msg)
+        }
+        setconfirmLoading(false)
+        setDelNewsVisible(false)
+        ref.current?.reload()
+    }
+
+    //取消删除
+    const handleDelCancel = () => {
+        setDelNewsVisible(false)
+    }
 
     const getdata = (data: any) => {
         // console.log('data', data)
@@ -159,8 +182,17 @@ export default function NewsControl() {
                 columns={columns}
                 request={async (params, sorter, filter) => {
                     // 表单搜索项会从 params 传入，传递给后端接口。
-                    if ('userId' in params) {
-                        params.userId = parseInt(params.userId)
+                    if ('articleId' in params) {
+                        params.articleId = parseInt(params.articleId)
+                    }
+                    if ('author' in params) {
+                        params.author = parseInt(params.author)
+                    }
+                    if ('groupId' in params) {
+                        params.groupId = parseInt(params.groupId)
+                    }
+                    if ('status' in params) {
+                        params.status = parseInt(params.status)
                     }
                     // setParams(params)
                     // console.log('UseControl: ', params, sorter, filter)
@@ -247,6 +279,27 @@ export default function NewsControl() {
                 footer={null}>
                 <AuditNews record={record} />
                 {/* <ChangePwd userName={record.name} userId={record.userId} /> */}
+            </Modal>
+
+            {/* 删除新闻 */}
+            <Modal
+                title={
+                    <>
+                        <ExclamationCircleOutlined
+                            style={{
+                                fontSize: 20,
+                                color: '#eb2f96',
+                                marginRight: 10,
+                            }}
+                        />
+                        系统提示
+                    </>
+                }
+                visible={delNewsVisible}
+                onOk={handleDelOk}
+                confirmLoading={confirmLoading}
+                onCancel={handleDelCancel}>
+                <p>{modalText}</p>
             </Modal>
         </>
     )
