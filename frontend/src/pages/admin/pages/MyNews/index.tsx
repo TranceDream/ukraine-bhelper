@@ -2,7 +2,7 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-24 17:19:29
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-15 22:41:50
+ * @Last Modified time: 2022-05-15 23:15:10
  */
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table'
 import React, { useRef, useState } from 'react'
@@ -65,8 +65,8 @@ export default function MyNews() {
             key: 'status',
             valueEnum: {
                 1: '待审核',
-                2: '已审核',
-                3: '未审核',
+                2: '审核通过',
+                3: '被驳回',
             },
         },
         {
