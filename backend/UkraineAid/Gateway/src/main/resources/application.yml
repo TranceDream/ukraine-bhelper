@@ -1,5 +1,3 @@
-server:
-  port: 9001
 
 spring:
   cloud:
@@ -53,7 +51,7 @@ spring:
 #mybatis-plus:
 #  mapper-locations: classpath:DaoXML/*.xml
 # nacos
-    nacos:
-      server-addr: 139.9.231.20:8848
-      discovery:
-        service: Gateway
+#    nacos:
+#      server-addr: 139.9.231.20:8848
+#      discovery:
+#        service: Gateway

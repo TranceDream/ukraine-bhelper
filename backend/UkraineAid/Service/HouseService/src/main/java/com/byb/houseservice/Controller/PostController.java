@@ -46,10 +46,12 @@ import java.util.function.Predicate;
 @RequestMapping("/house")
 public class PostController {
 
-    @PostMapping("/test")
-    public Result<Map<String, Object>> test() {
+    @GetMapping("/test")
+    public Result<Map<String, Object>> test(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         map.put("message", "welcome to house module 2 !");
+        int port = Integer.parseInt(request.getHeader("port"));
+        map.put("GatewayPort",port);
         return new Result<>(map, Result.SUCCESS);
     }
 
