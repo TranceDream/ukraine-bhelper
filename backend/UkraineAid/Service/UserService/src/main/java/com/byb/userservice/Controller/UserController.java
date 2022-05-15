@@ -108,8 +108,12 @@ public class UserController {
 
     @PostMapping("/checkToken")
     public void checkToken(HttpServletResponse response, HttpServletRequest request){
-        String userId = tokenManager.getUserInfoFromToken(request.getHeader(ConstantConfig.TOKEN_HEADER));
-        ResponseUtil.out(response, new Result(userId, Result.SUCCESS));
+        try {
+            String userId = tokenManager.getUserInfoFromToken(request.getHeader(ConstantConfig.TOKEN_HEADER));
+            ResponseUtil.out(response, new Result(userId, Result.SUCCESS));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @PostMapping("/addUserByEmail")
