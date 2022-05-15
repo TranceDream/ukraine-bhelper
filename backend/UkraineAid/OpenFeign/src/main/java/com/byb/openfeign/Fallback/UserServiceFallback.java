@@ -5,6 +5,7 @@ import com.byb.openfeign.Client.UserClient;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class UserServiceFallback implements FallbackFactory<UserClient> {
 
             @Override
             public Result<Map<String, Object>> identify(Map<String, Object> userForm) {
-                return new Result<>(null, Result.FAIL);
+                return new Result<>(new HashMap<>(), Result.FAIL);
             }
 
             @Override
@@ -31,12 +32,12 @@ public class UserServiceFallback implements FallbackFactory<UserClient> {
 
             @Override
             public Result<Map<String, Object>> getOneGroup(Map<String, Object> groupMap) {
-                return new Result<>(null, Result.FAIL);
+                return new Result<>(new HashMap<>(), Result.FAIL);
             }
 
             @Override
             public Result<Map<Integer, String>> getChildGroup(Integer groupId) {
-                return new Result<>(null, Result.FAIL);
+                return new Result<>(new HashMap<>(), Result.FAIL);
             }
         };
     }
