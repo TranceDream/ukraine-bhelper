@@ -2,7 +2,7 @@
  * @Author: Linhao Yu & Xixian Li
  * @Date: 2022-04-14 22:29:06
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-15 19:16:37
+ * @Last Modified time: 2022-05-15 22:20:04
  */
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -11,22 +11,23 @@ import Admin from '../pages/admin/Admin'
 import DataMonitor from '../pages/admin/pages/DataMonitor'
 import HouseControl from '../pages/admin/pages/HouseControl'
 import LogControl from '../pages/admin/pages/LogControl'
-import MenuControl from '../pages/admin/pages/menu-control'
+import MenuControl from '../pages/admin/pages/Menu-control'
+import MyNews from '../pages/admin/pages/MyNews'
 import NewsControl from '../pages/admin/pages/NewsControl'
+import NewsEdit from '../pages/admin/pages/NewsControl/NewsEdit'
 import ReportControl from '../pages/admin/pages/ReportControl'
 import ReportDetail from '../pages/admin/pages/ReportDetail'
 import RoleControl from '../pages/admin/pages/RoleControl'
 import UserControl from '../pages/admin/pages/UserControl'
 import Home from '../pages/home/Home'
+import News from '../pages/news/News'
 import NewsList from '../pages/news/NewsList'
 import Station from '../pages/station/Station'
 import { StationList } from '../pages/station/StationList'
+import StationManagement from '../pages/station/StationManagement'
 import StationPost from '../pages/station/StationPost'
 import Login from '../pages/user/Login'
 import Register from '../pages/user/Register'
-import News from '../pages/news/News'
-import StationManagement from '../pages/station/StationManagement'
-import NewsEdit from '../pages/admin/pages/NewsControl/NewsEdit'
 
 export default function Router() {
     return (
@@ -61,6 +62,8 @@ export default function Router() {
                         path='/admin/data-monitor'
                         element={<DataMonitor />}
                     />
+                    <Route path='/admin/MyNews' element={<MyNews />} />
+
                     <Route
                         path='/admin/menu-control'
                         element={<MenuControl />}

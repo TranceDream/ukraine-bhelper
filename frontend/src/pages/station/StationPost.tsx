@@ -39,12 +39,26 @@ import {
     PlusOutlined,
 } from '@ant-design/icons'
 import Footer from '../../components/Footer'
+import {
+    CityModel,
+    CountryModel,
+    getCities,
+    getCountries,
+    getStates,
+    StateModel,
+} from '../../lib/district'
+import { values } from 'lodash'
 
 const StationPost = () => {
     const useQuery = () => new URLSearchParams(useLocation().search)
     const query = useQuery()
     const id = query.get('id')
     const navigate = useNavigate()
+
+    const [countryList, setCountryList] = useState<CountryModel[]>([])
+    const [stateList, setStateList] = useState<StateModel[]>([])
+    const [cityList, setCityList] = useState<CityModel[]>([])
+
     const [station, setStation] = useState<StationModel>({
         country: '',
         province: '',
@@ -98,12 +112,16 @@ const StationPost = () => {
     ]
 
     useEffect(() => {
+        setCountryList(getCountries())
+
         if (id) {
             getStationDetail(parseInt(id!)).then((res) => {
                 if (res.code === 200) {
                     console.log(res.data)
                     const info = res.data.houseInfo
                     setStation(info)
+                    setStateList(getStates(info.country))
+                    setCityList(getCities(info.country, info.province))
                     setContactList(res.data.ContactList)
                     setTagList(res.data.tagList)
                     setSelectedTags(
@@ -193,6 +211,9 @@ const StationPost = () => {
                 <div className={styles.form}>
                     {!loading ? (
                         <Form
+                            onValuesChange={(values) => {
+                                setStation(values)
+                            }}
                             labelCol={{ span: 2 }}
                             size={'large'}
                             onFinish={(values: StationModel) => {
@@ -268,9 +289,27 @@ const StationPost = () => {
                                         message: 'Please select your country!',
                                     },
                                 ]}>
-                                <Select placeholder='Please select a country'>
-                                    <Option value='china'>China</Option>
-                                    <Option value='usa'>U.S.A</Option>
+                                <Select
+                                    placeholder='Please select a country'
+                                    value={station.country}
+                                    onChange={(value) => {
+                                        let obj = Object.assign(station)
+                                        obj.country = value
+                                        if (value !== station.country) {
+                                            obj.province = ''
+                                            obj.city = ''
+                                        }
+                                        setStation(obj)
+                                        setStateList(getStates(value))
+                                        setCityList([])
+                                    }}>
+                                    {countryList.map((country) => (
+                                        <Option
+                                            key={'c' + country.code}
+                                            value={country.code}>
+                                            {country.country}
+                                        </Option>
+                                    ))}
                                 </Select>
                             </Form.Item>
                             <Form.Item
@@ -283,9 +322,30 @@ const StationPost = () => {
                                     },
                                 ]}
                                 initialValue={station.province}>
-                                <Select placeholder='Please select a province'>
-                                    <Option value='tianjin'>TianJin</Option>
-                                    <Option value='hebei'>HeBei</Option>
+                                <Select
+                                    key={station.province}
+                                    value={station.province}
+                                    placeholder='Please select a province'
+                                    disabled={station.country === ''}
+                                    onChange={(e) => {
+                                        let obj = Object.assign(station)
+                                        obj.province = e
+                                        if (e !== station.province) {
+                                            obj.city = ''
+                                            console.log(obj)
+                                        }
+                                        setStation(obj)
+                                        setCityList(
+                                            getCities(station.country, e)
+                                        )
+                                    }}>
+                                    {stateList.map((state) => (
+                                        <Option
+                                            key={'s' + state.code}
+                                            value={state.code}>
+                                            {state.state}
+                                        </Option>
+                                    ))}
                                 </Select>
                             </Form.Item>
                             <Form.Item
@@ -298,9 +358,17 @@ const StationPost = () => {
                                         message: 'Please select your city!',
                                     },
                                 ]}>
-                                <Select placeholder='Please select a city'>
-                                    <Option value='nankai'>NanKai</Option>
-                                    <Option value='caoxian'>CaoXian</Option>
+                                <Select
+                                    defaultValue={station.city}
+                                    disabled={station.province === ''}
+                                    placeholder='Please select a city'>
+                                    {cityList.map((city) => (
+                                        <Option
+                                            key={'t' + city.city}
+                                            value={city.city}>
+                                            {city.city}
+                                        </Option>
+                                    ))}
                                 </Select>
                             </Form.Item>
                             <Form.Item
