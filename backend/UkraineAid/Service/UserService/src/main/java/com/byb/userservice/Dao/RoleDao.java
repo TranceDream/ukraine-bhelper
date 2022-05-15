@@ -2,6 +2,7 @@ package com.byb.userservice.Dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.byb.userservice.Entity.Role;
+import com.byb.userservice.Entity.RoleMenu;
 import com.byb.userservice.Entity.RolePermission;
 import com.byb.userservice.Vo.RoleVo;
 import org.apache.ibatis.annotations.Mapper;
@@ -21,7 +22,8 @@ public interface RoleDao extends BaseMapper<Role> {
     Integer countRoleList(Map<String, Object> params);
     List<RoleVo> selectRoleList(Map<String, Object> params);
 
-    Integer addList(List<RolePermission> list);
+    Integer addRolePermissionList(List<RolePermission> list);
 
+    Integer addRoleMenuList(List<RoleMenu> list);
 
 }

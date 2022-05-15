@@ -61,8 +61,8 @@ export default function Router() {
                         element={<DataMonitor />}
                     />
                     <Route
-                        path='/admin/service-monitor'
-                        element={<ServiceMonitor />}
+                        path='/admin/menu-control'
+                        element={<MenuControl />}
                     />
                     <Route path='/admin/report' element={<ReportDetail />} />
                 </Route>

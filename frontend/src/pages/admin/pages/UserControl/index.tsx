@@ -14,7 +14,7 @@ import {
 import type { ActionType, ProColumns } from '@ant-design/pro-table'
 import ProTable from '@ant-design/pro-table'
 import '@ant-design/pro-table/dist/table.css'
-import { Button, message, Modal, Tooltip } from 'antd'
+import { message, Modal, Tooltip } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import { reqDelUser, reqGetAllUser, reqGetRoleList } from '../../api'
 import ChangePwd from '../../components/ChangePwd'
@@ -285,7 +285,7 @@ export default function UserControl() {
                 actionRef={ref}
                 columns={columns}
                 request={async (params, sorter, filter) => {
-                    // params = Object.assign(params, { pageNo: params.pageSize })
+                    params = Object.assign(params, { pageNo: params.current })
                     // 表单搜索项会从 params 传入，传递给后端接口。
                     if ('userId' in params) {
                         params.userId = parseInt(params.userId)
@@ -319,22 +319,13 @@ export default function UserControl() {
                             // 不然 table 会停止解析数据，即使有数据
                             success: true,
                             // 不传会使用 data 的长度，如果是分页一定要传
-                            total: tableListDataSource.length,
+                            total: msg.data.total,
                         }
                     }
                 }}
                 toolbar={{
                     multipleLine: false,
-                    actions: [
-                        <Button
-                            key='key'
-                            type='primary'
-                            onClick={() => {
-                                alert('add')
-                            }}>
-                            审核
-                        </Button>,
-                    ],
+                    actions: [],
                 }}
                 dataSource={tableListDataSource}
                 rowKey={(record) => {

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.byb.systemservice.Dao.SyslogDao">
+
+    <resultMap id="syslogVo" type="com.byb.systemservice.Vo.SyslogVo">
+        <id column="LOG_ID" property="logId"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="operation" column="OPER"/>
+        <result property="deleteMark" column="DELETE_MARK"/>
+        <result property="objtypeId" column="OBJTYPE_ID"/>
+        <result property="objtype" column="OBJTYPE"/>
+        <result property="objId" column="OBJ_ID"/>
+        <result property="operator" column="OPERATOR"/>
+        <result property="message" column="MESSAGE"/>
+    </resultMap>
+
+    <select id="countSyslogList" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select COUNT(1)
+        from
+        SYSLOG sl left join DICT_OBJTYPE do on sl.OBJTYPE_ID = do.OBJTYPE_ID left join DICT_SYS_OPERATION dso on sl.OPERATION = dso.OPER_ID
+        <where>
+
+            sl.OBJTYPE_ID = #{objtypeId}
+
+            <if test="operation!=null and operation != ''">
+                and sl.OPERATION = #{operation}
+            </if>
+
+            <if test="message!=null and message != ''">
+                and sl.MESSAGE LIKE "%" #{message} "%"
+            </if>
+
+        </where>
+    </select>
+    
+    <select id="selectSyslogList" resultMap="syslogVo" parameterType="java.util.Map">
+        select * from
+        (
+        select
+            sl.LOG_ID,
+            sl.CREATE_TIME,
+            dso.OPER,
+            sl.DELETE_MARK,
+            sl.OBJTYPE_ID,
+            do.OBJTYPE,
+            sl.OBJ_ID,
+            sl.OPERATOR,
+            sl.MESSAGE
+        from
+        SYSLOG sl left join DICT_OBJTYPE do on sl.OBJTYPE_ID = do.OBJTYPE_ID left join DICT_SYS_OPERATION dso on sl.OPERATION = dso.OPER_ID
+        <where>
+            sl.OBJTYPE_ID = #{objtypeId}
+
+            <if test="operation!=null and operation != ''">
+                and sl.OPERATION = #{operation}
+            </if>
+
+            <if test="message!=null and message != ''">
+                and sl.MESSAGE LIKE "%" #{message} "%"
+            </if>
+
+            <choose>
+                <when test="orderText != null and orderText != ''">
+                    order by ${orderText}
+                </when>
+
+                <otherwise>
+                    order by sl.CREATE_TIME desc
+                </otherwise>
+            </choose>
+        </where>
+        ) m  limit #{start}, #{size}
+    </select>
+    
+</mapper>

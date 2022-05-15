@@ -236,6 +236,24 @@ public class NewsController {
 
     }
 
+    @PostMapping("/getAuditLog")
+    public Result<List<Object>> getAuditLog(@RequestBody Map<String, Object> params, HttpServletResponse response){
+        Integer articleId = (Integer) params.get("articleId");
+        if(articleId == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "ID IS EMPTY"));
+        }
+
+        Map<String, Object> auditForm = new HashMap<>();
+        auditForm.put("objtypeId", newsObjtypeId);
+        auditForm.put("objId", articleId);
+        Result<List<Object>> auditResult = auditClient.getReportList(auditForm);
+        if(auditResult == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "获取失败"));
+        }
+
+        return auditResult;
+    }
+
     @PostMapping("/getNewsGroup")
     public Result<Map<Integer, String>> getNewsGroup(){
         Result<Map<Integer, String>> result = userClient.getChildGroup(10001);

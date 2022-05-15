@@ -1,6 +1,7 @@
 package com.byb.openfeign.Client;
 
 import com.byb.BaseUtil.Utils.Result;
+import com.byb.openfeign.Fallback.UserServiceFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.Map;
 
-@FeignClient(name = "UserService")
+@FeignClient(name = "UserService", fallbackFactory = UserServiceFallback.class)
 public interface UserClient {
 
     @PostMapping("/user/getEmail")

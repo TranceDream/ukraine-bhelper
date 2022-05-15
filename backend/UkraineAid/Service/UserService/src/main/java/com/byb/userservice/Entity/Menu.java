@@ -9,22 +9,28 @@ import lombok.experimental.Accessors;
 
 import java.sql.Date;
 
-@TableName("UA.MENU")
+@TableName("UA.DICT_MENU")
 @Accessors(chain = true)
 @Data
 public class Menu {
 
     @TableId(value = "MENU_ID", type = IdType.AUTO)
-    private int permissionId;
+    private int menuId;
 
     @TableField("CREATE_TIME")
     private Date createTime;
 
     @TableField("MENU")
-    private String permissionName;
+    private String menu;
 
     @TableField("URL")
     private String url;
+
+    @TableField("ICON")
+    private String icon;
+
+    @TableField("DEFAULT_MARK")
+    private String defaultMark;
 
     @TableField("DELETE_MARK")
     private String deleteMark;

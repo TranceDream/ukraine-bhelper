@@ -2,25 +2,35 @@
  * @Author: Linhao Yu
  * @Date: 2022-04-16 22:28:55
  * @Last Modified by: Linhao Yu
- * @Last Modified time: 2022-05-11 00:16:23
+ * @Last Modified time: 2022-05-15 03:03:56
  */
 import {
     AppstoreOutlined,
+    FileTextOutlined,
     HomeOutlined,
     NotificationOutlined,
     SolutionOutlined,
-    UserSwitchOutlined
+    TagOutlined,
+    ToolOutlined,
+    UserOutlined
 } from '@ant-design/icons'
-const menuList = [
-    {
-        title: '首页',
-        key: '/admin/home',
-        icon: <HomeOutlined />,
-    },
+export const mapIcon = {
+    '<UserOutlined />': <UserOutlined />,
+    '<FileTextOutlined />': <FileTextOutlined />,
+    '<HomeOutlined />': <HomeOutlined />,
+    '<TagOutlined />': <TagOutlined />,
+    '<ToolOutlined />': <ToolOutlined />,
+}
+export const menuList = [
+    // {
+    //     title: '首页',
+    //     key: '/admin/home',
+    //     icon: <HomeOutlined />,
+    // },
     {
         title: '用户管理',
         key: '/admin/user-control',
-        icon: <UserSwitchOutlined />,
+        icon: '<UserSwitchOutlined />',
     },
     {
         title: '角色管理',
@@ -53,8 +63,8 @@ const menuList = [
             //     key: '/admin/report-control',
             // },
             {
-                title: '数据监控',
-                key: '/admin/data-monitor',
+                title: '菜单管理',
+                key: '/admin/menu-control',
             },
             {
                 title: '服务监控',
@@ -64,4 +74,3 @@ const menuList = [
     },
 ]
 
-export default menuList

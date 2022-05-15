@@ -12,16 +12,22 @@ public class SyslogForm {
 
     private String deleteMark;
 
-    private int objtypeId;
+    private Integer objtypeId;
 
     private Long objId;
 
     private Long operator;
 
-    private int operation;
+    private Integer operation;
 
     private String message;
 
     private String objtype;
+
+    private Integer pageSize;
+
+    private Integer current;
+
+    private String orderText;
 
 }

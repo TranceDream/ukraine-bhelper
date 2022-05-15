@@ -41,6 +41,7 @@ spring:
 
     addOperation: 10000
     updateOperation: 10001
+    deleteOperation: 10002
 
 
 

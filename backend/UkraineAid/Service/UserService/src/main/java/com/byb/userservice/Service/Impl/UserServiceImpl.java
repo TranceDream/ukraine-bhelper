@@ -226,12 +226,20 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     @Override
     public List<ModuleVo> getModuleList(Long userId) {
         List<ModuleVo> list = new ArrayList<>();
+        List<ModuleVo> result = new ArrayList<>();
         try {
             list = baseMapper.selectModuleList(userId);
+            Map<Integer, ModuleVo> temp = new HashMap<>();
+            for(ModuleVo moduleVo : list){
+                temp.put(moduleVo.getModuleId(), moduleVo);
+            }
+            for(Integer key:temp.keySet()){
+                result.add(temp.get(key));
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
-        return list;
+        return result;
     }
 
     @Override

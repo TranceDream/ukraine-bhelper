@@ -1,7 +1,10 @@
 package com.byb.systemservice.Controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.byb.BaseUtil.Utils.ResponseUtil;
 import com.byb.BaseUtil.Utils.Result;
+import com.byb.systemservice.Dao.SysOperationDao;
+import com.byb.systemservice.Entity.SysOperation;
 import com.byb.systemservice.Service.SyslogService;
 import com.byb.systemservice.Vo.SyslogForm;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -21,6 +24,9 @@ public class SyslogController {
 
     @Autowired
     private SyslogService syslogService;
+
+    @Autowired
+    private SysOperationDao sysOperationDao;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -55,6 +61,37 @@ public class SyslogController {
             result.put(objtypeId, objtypeMap.get(objtypeId.toString()));
         }
         return result;
+    }
+
+    @PostMapping("/getAdminObjtypeList")
+    public Result<Map<Integer, String>> getAdminObjtypeList(){
+        Map<Integer, String> objtypeMap = (Map<Integer, String>) redisTemplate.opsForValue().get("objtype");
+        return new Result<>(objtypeMap, Result.SUCCESS);
+    }
+
+    @PostMapping("/getSyslogList")
+    public Result<Map<String, Object>> getSyslogList(@RequestBody SyslogForm syslogForm, HttpServletResponse response){
+        if(syslogForm.getObjtypeId() == null){
+            ResponseUtil.out(response, new Result(null, Result.FAIL, "类别id为空"));
+        }
+
+        if(syslogForm.getCurrent() == null){
+            syslogForm.setCurrent(1);
+        }
+
+        if(syslogForm.getPageSize() == null){
+            syslogForm.setPageSize(20);
+        }
+
+        Map<String, Object> dataMap = syslogService.getSyslogList(syslogForm);
+
+        return new Result<>(dataMap, Result.SUCCESS);
+    }
+
+    @PostMapping("/getOperationList")
+    public Result<List<SysOperation>> getOperationList(){
+        List<SysOperation> list = sysOperationDao.selectList(new QueryWrapper<SysOperation>().lambda().eq(SysOperation::getDeleteMark, "NO"));
+        return new Result<>(list, Result.SUCCESS);
     }
 
 }

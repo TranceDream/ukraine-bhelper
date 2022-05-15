@@ -1,8 +1,0 @@
-com\byb\reportservice\Entity\Report.class
-com\byb\reportservice\Controller\ReportController.class
-com\byb\reportservice\Dao\ReportDao.class
-com\byb\reportservice\Service\ReportService.class
-com\byb\reportservice\Vo\ReportForm.class
-com\byb\reportservice\Vo\ReportVo.class
-com\byb\reportservice\Service\Impl\ReportServiceImpl.class
-com\byb\reportservice\ReportServiceApplication.class

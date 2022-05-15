@@ -113,3 +113,9 @@ export const reqReportDetail = (params) => {
 export const reqDoAudit = (params) => {
     return ajax(BASE + '/report/doAudit', params, 'POST')
 }
+
+// !模块
+
+export const reqModuleList = (params) => {
+    return ajax(BASE + '/user/getModuleList', params, 'POST')
+}

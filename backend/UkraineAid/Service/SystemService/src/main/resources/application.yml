@@ -30,3 +30,6 @@ spring:
     default-encoding: UTF-8
     port: 587
     username: 1533152445@qq.com
+
+mybatis-plus:
+  mapper-locations: classpath:DaoXML/*.xml

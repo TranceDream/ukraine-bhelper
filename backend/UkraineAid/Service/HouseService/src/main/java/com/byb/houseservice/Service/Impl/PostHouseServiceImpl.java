@@ -166,21 +166,30 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
 
             Map<String,Object> tagList = postTagService.selectTag(select);
             List<Tag> tags = (List<Tag>) tagList.get("tagList");
-
-            List<String> tagss = new ArrayList<>();
+            List<TagVo> tagVoList = new ArrayList<>();
             for(Tag tag : tags){
-                tagss.add(tagTypeService.tagNameById(tag.getTypeId()));
+                String tagName =  tagTypeService.tagNameById(tag.getTypeId());
+                TagVo tagVo = new TagVo();
+                BeanUtils.copyProperties(tag,tagVo);
+                tagVo.setTagName(tagName);
+                tagVoList.add(tagVo);
             }
-            result.put("tagList",tagss);
+            result.put("tagList",tagVoList);
 
             Map<String,Object> Contact = postContactService.selectContact(select);
             List<Contact> contacts = (List<com.byb.houseservice.Entity.Contact>) Contact.get("ContactList");
-            Map<String,Object> contactss = new HashMap<>();
+//            Map<String,Object> contactss = new HashMap<>();
+            List<ContactVo> contactVoList = new ArrayList<>();
+
             for (Contact contact : contacts){
                 String contactName = contactTypeService.TypeNameByid(contact.getTypeId());
-                contactss.put(contactName,contact.getContent());
+//                contactss.put(contactName,contact.getContent());
+                ContactVo contactVo =new ContactVo();
+                BeanUtils.copyProperties(contact,contactVo);
+                contactVo.setContactName(contactName);
+                contactVoList.add(contactVo);
             }
-            result.put("ContactList",contactss);
+            result.put("ContactList",contactVoList);
 
             FileName fileName = new FileName();
             fileName.setHouseId(houseid);
@@ -271,10 +280,22 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
 //        }
 
         Page<HouseInfo> page = this.page(houseInfoPage,queryWrapper);
-
+        List<HouseInfo> houseInfoList = page.getRecords();
+        List<HouseinfoVo> houseinfoVoList = new ArrayList<>();
+        for (HouseInfo houseinfo : houseInfoList){
+            HouseinfoVo houseinfoVo = new HouseinfoVo();
+            BeanUtils.copyProperties(houseinfo,houseinfoVo);
+            FileName fileName1 = new FileName();
+            fileName1.setHouseId(houseinfo.getHouseId());
+            Map<String, Object> stringObjectMap = filePicService.reHousePic(fileName1);
+            List<String> fileNames = (List<String>) stringObjectMap.get("fileNames");
+            houseinfoVo.setFileNames(fileNames);
+            houseinfoVoList.add(houseinfoVo);
+        }
 //        int count  = baseMapper.selectCount(queryWrapper);
         Map<String, Object> result = new HashMap<>();
-        result.put("houseinfo",page.getRecords());
+
+        result.put("houseinfo",houseinfoVoList);
         result.put("count",baseMapper.selectCount(queryWrapper));
         return result;
     }

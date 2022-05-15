@@ -17,4 +17,6 @@ public class TagVo {
     private String deleteMark;
 
     private int typeId;
+
+    private String tagName;
 }

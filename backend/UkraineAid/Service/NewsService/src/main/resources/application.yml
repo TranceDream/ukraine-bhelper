@@ -16,7 +16,7 @@ spring:
 #        max-wait: -1
 
   newsService:
-    newsObjtypeId: 10011
+    newsObjtypeId: 10009
 
   cloud:
     nacos:

@@ -16,7 +16,7 @@ import java.sql.Date;
 public class Permission implements Serializable {
 
     @TableId(value = "PERMISSION_ID", type = IdType.AUTO)
-    private int permissionId;
+    private Integer permissionId;
 
     @TableField("CREATE_TIME")
     private Date createTime;
@@ -28,13 +28,13 @@ public class Permission implements Serializable {
     private String url;
 
     @TableField("PARENT_ID")
-    private int parentId;
+    private Integer parentId;
 
     @TableField("ICON")
     private String icon;
 
     @TableField("PAGEKEY")
-    private String key;
+    private String pagekey;
 
     @TableField("DELETE_MARK")
     private String deleteMark;

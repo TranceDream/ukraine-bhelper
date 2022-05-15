@@ -1,7 +1,0 @@
-com\byb\newsservice\Config\WebMvcConfigurer.class
-com\byb\newsservice\NewsServiceApplication.class
-com\byb\newsservice\Service\Impl\ArticleServiceImpl.class
-com\byb\newsservice\Controller\NewsController.class
-com\byb\newsservice\Vo\ArticleVo.class
-com\byb\newsservice\MvcConfig\MyMvcConfig.class
-com\byb\newsservice\Service\ArticleService.class

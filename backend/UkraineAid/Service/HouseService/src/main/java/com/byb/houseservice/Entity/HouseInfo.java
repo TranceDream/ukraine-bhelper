@@ -66,4 +66,5 @@ public class HouseInfo {
 
     @TableField("active")
     private String active;
+
 }
