@@ -7,6 +7,7 @@ import {
     Form,
     Input,
     InputNumber,
+    Modal,
     Select,
     Space,
     Spin,
@@ -17,6 +18,7 @@ import { Option } from 'antd/es/mentions'
 import {
     ContactModel,
     ContactTypeModel,
+    deleteContact,
     deleteTag,
     getContactTypeList,
     getStationDetail,
@@ -25,6 +27,7 @@ import {
     publishStation,
     StationModel,
     TagModel,
+    updateContact,
     updateStation,
 } from '../../lib/request'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -55,6 +58,8 @@ const StationPost = () => {
             content: '',
         },
     ])
+    const [currentContact, setCurrentContact] = useState<ContactModel>()
+    const [showModal, setModal] = useState<boolean>(false)
     const [tagList, setTagList] = useState<TagModel[]>([])
     const [selectedTags, setSelectedTags] = useState<number[]>([])
     const [tagTypeList, setTagTypeList] = useState<TagModel[]>([])
@@ -65,10 +70,28 @@ const StationPost = () => {
         {
             title: 'Action',
             key: 'action',
-            render: () => (
+            render: (_: any, record: any) => (
                 <Space size={'middle'}>
-                    <Button shape={'circle'} icon={<EditOutlined />}></Button>
-                    <Button shape={'circle'} icon={<DeleteOutlined />}></Button>
+                    <Button
+                        shape={'circle'}
+                        icon={<EditOutlined />}
+                        onClick={() => {
+                            setCurrentContact(record)
+                            setModal(true)
+                        }}></Button>
+                    <Button
+                        shape={'circle'}
+                        icon={<DeleteOutlined />}
+                        onClick={() => {
+                            deleteContact(record.contactId).then((res) => {
+                                if (res.code === 200) {
+                                    let list = contactList.filter(
+                                        (c) => c.contactId !== record.contactId
+                                    )
+                                    setContactList(list)
+                                }
+                            })
+                        }}></Button>
                 </Space>
             ),
         },
@@ -78,6 +101,7 @@ const StationPost = () => {
         if (id) {
             getStationDetail(parseInt(id!)).then((res) => {
                 if (res.code === 200) {
+                    console.log(res.data)
                     const info = res.data.houseInfo
                     setStation(info)
                     setContactList(res.data.ContactList)
@@ -114,7 +138,7 @@ const StationPost = () => {
 
     let getCheckStatus = (typeId: number): boolean => {
         let ret = false
-        selectedTags.map((tag) => {
+        selectedTags.forEach((tag) => {
             if (tag === typeId) {
                 ret = true
             }
@@ -128,6 +152,44 @@ const StationPost = () => {
                 <Header />
             </header>
             <main>
+                <Modal
+                    visible={showModal}
+                    onOk={() => {
+                        updateContact(
+                            currentContact!.contactId!,
+                            parseInt(id!),
+                            currentContact!.typeId!,
+                            currentContact!.content!
+                        ).then((res) => {
+                            if (res.code === 200) {
+                                let list = contactList.map((c) =>
+                                    c.contactId === currentContact!.contactId
+                                        ? currentContact!
+                                        : c
+                                )
+                                setContactList(list)
+                                setModal(false)
+                                setCurrentContact(undefined)
+                            }
+                        })
+                    }}
+                    onCancel={() => {
+                        setModal(false)
+                        setCurrentContact(undefined)
+                    }}
+                    title={'修改联系方式'}
+                    centered>
+                    <Form.Item label={currentContact?.contactName}>
+                        <Input
+                            defaultValue={currentContact?.content}
+                            onChange={(e) => {
+                                let obj = Object.assign(currentContact!)
+                                obj.content = e.target.value
+                                console.log(obj)
+                                setCurrentContact(obj)
+                            }}></Input>
+                    </Form.Item>
+                </Modal>
                 <div className={styles.form}>
                     {!loading ? (
                         <Form
@@ -296,7 +358,6 @@ const StationPost = () => {
                                 />
                             </Form.Item>
 
-                            {/*TODO*/}
                             {id ? (
                                 <>
                                     <Form.Item>
