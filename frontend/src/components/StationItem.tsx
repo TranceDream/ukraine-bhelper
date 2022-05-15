@@ -58,7 +58,7 @@ const StationItem = (props: StationItemProps) => {
                                     event.stopPropagation()
                                     navigate(
                                         '/station/add?id=' +
-                                            props.station.hou,seId
+                                            props.station.houseId
                                     )
                                 }}
                                 icon={<EditOutlined />}></Button>
@@ -68,7 +68,7 @@ const StationItem = (props: StationItemProps) => {
                                     event.stopPropagation()
                                     navigate(
                                         '/station/add?id=' +
-                                            props.station,.houseId
+                                            props.station.houseId
                                     )
                                 }}
                                 icon={<DeleteOutlined />}></Button>
