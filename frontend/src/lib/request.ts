@@ -169,7 +169,7 @@ export const publishStation = async (
     station: StationModel,
     images: File[],
     contactList: ContactModel[],
-    tagList: TagModel[],
+    tagList: TagModel[]
 ): Promise<Response> => {
     console.log({ station, images })
     const cookie = new Cookie()
@@ -213,7 +213,7 @@ export const publishStation = async (
  */
 export const updateStation = async (
     houseId: number,
-    station: StationModel,
+    station: StationModel
 ): Promise<Response> => {
     return post('/house/updateinfo', { houseId, ...station })
 }
