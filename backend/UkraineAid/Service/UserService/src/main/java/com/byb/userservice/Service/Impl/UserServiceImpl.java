@@ -266,7 +266,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         }
         List<GroupForm> result = new ArrayList<>();
         result.addAll(groupSet);
-        result = sortGroup(result, -1);
+//        result = sortGroup(result, -1);
         return result;
     }
 
