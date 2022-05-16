@@ -19,6 +19,8 @@ public class ModuleVo {
 
     private String icon;
 
+    private Long userId;
+
     private String deleteMark;
 
 }
