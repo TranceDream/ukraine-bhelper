@@ -8,9 +8,19 @@ import { useEffect, useState } from 'react'
 import styles from './StationList.module.scss'
 import Header from '../../components/Header'
 import StationItem from '../../components/StationItem'
-import { Button, Col, Form, InputNumber, Pagination, Select } from 'antd'
+import {
+    Button,
+    Col,
+    Empty,
+    Form,
+    InputNumber,
+    message,
+    Pagination,
+    Select,
+    Spin,
+} from 'antd'
 import { Option } from 'antd/es/mentions'
-import { PlusOutlined } from '@ant-design/icons'
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import { NavLink, useNavigate } from 'react-router-dom'
 import {
     ContactTypeModel,
@@ -40,7 +50,7 @@ export const StationList = () => {
     const [index, setIndex] = useState(1)
     const [count, setCount] = useState(0)
     const [stationList, setStationList] = useState<Array<StationModel>>([])
-    const [contactType, setContactType] = useState<Array<ContactTypeModel>>([])
+    const [loading, setLoading] = useState<boolean>(true)
     const [filter, setFilter] = useState<StationFilter>({})
     const [requestFilter, setRequestFilter] = useState<StationFilter>({})
 
@@ -51,10 +61,16 @@ export const StationList = () => {
     const navigate = useNavigate()
     useEffect(() => {
         setCountryList(getCountries())
+        setLoading(true)
+        setStationList([])
         getStationList(index, requestFilter).then((res) => {
             if (res.code === 200) {
                 setStationList(res.data.houseinfo)
                 setCount(res.data.count)
+                setLoading(false)
+            } else {
+                setLoading(false)
+                message.error('出错了: ' + res.msg).then()
             }
         })
     }, [index, navigate, requestFilter])
@@ -201,7 +217,9 @@ export const StationList = () => {
                                     style={{ width: '20%' }}
                                     size={'large'}
                                     onClick={() => {
-                                        setRequestFilter(filter)
+                                        console.log(filter)
+                                        setRequestFilter({ ...filter })
+                                        console.log(requestFilter)
                                     }}>
                                     搜索
                                 </Button>
@@ -209,13 +227,29 @@ export const StationList = () => {
                         </Form.Item>
                     </Form>
                 </div>
-                {stationList.map((station, index) => (
-                    <StationItem
-                        key={'station' + index}
-                        station={station}
-                        edit={false}
-                    />
-                ))}
+                {stationList.length === 0 ? (
+                    loading ? (
+                        <Spin
+                            indicator={
+                                <LoadingOutlined
+                                    style={{ fontSize: 'xxx-large' }}
+                                />
+                            }
+                        />
+                    ) : (
+                        <Empty description={'没有数据'} />
+                    )
+                ) : (
+                    <>
+                        {stationList.map((station, index) => (
+                            <StationItem
+                                key={'station' + index}
+                                station={station}
+                                edit={false}
+                            />
+                        ))}
+                    </>
+                )}
                 <div className={styles.pagination}>
                     <Pagination
                         defaultCurrent={index}

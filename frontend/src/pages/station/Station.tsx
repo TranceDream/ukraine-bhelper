@@ -10,6 +10,7 @@ import {
     getStationDetail,
     reportStation,
     StationModel,
+    TagModel,
 } from '../../lib/request'
 import { LoadingOutlined } from '@ant-design/icons'
 import Footer from '../../components/Footer'
@@ -23,6 +24,7 @@ const Station = () => {
     const [reportReason, setReportReason] = useState('')
     const [station, setStation] = useState<StationModel>()
     const [contactList, setContactList] = useState<ContactModel[]>()
+    const [tagList, setTagList] = useState<TagModel[]>()
 
     useEffect(() => {
         if (!id) {
@@ -35,6 +37,7 @@ const Station = () => {
                     fileNames: res.data.filePicList,
                 }
                 setContactList(res.data.ContactList)
+                setTagList(res.data.tagList)
                 setStation(obj)
             } else {
                 message.error('出错了: ' + res.msg).then()
@@ -102,6 +105,7 @@ const Station = () => {
                     <StationDetail
                         station={station!}
                         contactList={contactList!}
+                        tagList={tagList!}
                         onReport={() => {
                             setModal(true)
                         }}

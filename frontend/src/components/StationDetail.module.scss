@@ -57,6 +57,16 @@
       }
     }
 
+    .newTags {
+      ul {
+        margin-left: 16px;
+        list-style-type: circle;
+        li {
+          font-weight: bold;
+        }
+      }
+    }
+
     .contact {
       display: flex;
       flex-direction: column;

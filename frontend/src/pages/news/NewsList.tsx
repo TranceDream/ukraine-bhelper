@@ -9,16 +9,19 @@ import {
     NewsGroupModel,
     NewsModel,
 } from '../../lib/request'
-import { message, Pagination } from 'antd'
+import { Empty, message, Pagination, Spin } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
 
 const NewsList = () => {
     const [groupList, setGroupList] = useState<Array<NewsGroupModel>>()
-    const [newsList, setNewsList] = useState<Array<NewsModel>>()
+    const [newsList, setNewsList] = useState<NewsModel[]>([])
+    const [loading, setLoading] = useState<boolean>(true)
     const [count, setCount] = useState(0)
     const [index, setIndex] = useState(1)
     const [currentGroup, setGroup] = useState<number>()
 
     useEffect(() => {
+        setLoading(true)
         getNewsGroupList().then((group) => {
             if (group.code === 200) {
                 setGroupList(
@@ -29,12 +32,15 @@ const NewsList = () => {
                 )
                 getNewsList(index, currentGroup).then((res) => {
                     if (res.code === 200) {
+                        setLoading(false)
                         setNewsList(res.data.articles)
                         setCount(res.data.count)
+                    } else {
+                        message.error('出错了: ').then()
                     }
                 })
             } else {
-                message.error('出错了: ')
+                message.error('出错了: ').then()
             }
         })
     }, [index, currentGroup])
@@ -45,7 +51,15 @@ const NewsList = () => {
                 <Header />
             </header>
             <main>
-                {newsList ? (
+                {loading ? (
+                    <Spin
+                        indicator={
+                            <LoadingOutlined
+                                style={{ fontSize: 'xxx-large' }}
+                            />
+                        }
+                    />
+                ) : (
                     <>
                         <div className={styles.column}>
                             {groupList?.map((g) => (
@@ -58,25 +72,32 @@ const NewsList = () => {
                                 </span>
                             ))}
                         </div>
-                        <div className={styles.news}>
-                            {newsList.map((news) => (
-                                <NewsItem key={news.articleId} news={news} />
-                            ))}
-                        </div>
-                        <div className={styles.pagination}>
-                            <Pagination
-                                defaultCurrent={1}
-                                current={index}
-                                pageSize={10}
-                                total={count}
-                                onChange={(page) => {
-                                    setIndex(page)
-                                }}
-                            />
-                        </div>
+                        {newsList.length === 0 ? (
+                            <Empty description={'没有数据'} />
+                        ) : (
+                            <>
+                                <div className={styles.news}>
+                                    {newsList.map((news) => (
+                                        <NewsItem
+                                            key={news.articleId}
+                                            news={news}
+                                        />
+                                    ))}
+                                </div>
+                                <div className={styles.pagination}>
+                                    <Pagination
+                                        defaultCurrent={1}
+                                        current={index}
+                                        pageSize={10}
+                                        total={count}
+                                        onChange={(page) => {
+                                            setIndex(page)
+                                        }}
+                                    />
+                                </div>
+                            </>
+                        )}
                     </>
-                ) : (
-                    <></>
                 )}
             </main>
             <footer>
