@@ -4,11 +4,11 @@
  * @Last Modified by: Linhao Yu
  * @Last Modified time: 2022-05-11 02:55:47
  */
-import { EditOutlined } from '@ant-design/icons'
+import { EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table'
 import { message, Modal } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
-import { reqHouseList } from '../../api'
+import { reqDelHouse, reqHouseList } from '../../api'
 import EditHouseModal from '../../components/House/EditHouse'
 import PubSub from '../../Utils/pubsub'
 import './ant-pro-card.scss'
@@ -32,8 +32,10 @@ export type TableListItem = {
 
 export default function HouseControl() {
     const [EditHouseVisible, setEditHouseVisible] = useState(false)
+    const [delHousevisiable, setDelHousevisiable] = useState(false)
     const [confirmLoading, setConfirmLoading] = useState(false)
     const [record, setRecord] = useState<any>({})
+    const [modalText, setmodalText] = useState('确定删除这个房源信息吗?')
     const [tableListDataSource, settableListDataSource] = useState<
         TableListItem[]
     >([]) // 记录操作行的数据
@@ -81,12 +83,6 @@ export default function HouseControl() {
         setEditHouseVisible(true)
     }
 
-    // // 成功编辑房屋
-    // const handleEditHouseOk = () => {
-    //     message.error('没有实现')
-    //     setEditHouseVisible(false)
-    // }
-
     // 取消编辑房屋
     const handleEditHouseCancel = () => {
         setEditHouseVisible(false)
@@ -94,6 +90,32 @@ export default function HouseControl() {
 
     const handleErr = (msg: any) => {
         message.error(msg.errormsg)
+    }
+
+    //点击删除房源
+    const deleteHouse = (record: any, index: number) => {
+        console.log(record)
+        setDelHousevisiable(true)
+        setRecord(record)
+    }
+
+    // 确认删除房源
+    const handleDelOk = async () => {
+        setConfirmLoading(true)
+        const res = await reqDelHouse({ houseId: record.houseId })
+        if (res.code === 200) {
+            message.success('删除成功')
+        } else {
+            message.error(res.msg)
+        }
+        setConfirmLoading(false)
+        setDelHousevisiable(false)
+        ref.current?.reload()
+    }
+
+    //取消删除房源
+    const handleDelCancel = () => {
+        setDelHousevisiable(false)
     }
     const columns: ProColumns<TableListItem>[] = [
         {
@@ -121,15 +143,15 @@ export default function HouseControl() {
             dataIndex: 'city',
             align: 'center',
         },
-        {
-            title: '创建时间',
-            align: 'center',
-            width: 140,
-            key: 'since',
-            search: false,
-            dataIndex: 'createTime',
-            valueType: 'date',
-        },
+        // {
+        //     title: '创建时间',
+        //     align: 'center',
+        //     width: 140,
+        //     key: 'since',
+        //     search: false,
+        //     dataIndex: 'createTime',
+        //     valueType: 'date',
+        // },
         {
             title: '接待时长',
             align: 'center',
@@ -175,9 +197,9 @@ export default function HouseControl() {
             key: 'option',
             valueType: 'option',
             render: (_: any, record: any, index: number) => [
-                // <a key='delete' onClick={() => deleteUser(text, record, index)}>
-                //     删除
-                // </a>,
+                <a key='delete' onClick={() => deleteHouse(record, index)}>
+                    删除
+                </a>,
                 <a key='edit' onClick={() => EditHouse(_, record, index)}>
                     编辑
                 </a>,
@@ -281,6 +303,27 @@ export default function HouseControl() {
                 footer={null}>
                 <EditHouseModal record={record} />
                 {/* <ChangePwd userName={record.name} userId={record.userId} /> */}
+            </Modal>
+
+            {/* 删除房屋 */}
+            <Modal
+                title={
+                    <>
+                        <ExclamationCircleOutlined
+                            style={{
+                                fontSize: 20,
+                                color: '#eb2f96',
+                                marginRight: 10,
+                            }}
+                        />
+                        系统提示
+                    </>
+                }
+                visible={delHousevisiable}
+                onOk={handleDelOk}
+                confirmLoading={confirmLoading}
+                onCancel={handleDelCancel}>
+                <p>{modalText}</p>
             </Modal>
         </>
     )
