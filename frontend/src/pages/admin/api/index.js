@@ -91,6 +91,12 @@ export const reqUpdateHouse = (params) => {
     return ajax(BASE + '/house/updateinfo', params, 'POST')
 }
 
+// 删除房源
+
+export const reqDelHouse = (params) => {
+    return ajax(BASE + '/house/deleteinfo', params, 'POST')
+}
+
 // !举报
 
 //获取举报信息
