@@ -26,7 +26,6 @@ const Register = () => {
     useEffect(() => {
         const cookie = new Cookie()
         if (cookie.get('token')) {
-            console.log('get token')
             navigate('/')
         }
     }, [navigate])

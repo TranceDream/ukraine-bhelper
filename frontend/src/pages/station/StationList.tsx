@@ -8,9 +8,19 @@ import { useEffect, useState } from 'react'
 import styles from './StationList.module.scss'
 import Header from '../../components/Header'
 import StationItem from '../../components/StationItem'
-import { Button, Col, Form, InputNumber, Pagination, Select } from 'antd'
+import {
+    Button,
+    Col,
+    Empty,
+    Form,
+    InputNumber,
+    message,
+    Pagination,
+    Select,
+    Spin,
+} from 'antd'
 import { Option } from 'antd/es/mentions'
-import { PlusOutlined } from '@ant-design/icons'
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import { NavLink, useNavigate } from 'react-router-dom'
 import {
     ContactTypeModel,
@@ -40,7 +50,7 @@ export const StationList = () => {
     const [index, setIndex] = useState(1)
     const [count, setCount] = useState(0)
     const [stationList, setStationList] = useState<Array<StationModel>>([])
-    const [contactType, setContactType] = useState<Array<ContactTypeModel>>([])
+    const [loading, setLoading] = useState<boolean>(true)
     const [filter, setFilter] = useState<StationFilter>({})
     const [requestFilter, setRequestFilter] = useState<StationFilter>({})
 
@@ -51,21 +61,16 @@ export const StationList = () => {
     const navigate = useNavigate()
     useEffect(() => {
         setCountryList(getCountries())
-        getContactTypeList().then((res) => {
-            setContactType(res.data.data)
-            console.log(res.data.data)
-        })
-        getTagTypeList().then((res) => {
-            console.log(res.data)
-        })
+        setLoading(true)
+        setStationList([])
         getStationList(index, requestFilter).then((res) => {
-            if (res.code === 401) {
-                cleanCookies()
-                navigate('/login', { replace: true })
-            } else if (res.code === 200) {
-                console.log(res.data)
+            if (res.code === 200) {
                 setStationList(res.data.houseinfo)
                 setCount(res.data.count)
+                setLoading(false)
+            } else {
+                setLoading(false)
+                message.error('出错了: ' + res.msg).then()
             }
         })
     }, [index, navigate, requestFilter])
@@ -86,8 +91,11 @@ export const StationList = () => {
             </NavLink>
             <main>
                 <div className={styles.search}>
-                    <Form labelCol={{ span: 3 }}>
-                        <Form.Item name='country' label='Country'>
+                    <Form labelCol={{ span: 3 }} labelAlign={'left'}>
+                        <Form.Item
+                            name='country'
+                            label='Country'
+                            preserve={false}>
                             <Select
                                 placeholder='Please select a country'
                                 onChange={(e) => {
@@ -95,7 +103,6 @@ export const StationList = () => {
                                     f.country = e
                                     setFilter(f)
                                     setStateList(getStates(e))
-                                    console.log(filter)
                                 }}>
                                 {countryList.map((country) => (
                                     <Option
@@ -106,7 +113,10 @@ export const StationList = () => {
                                 ))}
                             </Select>
                         </Form.Item>
-                        <Form.Item name='province' label='Province'>
+                        <Form.Item
+                            name='province'
+                            label='Province'
+                            preserve={false}>
                             <Select
                                 disabled={filter.country == null}
                                 placeholder='Please select a province'
@@ -125,7 +135,7 @@ export const StationList = () => {
                                 ))}
                             </Select>
                         </Form.Item>
-                        <Form.Item name='city' label='City'>
+                        <Form.Item name='city' label='City' preserve={false}>
                             <Select
                                 disabled={filter.province == null}
                                 placeholder='Please select a city'
@@ -196,23 +206,50 @@ export const StationList = () => {
                             &nbsp;人
                         </Form.Item>
                         <Form.Item>
-                            <Button
-                                style={{ width: '20%' }}
-                                onClick={() => {
-                                    setRequestFilter(filter)
+                            <div
+                                style={{
+                                    width: '100%',
+                                    display: 'flex',
+                                    justifyContent: 'flex-end',
                                 }}>
-                                搜索
-                            </Button>
+                                <Button
+                                    type={'primary'}
+                                    style={{ width: '20%' }}
+                                    size={'large'}
+                                    onClick={() => {
+                                        console.log(filter)
+                                        setRequestFilter({ ...filter })
+                                        console.log(requestFilter)
+                                    }}>
+                                    搜索
+                                </Button>
+                            </div>
                         </Form.Item>
                     </Form>
                 </div>
-                {stationList.map((station, index) => (
-                    <StationItem
-                        key={'station' + index}
-                        station={station}
-                        edit={false}
-                    />
-                ))}
+                {stationList.length === 0 ? (
+                    loading ? (
+                        <Spin
+                            indicator={
+                                <LoadingOutlined
+                                    style={{ fontSize: 'xxx-large' }}
+                                />
+                            }
+                        />
+                    ) : (
+                        <Empty description={'没有数据'} />
+                    )
+                ) : (
+                    <>
+                        {stationList.map((station, index) => (
+                            <StationItem
+                                key={'station' + index}
+                                station={station}
+                                edit={false}
+                            />
+                        ))}
+                    </>
+                )}
                 <div className={styles.pagination}>
                     <Pagination
                         defaultCurrent={index}
