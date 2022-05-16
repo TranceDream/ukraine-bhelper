@@ -7,6 +7,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
+import javax.annotation.PostConstruct;
+
 @Configuration
 public class GatewayConfig {
 
@@ -29,6 +31,5 @@ public class GatewayConfig {
     public CorsResponseHeaderFilter corsResponseHeaderFilter() {
         return new CorsResponseHeaderFilter();
     }
-
 
 }

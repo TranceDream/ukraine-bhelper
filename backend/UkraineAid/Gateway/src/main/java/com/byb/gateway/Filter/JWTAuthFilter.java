@@ -33,7 +33,11 @@ public class JWTAuthFilter implements GlobalFilter , Ordered {
         String token = exchange.getRequest().getHeaders().getFirst(ConstantConfig.TOKEN_HEADER);
         System.out.println(token);
         String url = exchange.getRequest().getURI().getPath();
-        if(url.equals(ConstantConfig.LOGIN_PATH) || url.equals(ConstantConfig.REGISTER_PATH) || url.equals(ConstantConfig.ACTIVE_EMAIL_PATH)){
+//        if(url.equals(ConstantConfig.LOGIN_PATH) || url.equals(ConstantConfig.REGISTER_PATH) || url.equals(ConstantConfig.ACTIVE_EMAIL_PATH)){
+//            System.out.println(url);
+//            return chain.filter(exchange);
+//        }
+        if(ConstantConfig.WHITE_LIST.contains(url)){
             System.out.println(url);
             return chain.filter(exchange);
         }
