@@ -3,6 +3,8 @@ package com.byb.BaseUtil.Config;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ConstantConfig {
@@ -19,6 +21,16 @@ public class ConstantConfig {
     public final static String TOKEN_CHECK_PATH = "/user/checkToken";
 
     public final static String REQUEST_HEADER = "url";
+
+    public final static List<String> WHITE_LIST = new ArrayList<>();
+
+    static {
+        WHITE_LIST.add("/user/login");
+        WHITE_LIST.add("/user/addUserByEmail");
+        WHITE_LIST.add("/user/activeEmail");
+        WHITE_LIST.add("/house/selectHouseAdmin");
+        WHITE_LIST.add("/news/selectArticleForC");
+    }
 
     public final static String LOGIN_USER_HEADER = "loginId";
 

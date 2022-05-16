@@ -66,7 +66,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionDao, Permission
         List<Permission> temp = baseMapper.selectList(new QueryWrapper<Permission>().lambda().eq(Permission::getDeleteMark, "NO"));
         List<Permission> result = new ArrayList<>();
         for(Permission permission : temp){
-            if(permission.getParentId() != 1){
+            if(permission.getParentId() != 1 && permission.getParentId() != 0){
                 result.add(permission);
             }
         }

@@ -335,7 +335,7 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
         //全部文件名，若多个，则逗号分隔
         StringBuilder allFileNames = new StringBuilder();
         //上传路径
-        String fileSavePath = "/Uk/Housepic/";
+        String fileSavePath = "/Ukother/Ukpic/housePic/";
         //若文件夹不存在，则创建文件夹
         //test.txt不会创建，故给任意值占位即可
         File parentFile = new File(fileSavePath + "test.txt").getParentFile();
