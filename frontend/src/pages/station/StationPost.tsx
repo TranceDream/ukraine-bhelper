@@ -264,14 +264,18 @@ const StationPost = () => {
                                                     houseId: parseInt(id!),
                                                     typeId: st,
                                                 }))
-                                            )
+                                            ).then((r) => {
+                                                if (r.code !== 200) {
+                                                    message.error(r.msg).then()
+                                                }
+                                            })
                                         })
                                         updateStation(
                                             parseInt(id!),
                                             values
                                         ).then((res) => {
                                             if (res.code === 200) {
-                                                navigate('/station')
+                                                navigate('/station/management')
                                             }
                                         })
                                     } else {
