@@ -115,12 +115,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
             int status = (int) selectCondition.get("status");
             queryWrapper.eq("status",status);
         }
-//        if (selectCondition.containsKey("groupId")){
-//            int groupId = (int) selectCondition.get("groupId");
-//            queryWrapper.eq("groupId",groupId);
-//        }
+        if (selectCondition.containsKey("groupId")){
+            int groupId = (int) selectCondition.get("groupId");
+            System.out.println(groupId);
+            queryWrapper.eq("groupId",groupId);
+        }
+
 
         String scope = (String) selectCondition.get("scope");
+        System.out.println(scope);
         scope = scope.substring(1,scope.length()-1);
         List<String> groupIds = Arrays.asList(scope.split(","));
         queryWrapper.in("groupId",groupIds);
