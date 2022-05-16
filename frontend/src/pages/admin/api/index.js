@@ -174,3 +174,9 @@ export const reqNewsDoAudit = (params) => {
 export const reqDelNews = (params) => {
     return ajax(BASE + '/news/deleteArticle', params, 'POST')
 }  
+
+// 获取新闻组列表
+
+export const reqNewsGroups = (params) => {
+    return ajax(BASE + '/news/getNewsGroup', params, 'POST')
+} 
