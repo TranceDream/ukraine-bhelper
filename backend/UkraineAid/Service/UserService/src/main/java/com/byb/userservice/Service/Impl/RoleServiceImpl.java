@@ -110,20 +110,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
         }
         int roleId = role.getRoleId();
         try {
-            List<RolePermission> list = new ArrayList<>();
-            if (roleForm.getPermissions() != null && !roleForm.getPermissions().isEmpty()) {
-                for (Integer permissionId : roleForm.getPermissions()) {
-                    RolePermission rolePermission = new RolePermission();
-                    rolePermission.setRoleId(roleId);
-                    rolePermission.setPermissionId(permissionId);
-                    list.add(rolePermission);
-                }
-                Integer insertTotal = baseMapper.addRolePermissionList(list);
-                if (insertTotal == null || insertTotal != roleForm.getPermissions().size()) {
-                    result.put("flag", false);
-                }
-            }
-
             List<RoleMenu> roleMenus = new ArrayList<>();
             if(roleForm.getMenus() != null && !roleForm.getMenus().isEmpty()){
                 for(Integer menuId : roleForm.getMenus()) {
@@ -134,6 +120,29 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
                 }
                 Integer insertTotal = baseMapper.addRoleMenuList(roleMenus);
                 if (insertTotal == null || insertTotal != roleForm.getMenus().size()) {
+                    result.put("flag", false);
+                }
+            }
+            if(roleForm.getMenus().contains(10000)){
+                if(roleForm.getPermissions() != null && !roleForm.getPermissions().contains(10081)){
+                    roleForm.getPermissions().add(10081);
+                }else if(roleForm.getPermissions() == null){
+                    List<Integer> permissions = new ArrayList<>();
+                    permissions.add(10081);
+                    roleForm.setPermissions(permissions) ;
+                }
+            }
+
+            List<RolePermission> list = new ArrayList<>();
+            if (roleForm.getPermissions() != null && !roleForm.getPermissions().isEmpty()) {
+                for (Integer permissionId : roleForm.getPermissions()) {
+                    RolePermission rolePermission = new RolePermission();
+                    rolePermission.setRoleId(roleId);
+                    rolePermission.setPermissionId(permissionId);
+                    list.add(rolePermission);
+                }
+                Integer insertTotal = baseMapper.addRolePermissionList(list);
+                if (insertTotal == null || insertTotal != roleForm.getPermissions().size()) {
                     result.put("flag", false);
                 }
             }
