@@ -177,8 +177,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
             int groupId = (int) selectCondition.get("groupId");
             queryWrapper.eq("groupId",groupId);
         }
-
-
         Page<Article> page = this.page(ArticlePage,queryWrapper);
         Map<String, Object> result = new HashMap<>();
         result.put("articles",page.getRecords());
