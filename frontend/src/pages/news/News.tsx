@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getNewsDetail, NewsModel, reportNews } from '../../lib/request'
 import styles from './News.module.scss'
 import Header from '../../components/Header'
-import { Button, Form, Input, Modal, Spin } from 'antd'
+import { Button, Form, Input, message, Modal, Spin } from 'antd'
 import { AlertOutlined, LoadingOutlined } from '@ant-design/icons'
 import Footer from '../../components/Footer'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -62,9 +62,13 @@ const News = () => {
                     onFinish={() => {
                         reportNews(parseInt(id!), reportReason).then((res) => {
                             if (res.code === 200) {
-                                console.log('已举办')
+                                message.success('举报成功').then((_) => {})
                                 setModal(false)
                                 setReportReason('')
+                            } else {
+                                message
+                                    .error('出错了: ' + res.msg)
+                                    .then((_) => {})
                             }
                         })
                     }}>

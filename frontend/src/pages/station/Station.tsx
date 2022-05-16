@@ -3,13 +3,14 @@ import styles from './Station.module.scss'
 import Header from '../../components/Header'
 // import { useLocation } from 'react-router-dom'
 import StationDetail from '../../components/StationDetail'
-import { Button, Form, Input, Modal, Spin } from 'antd'
+import { Button, Form, Input, message, Modal, Spin } from 'antd'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
     ContactModel,
     getStationDetail,
     reportStation,
     StationModel,
+    TagModel,
 } from '../../lib/request'
 import { LoadingOutlined } from '@ant-design/icons'
 import Footer from '../../components/Footer'
@@ -23,6 +24,7 @@ const Station = () => {
     const [reportReason, setReportReason] = useState('')
     const [station, setStation] = useState<StationModel>()
     const [contactList, setContactList] = useState<ContactModel[]>()
+    const [tagList, setTagList] = useState<TagModel[]>()
 
     useEffect(() => {
         if (!id) {
@@ -34,11 +36,11 @@ const Station = () => {
                     ...res.data.houseInfo,
                     fileNames: res.data.filePicList,
                 }
-                console.log(res.data)
                 setContactList(res.data.ContactList)
+                setTagList(res.data.tagList)
                 setStation(obj)
             } else {
-                navigate('/404', { replace: true })
+                message.error('出错了: ' + res.msg).then()
             }
         })
     }, [id, navigate])
@@ -62,7 +64,7 @@ const Station = () => {
                         reportStation(parseInt(id!), reportReason).then(
                             (res) => {
                                 if (res.code === 200) {
-                                    console.log('已举办')
+                                    message.success('举报成功').then()
                                     setModal(false)
                                     setReportReason('')
                                 }
@@ -103,6 +105,7 @@ const Station = () => {
                     <StationDetail
                         station={station!}
                         contactList={contactList!}
+                        tagList={tagList!}
                         onReport={() => {
                             setModal(true)
                         }}

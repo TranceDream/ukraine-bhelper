@@ -7,17 +7,17 @@ import {
     TeamOutlined,
 } from '@ant-design/icons'
 import { Button } from 'antd'
-import { imageUrl, StationModel } from '../lib/request'
+import { imageUrl, StationModel, TagModel } from '../lib/request'
 import Tag from './Tag'
 
 interface StationDetailProps {
     station: StationModel
     contactList: any[]
+    tagList: TagModel[]
     onReport: Function
 }
 
 const StationDetail = (props: StationDetailProps) => {
-    console.log(props.contactList)
     return (
         <div className={styles.container}>
             <div className={styles.inner}>
@@ -76,6 +76,15 @@ const StationDetail = (props: StationDetailProps) => {
                         <></>
                     )}
                 </div>
+                {props.tagList.length === 0 ? null : (
+                    <div className={styles.newTags}>
+                        <ul>
+                            {props.tagList.map((tag) => (
+                                <li key={'tagId' + tag.tagId}>{tag.tagName}</li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
                 <div className={styles.images}>
                     {props.station.fileNames!.map((img) => (
                         <img src={imageUrl + '/' + img} alt={'House Preview'} />
