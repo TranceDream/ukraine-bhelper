@@ -161,7 +161,7 @@ export default function LogControl() {
                         if (msg.data.data) {
                             getdata(msg.data.data)
                         } else {
-                            // settableListDataSource([])
+                            settableListDataSource([])
                         }
                         return {
                             data: tableListDataSource,
@@ -174,6 +174,7 @@ export default function LogControl() {
                     } else {
                         // handleErr(msg)
                         // tableListDataSource.length = 0
+                        settableListDataSource([])
                         return {
                             data: tableListDataSource,
                             // success 请返回 true，
