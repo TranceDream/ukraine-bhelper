@@ -115,18 +115,16 @@ export default function MuteForm(props: Props) {
                 // console.table(record)
                 return (
                     <Switch
-                        defaultChecked={
-                            record.lockedMark === 'NO' ? true : false
-                        }
+                        defaultChecked={record.lockedMark === 'NO'}
                         onClick={() => {
-                            setGroupModal(true)
-                            setRecord(record)
-                            setIndex(index)
+                            if (record.lockedMark === 'YES') {
+                                setGroupModal(true)
+                                setRecord(record)
+                                setIndex(index)
+                            }
                         }}
                         // onClick={() => addRole(record, index)}
-                        checked={
-                            record.lockedMark === 'NO' ? true : false
-                        }></Switch>
+                        checked={record.lockedMark === 'NO'}></Switch>
                 )
             },
         },
