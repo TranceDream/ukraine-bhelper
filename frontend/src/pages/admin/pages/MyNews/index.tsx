@@ -44,7 +44,7 @@ export default function MyNews() {
             }
         }
         getNewsList()
-    })
+    }, [])
 
     const columns: ProColumns<TableListItem>[] = [
         {
@@ -138,8 +138,18 @@ export default function MyNews() {
                 columns={columns}
                 request={async (params, sorter, filter) => {
                     // 表单搜索项会从 params 传入，传递给后端接口。
-                    if ('userId' in params) {
-                        params.userId = parseInt(params.userId)
+
+                    if ('articleId' in params) {
+                        params.articleId = parseInt(params.articleId)
+                    }
+                    if ('author' in params) {
+                        params.author = parseInt(params.author)
+                    }
+                    if ('groupId' in params) {
+                        params.groupId = parseInt(params.groupId)
+                    }
+                    if ('status' in params) {
+                        params.status = parseInt(params.status)
                     }
                     // setParams(params)
                     // console.log('UseControl: ', params, sorter, filter)

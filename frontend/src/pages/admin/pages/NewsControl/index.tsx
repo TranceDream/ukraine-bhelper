@@ -69,7 +69,7 @@ export default function NewsControl() {
         return () => {
             PubSub.unsubscribe(token)
         }
-    })
+    }, [])
     const columns: ProColumns<TableListItem>[] = [
         {
             title: '文章编号',
