@@ -1,4 +1,9 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons'
+import {
+    EyeInvisibleOutlined,
+    EyeTwoTone,
+    LockOutlined,
+    UserOutlined,
+} from '@ant-design/icons'
 import { Button, Form, Input, message, Modal } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -87,12 +92,19 @@ const Login = () => {
                                     message: 'Please input your Password!',
                                 },
                             ]}>
-                            <Input
+                            <Input.Password
                                 prefix={
                                     <LockOutlined className='site-form-item-icon' />
                                 }
                                 type='password'
                                 placeholder='Password'
+                                iconRender={(visible) =>
+                                    visible ? (
+                                        <EyeTwoTone />
+                                    ) : (
+                                        <EyeInvisibleOutlined />
+                                    )
+                                }
                             />
                         </Form.Item>
                         <Form.Item>
