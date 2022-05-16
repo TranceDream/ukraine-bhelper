@@ -30,6 +30,7 @@ public class ConstantConfig {
         WHITE_LIST.add("/user/activeEmail");
         WHITE_LIST.add("/house/selectHouseAdmin");
         WHITE_LIST.add("/news/selectArticleForC");
+        WHITE_LIST.add("/house/housedetail");
     }
 
     public final static String LOGIN_USER_HEADER = "loginId";
