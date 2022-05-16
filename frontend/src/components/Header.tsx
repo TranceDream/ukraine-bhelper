@@ -36,7 +36,6 @@ const Header = ({ hideNav = false, hideUser = false }: Props) => {
         if (token) {
             setLoginStatus(true)
             if (localStorage.getItem('menus')) {
-                console.log('hello')
                 setMenuItems(JSON.parse(localStorage.getItem('menus') ?? '[]'))
             }
         }

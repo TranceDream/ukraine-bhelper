@@ -5,6 +5,7 @@
 
 import Cookie from 'universal-cookie'
 import { cleanCookies } from 'universal-cookie/lib/utils'
+import { message } from 'antd'
 
 export const baseUrl = 'http://139.9.231.20:81'
 
@@ -90,7 +91,6 @@ const post = async (
     })
     const res = await raw.json()
     if ((res === 401 || res === 403) && redirect) {
-        console.log('这里居然报了401')
         cookie.remove('token')
         cleanCookies()
         window.location.replace('/login')
@@ -110,7 +110,7 @@ export const login = async (
     identifier: string,
     credential: string,
     identityType: number
-): Promise<boolean> => {
+): Promise<Response> => {
     const res = await post(
         '/user/login',
         { identifier, credential, identityType },
@@ -120,13 +120,9 @@ export const login = async (
     if (res.code === 200) {
         const cookie = new Cookie()
         cookie.set('token', res.data.token, { path: ' /' })
-        console.table(res)
         localStorage.setItem('menus', JSON.stringify(res.data.menus))
-        return true
-    } else {
-        console.error(res.code + '\t' + res.msg)
     }
-    return false
+    return res
 }
 
 /**
@@ -171,10 +167,10 @@ export const publishStation = async (
     contactList: ContactModel[],
     tagList: TagModel[]
 ): Promise<Response> => {
-    console.log({ station, images })
     const cookie = new Cookie()
     const token = cookie.get('token')
     if (!token) {
+        message.error('请登录')
         cookie.remove('token')
         window.location.replace('/login')
 
@@ -201,7 +197,6 @@ export const publishStation = async (
     const res = await raw.json()
     if (res === 401 || res === 403) {
         cookie.remove('token')
-        console.log(cookie.getAll())
         window.location.replace('/login')
     }
     return res
@@ -317,11 +312,15 @@ export interface StationFilter {
 }
 
 export const getStationList = async (current: number, filter: any) => {
-    return post('/house/selectHouseAdmin', {
-        current,
-        pageSize: 10,
-        ...filter,
-    })
+    return post(
+        '/house/selectHouseAdmin',
+        {
+            current,
+            pageSize: 10,
+            ...filter,
+        },
+        false
+    )
 }
 
 /**
@@ -330,7 +329,7 @@ export const getStationList = async (current: number, filter: any) => {
  * @param houseId
  */
 export const getStationDetail = async (houseId: number): Promise<Response> => {
-    return post('/house/housedetail', { houseId })
+    return post('/house/housedetail', { houseId }, false)
 }
 
 export const getMyStations = async (current: number) => {
@@ -374,7 +373,7 @@ export const getNewsList = async (
     const body = groupId
         ? { status: 2, pageSize: 10, groupId, current }
         : { pageSize: 10, status: 2, current }
-    return post('/news/selectArticleForC', body)
+    return post('/news/selectArticleForC', body, false)
 }
 
 /**
@@ -383,7 +382,7 @@ export const getNewsList = async (
  * @param articleId
  */
 export const getNewsDetail = async (articleId: number): Promise<Response> => {
-    return post('/news/selectArticleForC', { articleId })
+    return post('/news/selectArticleForC', { articleId }, false)
 }
 
 /**
@@ -391,7 +390,7 @@ export const getNewsDetail = async (articleId: number): Promise<Response> => {
  * Tested
  */
 export const getNewsGroupList = async (): Promise<Response> => {
-    return post('/news/getNewsGroup', {})
+    return post('/news/getNewsGroup', {}, false)
 }
 
 export const updateNews = async (

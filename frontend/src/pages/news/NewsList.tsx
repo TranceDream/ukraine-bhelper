@@ -9,7 +9,7 @@ import {
     NewsGroupModel,
     NewsModel,
 } from '../../lib/request'
-import { Pagination } from 'antd'
+import { message, Pagination } from 'antd'
 
 const NewsList = () => {
     const [groupList, setGroupList] = useState<Array<NewsGroupModel>>()
@@ -29,13 +29,12 @@ const NewsList = () => {
                 )
                 getNewsList(index, currentGroup).then((res) => {
                     if (res.code === 200) {
-                        console.log(res.data.articles)
                         setNewsList(res.data.articles)
                         setCount(res.data.count)
                     }
                 })
             } else {
-                console.log(group)
+                message.error('出错了: ')
             }
         })
     }, [index, currentGroup])

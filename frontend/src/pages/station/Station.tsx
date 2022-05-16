@@ -3,7 +3,7 @@ import styles from './Station.module.scss'
 import Header from '../../components/Header'
 // import { useLocation } from 'react-router-dom'
 import StationDetail from '../../components/StationDetail'
-import { Button, Form, Input, Modal, Spin } from 'antd'
+import { Button, Form, Input, message, Modal, Spin } from 'antd'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
     ContactModel,
@@ -34,11 +34,10 @@ const Station = () => {
                     ...res.data.houseInfo,
                     fileNames: res.data.filePicList,
                 }
-                console.log(res.data)
                 setContactList(res.data.ContactList)
                 setStation(obj)
             } else {
-                navigate('/404', { replace: true })
+                message.error('出错了: ' + res.msg).then()
             }
         })
     }, [id, navigate])
@@ -62,7 +61,7 @@ const Station = () => {
                         reportStation(parseInt(id!), reportReason).then(
                             (res) => {
                                 if (res.code === 200) {
-                                    console.log('已举办')
+                                    message.success('举报成功').then()
                                     setModal(false)
                                     setReportReason('')
                                 }

@@ -51,19 +51,8 @@ export const StationList = () => {
     const navigate = useNavigate()
     useEffect(() => {
         setCountryList(getCountries())
-        getContactTypeList().then((res) => {
-            setContactType(res.data.data)
-            console.log(res.data.data)
-        })
-        getTagTypeList().then((res) => {
-            console.log(res.data)
-        })
         getStationList(index, requestFilter).then((res) => {
-            if (res.code === 401) {
-                cleanCookies()
-                navigate('/login', { replace: true })
-            } else if (res.code === 200) {
-                console.log(res.data)
+            if (res.code === 200) {
                 setStationList(res.data.houseinfo)
                 setCount(res.data.count)
             }
@@ -86,8 +75,11 @@ export const StationList = () => {
             </NavLink>
             <main>
                 <div className={styles.search}>
-                    <Form labelCol={{ span: 3 }}>
-                        <Form.Item name='country' label='Country'>
+                    <Form labelCol={{ span: 3 }} labelAlign={'left'}>
+                        <Form.Item
+                            name='country'
+                            label='Country'
+                            preserve={false}>
                             <Select
                                 placeholder='Please select a country'
                                 onChange={(e) => {
@@ -95,7 +87,6 @@ export const StationList = () => {
                                     f.country = e
                                     setFilter(f)
                                     setStateList(getStates(e))
-                                    console.log(filter)
                                 }}>
                                 {countryList.map((country) => (
                                     <Option
@@ -106,7 +97,10 @@ export const StationList = () => {
                                 ))}
                             </Select>
                         </Form.Item>
-                        <Form.Item name='province' label='Province'>
+                        <Form.Item
+                            name='province'
+                            label='Province'
+                            preserve={false}>
                             <Select
                                 disabled={filter.country == null}
                                 placeholder='Please select a province'
@@ -125,7 +119,7 @@ export const StationList = () => {
                                 ))}
                             </Select>
                         </Form.Item>
-                        <Form.Item name='city' label='City'>
+                        <Form.Item name='city' label='City' preserve={false}>
                             <Select
                                 disabled={filter.province == null}
                                 placeholder='Please select a city'
@@ -196,13 +190,22 @@ export const StationList = () => {
                             &nbsp;人
                         </Form.Item>
                         <Form.Item>
-                            <Button
-                                style={{ width: '20%' }}
-                                onClick={() => {
-                                    setRequestFilter(filter)
+                            <div
+                                style={{
+                                    width: '100%',
+                                    display: 'flex',
+                                    justifyContent: 'flex-end',
                                 }}>
-                                搜索
-                            </Button>
+                                <Button
+                                    type={'primary'}
+                                    style={{ width: '20%' }}
+                                    size={'large'}
+                                    onClick={() => {
+                                        setRequestFilter(filter)
+                                    }}>
+                                    搜索
+                                </Button>
+                            </div>
                         </Form.Item>
                     </Form>
                 </div>

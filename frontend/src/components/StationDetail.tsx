@@ -17,7 +17,6 @@ interface StationDetailProps {
 }
 
 const StationDetail = (props: StationDetailProps) => {
-    console.log(props.contactList)
     return (
         <div className={styles.container}>
             <div className={styles.inner}>

@@ -7,6 +7,7 @@ import {
     Form,
     Input,
     InputNumber,
+    message,
     Modal,
     Select,
     Space,
@@ -117,7 +118,6 @@ const StationPost = () => {
         if (id) {
             getStationDetail(parseInt(id!)).then((res) => {
                 if (res.code === 200) {
-                    console.log(res.data)
                     const info = res.data.houseInfo
                     setStation(info)
                     setStateList(getStates(info.country))
@@ -137,7 +137,7 @@ const StationPost = () => {
                             setLoadingState(false)
                         })
                 } else {
-                    navigate('/404', { replace: true })
+                    message.error('出错了: ' + res.msg).then()
                 }
             })
         } else {
@@ -203,7 +203,6 @@ const StationPost = () => {
                             onChange={(e) => {
                                 let obj = Object.assign(currentContact!)
                                 obj.content = e.target.value
-                                console.log(obj)
                                 setCurrentContact(obj)
                             }}></Input>
                     </Form.Item>
@@ -223,20 +222,12 @@ const StationPost = () => {
                                             return deleteTag(tag.tagId!)
                                         })
                                     ).then((res) => {
-                                        console.log(
-                                            selectedTags.map((st) => ({
-                                                houseId: parseInt(id!),
-                                                typeId: st,
-                                            }))
-                                        )
                                         postTag(
                                             selectedTags.map((st) => ({
                                                 houseId: parseInt(id!),
                                                 typeId: st,
                                             }))
-                                        ).then((res2) => {
-                                            console.log(res2)
-                                        })
+                                        )
                                     })
                                     updateStation(parseInt(id!), values).then(
                                         (res) => {
@@ -276,7 +267,6 @@ const StationPost = () => {
                                             Object.assign(station)
                                         updatedStation.title = e.target.value
                                         setStation(updatedStation)
-                                        console.log(station)
                                     }}></Input>
                             </Form.Item>
                             <Form.Item
@@ -332,7 +322,6 @@ const StationPost = () => {
                                         obj.province = e
                                         if (e !== station.province) {
                                             obj.city = ''
-                                            console.log(obj)
                                         }
                                         setStation(obj)
                                         setCityList(
@@ -560,7 +549,6 @@ const StationPost = () => {
                                                 tagType.typeId!
                                             )}
                                             onChange={(v) => {
-                                                console.log(v.target.value)
                                                 let list = selectedTags.slice()
                                                 if (
                                                     list.includes(
@@ -622,9 +610,6 @@ const StationPost = () => {
                                 <Button
                                     type='primary'
                                     htmlType='submit'
-                                    onClick={() => {
-                                        console.log(tagList)
-                                    }}
                                     className={styles.loginFormButton}>
                                     Submit
                                 </Button>
