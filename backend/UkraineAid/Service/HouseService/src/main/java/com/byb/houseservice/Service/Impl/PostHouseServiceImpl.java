@@ -250,7 +250,7 @@ public class PostHouseServiceImpl extends ServiceImpl<HouseInfoMapper,HouseInfo>
         }
         if (selectCondition.containsKey("guestmin")){
             int guestmin = (int) selectCondition.get("guestmin");
-            queryWrapper.ge("guest",guestmin);
+            queryWrapper.ge("guests",guestmin);
         }
         if (selectCondition.containsKey("guestmax")){
             int guestmax = (int) selectCondition.get("guestmax");
