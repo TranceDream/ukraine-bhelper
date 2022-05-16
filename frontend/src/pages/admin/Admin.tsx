@@ -6,7 +6,7 @@
  */
 import { Layout, Menu, Typography } from 'antd'
 import React, { useState } from 'react'
-import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Header from '../../components/Header'
 import styles from './Admin.module.scss'
 import MySider from './components/AdminSider/MySider'
@@ -80,7 +80,17 @@ export default function Admin() {
                 <Content className={styles.content}>
                     <Outlet />
                     {loca.pathname === '/admin' ? (
-                        <Navigate replace to='/admin/user-control' />
+                        <h1
+                            style={{
+                                fontSize: 'xxx-large',
+                                textAlign: 'center',
+                                height: '100%',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}>
+                            Welcome to the Control system
+                        </h1>
                     ) : null}
                 </Content>
             </Layout>
