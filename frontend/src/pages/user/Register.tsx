@@ -1,4 +1,6 @@
 import {
+    EyeInvisibleOutlined,
+    EyeTwoTone,
     GlobalOutlined,
     HomeOutlined,
     LockOutlined,
@@ -109,12 +111,19 @@ const Register = () => {
                                         'A password must contain at least 1 lowercase, 1 uppercase and 1 digits',
                                 },
                             ]}>
-                            <Input
+                            <Input.Password
                                 prefix={
                                     <LockOutlined className='site-form-item-icon' />
                                 }
                                 type='password'
                                 placeholder='Password'
+                                iconRender={(visible) =>
+                                    visible ? (
+                                        <EyeTwoTone />
+                                    ) : (
+                                        <EyeInvisibleOutlined />
+                                    )
+                                }
                             />
                         </Form.Item>
                         <p>请输入您所在的城市</p>
