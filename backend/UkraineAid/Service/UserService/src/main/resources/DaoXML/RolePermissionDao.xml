@@ -20,4 +20,11 @@
         </where>
     </select>
 
+    <insert id="addList" parameterType="java.util.List">
+        insert into DICT_ROLE_PERMISSION(ROLE_ID, PERMISSION_ID) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.roleId}, #{item.permissionId})
+        </foreach>
+    </insert>
+
 </mapper>

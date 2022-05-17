@@ -16,4 +16,6 @@ public interface RolePermissionDao extends BaseMapper<RolePermission> {
     Integer updateLockedMark(Map<String, Object> params);
 
     List<PermissionVo> selectPermissionList(Map<String, Object> params);
+
+    Integer addList(List<RolePermission> list);
 }

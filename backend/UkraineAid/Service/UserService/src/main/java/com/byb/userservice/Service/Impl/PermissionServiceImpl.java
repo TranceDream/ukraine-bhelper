@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.byb.userservice.Dao.PermissionDao;
 import com.byb.userservice.Dao.RoleDao;
+import com.byb.userservice.Dao.RolePermissionDao;
 import com.byb.userservice.Entity.Permission;
+import com.byb.userservice.Entity.Role;
 import com.byb.userservice.Entity.RolePermission;
 import com.byb.userservice.Service.PermissionService;
 import com.byb.userservice.Vo.ModuleVo;
@@ -25,6 +27,9 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionDao, Permission
 
     @Autowired
     private RoleDao roleDao;
+
+    @Autowired
+    private RolePermissionDao rolePermissionDao;
 
     @Override
     public Map<String, Object> getPermissionList(PermissionForm permissionForm) {
@@ -50,6 +55,21 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionDao, Permission
             baseMapper.insert(permission);
             Integer permissionId = permission.getPermissionId();
 
+            if(permissionForm.getRoles() != null && !permissionForm.getRoles().isEmpty()){
+                List<RolePermission> list = new ArrayList<>();
+                for(Integer roleId : permissionForm.getRoles()){
+                    RolePermission rolePermission = new RolePermission();
+                    rolePermission.setPermissionId(permissionId);
+                    rolePermission.setRoleId(roleId);
+                    list.add(rolePermission);
+                }
+
+                Integer add = rolePermissionDao.addList(list);
+                if(add != permissionForm.getRoles().size()){
+                    result.put("flag", false);
+                    return result;
+                }
+            }
             result.put("flag", true);
             result.put("permissionId", permissionId);
         }catch (Exception e){
