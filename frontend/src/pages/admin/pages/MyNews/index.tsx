@@ -5,7 +5,7 @@
  * @Last Modified time: 2022-05-15 23:15:10
  */
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table'
-import { message } from 'antd'
+import { Button, message } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { reqNewsGroups, reqSelectArticle } from '../../api'
@@ -187,14 +187,14 @@ export default function MyNews() {
                 toolbar={{
                     multipleLine: false,
                     actions: [
-                        // <Button
-                        //     key='add'
-                        //     type='primary'
-                        //     onClick={() => {
-                        //         handleAddNews()
-                        //     }}>
-                        //     添加新闻
-                        // </Button>,
+                        <Button
+                            key='add'
+                            type='primary'
+                            onClick={() => {
+                                handleAddNews()
+                            }}>
+                            添加新闻
+                        </Button>,
                     ],
                 }}
                 dataSource={tableListDataSource}

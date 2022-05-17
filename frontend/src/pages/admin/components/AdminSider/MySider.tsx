@@ -87,7 +87,7 @@ export default function MySider() {
                 <div
                     className={styles.title}
                     style={{ display: collapsed ? 'none' : 'block' }}>
-                    北洋北后台
+                    Ukraine BHelper
                 </div>
             </div>
             <div>

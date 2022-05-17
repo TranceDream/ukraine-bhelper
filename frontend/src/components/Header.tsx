@@ -5,15 +5,15 @@
  */
 import { UserOutlined } from '@ant-design/icons'
 import { Dropdown, Menu, Select } from 'antd'
+import { Option } from 'antd/lib/mentions'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import Cookie from 'universal-cookie'
 import { cleanCookies } from 'universal-cookie/es6/utils'
 import logo from '../header.png'
 import styles from './Header.module.scss'
-import { Option } from 'antd/lib/mentions'
-import { useTranslation } from 'react-i18next'
 
 interface Props {
     hideNav?: boolean
@@ -82,6 +82,8 @@ const Header = ({ hideNav = false, hideUser = false }: Props) => {
                         }}>
                         <Option value={'zh-CN'}>中文</Option>
                         <Option value={'en'}>English</Option>
+                        <Option value={'uk'}>український</Option>
+                        <Option value={'pl'}>Polski</Option>
                     </Select>
                 </div>
                 {loginStatus ? (

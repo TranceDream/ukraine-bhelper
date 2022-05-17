@@ -90,6 +90,7 @@ export default function MenuControl() {
     const ref2 = useRef<ActionType>()
     useEffect(() => {
         async function getMenulist() {
+            menu.length = 0
             const res = await reqMenuPermissionData()
             console.table(res.data)
             // !修改
@@ -357,6 +358,8 @@ export default function MenuControl() {
         console.table('record', record)
         console.table('MapModule', MapModule)
     }
+
+    
 
     return (
         <>

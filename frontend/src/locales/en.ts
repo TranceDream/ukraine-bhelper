@@ -1,5 +1,6 @@
 export default {
     translation: {
+        slogan: 'Housing for Ukrainian Refugees',
         login: 'Login',
         register: 'Register',
         logOut: 'Logout',

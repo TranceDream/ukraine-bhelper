@@ -1,5 +1,6 @@
 export default {
     translation: {
+        slogan: '我们竭尽全力帮助每一个乌克兰难民',
         login: '登录',
         register: '注册',
         logOut: '退出登录',
