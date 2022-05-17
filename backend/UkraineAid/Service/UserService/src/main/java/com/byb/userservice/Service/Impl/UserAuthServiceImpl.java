@@ -60,10 +60,15 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthDao, UserAuth> impl
         Map<String, Object> params = new HashMap<>();
         params.put("pwd", encode);
         params.put("userId", userForm.getUserId());
-        Integer update = baseMapper.updatePwd(params);
-        if(update != 1){
+        try {
+            Integer update = baseMapper.updatePwd(params);
+            if (update != 1) {
+                return false;
+            }
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
             return false;
         }
-        return true;
     }
 }

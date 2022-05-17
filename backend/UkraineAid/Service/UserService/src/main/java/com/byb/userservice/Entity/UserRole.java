@@ -31,7 +31,7 @@ public class UserRole implements Serializable {
     private String deleteMark;
 
     @TableField("GROUP_ID")
-    private int groupId;
+    private Integer groupId;
 
     @TableField("LOCKED_MARK")
     private String lockedMark;
