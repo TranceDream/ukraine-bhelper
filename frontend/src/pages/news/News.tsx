@@ -21,6 +21,7 @@ import {
     WhatsappIcon,
     WhatsappShareButton,
 } from 'react-share'
+import { useTranslation } from 'react-i18next'
 
 const News = () => {
     const useQuery = () => new URLSearchParams(useLocation().search)
@@ -31,6 +32,8 @@ const News = () => {
     const [modalVisible, setModal] = useState(false)
     const [reportReason, setReportReason] = useState('')
     const [news, setNews] = useState<NewsModel>()
+    const { t } = useTranslation()
+
     useEffect(() => {
         if (!id) {
             navigate('/404', { replace: true })
@@ -55,7 +58,7 @@ const News = () => {
                     setModal(false)
                     setReportReason('')
                 }}
-                title={'举报'}
+                title={t('report')}
                 centered
                 footer={null}>
                 <Form
@@ -74,14 +77,16 @@ const News = () => {
                     }}>
                     <Form.Item>
                         <span style={{ fontSize: 'large' }}>
-                            请填写举报理由
+                            {t('reportReason')}
                         </span>
                     </Form.Item>
                     <Form.Item
                         name={'reason'}
-                        rules={[{ required: true, message: '请输入举报理由' }]}>
+                        rules={[
+                            { required: true, message: t('reportReason') },
+                        ]}>
                         <Input.TextArea
-                            placeholder={'填写举报理由'}
+                            placeholder={t('reportReason')}
                             size={'large'}
                             autoSize={{ maxRows: 10, minRows: 3 }}
                             value={reportReason}
@@ -96,7 +101,7 @@ const News = () => {
                             type={'primary'}
                             size={'large'}
                             style={{ width: '100%' }}>
-                            Submit
+                            {t('submit')}
                         </Button>
                     </Form.Item>
                 </Form>
@@ -110,7 +115,7 @@ const News = () => {
                                 className={styles.report}
                                 shape={'circle'}
                                 size={'large'}
-                                title={'举报'}
+                                title={t('report')}
                                 onClick={() => {
                                     setModal(true)
                                 }}>
@@ -119,7 +124,7 @@ const News = () => {
                         </div>
                         <ReactMarkdown>{news.content ?? ''}</ReactMarkdown>
                         <div className={styles.share}>
-                            <span>分享到媒体: </span>
+                            <span>{t('news.share')}: </span>
                             <EmailShareButton url={url}>
                                 <EmailIcon size={32} />
                             </EmailShareButton>

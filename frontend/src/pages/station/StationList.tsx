@@ -40,6 +40,7 @@ import {
     getStates,
     StateModel,
 } from '../../lib/district'
+import { useTranslation } from 'react-i18next'
 
 /**
  * 寻求援助页面，用于查找救助站和显示救助站列表
@@ -47,6 +48,8 @@ import {
  * @constructor
  */
 export const StationList = () => {
+    const { t } = useTranslation()
+
     const [index, setIndex] = useState(1)
     const [count, setCount] = useState(0)
     const [stationList, setStationList] = useState<Array<StationModel>>([])
@@ -94,7 +97,7 @@ export const StationList = () => {
                     <Form labelCol={{ span: 3 }} labelAlign={'left'}>
                         <Form.Item
                             name='country'
-                            label='Country'
+                            label={t('station.country')}
                             preserve={false}>
                             <Select
                                 placeholder='Please select a country'
@@ -115,7 +118,7 @@ export const StationList = () => {
                         </Form.Item>
                         <Form.Item
                             name='province'
-                            label='Province'
+                            label={t('station.province')}
                             preserve={false}>
                             <Select
                                 disabled={filter.country == null}
@@ -135,7 +138,10 @@ export const StationList = () => {
                                 ))}
                             </Select>
                         </Form.Item>
-                        <Form.Item name='city' label='City' preserve={false}>
+                        <Form.Item
+                            name='city'
+                            label={t('station.city')}
+                            preserve={false}>
                             <Select
                                 disabled={filter.province == null}
                                 placeholder='Please select a city'
@@ -153,7 +159,7 @@ export const StationList = () => {
                                 ))}
                             </Select>
                         </Form.Item>
-                        <Form.Item name='pets' label='Pets'>
+                        <Form.Item name='pets' label={t('station.pets')}>
                             <Select
                                 placeholder='N/A'
                                 onChange={(e) => {
@@ -161,11 +167,17 @@ export const StationList = () => {
                                     f.pets = e
                                     setFilter(f)
                                 }}>
-                                <Option value='YES'>Allow</Option>
-                                <Option value='NO'>Disallow</Option>
+                                <Option value='YES'>
+                                    {t('station.allow')}
+                                </Option>
+                                <Option value='NO'>
+                                    {t('station.disallow')}
+                                </Option>
                             </Select>
                         </Form.Item>
-                        <Form.Item name='duration' label='Duration'>
+                        <Form.Item
+                            name='duration'
+                            label={t('station.duration')}>
                             <InputNumber
                                 min={0}
                                 max={filter.durationmax ?? 12}
@@ -183,9 +195,9 @@ export const StationList = () => {
                                     f.durationmax = e
                                     setFilter(f)
                                 }}></InputNumber>
-                            &nbsp;月
+                            &nbsp;{t('station.month')}
                         </Form.Item>
-                        <Form.Item name='guest' label='Guest'>
+                        <Form.Item name='guest' label={t('station.capacity')}>
                             <InputNumber
                                 min={0}
                                 max={filter.guestmax ?? Number.MAX_SAFE_INTEGER}
@@ -203,7 +215,7 @@ export const StationList = () => {
                                     f.guestmax = e
                                     setFilter(f)
                                 }}></InputNumber>
-                            &nbsp;人
+                            &nbsp;{t('station.people')}
                         </Form.Item>
                         <Form.Item>
                             <div
@@ -221,7 +233,7 @@ export const StationList = () => {
                                         setRequestFilter({ ...filter })
                                         console.log(requestFilter)
                                     }}>
-                                    搜索
+                                    {t('station.search')}
                                 </Button>
                             </div>
                         </Form.Item>
@@ -237,7 +249,7 @@ export const StationList = () => {
                             }
                         />
                     ) : (
-                        <Empty description={'没有数据'} />
+                        <Empty description={t('noData')} />
                     )
                 ) : (
                     <>

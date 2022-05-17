@@ -46,10 +46,17 @@
       margin-left: 32px;
       font-size: large;
     }
+
+    .lng {
+      margin-left: 16px;
+    }
   }
 }
 
 .hidden {
   opacity: 0;
-  visibility: hidden;
+}
+
+.revealed {
+  opacity: 1;
 }

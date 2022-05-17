@@ -9,6 +9,7 @@ import {
 import { Button } from 'antd'
 import { imageUrl, StationModel, TagModel } from '../lib/request'
 import Tag from './Tag'
+import { useTranslation } from 'react-i18next'
 
 interface StationDetailProps {
     station: StationModel
@@ -18,6 +19,8 @@ interface StationDetailProps {
 }
 
 const StationDetail = (props: StationDetailProps) => {
+    const { t } = useTranslation()
+
     return (
         <div className={styles.container}>
             <div className={styles.inner}>
@@ -27,7 +30,7 @@ const StationDetail = (props: StationDetailProps) => {
                         className={styles.report}
                         shape={'circle'}
                         size={'large'}
-                        title={'举报'}
+                        title={t('report')}
                         onClick={props.onReport.bind(this)}>
                         <AlertOutlined />
                     </Button>
@@ -48,8 +51,8 @@ const StationDetail = (props: StationDetailProps) => {
                         <Tag
                             content={
                                 props.station.pets === 'YES'
-                                    ? '允许宠物'
-                                    : '禁止宠物'
+                                    ? t('station.allow')
+                                    : t('station.disallow')
                             }
                             icon={<GithubOutlined />}
                             bg={'lightgreen'}
@@ -59,7 +62,9 @@ const StationDetail = (props: StationDetailProps) => {
                     )}
                     {props.station.duration ? (
                         <Tag
-                            content={'可居住' + props.station.duration + '月'}
+                            content={t('station.durationTag', {
+                                value: props.station.duration,
+                            })}
                             icon={<CalendarOutlined />}
                             bg={'lightblue'}
                         />
@@ -68,7 +73,9 @@ const StationDetail = (props: StationDetailProps) => {
                     )}
                     {props.station.guests ? (
                         <Tag
-                            content={'可容纳' + props.station.guests + '人'}
+                            content={t('station.capacityTag', {
+                                value: props.station.guests,
+                            })}
                             icon={<TeamOutlined />}
                             bg={'lightyellow'}
                         />
