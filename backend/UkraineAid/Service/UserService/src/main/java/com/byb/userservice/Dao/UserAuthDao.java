@@ -20,7 +20,7 @@ public interface UserAuthDao extends BaseMapper<UserAuth> {
 
     List<String> selectEmails(String scope);
 
-    @Update(value = "update DICT_USER_AUTH set CREDENTIAL = #{pwd} where USER_ID = #{userId} and IDENTITY_TYPE = 10001")
+    @Update(value = "update USER_AUTH set CREDENTIAL = #{pwd} where USER_ID = #{userId} and IDENTITY_TYPE = 10001")
     Integer updatePwd(Map<String, Object> params);
 
     @Select(value = "select GROUP_ID from DICT_USER_ROLE where USER_ID = #{userId}")
