@@ -36,6 +36,7 @@ public class GatewayConfig {
         WHITE_LIST.add("/house/selectHouseAdmin");
         WHITE_LIST.add("/news/selectArticleForC");
         WHITE_LIST.add("/house/housedetail");
+        WHITE_LIST.add("/house/test");
         WHITE_LIST.add("/news/getNewsGroup");
     }
 

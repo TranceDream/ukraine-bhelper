@@ -1,5 +1,3 @@
-server:
-  port: 8004
 
 spring:
   datasource:
@@ -15,7 +13,6 @@ spring:
         max-active: 20
         max-wait: -1
 #    password: syhxsqqaxfdyhh
-
 
   #    nacos
   cloud:

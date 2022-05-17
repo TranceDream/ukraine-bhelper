@@ -37,17 +37,25 @@ public class JWTAuthFilter implements GlobalFilter , Ordered {
 //            System.out.println(url);
 //            return chain.filter(exchange);
 //        }
+        HttpHeaders headers = new HttpHeaders();
         if(ConstantConfig.WHITE_LIST.contains(url)){
             System.out.println(url);
+//            headers = new HttpHeaders();
+//            headers.add("port", String.valueOf(port));
+
+            ServerHttpRequest req = exchange.getRequest();
+            ServerHttpRequest.Builder requestBuilder = req.mutate();
+            requestBuilder.header("port", String.valueOf(port));
+            ServerHttpRequest request = requestBuilder.build();
+            exchange.mutate().request(request).build();
             return chain.filter(exchange);
         }
         if(token == null){
             return unauthorized(exchange, "token is null");
         }
-        HttpHeaders headers = new HttpHeaders();
+
         headers.add(ConstantConfig.TOKEN_HEADER, token);
         headers.add(ConstantConfig.REQUEST_HEADER, url);
-        headers.add("port", String.valueOf(port));
         HttpEntity<String> formEntity = new HttpEntity<String>(null, headers);
         RestTemplate restTemplate = new RestTemplate();
         String isAuth =  restTemplate.postForObject(ConstantConfig.TOKEN_CHECK_URL, formEntity, String.class);

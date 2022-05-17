@@ -1,5 +1,4 @@
-server:
-  port: 8012
+
 
 spring:
   datasource:
