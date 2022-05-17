@@ -1,4 +1,6 @@
 import {
+    EyeInvisibleOutlined,
+    EyeTwoTone,
     GlobalOutlined,
     HomeOutlined,
     LockOutlined,
@@ -26,7 +28,6 @@ const Register = () => {
     useEffect(() => {
         const cookie = new Cookie()
         if (cookie.get('token')) {
-            console.log('get token')
             navigate('/')
         }
     }, [navigate])
@@ -110,12 +111,19 @@ const Register = () => {
                                         'A password must contain at least 1 lowercase, 1 uppercase and 1 digits',
                                 },
                             ]}>
-                            <Input
+                            <Input.Password
                                 prefix={
                                     <LockOutlined className='site-form-item-icon' />
                                 }
                                 type='password'
                                 placeholder='Password'
+                                iconRender={(visible) =>
+                                    visible ? (
+                                        <EyeTwoTone />
+                                    ) : (
+                                        <EyeInvisibleOutlined />
+                                    )
+                                }
                             />
                         </Form.Item>
                         <p>请输入您所在的城市</p>

@@ -1,5 +1,10 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { Button, Form, Input, Modal } from 'antd'
+import {
+    EyeInvisibleOutlined,
+    EyeTwoTone,
+    LockOutlined,
+    UserOutlined,
+} from '@ant-design/icons'
+import { Button, Form, Input, message, Modal } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Cookie from 'universal-cookie'
@@ -19,7 +24,6 @@ const Login = () => {
     useEffect(() => {
         const cookie = new Cookie()
         if (cookie.get('token')) {
-            console.log('get token')
             navigate('/')
         }
     }, [navigate])
@@ -51,17 +55,17 @@ const Login = () => {
                         size={'large'}
                         initialValues={{ remember: true }}
                         onFinish={(values: any) => {
-                            console.log('onclick')
                             login(
                                 values.identifier,
                                 values.credential,
                                 10001
-                            ).then((r) => {
-                                console.log(r)
-                                if (r) {
+                            ).then((result) => {
+                                if (result.code === 200) {
                                     navigate('/')
                                 } else {
-                                    setModal(true)
+                                    message
+                                        .error('出错了: ' + result.msg)
+                                        .then()
                                 }
                             })
                         }}>
@@ -88,12 +92,19 @@ const Login = () => {
                                     message: 'Please input your Password!',
                                 },
                             ]}>
-                            <Input
+                            <Input.Password
                                 prefix={
                                     <LockOutlined className='site-form-item-icon' />
                                 }
                                 type='password'
                                 placeholder='Password'
+                                iconRender={(visible) =>
+                                    visible ? (
+                                        <EyeTwoTone />
+                                    ) : (
+                                        <EyeInvisibleOutlined />
+                                    )
+                                }
                             />
                         </Form.Item>
                         <Form.Item>

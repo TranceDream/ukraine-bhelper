@@ -89,7 +89,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
         Page<Article> ArticlePage = new Page<>(current,pageSize);
         QueryWrapper<Article> queryWrapper = new QueryWrapper<>();
         if (selectCondition.containsKey("author")){
-            Long author = (Long) selectCondition.get("author");
+            int author = (int) selectCondition.get("author");
             queryWrapper.eq("author",author);
         }
         if (selectCondition.containsKey("articleId")){
@@ -115,12 +115,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
             int status = (int) selectCondition.get("status");
             queryWrapper.eq("status",status);
         }
-//        if (selectCondition.containsKey("groupId")){
-//            int groupId = (int) selectCondition.get("groupId");
-//            queryWrapper.eq("groupId",groupId);
-//        }
+        if (selectCondition.containsKey("groupId")){
+            int groupId = (int) selectCondition.get("groupId");
+            System.out.println(groupId);
+            queryWrapper.eq("groupId",groupId);
+        }
+
 
         String scope = (String) selectCondition.get("scope");
+        System.out.println(scope);
         scope = scope.substring(1,scope.length()-1);
         List<String> groupIds = Arrays.asList(scope.split(","));
         queryWrapper.in("groupId",groupIds);
@@ -177,8 +180,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
             int groupId = (int) selectCondition.get("groupId");
             queryWrapper.eq("groupId",groupId);
         }
-
-
         Page<Article> page = this.page(ArticlePage,queryWrapper);
         Map<String, Object> result = new HashMap<>();
         result.put("articles",page.getRecords());

@@ -184,6 +184,9 @@ export default function UserControl() {
                 columns={columns}
                 request={async (params, sorter, filter) => {
                     params = Object.assign(params, { pageNo: params.current })
+                    if (params.hasOwnProperty('roleId')) {
+                        params.roleId = parseInt(params.roleId)
+                    }
                     const msg = await reqGetRoleList({
                         ...params,
                         ...sorter,

@@ -5,9 +5,10 @@
  * @Last Modified time: 2022-05-15 23:15:10
  */
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table'
-import React, { useRef, useState } from 'react'
+import { message } from 'antd'
+import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { reqSelectArticle } from '../../api'
+import { reqNewsGroups, reqSelectArticle } from '../../api'
 import './ant-pro-card.scss'
 import styles from './index.module.scss'
 export type TableListItem = {
@@ -23,6 +24,7 @@ export type TableListItem = {
 
 export default function MyNews() {
     const loca = useLocation()
+    const [newsGroup, setNewsGroup] = useState<any>({})
     const navigate = useNavigate()
     const [tableListDataSource, settableListDataSource] = useState<
         TableListItem[]
@@ -31,6 +33,18 @@ export default function MyNews() {
         navigate('/admin/news-edit')
     }
     const ref = useRef<ActionType>()
+
+    useEffect(() => {
+        async function getNewsList() {
+            const res = await reqNewsGroups()
+            if (res.code === 200) {
+                setNewsGroup(res.data)
+            } else {
+                message.error(res.msg)
+            }
+        }
+        getNewsList()
+    }, [])
 
     const columns: ProColumns<TableListItem>[] = [
         {
@@ -75,6 +89,7 @@ export default function MyNews() {
             dataIndex: 'groupId',
             align: 'center',
             key: 'groupId',
+            valueEnum: newsGroup,
         },
         {
             title: '操作',
@@ -123,8 +138,18 @@ export default function MyNews() {
                 columns={columns}
                 request={async (params, sorter, filter) => {
                     // 表单搜索项会从 params 传入，传递给后端接口。
-                    if ('userId' in params) {
-                        params.userId = parseInt(params.userId)
+
+                    if ('articleId' in params) {
+                        params.articleId = parseInt(params.articleId)
+                    }
+                    if ('author' in params) {
+                        params.author = parseInt(params.author)
+                    }
+                    if ('groupId' in params) {
+                        params.groupId = parseInt(params.groupId)
+                    }
+                    if ('status' in params) {
+                        params.status = parseInt(params.status)
                     }
                     // setParams(params)
                     // console.log('UseControl: ', params, sorter, filter)

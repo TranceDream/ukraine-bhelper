@@ -9,7 +9,7 @@ import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table'
 import { Button, message, Modal } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { reqDelNews, reqSelectArticle } from '../../api'
+import { reqDelNews, reqNewsGroups, reqSelectArticle } from '../../api'
 import AuditNews from '../../components/AuditNews'
 import PubSub from '../../Utils/pubsub'
 import './ant-pro-card.scss'
@@ -34,14 +34,25 @@ export default function NewsControl() {
     const [confirmLoading, setconfirmLoading] = useState(false)
     const [tableListDataSource, settableListDataSource] = useState<
         TableListItem[]
-        >([]) // 记录操作行的数据
-    const [modalText, setModalText] = useState("确认删除这条新闻吗？")
+    >([]) // 记录操作行的数据
+    const [modalText, setModalText] = useState('确认删除这条新闻吗？')
+    const [newsGroup, setNewsGroup] = useState<any>({})
     const handleAddNews = () => {
         navigate('/admin/news-edit')
     }
     const ref = useRef<ActionType>()
 
     useEffect(() => {
+        async function getNewsList() {
+            const res = await reqNewsGroups()
+            if (res.code === 200) {
+                setNewsGroup(res.data)
+            } else {
+                message.error(res.msg)
+            }
+        }
+        getNewsList()
+
         var token = PubSub.subscribe(
             'newsaudit',
             (msg: string, data: string) => {
@@ -58,7 +69,7 @@ export default function NewsControl() {
         return () => {
             PubSub.unsubscribe(token)
         }
-    })
+    }, [])
     const columns: ProColumns<TableListItem>[] = [
         {
             title: '文章编号',
@@ -102,6 +113,7 @@ export default function NewsControl() {
             dataIndex: 'groupId',
             align: 'center',
             key: 'groupId',
+            valueEnum: newsGroup,
         },
         {
             title: '操作',
@@ -144,11 +156,11 @@ export default function NewsControl() {
     }
 
     //确认删除
-    const handleDelOk = async() => {
+    const handleDelOk = async () => {
         setconfirmLoading(true)
         const res = await reqDelNews({ article: record.articleId })
         if (res.code === 200) {
-            message.success("删除成功")
+            message.success('删除成功')
         } else {
             message.error(res.msg)
         }

@@ -9,6 +9,8 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import javax.annotation.PostConstruct;
 
+import static com.byb.BaseUtil.Config.ConstantConfig.WHITE_LIST;
+
 @Configuration
 public class GatewayConfig {
 
@@ -26,6 +28,17 @@ public class GatewayConfig {
         source.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsWebFilter(source);
     }
+
+    static {
+        WHITE_LIST.add("/user/login");
+        WHITE_LIST.add("/user/addUserByEmail");
+        WHITE_LIST.add("/user/activeEmail");
+        WHITE_LIST.add("/house/selectHouseAdmin");
+        WHITE_LIST.add("/news/selectArticleForC");
+        WHITE_LIST.add("/house/housedetail");
+        WHITE_LIST.add("/news/getNewsGroup");
+    }
+
 
     @Bean
     public CorsResponseHeaderFilter corsResponseHeaderFilter() {
