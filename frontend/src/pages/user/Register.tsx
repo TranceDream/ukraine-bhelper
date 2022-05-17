@@ -14,6 +14,7 @@ import Header from '../../components/Header'
 import { register } from '../../lib/request'
 import styles from './Register.module.scss'
 import Footer from '../../components/Footer'
+import { useTranslation } from 'react-i18next'
 
 /**
  * 注册页面
@@ -21,6 +22,7 @@ import Footer from '../../components/Footer'
  * @author TranceDream
  */
 const Register = () => {
+    const { t } = useTranslation()
     const [showModal, setModal] = useState(false)
     const [modalText, setModalText] = useState('')
     const [code, setCode] = useState(0)
@@ -54,7 +56,7 @@ const Register = () => {
                     {modalText}
                 </Modal>
                 <div className={styles.form}>
-                    <h2>注册</h2>
+                    <h2>{t('register')}</h2>
                     <Form
                         name='normal_register'
                         className='register-form'
@@ -73,7 +75,7 @@ const Register = () => {
                                 setCode(res.code)
                             })
                         }}>
-                        <p>请输入邮箱</p>
+                        <p>Input your email</p>
                         <Form.Item
                             name='identifier'
                             rules={[
@@ -95,7 +97,7 @@ const Register = () => {
                                 placeholder='Email'
                             />
                         </Form.Item>
-                        <p>请输入密码</p>
+                        <p>Input your password</p>
                         <Form.Item
                             name='credential'
                             rules={[
@@ -126,23 +128,7 @@ const Register = () => {
                                 }
                             />
                         </Form.Item>
-                        <p>请输入您所在的城市</p>
-                        <Form.Item
-                            name='city'
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your City!',
-                                },
-                            ]}>
-                            <Input
-                                prefix={
-                                    <HomeOutlined className='site-form-item-icon' />
-                                }
-                                placeholder='City'
-                            />
-                        </Form.Item>
-                        <p>请输入您的国家</p>
+                        <p>Input your current country</p>
                         <Form.Item
                             name='country'
                             rules={[
@@ -158,12 +144,28 @@ const Register = () => {
                                 placeholder='Country'
                             />
                         </Form.Item>
+                        <p>Input your current city</p>
+                        <Form.Item
+                            name='city'
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your City!',
+                                },
+                            ]}>
+                            <Input
+                                prefix={
+                                    <HomeOutlined className='site-form-item-icon' />
+                                }
+                                placeholder='City'
+                            />
+                        </Form.Item>
                         <Form.Item>
                             <Button
                                 type='primary'
                                 htmlType='submit'
                                 className={styles.loginFormButton}>
-                                Register
+                                {t('register')}
                             </Button>
                             Already have an account?{' '}
                             <a href='/login'>Sign in!</a>

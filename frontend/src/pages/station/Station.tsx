@@ -14,8 +14,10 @@ import {
 } from '../../lib/request'
 import { LoadingOutlined } from '@ant-design/icons'
 import Footer from '../../components/Footer'
+import { useTranslation } from 'react-i18next'
 
 const Station = () => {
+    const { t } = useTranslation()
     const useQuery = () => new URLSearchParams(useLocation().search)
     const query = useQuery()
     const id = query.get('id')
@@ -56,7 +58,7 @@ const Station = () => {
                     setModal(false)
                     setReportReason('')
                 }}
-                title={'举报'}
+                title={t('report')}
                 centered
                 footer={null}>
                 <Form
@@ -73,14 +75,16 @@ const Station = () => {
                     }}>
                     <Form.Item>
                         <span style={{ fontSize: 'large' }}>
-                            请填写举报理由
+                            {t('reportReason')}
                         </span>
                     </Form.Item>
                     <Form.Item
                         name={'reason'}
-                        rules={[{ required: true, message: '请输入举报理由' }]}>
+                        rules={[
+                            { required: true, message: t('reportReason') },
+                        ]}>
                         <Input.TextArea
-                            placeholder={'填写举报理由'}
+                            placeholder={t('reportReason')}
                             size={'large'}
                             autoSize={{ maxRows: 10, minRows: 3 }}
                             value={reportReason}
@@ -95,7 +99,7 @@ const Station = () => {
                             type={'primary'}
                             size={'large'}
                             style={{ width: '100%' }}>
-                            Submit
+                            {t('submit')}
                         </Button>
                     </Form.Item>
                 </Form>
