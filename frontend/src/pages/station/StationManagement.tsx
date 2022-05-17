@@ -7,8 +7,11 @@ import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import StationItem from '../../components/StationItem'
 import Footer from '../../components/Footer'
 import { getMyStations, StationModel } from '../../lib/request'
+import { useTranslation } from 'react-i18next'
 
 const StationManagement = () => {
+    const { t } = useTranslation()
+
     const [index, setIndex] = useState(1)
     const [loading, setLoading] = useState<boolean>(true)
     const [count, setCount] = useState(0)
@@ -52,7 +55,7 @@ const StationManagement = () => {
                         }
                     />
                 ) : stationList.length === 0 ? (
-                    <Empty description={'没有数据'} />
+                    <Empty description={t('noData')} />
                 ) : (
                     <>
                         {stationList.map((station, index) => (

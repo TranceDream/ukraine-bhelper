@@ -4,8 +4,9 @@
  * @author TranceDream
  */
 import * as React from 'react'
-import styles from './HomePageCover.module.scss'
+import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
+import styles from './HomePageCover.module.scss'
 
 /**
  * 主页封面组件，显示Slogan和导航按钮
@@ -13,15 +14,17 @@ import { NavLink } from 'react-router-dom'
  * @constructor
  */
 export const HomePageCover = () => {
+    const { t } = useTranslation()
+
     return (
         <div className={styles.container}>
-            <h1>Housing for Ukrainian Refugees</h1>
+            <h1>{t('slogan')}</h1>
             <div className={styles.buttonGroup}>
                 <NavLink to={'/station'}>
-                    <button>寻求援助</button>
+                    <button>{t('station.stationList')}</button>
                 </NavLink>
                 <NavLink to={'/news'}>
-                    <button>查看新闻</button>
+                    <button>{t('news.newsList')}</button>
                 </NavLink>
             </div>
         </div>

@@ -4,9 +4,11 @@
  * @author TranceDream
  */
 import { UserOutlined } from '@ant-design/icons'
-import { Dropdown, Menu } from 'antd'
+import { Dropdown, Menu, Select } from 'antd'
+import { Option } from 'antd/lib/mentions'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import Cookie from 'universal-cookie'
 import { cleanCookies } from 'universal-cookie/es6/utils'
@@ -26,6 +28,8 @@ interface Props {
  * @author TranceDream
  */
 const Header = ({ hideNav = false, hideUser = false }: Props) => {
+    const { t, i18n } = useTranslation()
+
     const [loginStatus, setLoginStatus] = useState(false)
     const [menuItems, setMenuItems] = useState<Array<any>>([])
     const navigate = useNavigate()
@@ -54,15 +58,34 @@ const Header = ({ hideNav = false, hideUser = false }: Props) => {
             <div className={styles.nav}>
                 <ul
                     className={
-                        (hideNav ? styles.hidden : '') + ' ' + styles.list
+                        (hideNav ? styles.hidden : styles.revealed) +
+                        ' ' +
+                        styles.list
                     }>
                     <li>
-                        <NavLink to={'/station'}>寻求援助</NavLink>
+                        <NavLink to={'/station'}>
+                            {t('station.stationList')}
+                        </NavLink>
                     </li>
                     <li>
-                        <NavLink to={'/news'}>新闻中心</NavLink>
+                        <NavLink to={'/news'}>{t('news.newsList')}</NavLink>
                     </li>
                 </ul>
+                <div className={styles.lng}>
+                    <Select
+                        size={'large'}
+                        style={{ width: '120px' }}
+                        defaultValue={localStorage.getItem('lng') ?? 'zh-CN'}
+                        onChange={(e) => {
+                            localStorage.setItem('lng', e)
+                            i18n.changeLanguage(e).then()
+                        }}>
+                        <Option value={'zh-CN'}>中文</Option>
+                        <Option value={'en'}>English</Option>
+                        <Option value={'uk'}>український</Option>
+                        <Option value={'pl'}>Polski</Option>
+                    </Select>
+                </div>
                 {loginStatus ? (
                     <Dropdown.Button
                         className={
@@ -90,7 +113,7 @@ const Header = ({ hideNav = false, hideUser = false }: Props) => {
                                         setLoginStatus(false)
                                         navigate('/')
                                     }}>
-                                    退出登录
+                                    {t('logOut')}
                                 </Menu.Item>
                             </Menu>
                         }
@@ -106,7 +129,7 @@ const Header = ({ hideNav = false, hideUser = false }: Props) => {
                                 ' ' +
                                 styles.link
                             }>
-                            注册
+                            {t('register')}
                         </NavLink>
                         <NavLink
                             to={'/login'}
@@ -116,7 +139,7 @@ const Header = ({ hideNav = false, hideUser = false }: Props) => {
                                 ' ' +
                                 styles.link
                             }>
-                            登录
+                            {t('login')}
                         </NavLink>
                     </>
                 )}

@@ -8,4 +8,41 @@
     flex-direction: column;
     flex: 1;
   }
+
+  section {
+    padding: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+
+    h2 {
+      font-size: xxx-large;
+    }
+
+    h3 {
+      font-size: xx-large;
+    }
+
+    p {
+      font-size: large;
+    }
+
+    span {
+      font-size: x-large;
+      font-weight: bold;
+    }
+
+    a{
+      margin-left: 32px;
+      font-size: x-large;
+    }
+
+    .info {
+      display: flex;
+      .subInfo {
+        flex: 1;
+      }
+    }
+  }
 }

@@ -6,7 +6,7 @@
  */
 import { EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table'
-import { Button, message, Modal } from 'antd'
+import { message, Modal } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { reqDelNews, reqNewsGroups, reqSelectArticle } from '../../api'
@@ -241,16 +241,16 @@ export default function NewsControl() {
                 }}
                 toolbar={{
                     multipleLine: false,
-                    actions: [
-                        <Button
-                            key='add'
-                            type='primary'
-                            onClick={() => {
-                                handleAddNews()
-                            }}>
-                            添加新闻
-                        </Button>,
-                    ],
+                    // actions: [
+                    //     <Button
+                    //         key='add'
+                    //         type='primary'
+                    //         onClick={() => {
+                    //             handleAddNews()
+                    //         }}>
+                    //         添加新闻
+                    //     </Button>,
+                    // ],
                 }}
                 dataSource={tableListDataSource}
                 rowKey={(record) => {

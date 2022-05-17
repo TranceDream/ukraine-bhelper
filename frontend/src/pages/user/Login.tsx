@@ -12,6 +12,7 @@ import Header from '../../components/Header'
 import { login } from '../../lib/request'
 import styles from './Login.module.scss'
 import Footer from '../../components/Footer'
+import { useTranslation } from 'react-i18next'
 
 /**
  * 登录页面
@@ -19,6 +20,7 @@ import Footer from '../../components/Footer'
  * @author TranceDream
  */
 const Login = () => {
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const [modalVisible, setModal] = useState(false)
     useEffect(() => {
@@ -48,7 +50,7 @@ const Login = () => {
                     用户名或密码错误
                 </Modal>
                 <div className={styles.form}>
-                    <h2>登录</h2>
+                    <h2>{t('login')}</h2>
                     <Form
                         name='normal_login'
                         className='login-form'
@@ -112,7 +114,7 @@ const Login = () => {
                                 type='primary'
                                 htmlType='submit'
                                 className={styles.loginFormButton}>
-                                Log in
+                                {t('login')}
                             </Button>
                             Or <a href='/register'>register now!</a>
                         </Form.Item>

@@ -49,9 +49,11 @@ import {
     getStates,
     StateModel,
 } from '../../lib/district'
-import { values } from 'lodash'
+import { useTranslation } from 'react-i18next'
 
 const StationPost = () => {
+    const { t } = useTranslation()
+
     const useQuery = () => new URLSearchParams(useLocation().search)
     const query = useQuery()
     const id = query.get('id')
@@ -215,7 +217,7 @@ const StationPost = () => {
                         setModal(false)
                         setCurrentContact(undefined)
                     }}
-                    title={'修改联系方式'}
+                    title={t('station.updateContact')}
                     centered>
                     <Form.Item label={currentContact?.contactName}>
                         <Input
@@ -232,8 +234,8 @@ const StationPost = () => {
                         error ? (
                             <Result
                                 status='error'
-                                title='失败'
-                                subTitle='请检查网络或权限'
+                                title={t('error')}
+                                subTitle={t('errorSubTitle')}
                                 extra={[
                                     <Button
                                         type='primary'
@@ -241,7 +243,7 @@ const StationPost = () => {
                                         onClick={() => {
                                             navigate('/station')
                                         }}>
-                                        回到房源
+                                        {t('back')}
                                     </Button>,
                                 ]}
                             />
@@ -295,11 +297,11 @@ const StationPost = () => {
                                         })
                                     }
                                 }}>
-                                <h2>House information</h2>
+                                <h2>{t('station.info')}</h2>
                                 <Form.Item
                                     initialValue={station.title}
                                     name={'title'}
-                                    label={'Title'}>
+                                    label={t('station.title')}>
                                     <Input
                                         // value={station.title}
                                         maxLength={100}
@@ -314,7 +316,7 @@ const StationPost = () => {
                                 </Form.Item>
                                 <Form.Item
                                     name='country'
-                                    label='Country'
+                                    label={t('station.country')}
                                     initialValue={station.country}
                                     rules={[
                                         {
@@ -348,7 +350,7 @@ const StationPost = () => {
                                 </Form.Item>
                                 <Form.Item
                                     name='province'
-                                    label='Province'
+                                    label={t(station.province)}
                                     rules={[
                                         {
                                             required: true,
@@ -384,7 +386,7 @@ const StationPost = () => {
                                 </Form.Item>
                                 <Form.Item
                                     name='city'
-                                    label='City'
+                                    label={t('station.city')}
                                     initialValue={station.city}
                                     rules={[
                                         {
@@ -408,29 +410,35 @@ const StationPost = () => {
                                 <Form.Item
                                     initialValue={station.address}
                                     name={'address'}
-                                    label={'Address'}>
+                                    label={t('station.address')}>
                                     <Input maxLength={200} showCount></Input>
                                 </Form.Item>
                                 <Form.Item
                                     initialValue={station.guests}
                                     name={'guests'}
-                                    label={'Capacity'}>
+                                    label={t('station.capacity')}>
                                     <InputNumber min={0}></InputNumber>
+                                    {t('station.people')}
                                 </Form.Item>
                                 <Form.Item
                                     name='pets'
-                                    label='Pets'
+                                    label={t('station.pets')}
                                     initialValue={station.pets}
                                     wrapperCol={{ span: 3 }}>
                                     <Select placeholder='N/A'>
-                                        <Option value='YES'>Allow</Option>
-                                        <Option value='NO'>Disallow</Option>
+                                        <Option value='YES'>
+                                            {t('station.allow')}
+                                        </Option>
+                                        <Option value='NO'>
+                                            {t('station.disallow')}
+                                        </Option>
                                     </Select>
                                 </Form.Item>
                                 <Form.Item
                                     name='duration'
-                                    label='Duration'
+                                    label={t('station.duration')}
                                     initialValue={station.duration}
+                                    style={{ display: 'flex' }}
                                     wrapperCol={{ span: 3 }}>
                                     <Select placeholder='N/A'>
                                         <Option value='0'>N/A</Option>
@@ -439,14 +447,14 @@ const StationPost = () => {
                                             12,
                                         ].map((e) => (
                                             <Option value={e.toString()}>
-                                                {e}
+                                                {e} {t('station.month')}
                                             </Option>
                                         ))}
                                     </Select>
                                 </Form.Item>
                                 <Form.Item
                                     name='description'
-                                    label='Description'
+                                    label={t('station.description')}
                                     initialValue={station.description}
                                     rules={[
                                         {
@@ -484,12 +492,12 @@ const StationPost = () => {
                                                     list.push({ content: '' })
                                                     setContactList(list)
                                                 }}>
-                                                Add Contact
+                                                {t('station.addContact')}
                                             </Button>
                                         </Form.Item>
                                         {contactList.map((contact, index) => (
                                             <Form.Item
-                                                label={'Contact'}
+                                                label={t('station.contact')}
                                                 rules={[
                                                     {
                                                         required: true,
@@ -595,7 +603,7 @@ const StationPost = () => {
                                     </>
                                 )}
 
-                                <Form.Item label='Tags'>
+                                <Form.Item label={t('station.tags')}>
                                     <div
                                         style={{
                                             display: 'flex',
@@ -643,7 +651,7 @@ const StationPost = () => {
                                 ) : (
                                     <Form.Item
                                         name='image'
-                                        label='Image'
+                                        label={t('station.images')}
                                         rules={[
                                             {
                                                 required: true,
@@ -667,7 +675,7 @@ const StationPost = () => {
                                                         marginTop: 8,
                                                         color: '#666',
                                                     }}>
-                                                    上传图片
+                                                    {t('station.upload')}
                                                 </div>
                                             </div>
                                         </Upload>
@@ -678,7 +686,7 @@ const StationPost = () => {
                                         type='primary'
                                         htmlType='submit'
                                         className={styles.loginFormButton}>
-                                        Submit
+                                        {t('submit')}
                                     </Button>
                                 </Form.Item>
                             </Form>

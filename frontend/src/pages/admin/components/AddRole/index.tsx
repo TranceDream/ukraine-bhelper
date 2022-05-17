@@ -6,9 +6,8 @@
  */
 import { Button, Form, Input, message, Select, Tag } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { reqAddNewRole, reqPermissionList } from '../../api'
 import { getMenuList, getPermissionForRole } from '../../../../lib/request'
-import { values } from 'lodash'
+import { reqAddNewRole } from '../../api'
 
 // const Options = [
 //     { value: 'gold' },
@@ -120,7 +119,7 @@ export default function AddRole(props: AddRoleProps) {
             permissionMapId[item.permissionName] = item.permissionId
         })
         setOptions(tempOptions)
-        // console.log('permissionMapId', permissionMapId)
+        console.log('permissionMapId', tempOptions)
     }
 
     const prepareMenus = (data: any) => {

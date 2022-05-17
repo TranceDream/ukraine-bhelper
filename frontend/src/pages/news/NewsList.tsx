@@ -11,8 +11,10 @@ import {
 } from '../../lib/request'
 import { Empty, message, Pagination, Spin } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
+import { useTranslation } from 'react-i18next'
 
 const NewsList = () => {
+    const { t } = useTranslation()
     const [groupList, setGroupList] = useState<Array<NewsGroupModel>>()
     const [newsList, setNewsList] = useState<NewsModel[]>([])
     const [loading, setLoading] = useState<boolean>(true)
@@ -73,7 +75,7 @@ const NewsList = () => {
                             ))}
                         </div>
                         {newsList.length === 0 ? (
-                            <Empty description={'没有数据'} />
+                            <Empty description={t('noData')} />
                         ) : (
                             <>
                                 <div className={styles.news}>
