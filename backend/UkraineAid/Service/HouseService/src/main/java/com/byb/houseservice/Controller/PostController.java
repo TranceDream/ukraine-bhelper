@@ -52,7 +52,7 @@ public class PostController {
     public Result<Map<String, Object>> test(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         map.put("message", "welcome to house module 2 !");
-        int port = Integer.parseInt(request.getHeader("port"));
+        String port= request.getHeader("port");
         map.put("GatewayPort",port);
         map.put("WHOIAM",string);
         return new Result<>(map, Result.SUCCESS);
