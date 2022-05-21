@@ -1,0 +1,858 @@
+文件夹 PATH 列表
+卷序列号为 ECB7-6605
+E:.
+│  .gitignore
+│  HELP.md
+│  mvnw
+│  mvnw.cmd
+│  pom.xml
+│  tree.txt
+│  UkraineAid.iml
+│  
+├─.idea
+│  │  .gitignore
+│  │  compiler.xml
+│  │  encodings.xml
+│  │  jarRepositories.xml
+│  │  misc.xml
+│  │  modules.xml
+│  │  runConfigurations.xml
+│  │  uiDesigner.xml
+│  │  vcs.xml
+│  │  workspace.xml
+│  │  
+│  └─libraries
+│          Maven__ch_qos_logback_logback_classic_1_2_11.xml
+│          Maven__ch_qos_logback_logback_core_1_2_11.xml
+│          Maven__cn_hutool_hutool_all_5_7_12.xml
+│          Maven__cn_hutool_hutool_all_5_8_0_M2.xml
+│          Maven__commons_codec_commons_codec_1_15.xml
+│          Maven__commons_collections_commons_collections_3_2_2.xml
+│          Maven__commons_configuration_commons_configuration_1_8.xml
+│          Maven__commons_fileupload_commons_fileupload_1_4.xml
+│          Maven__commons_io_commons_io_2_2.xml
+│          Maven__commons_io_commons_io_2_6.xml
+│          Maven__commons_io_commons_io_2_7.xml
+│          Maven__commons_lang_commons_lang_2_6.xml
+│          Maven__commons_logging_commons_logging_1_1_1.xml
+│          Maven__com_alibaba_cloud_spring_cloud_alibaba_commons_2_2_6_RELEASE.xml
+│          Maven__com_alibaba_cloud_spring_cloud_starter_alibaba_nacos_config_2_2_6_RELEASE.xml
+│          Maven__com_alibaba_cloud_spring_cloud_starter_alibaba_nacos_discovery_2_2_6_RELEASE.xml
+│          Maven__com_alibaba_fastjson_1_2_62.xml
+│          Maven__com_alibaba_nacos_nacos_api_1_4_2.xml
+│          Maven__com_alibaba_nacos_nacos_client_1_4_2.xml
+│          Maven__com_alibaba_nacos_nacos_common_1_4_2.xml
+│          Maven__com_alibaba_spring_spring_context_support_1_0_10.xml
+│          Maven__com_baomidou_mybatis_plus_3_5_1.xml
+│          Maven__com_baomidou_mybatis_plus_annotation_3_5_1.xml
+│          Maven__com_baomidou_mybatis_plus_boot_starter_3_5_1.xml
+│          Maven__com_baomidou_mybatis_plus_core_3_5_1.xml
+│          Maven__com_baomidou_mybatis_plus_extension_3_5_1.xml
+│          Maven__com_fasterxml_classmate_1_5_1.xml
+│          Maven__com_fasterxml_jackson_core_jackson_annotations_2_13_2.xml
+│          Maven__com_fasterxml_jackson_core_jackson_core_2_13_2.xml
+│          Maven__com_fasterxml_jackson_core_jackson_databind_2_13_2.xml
+│          Maven__com_fasterxml_jackson_datatype_jackson_datatype_jdk8_2_13_2.xml
+│          Maven__com_fasterxml_jackson_datatype_jackson_datatype_jsr310_2_13_2.xml
+│          Maven__com_fasterxml_jackson_module_jackson_module_parameter_names_2_13_2.xml
+│          Maven__com_github_jsqlparser_jsqlparser_4_3.xml
+│          Maven__com_google_code_findbugs_annotations_2_0_0.xml
+│          Maven__com_google_code_findbugs_jsr305_3_0_1.xml
+│          Maven__com_google_code_findbugs_jsr305_3_0_2.xml
+│          Maven__com_google_errorprone_error_prone_annotations_2_3_4.xml
+│          Maven__com_google_guava_failureaccess_1_0_1.xml
+│          Maven__com_google_guava_guava_16_0_1.xml
+│          Maven__com_google_guava_guava_30_1_jre.xml
+│          Maven__com_google_guava_listenablefuture_9999_0_empty_to_avoid_conflict_with_guava.xml
+│          Maven__com_google_j2objc_j2objc_annotations_1_3.xml
+│          Maven__com_google_protobuf_protobuf_java_3_11_4.xml
+│          Maven__com_jayway_jsonpath_json_path_2_6_0.xml
+│          Maven__com_netflix_archaius_archaius_core_0_7_6.xml
+│          Maven__com_netflix_hystrix_hystrix_core_1_4_3.xml
+│          Maven__com_netflix_netflix_commons_netflix_commons_util_0_1_1.xml
+│          Maven__com_netflix_netflix_commons_netflix_statistics_0_1_1.xml
+│          Maven__com_netflix_ribbon_ribbon_2_3_0.xml
+│          Maven__com_netflix_ribbon_ribbon_core_2_3_0.xml
+│          Maven__com_netflix_ribbon_ribbon_httpclient_2_3_0.xml
+│          Maven__com_netflix_ribbon_ribbon_loadbalancer_2_3_0.xml
+│          Maven__com_netflix_ribbon_ribbon_transport_2_3_0.xml
+│          Maven__com_netflix_servo_servo_core_0_10_1.xml
+│          Maven__com_netflix_servo_servo_internal_0_10_1.xml
+│          Maven__com_rabbitmq_amqp_client_5_13_1.xml
+│          Maven__com_stoyanr_evictor_1_0_0.xml
+│          Maven__com_sun_jersey_contribs_jersey_apache_client4_1_19_1.xml
+│          Maven__com_sun_jersey_jersey_client_1_19_1.xml
+│          Maven__com_sun_jersey_jersey_core_1_19_1.xml
+│          Maven__com_sun_mail_javax_mail_1_6_2.xml
+│          Maven__com_vaadin_external_google_android_json_0_0_20131108_vaadin1.xml
+│          Maven__com_zaxxer_HikariCP_4_0_3.xml
+│          Maven__io_github_openfeign_feign_core_11_8.xml
+│          Maven__io_github_openfeign_feign_slf4j_11_8.xml
+│          Maven__io_github_openfeign_form_feign_form_3_8_0.xml
+│          Maven__io_github_openfeign_form_feign_form_spring_3_8_0.xml
+│          Maven__io_jsonwebtoken_jjwt_0_7_0.xml
+│          Maven__io_lettuce_lettuce_core_6_1_8_RELEASE.xml
+│          Maven__io_netty_netty_buffer_4_1_75_Final.xml
+│          Maven__io_netty_netty_codec_4_1_75_Final.xml
+│          Maven__io_netty_netty_codec_dns_4_1_75_Final.xml
+│          Maven__io_netty_netty_codec_http2_4_1_75_Final.xml
+│          Maven__io_netty_netty_codec_http_4_1_75_Final.xml
+│          Maven__io_netty_netty_codec_socks_4_1_75_Final.xml
+│          Maven__io_netty_netty_common_4_1_75_Final.xml
+│          Maven__io_netty_netty_handler_4_1_75_Final.xml
+│          Maven__io_netty_netty_handler_proxy_4_1_75_Final.xml
+│          Maven__io_netty_netty_resolver_4_1_75_Final.xml
+│          Maven__io_netty_netty_resolver_dns_4_1_75_Final.xml
+│          Maven__io_netty_netty_resolver_dns_classes_macos_4_1_75_Final.xml
+│          Maven__io_netty_netty_resolver_dns_native_macos_osx_x86_64_4_1_75_Final.xml
+│          Maven__io_netty_netty_transport_4_1_75_Final.xml
+│          Maven__io_netty_netty_transport_classes_epoll_4_1_75_Final.xml
+│          Maven__io_netty_netty_transport_native_epoll_linux_x86_64_4_1_75_Final.xml
+│          Maven__io_netty_netty_transport_native_unix_common_4_1_75_Final.xml
+│          Maven__io_projectreactor_addons_reactor_extra_3_4_7.xml
+│          Maven__io_projectreactor_netty_reactor_netty_core_1_0_17.xml
+│          Maven__io_projectreactor_netty_reactor_netty_http_1_0_17.xml
+│          Maven__io_projectreactor_reactor_core_3_4_16.xml
+│          Maven__io_projectreactor_reactor_test_3_4_16.xml
+│          Maven__io_prometheus_simpleclient_0_12_0.xml
+│          Maven__io_prometheus_simpleclient_tracer_common_0_12_0.xml
+│          Maven__io_prometheus_simpleclient_tracer_otel_0_12_0.xml
+│          Maven__io_prometheus_simpleclient_tracer_otel_agent_0_12_0.xml
+│          Maven__io_reactivex_rxjava_1_3_8.xml
+│          Maven__io_reactivex_rxnetty_0_4_9.xml
+│          Maven__io_reactivex_rxnetty_contexts_0_4_9.xml
+│          Maven__io_reactivex_rxnetty_servo_0_4_9.xml
+│          Maven__jakarta_activation_jakarta_activation_api_1_2_2.xml
+│          Maven__jakarta_annotation_jakarta_annotation_api_1_3_5.xml
+│          Maven__jakarta_validation_jakarta_validation_api_2_0_2.xml
+│          Maven__jakarta_xml_bind_jakarta_xml_bind_api_2_3_3.xml
+│          Maven__javax_activation_activation_1_1.xml
+│          Maven__javax_inject_javax_inject_1.xml
+│          Maven__javax_ws_rs_jsr311_api_1_1_1.xml
+│          Maven__mysql_mysql_connector_java_8_0_28.xml
+│          Maven__net_bytebuddy_byte_buddy_1_11_22.xml
+│          Maven__net_bytebuddy_byte_buddy_agent_1_11_22.xml
+│          Maven__net_minidev_accessors_smart_2_4_8.xml
+│          Maven__net_minidev_json_smart_2_4_8.xml
+│          Maven__org_apache_commons_commons_pool2_2_11_1.xml
+│          Maven__org_apache_commons_commons_pool2_2_6_0.xml
+│          Maven__org_apache_httpcomponents_httpasyncclient_4_1_5.xml
+│          Maven__org_apache_httpcomponents_httpclient_4_5_13.xml
+│          Maven__org_apache_httpcomponents_httpcore_4_4_15.xml
+│          Maven__org_apache_httpcomponents_httpcore_nio_4_4_15.xml
+│          Maven__org_apache_logging_log4j_log4j_api_2_17_2.xml
+│          Maven__org_apache_logging_log4j_log4j_to_slf4j_2_17_2.xml
+│          Maven__org_apache_tomcat_embed_tomcat_embed_core_9_0_60.xml
+│          Maven__org_apache_tomcat_embed_tomcat_embed_el_9_0_60.xml
+│          Maven__org_apache_tomcat_embed_tomcat_embed_websocket_9_0_60.xml
+│          Maven__org_apiguardian_apiguardian_api_1_1_2.xml
+│          Maven__org_aspectj_aspectjweaver_1_9_7.xml
+│          Maven__org_assertj_assertj_core_3_21_0.xml
+│          Maven__org_attoparser_attoparser_2_0_5_RELEASE.xml
+│          Maven__org_bouncycastle_bcpkix_jdk15on_1_68.xml
+│          Maven__org_bouncycastle_bcprov_jdk15on_1_68.xml
+│          Maven__org_checkerframework_checker_qual_3_5_0.xml
+│          Maven__org_hamcrest_hamcrest_2_2.xml
+│          Maven__org_hibernate_validator_hibernate_validator_6_2_3_Final.xml
+│          Maven__org_jboss_logging_jboss_logging_3_4_3_Final.xml
+│          Maven__org_junit_jupiter_junit_jupiter_5_8_2.xml
+│          Maven__org_junit_jupiter_junit_jupiter_api_5_8_2.xml
+│          Maven__org_junit_jupiter_junit_jupiter_engine_5_8_2.xml
+│          Maven__org_junit_jupiter_junit_jupiter_params_5_8_2.xml
+│          Maven__org_junit_platform_junit_platform_commons_1_8_2.xml
+│          Maven__org_junit_platform_junit_platform_engine_1_8_2.xml
+│          Maven__org_mockito_mockito_core_4_0_0.xml
+│          Maven__org_mockito_mockito_junit_jupiter_4_0_0.xml
+│          Maven__org_mybatis_mybatis_3_5_9.xml
+│          Maven__org_mybatis_mybatis_spring_2_0_6.xml
+│          Maven__org_objenesis_objenesis_3_2.xml
+│          Maven__org_opentest4j_opentest4j_1_2_0.xml
+│          Maven__org_ow2_asm_asm_9_1.xml
+│          Maven__org_projectlombok_lombok_1_18_22.xml
+│          Maven__org_reactivestreams_reactive_streams_1_0_3.xml
+│          Maven__org_skyscreamer_jsonassert_1_5_0.xml
+│          Maven__org_slf4j_jul_to_slf4j_1_7_36.xml
+│          Maven__org_slf4j_slf4j_api_1_7_36.xml
+│          Maven__org_springframework_amqp_spring_amqp_2_4_3.xml
+│          Maven__org_springframework_amqp_spring_rabbit_2_4_3.xml
+│          Maven__org_springframework_boot_spring_boot_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_autoconfigure_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_starter_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_starter_amqp_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_starter_aop_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_starter_cache_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_starter_data_redis_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_starter_jdbc_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_starter_json_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_starter_logging_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_starter_reactor_netty_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_starter_security_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_starter_test_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_starter_thymeleaf_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_starter_tomcat_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_starter_validation_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_starter_webflux_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_starter_web_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_test_2_6_5.xml
+│          Maven__org_springframework_boot_spring_boot_test_autoconfigure_2_6_5.xml
+│          Maven__org_springframework_cloud_spring_cloud_commons_3_1_1.xml
+│          Maven__org_springframework_cloud_spring_cloud_context_3_1_1.xml
+│          Maven__org_springframework_cloud_spring_cloud_gateway_server_3_1_1.xml
+│          Maven__org_springframework_cloud_spring_cloud_loadbalancer_3_1_1.xml
+│          Maven__org_springframework_cloud_spring_cloud_netflix_archaius_2_2_6_RELEASE.xml
+│          Maven__org_springframework_cloud_spring_cloud_netflix_ribbon_2_2_6_RELEASE.xml
+│          Maven__org_springframework_cloud_spring_cloud_openfeign_core_3_1_1.xml
+│          Maven__org_springframework_cloud_spring_cloud_starter_3_1_1.xml
+│          Maven__org_springframework_cloud_spring_cloud_starter_bootstrap_3_1_1.xml
+│          Maven__org_springframework_cloud_spring_cloud_starter_gateway_3_1_1.xml
+│          Maven__org_springframework_cloud_spring_cloud_starter_loadbalancer_3_1_1.xml
+│          Maven__org_springframework_cloud_spring_cloud_starter_netflix_archaius_2_2_6_RELEASE.xml
+│          Maven__org_springframework_cloud_spring_cloud_starter_netflix_ribbon_2_2_6_RELEASE.xml
+│          Maven__org_springframework_cloud_spring_cloud_starter_openfeign_3_1_1.xml
+│          Maven__org_springframework_data_spring_data_commons_2_6_3.xml
+│          Maven__org_springframework_data_spring_data_keyvalue_2_6_3.xml
+│          Maven__org_springframework_data_spring_data_redis_2_6_3.xml
+│          Maven__org_springframework_retry_spring_retry_1_3_2.xml
+│          Maven__org_springframework_security_spring_security_config_5_6_2.xml
+│          Maven__org_springframework_security_spring_security_core_5_6_2.xml
+│          Maven__org_springframework_security_spring_security_crypto_5_6_2.xml
+│          Maven__org_springframework_security_spring_security_rsa_1_0_10_RELEASE.xml
+│          Maven__org_springframework_security_spring_security_web_5_6_2.xml
+│          Maven__org_springframework_spring_aop_5_3_17.xml
+│          Maven__org_springframework_spring_beans_5_3_17.xml
+│          Maven__org_springframework_spring_context_5_3_17.xml
+│          Maven__org_springframework_spring_context_support_5_3_17.xml
+│          Maven__org_springframework_spring_core_5_3_17.xml
+│          Maven__org_springframework_spring_expression_5_3_17.xml
+│          Maven__org_springframework_spring_jcl_5_3_17.xml
+│          Maven__org_springframework_spring_jdbc_5_3_17.xml
+│          Maven__org_springframework_spring_messaging_5_3_17.xml
+│          Maven__org_springframework_spring_oxm_5_3_17.xml
+│          Maven__org_springframework_spring_test_5_3_17.xml
+│          Maven__org_springframework_spring_tx_5_3_17.xml
+│          Maven__org_springframework_spring_webflux_5_3_17.xml
+│          Maven__org_springframework_spring_webmvc_5_3_17.xml
+│          Maven__org_springframework_spring_web_5_3_17.xml
+│          Maven__org_thymeleaf_extras_thymeleaf_extras_java8time_3_0_4_RELEASE.xml
+│          Maven__org_thymeleaf_thymeleaf_3_0_15_RELEASE.xml
+│          Maven__org_thymeleaf_thymeleaf_spring5_3_0_15_RELEASE.xml
+│          Maven__org_unbescape_unbescape_1_1_6_RELEASE.xml
+│          Maven__org_xmlunit_xmlunit_core_2_8_4.xml
+│          Maven__org_yaml_snakeyaml_1_29.xml
+│          
+├─.mvn
+│  └─wrapper
+│          maven-wrapper.jar
+│          maven-wrapper.properties
+│          
+├─Common
+│  ├─Base
+│  │  ├─src
+│  │  │  ├─main
+│  │  │  │  ├─java
+│  │  │  │  │  └─com
+│  │  │  │  │      └─byb
+│  │  │  │  │          └─BaseUtil
+│  │  │  │  │              ├─Config
+│  │  │  │  │              │      ConstantConfig.java
+│  │  │  │  │              │      RedisConfig.java
+│  │  │  │  │              │      ResttemplateConfig.java
+│  │  │  │  │              │      
+│  │  │  │  │              ├─Entity
+│  │  │  │  │              └─Utils
+│  │  │  │  │                      RandomUtils.java
+│  │  │  │  │                      ResponseUtil.java
+│  │  │  │  │                      Result.java
+│  │  │  │  │                      UploadPicUtil.java
+│  │  │  │  │                      UUIDUtils.java
+│  │  │  │  │                      
+│  │  │  │  └─resources
+│  │  │  └─test
+│  │  │      └─java
+│  ├─Security
+│  │  ├─src
+│  │  │  └─main
+│  │  │      ├─java
+│  │  │      │  └─com
+│  │  │      │      └─byb
+│  │  │      │          └─security
+│  │  │      │              ├─Config
+│  │  │      │              │      SecurityConfig.java
+│  │  │      │              │      
+│  │  │      │              ├─Controller
+│  │  │      │              │      ExceptionController.java
+│  │  │      │              │      
+│  │  │      │              ├─Dao
+│  │  │      │              ├─Entity
+│  │  │      │              │      SecurityMenu.java
+│  │  │      │              │      SecurityUser.java
+│  │  │      │              │      User.java
+│  │  │      │              │      
+│  │  │      │              ├─Filter
+│  │  │      │              │      AuthFilter.java
+│  │  │      │              │      LoginFilter.java
+│  │  │      │              │      
+│  │  │      │              └─Security
+│  │  │      │                      AuthCheckService.java
+│  │  │      │                      AuthDeniedHandle.java
+│  │  │      │                      DefaultPasswordEncoder.java
+│  │  │      │                      LogoutHandle.java
+│  │  │      │                      LogoutManager.java
+│  │  │      │                      MyAuthenticProvider.java
+│  │  │      │                      TokenManager.java
+│  │  │      │                      UnAuthHandle.java
+│  │  │      │                      
+│  │  │      └─resources
+│  │  │          │  application.yml
+
+├─Gateway
+│  │  .gitignore
+│  │  Gateway.iml
+│  │  HELP.md
+│  │  mvnw
+│  │  mvnw.cmd
+│  │  pom.xml
+│  │  
+│  ├─.mvn
+│  │  └─wrapper
+│  │          maven-wrapper.jar
+│  │          maven-wrapper.properties
+│  │          
+│  ├─src
+│  │  ├─main
+│  │  │  ├─java
+│  │  │  │  └─com
+│  │  │  │      └─byb
+│  │  │  │          └─gateway
+│  │  │  │              │  GatewayApplication.java
+│  │  │  │              │  
+│  │  │  │              ├─Config
+│  │  │  │              │      GatewayConfig.java
+│  │  │  │              │      
+│  │  │  │              └─Filter
+│  │  │  │                      CorsResponseHeaderFilter.java
+│  │  │  │                      JWTAuthFilter.java
+│  │  │  │                      
+│  │  │  └─resources
+│  │  │          application.yml
+│  │  │          bootstrap.yaml
+│  │  │          
+│  │  └─test
+│  │      └─java
+│  │          └─com
+│  │              └─byb
+│  │                  └─gateway
+│  │                          GatewayApplicationTests.java
+│  │                          
+│  └─target
+│      ├─generated-sources
+│      │  └─annotations
+│      └─generated-test-sources
+│          └─test-annotations
+├─OpenFeign
+│  │  OpenFeign.iml
+│  │  pom.xml
+│  │  
+│  ├─src
+│  │  ├─main
+│  │  │  ├─java
+│  │  │  │  └─com
+│  │  │  │      └─byb
+│  │  │  │          └─openfeign
+│  │  │  │              ├─Client
+│  │  │  │              │      AuditClient.java
+│  │  │  │              │      HouseClient.java
+│  │  │  │              │      ReportClient.java
+│  │  │  │              │      SysClient.java
+│  │  │  │              │      UserClient.java
+│  │  │  │              │      
+│  │  │  │              ├─Fallback
+│  │  │  │              │      AuditServiceFallback.java
+│  │  │  │              │      ReportServiceFallback.java
+│  │  │  │              │      SysServiceFallback.java
+│  │  │  │              │      UserServiceFallback.java
+│  │  │  │              │      
+│  │  │  │              └─Form
+│  │  │  │                      FormGeneration.java
+│  │  │  │                      
+│  │  │  └─resources
+│  │  └─test
+│  │      └─java
+│  └─target
+│      │  OpenFeign-0.0.1-SNAPSHOT.jar
+│      │  
+│      ├─classes
+│      │  └─com
+│      │      └─byb
+│      │          └─openfeign
+│      │              ├─Client
+│      │              │      AuditClient.class
+│      │              │      HouseClient.class
+│      │              │      ReportClient.class
+│      │              │      SysClient.class
+│      │              │      UserClient.class
+│      │              │      
+│      │              ├─Fallback
+│      │              │      AuditServiceFallback$1.class
+│      │              │      AuditServiceFallback.class
+│      │              │      ReportServiceFallback$1.class
+│      │              │      ReportServiceFallback.class
+│      │              │      SysServiceFallback$1.class
+│      │              │      SysServiceFallback.class
+│      │              │      UserServiceFallback$1.class
+│      │              │      UserServiceFallback.class
+│      │              │      
+│      │              └─Form
+│      │                      FormGeneration.class
+│      │                      
+│      ├─generated-sources
+│      │  └─annotations
+│      ├─generated-test-sources
+│      │  └─test-annotations
+│      ├─maven-archiver
+│      │      pom.properties
+│      │      
+│      ├─maven-status
+│      │  └─maven-compiler-plugin
+│      │      ├─compile
+│      │      │  └─default-compile
+│      │      │          createdFiles.lst
+│      │      │          inputFiles.lst
+│      │      │          
+│      │      └─testCompile
+│      │          └─default-testCompile
+│      │                  createdFiles.lst
+│      │                  inputFiles.lst
+│      │                  
+│      └─test-classes
+└─Service
+    │  .gitignore
+    │  HELP.md
+    │  mvnw
+    │  mvnw.cmd
+    │  pom.xml
+    │  Service.iml
+    │  
+    ├─AuditService
+    │  │  .gitignore
+    │  │  AuditService.iml
+    │  │  HELP.md
+    │  │  mvnw
+    │  │  mvnw.cmd
+    │  │  pom.xml
+    │  │  
+    │  ├─.mvn
+    │  │  └─wrapper
+    │  │          maven-wrapper.jar
+    │  │          maven-wrapper.properties
+    │  │          
+    │  ├─src
+    │  │  └─main
+    │  │      ├─java
+    │  │      │  └─com
+    │  │      │      └─byb
+    │  │      │          └─auditservice
+    │  │      │              │  AuditServiceApplication.java
+    │  │      │              │  
+    │  │      │              ├─Controller
+    │  │      │              │      AuditController.java
+    │  │      │              │      
+    │  │      │              ├─Dao
+    │  │      │              │      AuditDao.java
+    │  │      │              │      AuditOperDao.java
+    │  │      │              │      StatusDao.java
+    │  │      │              │      
+    │  │      │              ├─Entity
+    │  │      │              │      Audit.java
+    │  │      │              │      AuditOper.java
+    │  │      │              │      Status.java
+    │  │      │              │      
+    │  │      │              ├─Service
+    │  │      │              │  │  AuditOperService.java
+    │  │      │              │  │  AuditService.java
+    │  │      │              │  │  StatusService.java
+    │  │      │              │  │  
+    │  │      │              │  └─Impl
+    │  │      │              │          AuditOperServiceImpl.java
+    │  │      │              │          AuditServiceImpl.java
+    │  │      │              │          StatusServiceImpl.java
+    │  │      │              │          
+    │  │      │              └─Vo
+    │  │      │                      AuditForm.java
+    │  │      │                      AuditVo.java
+    │  │      │                      
+    │  │      └─resources
+    │  │          │  application.yaml
+    │  │          │  bootstrap.yaml
+    │  │          │  
+    │  │          └─DaoXML
+    │  │                  AuditDao.xml
+    │  │                  
+    │  └─target
+    │      ├─generated-sources
+    │      │  └─annotations
+    │      ├─generated-test-sources
+    │      │  └─test-annotations
+    │      └─test-classes
+    ├─HouseService
+    │  │  .gitignore
+    │  │  HELP.md
+    │  │  HouseService.iml
+    │  │  mvnw
+    │  │  mvnw.cmd
+    │  │  pom.xml
+    │  │  
+    │  ├─.mvn
+    │  │  └─wrapper
+    │  │          maven-wrapper.jar
+    │  │          maven-wrapper.properties
+    │  │          
+    │  ├─src
+    │  │  └─main
+    │  │      ├─java
+    │  │      │  └─com
+    │  │      │      └─byb
+    │  │      │          └─houseservice
+    │  │      │              │  HouseServiceApplication.java
+    │  │      │              │  
+    │  │      │              ├─Config
+    │  │      │              │      MybatisPlusConfig.java
+    │  │      │              │      WebConfig.java
+    │  │      │              │      WebMvcConfigurer.java
+    │  │      │              │      
+    │  │      │              ├─Controller
+    │  │      │              │      PostController.java
+    │  │      │              │      
+    │  │      │              ├─Dao
+    │  │      │              │      ContactMapper.java
+    │  │      │              │      ContactTypeMapper.java
+    │  │      │              │      FileNameMapper.java
+    │  │      │              │      HouseInfoMapper.java
+    │  │      │              │      TagMapper.java
+    │  │      │              │      TagTypeMapper.java
+    │  │      │              │      
+    │  │      │              ├─Entity
+    │  │      │              │      Contact.java
+    │  │      │              │      ContactType.java
+    │  │      │              │      FileName.java
+    │  │      │              │      HouseInfo.java
+    │  │      │              │      Tag.java
+    │  │      │              │      TagType.java
+    │  │      │              │      
+    │  │      │              ├─Service
+    │  │      │              │  │  ContactTypeService.java
+    │  │      │              │  │  FilePicService.java
+    │  │      │              │  │  PostContactService.java
+    │  │      │              │  │  PostHouseService.java
+    │  │      │              │  │  PostTagService.java
+    │  │      │              │  │  TagTypeService.java
+    │  │      │              │  │  
+    │  │      │              │  └─Impl
+    │  │      │              │          ContactTypeServiceImpl.java
+    │  │      │              │          FilePicServiceImpl.java
+    │  │      │              │          PostContactServiceImpl.java
+    │  │      │              │          PostHouseServiceImpl.java
+    │  │      │              │          PostTagServiceImpl.java
+    │  │      │              │          TagTypeServiceImpl.java
+    │  │      │              │          
+    │  │      │              └─Vo
+    │  │      │                      ContactTypeVo.java
+    │  │      │                      ContactVo.java
+    │  │      │                      HouseinfoVo.java
+    │  │      │                      TagTypeVo.java
+    │  │      │                      TagVo.java
+    │  │      │                      
+    │  │      └─resources
+    │  │              application.yml
+    │  │              bootstrap.yaml
+    │  │              
+    │  └─target
+    │      ├─generated-sources
+    │      │  └─annotations
+    │      ├─generated-test-sources
+    │      │  └─test-annotations
+    │      └─test-classes
+    ├─NewsService
+    │  │  NewsService.iml
+    │  │  pom.xml
+    │  │  
+    │  ├─src
+    │  │  └─main
+    │  │      ├─java
+    │  │      │  └─com
+    │  │      │      └─byb
+    │  │      │          └─newsservice
+    │  │      │              │  NewsServiceApplication.java
+    │  │      │              │  
+    │  │      │              ├─Config
+    │  │      │              │      MybatisPlusConfig.java
+    │  │      │              │      WebMvcConfigurer.java
+    │  │      │              │      
+    │  │      │              ├─Controller
+    │  │      │              │      NewsController.java
+    │  │      │              │      
+    │  │      │              ├─Dao
+    │  │      │              │      ArticleMapper.java
+    │  │      │              │      
+    │  │      │              ├─Entity
+    │  │      │              │      Article.java
+    │  │      │              │      
+    │  │      │              ├─MvcConfig
+    │  │      │              │      MyMvcConfig.java
+    │  │      │              │      
+    │  │      │              ├─Service
+    │  │      │              │  │  ArticleService.java
+    │  │      │              │  │  
+    │  │      │              │  └─Impl
+    │  │      │              │          ArticleServiceImpl.java
+    │  │      │              │          
+    │  │      │              └─Vo
+    │  │      │                      ArticleVo.java
+    │  │      │                      
+    │  │      └─resources
+    │  │              application.yml
+    │  │              bootstrap.yaml
+    │  │              
+    │  └─target
+    │      └─generated-sources
+    │          └─annotations
+    ├─PicService
+    │  │  PicService.iml
+    │  │  pom.xml
+    │  │  
+    │  ├─src
+    │  │  └─main
+    │  │      ├─java
+    │  │      │  └─com
+    │  │      │      └─byb
+    │  │      │          └─PicService
+    │  │      │              │  PicServiceApplication.java
+    │  │      │              │  
+    │  │      │              └─Config
+    │  │      │                      WebMvcConfigurer.java
+    │  │      │                      
+    │  │      └─resources
+    │  │              application.yml
+    │  │              bootstrap.yaml
+    │  │              
+    │  └─target
+    │      └─generated-sources
+    │          └─annotations
+    ├─ReportService
+    │  │  .gitignore
+    │  │  HELP.md
+    │  │  mvnw
+    │  │  mvnw.cmd
+    │  │  pom.xml
+    │  │  ReportService.iml
+    │  │  
+    │  ├─.mvn
+    │  │  └─wrapper
+    │  │          maven-wrapper.jar
+    │  │          maven-wrapper.properties
+    │  │          
+    │  ├─src
+    │  │  └─main
+    │  │      ├─java
+    │  │      │  └─com
+    │  │      │      └─byb
+    │  │      │          └─reportservice
+    │  │      │              │  ReportServiceApplication.java
+    │  │      │              │  
+    │  │      │              ├─Controller
+    │  │      │              │      ReportController.java
+    │  │      │              │      
+    │  │      │              ├─Dao
+    │  │      │              │      ReportDao.java
+    │  │      │              │      
+    │  │      │              ├─Entity
+    │  │      │              │      Report.java
+    │  │      │              │      
+    │  │      │              ├─Service
+    │  │      │              │  │  ReportService.java
+    │  │      │              │  │  
+    │  │      │              │  └─Impl
+    │  │      │              │          ReportServiceImpl.java
+    │  │      │              │          
+    │  │      │              └─Vo
+    │  │      │                      ReportForm.java
+    │  │      │                      ReportVo.java
+    │  │      │                      
+    │  │      └─resources
+    │  │          │  application.yaml
+    │  │          │  bootstrap.yaml
+    │  │          │  
+    │  │          └─DaoXML
+    │  │                  ReportDao.xml
+    │  │                  
+    │  └─target
+    │      ├─generated-sources
+    │      │  └─annotations
+    │      └─generated-test-sources
+    │          └─test-annotations
+    ├─SystemService
+    │  │  .gitignore
+    │  │  HELP.md
+    │  │  mvnw
+    │  │  mvnw.cmd
+    │  │  pom.xml
+    │  │  SystemService.iml
+    │  │  
+    │  ├─.mvn
+    │  │  └─wrapper
+    │  │          maven-wrapper.jar
+    │  │          maven-wrapper.properties
+    │  │          
+    │  ├─src
+    │  │  └─main
+    │  │      ├─java
+    │  │      │  └─com
+    │  │      │      └─byb
+    │  │      │          └─systemservice
+    │  │      │              │  SystemServiceApplication.java
+    │  │      │              │  
+    │  │      │              ├─Config
+    │  │      │              │      Dict.java
+    │  │      │              │      RabbitMQConfig.java
+    │  │      │              │      
+    │  │      │              ├─Controller
+    │  │      │              │      MessageController.java
+    │  │      │              │      SyslogController.java
+    │  │      │              │      
+    │  │      │              ├─Dao
+    │  │      │              │      MessageDao.java
+    │  │      │              │      ObjtypeDao.java
+    │  │      │              │      SyslogDao.java
+    │  │      │              │      SysOperationDao.java
+    │  │      │              │      
+    │  │      │              ├─Entity
+    │  │      │              │      Message.java
+    │  │      │              │      Objtype.java
+    │  │      │              │      Syslog.java
+    │  │      │              │      SysOperation.java
+    │  │      │              │      
+    │  │      │              ├─Listener
+    │  │      │              │      Listener.java
+    │  │      │              │      
+    │  │      │              ├─Service
+    │  │      │              │  │  EmailService.java
+    │  │      │              │  │  MessageService.java
+    │  │      │              │  │  SyslogService.java
+    │  │      │              │  │  
+    │  │      │              │  └─Impl
+    │  │      │              │          EmailServiceImpl.java
+    │  │      │              │          MessageServiceImpl.java
+    │  │      │              │          SyslogServiceImpl.java
+    │  │      │              │          
+    │  │      │              └─Vo
+    │  │      │                      MessageForm.java
+    │  │      │                      SyslogForm.java
+    │  │      │                      SyslogVo.java
+    │  │      │                      
+    │  │      └─resources
+    │  │          │  application.yml
+    │  │          │  bootstrap.yaml
+    │  │          │  
+    │  │          ├─DaoXML
+    │  │          │      SyslogDao.xml
+    │  │          │      
+    │  │          ├─static
+    │  │          └─templates
+    │  └─target
+    │      ├─generated-sources
+    │      │  └─annotations
+    │      └─generated-test-sources
+    │          └─test-annotations
+    └─UserService
+        │  .gitignore
+        │  pom.xml
+        │  UserService.iml
+        │  
+        ├─.mvn
+        │  └─wrapper
+        │          maven-wrapper.jar
+        │          maven-wrapper.properties
+        │          
+        ├─src
+        │  └─main
+        │      ├─java
+        │      │  └─com
+        │      │      └─byb
+        │      │          └─userservice
+        │      │              │  UserServiceApplication.java
+        │      │              │  
+        │      │              ├─Config
+        │      │              │      RabbitMQConfig.java
+        │      │              │      
+        │      │              ├─Controller
+        │      │              │      UserController.java
+        │      │              │      
+        │      │              ├─Dao
+        │      │              │      GroupDao.java
+        │      │              │      MenuDao.java
+        │      │              │      PermissionDao.java
+        │      │              │      RoleDao.java
+        │      │              │      RolePermissionDao.java
+        │      │              │      UserAuthDao.java
+        │      │              │      UserDao.java
+        │      │              │      UserRoleDao.java
+        │      │              │      
+        │      │              ├─Entity
+        │      │              │      Group.java
+        │      │              │      Menu.java
+        │      │              │      Permission.java
+        │      │              │      Role.java
+        │      │              │      RoleMenu.java
+        │      │              │      RolePermission.java
+        │      │              │      User.java
+        │      │              │      UserAuth.java
+        │      │              │      UserRole.java
+        │      │              │      
+        │      │              ├─Service
+        │      │              │  │  EmailService.java
+        │      │              │  │  PermissionService.java
+        │      │              │  │  RoleService.java
+        │      │              │  │  UserAuthService.java
+        │      │              │  │  UserService.java
+        │      │              │  │  
+        │      │              │  └─Impl
+        │      │              │          EmailServiceImpl.java
+        │      │              │          MySecurityMetadataSource.java
+        │      │              │          PermissionServiceImpl.java
+        │      │              │          RoleServiceImpl.java
+        │      │              │          UserAuthServiceImpl.java
+        │      │              │          UserDetailsServiceImpl.java
+        │      │              │          UserServiceImpl.java
+        │      │              │          
+        │      │              └─Vo
+        │      │                      GroupForm.java
+        │      │                      MenuVo.java
+        │      │                      ModuleVo.java
+        │      │                      PermissionForm.java
+        │      │                      PermissionVo.java
+        │      │                      RoleForm.java
+        │      │                      RoleVo.java
+        │      │                      UserForm.java
+        │      │                      UserRoleVo.java
+        │      │                      UserVo.java
+        │      │                      
+        │      └─resources
+        │          │  application.yml
+        │          │  bootstrap.yaml
+        │          │  
+        │          ├─DaoXML
+        │          │      GroupDao.xml
+        │          │      PeimissionDao.xml
+        │          │      RoleDao.xml
+        │          │      RolePermissionDao.xml
+        │          │      UserAuthDao.xml
+        │          │      UserDao.xml
+        │          │      
+        │          └─static
+        │                  Active.html
+        │                  
+        └─target
+            ├─generated-sources
+            │  └─annotations
+            └─generated-test-sources
+                └─test-annotations

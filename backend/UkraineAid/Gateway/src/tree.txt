@@ -1,0 +1,30 @@
+文件夹 PATH 列表
+卷序列号为 ECB7-6605
+E:.
+│  tree.txt
+│  
+├─main
+│  ├─java
+│  │  └─com
+│  │      └─byb
+│  │          └─gateway
+│  │              │  GatewayApplication.java
+│  │              │  
+│  │              ├─Config
+│  │              │      GatewayConfig.java
+│  │              │      
+│  │              └─Filter
+│  │                      CorsResponseHeaderFilter.java
+│  │                      JWTAuthFilter.java
+│  │                      
+│  └─resources
+│          application.yml
+│          bootstrap.yaml
+│          
+└─test
+    └─java
+        └─com
+            └─byb
+                └─gateway
+                        GatewayApplicationTests.java
+                        
