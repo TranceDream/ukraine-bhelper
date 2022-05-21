@@ -8,7 +8,7 @@ import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table'
 import { Button, message } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { reqNewsGroups, reqSelectArticle } from '../../api'
+import { reqNewsGroups, reqselectYourArticle } from '../../api'
 import './ant-pro-card.scss'
 import styles from './index.module.scss'
 export type TableListItem = {
@@ -153,7 +153,7 @@ export default function MyNews() {
                     }
                     // setParams(params)
                     // console.log('UseControl: ', params, sorter, filter)
-                    const msg = await reqSelectArticle({
+                    const msg = await reqselectYourArticle({
                         ...params,
                         ...sorter,
                     })

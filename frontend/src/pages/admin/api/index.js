@@ -180,3 +180,9 @@ export const reqDelNews = (params) => {
 export const reqNewsGroups = (params) => {
     return ajax(BASE + '/news/getNewsGroup', params, 'POST')
 } 
+
+
+// 普通编辑者获取articcle
+export const reqselectYourArticle = (params) => {
+    return ajax(BASE + '/news/selectYourArticle', params, 'POST')
+} 
