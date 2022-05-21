@@ -3,44 +3,35 @@
  * @file 寻求援助页面，用于查找救助站和显示救助站列表
  * @author TranceDream
  */
-import * as React from 'react'
-import { useEffect, useState } from 'react'
-import styles from './StationList.module.scss'
-import Header from '../../components/Header'
-import StationItem from '../../components/StationItem'
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import {
     Button,
-    Col,
     Empty,
     Form,
     InputNumber,
     message,
     Pagination,
     Select,
-    Spin,
+    Spin
 } from 'antd'
 import { Option } from 'antd/es/mentions'
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { NavLink, useNavigate } from 'react-router-dom'
-import {
-    ContactTypeModel,
-    getContactTypeList,
-    getStationList,
-    getTagTypeList,
-    StationFilter,
-    StationModel,
-} from '../../lib/request'
 import Footer from '../../components/Footer'
-import { cleanCookies } from 'universal-cookie/lib/utils'
+import Header from '../../components/Header'
+import StationItem from '../../components/StationItem'
 import {
     CityModel,
     CountryModel,
     getCities,
     getCountries,
     getStates,
-    StateModel,
+    StateModel
 } from '../../lib/district'
-import { useTranslation } from 'react-i18next'
+import { getStationList, StationFilter, StationModel } from '../../lib/request'
+import styles from './StationList.module.scss'
 
 /**
  * 寻求援助页面，用于查找救助站和显示救助站列表

@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import { Button, Form, Input } from 'antd'
 import MarkdownIt from 'markdown-it'
+import React, { useEffect, useState } from 'react'
 import MdEditor from 'react-markdown-editor-lite'
 import 'react-markdown-editor-lite/lib/index.css'
-import { Button, Form, Input } from 'antd'
-import Cookie from 'universal-cookie'
 import { useLocation, useNavigate } from 'react-router-dom'
-import styles from './NewsEdit.module.scss'
+import Cookie from 'universal-cookie'
 import { getNewsDetail, updateNews } from '../../../../lib/request'
+import styles from './NewsEdit.module.scss'
 
 const upload = async (file: File): Promise<string> => {
     const formData = new FormData()
@@ -98,11 +98,11 @@ const NewsEdit = () => {
                 onClick={() => {
                     if (id) {
                         updateNews(parseInt(id), title, content).then((res) => {
-                            navigate('/admin/news-control')
+                            navigate('/admin/myNews')
                         })
                     } else {
                         addArticle(title, content).then((res) => {
-                            navigate('/admin/news-control')
+                            navigate('/admin/myNews')
                         })
                     }
                 }}>
