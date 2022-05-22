@@ -1,0 +1,68 @@
+主要负责内容: 前端客户端UI编写
+frontend
+├── src
+│   ├── components
+│   │   ├── Footer.module.scss
+│   │   ├── Footer.tsx
+│   │   ├── Header.module.scss
+│   │   ├── Header.tsx
+│   │   ├── HomePageCover.module.scss
+│   │   ├── HomePageCover.tsx
+│   │   ├── NewsItem.module.scss
+│   │   ├── NewsItem.tsx
+│   │   ├── StationDetail.module.scss
+│   │   ├── StationDetail.tsx
+│   │   ├── StationItem.module.scss
+│   │   ├── StationItem.tsx
+│   │   ├── Tag.module.scss
+│   │   └── Tag.tsx
+│   ├── i18n.ts
+│   ├── index.scss
+│   ├── index.tsx
+│   ├── lib
+│   │   ├── district.ts
+│   │   └── request.ts
+│   ├── locales
+│   │   ├── en.ts
+│   │   └── zh-CN.ts
+│   ├── pages
+│   │   ├── 404
+│   │   │   ├── 404.module.scss
+│   │   │   └── 404.tsx
+│   │   ├── admin
+│   │   │   ├── components
+│   │   │   │   ├── AddRole
+│   │   │   │   │   └── index.tsx
+│   │   │   │   ├── MuteForm
+│   │   │   │   │   └── index.tsx
+│   │   │   ├── pages
+│   │   │   │   ├── MyNews
+│   │   │   │   │   ├── NewsEdit.module.scss
+│   │   │   │   │   └── NewsEdit.tsx
+│   │   │   │   ├── NewsControl
+│   │   │   │   │   ├── NewsEdit.module.scss
+│   │   │   │   │   └── NewsEdit.tsx
+│   │   ├── home
+│   │   │   ├── Home.module.scss
+│   │   │   └── Home.tsx
+│   │   ├── news
+│   │   │   ├── NewsList.module.scss
+│   │   │   ├── NewsList.tsx
+│   │   │   ├── News.module.scss
+│   │   │   └── News.tsx
+│   │   ├── station
+│   │   │   ├── StationList.module.scss
+│   │   │   ├── StationList.tsx
+│   │   │   ├── StationManagement.tsx
+│   │   │   ├── Station.module.scss
+│   │   │   ├── StationPost.module.scss
+│   │   │   ├── StationPost.tsx
+│   │   │   └── Station.tsx
+│   │   └── user
+│   │       ├── Login.module.scss
+│   │       ├── Login.tsx
+│   │       ├── Register.module.scss
+│   │       └── Register.tsx
+│   ├── router
+│   │   └── Router.tsx
+└── tsconfig.json

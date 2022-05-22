@@ -120,6 +120,7 @@ export default function LogControl() {
     ]
 
     const getdata = (data: any) => {
+        settableListDataSource([])
         let temp: TableListItem[]
         temp = []
         data.forEach((item: any) => {
@@ -130,7 +131,6 @@ export default function LogControl() {
             item.createAt = new Date(item.createAt).getTime()
             temp.push(newitem)
         })
-
         settableListDataSource(temp)
     }
 
@@ -140,14 +140,6 @@ export default function LogControl() {
                 // actionRef={ref}
                 columns={columns}
                 request={async (params, sorter, filter) => {
-                    // params = Object.assign(params, { pageNo: params.current })
-                    // 表单搜索项会从 params 传入，传递给后端接口。
-                    // if ('userId' in params) {
-                    //     params.userId = parseInt(params.userId)
-                    // }
-                    // setParams(params)
-                    // console.log('UseControl: ', params, sorter, filter)
-                    // console.table(objTypeMap)
                     if (params.objtypeId === 'USER') {
                         params.objtypeId = objTypeMap[params.objtypeId]
                     } else {
